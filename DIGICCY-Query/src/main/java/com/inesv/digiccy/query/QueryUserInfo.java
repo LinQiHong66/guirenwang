@@ -215,6 +215,24 @@ public class QueryUserInfo implements UserDetailsService {
 		return userlist;
 	}
 
+	public List<InesvUserDto> getUserByPhone(String phone) {
+		String sql = "select * from t_inesv_user where state=1 and ";
+		List<InesvUserDto> userlist = null;
+		ArrayList<Object> params = new ArrayList<>();
+		if (phone != null && !"".equals(phone)) {
+			sql += " phone like ?";
+			params.add("%" + phone + "%");
+		}
+		sql += " order by user_no desc";
+		try {
+			userlist = (List<InesvUserDto>) queryRunner.query(sql, new BeanListHandler(InesvUserDto.class),
+					params.toArray(new Object[] {}));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userlist;
+	}
+
 	/**
 	 * 鏌ヨ璁块棶url
 	 */

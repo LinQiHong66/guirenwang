@@ -152,6 +152,7 @@ Website: http://thevectorlab.net/
                                             <li><a href="#tab_1_2" onclick="initEntrustTab()" data-toggle="tab">委托记录</a></li>
                                             <li><a href="#tab_1_3" onclick="initTradeTab()" data-toggle="tab">交易记录</a></li>
                                             <li><a href="#tab_1_4" onclick="initAddressTab()" data-toggle="tab">收货地址</a></li>
+                                             <li><a href="#tab_1_5" onclick="initICOTab()" data-toggle="tab">购酒记录</a></li>
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="tab_1_1">
@@ -165,6 +166,9 @@ Website: http://thevectorlab.net/
                                             </div>
                                             <div class="tab-pane" id="tab_1_4">
                                                 <table id="address_table"></table>
+                                            </div>
+                                              <div class="tab-pane" id="tab_1_5">
+                                                <table id="ico_table"></table>
                                             </div>
                                         </div>
                                     </div>
@@ -187,7 +191,7 @@ Website: http://thevectorlab.net/
             <input type="hidden" id="update_id">
             <div class="form-group" style="margin-top: 5px">
                 <label class="form-label">用户ID:</label>&nbsp;&nbsp;
-                <input type="text" disabled="true" style="" id="user_no" class="form-control" style="border-radius: 5px">
+                <input type="text" disabled="true" style="" id="user_no" class="form-control" style="border-radius: 5px"/>
             </div>
             <div class="form-group" style="margin-top: 5px">
                 <label class="form-label">用户名称:</label>&nbsp;&nbsp;

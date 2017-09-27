@@ -1,13 +1,7 @@
 package com.inesv.digiccy.back.controller;
 
-import com.inesv.digiccy.dto.InesvUserDto;
-import com.inesv.digiccy.validata.EntrustDealValidate;
-import com.inesv.digiccy.validata.InesvAddressValidata;
-import com.inesv.digiccy.validata.TradeValidata;
-import com.inesv.digiccy.validata.UserBalanceValidate;
-import com.inesv.digiccy.validata.bank.InesvBankInfoValidata;
-import com.inesv.digiccy.validata.user.InesvUserValidata;
-import com.inesv.digiccy.validata.user.OpUserValidata;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.inesv.digiccy.dto.InesvUserDto;
+import com.inesv.digiccy.validata.EntrustDealValidate;
+import com.inesv.digiccy.validata.InesvAddressValidata;
+import com.inesv.digiccy.validata.TradeValidata;
+import com.inesv.digiccy.validata.UserBalanceValidate;
+import com.inesv.digiccy.validata.bank.InesvBankInfoValidata;
+import com.inesv.digiccy.validata.user.InesvUserValidata;
+import com.inesv.digiccy.validata.user.OpUserValidata;
 
 /**
  * Created by JimJim on 2016/12/5 0005.
@@ -75,6 +75,12 @@ public class UserController {
 		return "/user/voucher";
 	}
 
+	// 到敏感信息的界面
+	@RequestMapping(value = "sensitiveinformation", method = RequestMethod.GET)
+	public String gotoSensitiveInformation() {
+		return "/user/sensitiveinformation";
+	}
+
 	@RequestMapping(value = "gotoUser", method = RequestMethod.GET)
 	public ModelAndView gotoUser() {
 		Map<String, Object> map = new HashMap<>();
@@ -94,6 +100,25 @@ public class UserController {
 	public ModelAndView gotoUserInfo(String id) {
 		Map<String, Object> map = userValidata.validataGetUserInfoById(Long.valueOf(id));
 		return new ModelAndView("/user/userInfo", map);
+	}
+
+	@RequestMapping(value = "getUserInfoById", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getUserInfoById(String id) {
+		Map<String, Object> map = userValidata.validataGetUserInfoById(Long.valueOf(id));
+		return map;
+	}
+
+	/**
+	 * 敏感信息修改
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "gotoSensitiveinformation", method = RequestMethod.GET)
+	public ModelAndView gotoSensitiveinformation(String id) {
+		Map<String, Object> map = userValidata.validataGetUserInfoById(Long.valueOf(id));
+		return new ModelAndView("/user/sensitiveinformationmotify", map);
 	}
 
 	@RequestMapping(value = "gotoBank", method = RequestMethod.GET)
@@ -123,8 +148,17 @@ public class UserController {
 	@RequestMapping(value = "getAllUser", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllUser(String username, String phone, int state, float curpage, int pageItem) {
-		int curPage_a = (curpage+"").contains(".")?Integer.parseInt((curpage+"").substring(0, (curpage+"").indexOf("."))):Integer.parseInt(curpage+"");
+		int curPage_a = (curpage + "").contains(".")
+				? Integer.parseInt((curpage + "").substring(0, (curpage + "").indexOf(".")))
+				: Integer.parseInt(curpage + "");
 		Map<String, Object> map = userValidata.validataGetAllUser(username, phone, state, curPage_a, pageItem);
+		return map;
+	}
+
+	@RequestMapping(value = "getUserByPhone", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getUserByPhone(String phone) {
+		Map<String, Object> map = userValidata.validataGetUserByPhone(phone);
 		return map;
 	}
 

@@ -1,13 +1,21 @@
 package com.inesv.digiccy.validata.user;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.aliyuncs.exceptions.ClientException;
 import com.inesv.digiccy.api.command.InesvPhoneCommand;
 import com.inesv.digiccy.api.command.MessageLogCommand;
-import com.inesv.digiccy.api.command.MyrecCommand;
 import com.inesv.digiccy.api.command.RegUserCommand;
 import com.inesv.digiccy.api.command.UserVoucherCommand;
 import com.inesv.digiccy.common.ResponseCode;
-import com.inesv.digiccy.dto.CrowdFundingDetailsDto;
 import com.inesv.digiccy.dto.InesvUserDto;
 import com.inesv.digiccy.dto.MessageLogDto;
 import com.inesv.digiccy.dto.MessageSetDto;
@@ -26,21 +34,6 @@ import com.inesv.digiccy.util.MD5;
 import com.inesv.digiccy.util.SmsUtil;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureResult;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureUtil;
-
-import jnr.ffi.annotations.Synchronized;
-
-import org.apache.commons.lang.StringUtils;
-import org.axonframework.commandhandling.CommandCallback;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2016/11/14 0014.
@@ -160,6 +153,25 @@ public class OpUserValidata {
 		return map;
 	}
 
+	/**
+	 * 查询所有用户
+	 * 
+	 * @return
+	 */
+	public Map<String, Object> validataGetUserByPhone(String phone) {
+		Map<String, Object> map = new HashMap<>();
+		List<InesvUserDto> list = queryUser.getUserByPhone(phone);
+		if (list == null) {
+			map.put("code", ResponseCode.FAIL_BILL_INFO);
+			map.put("desc", ResponseCode.FAIL_BILL_INFO_DESC);
+		} else {
+			map.put("data", list);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", ResponseCode.SUCCESS_DESC);
+		}
+		return map;
+	}
+
 	public Map<String, Object> validataGetUserInfoById(Long id) {
 		Map<String, Object> map = new HashMap<>();
 		InesvUserDto info = queryUser.getUserInfoById(id);
@@ -173,7 +185,6 @@ public class OpUserValidata {
 		}
 		return map;
 	}
-
 
 	/**
 	 * 新增用户
