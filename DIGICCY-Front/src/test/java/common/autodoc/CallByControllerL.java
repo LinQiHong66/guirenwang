@@ -8,8 +8,8 @@ import jodd.http.HttpResponse;
 public class CallByControllerL {
 
     public static void main(String[] args) {
-        //getAddressController();
-        getFicWithdrawController();
+        getAddressController();
+        //getFicWithdrawController();
     }
 
     public static void getAddressController() {
