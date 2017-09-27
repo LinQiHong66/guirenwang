@@ -1,0 +1,60 @@
+"use strict";
+var app=angular.module("helpApp",["ngRoute", "autoActive"]);
+app.constant("Routes",{
+    public:"/hPublic",
+    trade:"/hTrade",
+    problem:"/hProblem",
+    xiangxi:"/xiangxi",
+    hdefault:"/hdefault",
+    log:"/log",
+    bonus:"/bonus",
+    bill:"/bill",
+    recharge:"/recharge",
+    vote:"/vote"
+});
+app.config(["$routeProvider","Routes",function($routeProvider,Routes){
+    $routeProvider
+        .when(Routes.public,{
+            templateUrl:"views/public.html",
+            controller:"public"
+        })
+        .when(Routes.trade,{
+            templateUrl:"views/trade.html",
+            controller:"trade"
+        })
+        .when(Routes.problem,{
+            templateUrl:"views/problem.html",
+            controller:"problem"
+        })
+        .when(Routes.xiangxi,{
+            templateUrl:"views/xiangxi.html",
+            controller:"xiangxi"
+        })
+        .when(Routes.hdefault,{
+      		templateUrl:'views/hdefault.html',
+      		controller:"hdefault"
+      	})
+      	.when(Routes.log,{
+      		templateUrl:'views/log.html',
+      		 controller:"log"
+      	})
+      	.when(Routes.bonus,{
+      		templateUrl:'views/bonus.html',
+      		 controller:"bonus"
+      	})
+      	.when(Routes.bill,{
+      		templateUrl:'views/bill.html',
+      		controller:"bill"
+      	})
+      	.when(Routes.recharge,{
+      		templateUrl:'views/recharge.html',
+      		 controller:"recharge"
+      	})
+      	.when(Routes.vote,{
+      		templateUrl:'views/vote.html',
+      		 controller:"vote"
+      	})
+        .otherwise({
+            redirectTo:Routes.public
+        })
+}]);

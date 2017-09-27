@@ -1,0 +1,387 @@
+@import url(common.css);
+html {
+  font-size: 16px; }
+
+body {
+  font-size: 16px; }
+
+.header {
+  z-index: 10000;
+  width: 100%;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.9); }
+  .header .hd_inner {
+    width: 1200px;
+    height: 60px;
+    margin: 0 auto; }
+    .header .hd_inner .hd_logo {
+      float: left;
+      margin-right: 30px; }
+      .header .hd_inner .hd_logo a {
+        display: block;
+        padding: 10px 0; }
+      .header .hd_inner .hd_logo img {
+        height: 40px; }
+    .header .hd_inner .hd_list {
+      float: left; }
+      .header .hd_inner .hd_list .alist {
+        float: left; }
+        .header .hd_inner .hd_list .alist a {
+          float: left;
+          overflow: hidden;
+          display: block;
+          height: 60px;
+          line-height: 60px;
+          color: #fff;
+          font-size: 16px;
+          padding: 0 14px;
+          cursor: pointer; }
+        .header .hd_inner .hd_list .alist a:hover {
+          color: #fff;
+          background-color: #117dc8; }
+        .header .hd_inner .hd_list .alist a.on {
+          color: #fff;
+          background-color: #117dc8; }
+        .header .hd_inner .hd_list .alist a.aon {
+          color: #66def8; }
+    .header .hd_inner .ce {
+      color: #fff;
+      display: block;
+      float: right;
+      margin-top: 30px;
+      cursor: pointer; }
+      .header .hd_inner .ce em {
+        font-size: 14px; }
+      .header .hd_inner .ce em.on {
+        color: red; }
+
+@media only screen and (max-width: 1200px) {
+  .header {
+    height: 60px; }
+    .header .hd_inner {
+      width: 992px;
+      height: 60px; }
+      .header .hd_inner .hd_logo img {
+        height: 40px; }
+      .header .hd_inner .ce {
+        margin-top: 30px; }
+      .header .hd_inner .hd_list .alist a {
+        height: 60px;
+        line-height: 60px;
+        font-size: 16px;
+        padding: 0 15px;
+        cursor: pointer; } }
+@media only screen and (max-width: 992px) {
+  .header {
+    height: 50px; }
+    .header .hd_inner {
+      width: 768px;
+      height: 50px; }
+      .header .hd_inner .hd_logo img {
+        height: 30px; }
+      .header .hd_inner .ce {
+        margin-top: 25px; }
+        .header .hd_inner .ce em {
+          font-size: 14px; }
+      .header .hd_inner .hd_list .alist a {
+        height: 50px;
+        line-height: 50px;
+        font-size: 15px;
+        padding: 0 7px; } }
+@media only screen and (max-width: 768px) {
+  .header {
+    z-index: 10000;
+    width: 100%;
+    height: 75px;
+    overflow: hidden; }
+    .header .hd_inner {
+      width: 100%;
+      height: 75px;
+      margin: 0 0;
+      min-width: 320px; }
+      .header .hd_inner .hd_logo {
+        float: none; }
+        .header .hd_inner .hd_logo a {
+          display: block;
+          padding: 5px 0; }
+        .header .hd_inner .hd_logo img {
+          height: 30px;
+          margin-left: 50px; }
+      .header .hd_inner .ce {
+        color: #fff;
+        display: block;
+        position: absolute;
+        top: -10px;
+        right: 50px;
+        margin-top: 25px;
+        cursor: pointer; }
+        .header .hd_inner .ce em {
+          font-size: 12px; }
+        .header .hd_inner .ce em.on {
+          color: red; }
+      .header .hd_inner .hd_list {
+        float: none;
+        height: 35px;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        background-color: rgba(85, 85, 85, 0.24); }
+        .header .hd_inner .hd_list .alist {
+          position: absolute;
+          display: block;
+          width: 100%;
+          min-width: 550px;
+          height: 35px;
+          box-shadow: 0 3px 3px #ccc; }
+          .header .hd_inner .hd_list .alist a {
+            float: left;
+            overflow: hidden;
+            display: block;
+            height: 35px;
+            line-height: 35px;
+            color: #fff;
+            font-size: 14px;
+            padding: 0 5px; } }
+.container {
+  margin: 0 auto;
+  box-shadow: 0px 0px 10px #ccc;
+  margin-top: 30px;
+  background-color: #fff;
+  width: 1160px;
+  padding: 20px; }
+  .container h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold; }
+
+.jindu {
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 50px;
+  position: relative; }
+  .jindu .line {
+    width: 100%;
+    height: 2px;
+    background-color: #e5e5e5; }
+  .jindu .circle {
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 10px;
+    position: absolute;
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+    color: #fff; }
+  .jindu .one {
+    left: 0;
+    top: 40px;
+    margin-left: -10px; }
+  .jindu .two {
+    left: 33%;
+    top: 40px;
+    margin-left: -10px; }
+  .jindu .three {
+    left: 66%;
+    top: 40px;
+    margin-left: -10px; }
+  .jindu .four {
+    left: 100%;
+    top: 40px;
+    margin-left: -10px; }
+
+.reg {
+  width: 800px;
+  margin: 0 auto;
+  padding-top: 100px;
+  padding-bottom: 50px; }
+  .reg .message {
+    font-size: 12px;
+    color: #c00;
+    width: 100%;
+    background-color: #fdf3f3;
+    padding: 6px 0;
+    text-align: center; }
+  .reg .allright {
+    font-size: 14px;
+    color: #44a200;
+    width: 100%;
+    background-color: #f3fdf4;
+    padding: 6px 0;
+    text-align: center; }
+  .reg td {
+    line-height: 30px;
+    padding: 10px 10px; }
+    .reg td input[type='text'] {
+      padding-left: 10px;
+      width: 240px;
+      height: 26px;
+      border: 1px solid #ccc; }
+    .reg td #phone {
+      width: 144px; }
+    .reg td input[type='password'] {
+      padding-left: 10px;
+      width: 240px;
+      height: 26px;
+      border: 1px solid #ccc; }
+    .reg td .erro {
+      padding-left: 10px;
+      color: red; }
+    .reg td .right {
+      padding-left: 10px;
+      color: green; }
+    .reg td .getp {
+      background-color: #126eb4;
+      border: none;
+      color: white;
+      font: normal normal 14px/28px 'microsoft yahei';
+      cursor: pointer; }
+  .reg .next {
+    padding-top: 20px;
+    padding-left: 20px; }
+    .reg .next button {
+      width: 200px;
+      background-color: #126eb4;
+      padding: 8px 20px;
+      border: none;
+      color: #fff;
+      font-family: 'microsoft yahei';
+      font-size: 14px;
+      cursor: pointer; }
+
+.selLi {
+  background-color: #ccc;
+  color: #fff; }
+
+.fr {
+  text-align: right; }
+
+.active {
+  background-color: #126eb4 !important; }
+
+.mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0; }
+  .mask .xieyi {
+    position: relative;
+    padding: 50px 10px 20px 10px;
+    margin: 200px auto;
+    width: 500px;
+    height: 600px;
+    background-color: #fff; }
+    .mask .xieyi .content {
+      font-size: 12px;
+      height: 600px;
+      overflow-y: scroll; }
+      .mask .xieyi .content p {
+        text-indent: 2em; }
+    .mask .xieyi .tit {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      margin-left: -56px;
+      font-size: 14px;
+      font-weight: bold;
+      padding-top: 10px; }
+    .mask .xieyi .close {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      line-height: 20px;
+      color: #fff;
+      background-color: #126eb4;
+      top: 10px;
+      right: 10px;
+      cursor: pointer; }
+
+.fr {
+  float: right; }
+
+.pt {
+  cursor: pointer; }
+
+.pt:hover {
+  color: red; }
+
+@media only screen and (max-width: 1200px) {
+  .container {
+    padding: 20px 0;
+    width: 100%; }
+
+  .reg {
+    width: 100%;
+    padding-top: 30px; }
+    .reg .regType li {
+      padding: 5px 10px;
+      font-size: 12px; }
+    .reg li {
+      padding-top: 10px; }
+      .reg li tr {
+        max-width: 300px; }
+      .reg li td {
+        padding: 0 !important;
+        font-size: 10px; }
+        .reg li td input {
+          max-width: 120px; }
+        .reg li td .yzma {
+          max-width: 100px; }
+        .reg li td .yzmimg {
+          max-width: 100px; }
+        .reg li td .erro {
+          font-size: 10px;
+          position: absolute;
+          line-height: 15px;
+          max-width: 100px;
+          padding-left: 10px;
+          color: red; }
+        .reg li td .right {
+          max-width: 100px;
+          padding-left: 10px;
+          color: green; }
+
+  .mask {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0; }
+    .mask .xieyi {
+      position: relative;
+      padding: 50px 10px 20px 10px;
+      margin: 10% auto;
+      width: 90%;
+      height: 80%;
+      background-color: #fff; }
+      .mask .xieyi .content {
+        font-size: 12px;
+        height: 100%;
+        overflow-y: scroll; }
+        .mask .xieyi .content p {
+          text-indent: 2em; }
+      .mask .xieyi .tit {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -56px;
+        font-size: 14px;
+        font-weight: bold;
+        padding-top: 10px; }
+      .mask .xieyi .close {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        color: #fff;
+        background-color: #126eb4;
+        top: 10px;
+        right: 10px;
+        cursor: pointer; } }
+
+/*# sourceMappingURL=register.css.map */

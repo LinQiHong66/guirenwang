@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en" ng-app="myApp" ng-controller="MainController" ng-cloak>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title ng-bind="title"></title>
+    <link type="text/css" rel="stylesheet" href="css/animate.css">
+    <link type="text/css" rel="stylesheet" href="css/home.css"/>
+    <link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+    <script type="text/javascript" src="js/getip.js"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.3.js"></script>
+    <script type="text/javascript" src='lib/swiper.jquery.min.js'></script>
+    <script type="text/javascript" src="lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="lib/angular/angular-animate.min.js"></script>
+    <script src="js/clipboard.min.js"></script>
+    <script src="js/ngclipboard.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/gundong.js"></script>
+    <script type="text/javascript" src="js/post.js"></script>
+    <script type="text/javascript" src="js/get.js"></script>
+</head>
+<body>
+<div class="loginBox" ng-class="{true:'xianshia'}[loginflag]">
+    <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate ng-style="formxianshi">
+        <div class="box_1">
+           <span class="close" ng-click='closebox()'>X</span>
+            <div class="login_title">登录平台</div>
+            <div class="login_text zin100">
+                <i></i>
+                <input type="text" name="username" ng-model="username" id="index_username"
+                 class="{'error':userForm.username.$invaild&&userForm.username.$touched}" 
+                 value="" placeholder="请输入手机号" required>
+                <div class="errorform" ng-if="userForm.username.$dirty&&userForm.username.$invalid&&userForm.username.$error&&userForm.username.$touched">用户不存在</div>
+            </div>
+            <div class="login_text zin90">
+                <i></i>
+                <input type="password" name="userpassword" ng-model="userpassword" id="index_password"
+                 value="" placeholder="请输入登录密码" required>
+                 <div class="errorform" ng-style="namexianshi">请输入正确的用户名或密码</div>
+            </div>
+            <div class="login_button">
+					<input type="submit" ng-disabled="userForm.$invalid" value="登录"
+						ng-click="upLoginIndex()"> <a href="part/forget/forget.html#/findcode">忘记密码？</a>
+            </div>                                              
+            <div class="login-footer">
+                <a href="javascript:;"> <img src="images/qq2.png">QQ登录</a>
+                <a href="javascript:;"> <img src="images/weixin.png">微信登录</a>
+                <span><a href="part/register/register.html">没有账号？点此立即注册</a></span>
+            </div>
+        </div>
+    </form>
+</div>
+<!--头部开始-->
+<div class="home_header">
+  <div class="hd_inner clearfix">
+    <div class="hd_logo"><a href="#"><img ng-src="{{logo}}"/></a></div>
+   <!--  <span class="ce" ng-click="changelg()" data-lg="{{lg}}"><em ng-class="{'true':'on'}[lg=='chinese']">中</em>/<em ng-class="{'true':'on'}[lg=='english']">E</em></span> -->
+       <div class="blist clearfix">
+        <div class='weixina' id='weixina'>
+           <img src="images/header-weixin-logo.png"><span>关注微信</span>
+           <div class='wxbox' id='wxbox'><img src="images/wx-qrcode.png"></div>
+        </div>
+        <!-- 未登录状态 -->
+        <div class='dlzc' ng-style="loginq"><img src="images/zhuce.png"><a class="zc" href="part/register/register.html">注册</a>|<span class='dl' ng-click="dlshow()">登录</span></div>
+        <!-- 登录状态 -->
+        <div class='dlh' ng-style="loginh">
+           <img src="images/zhuce.png"><span class="namea">{{loginInfo.username}}</span><i class='icon iconfont'>&#xe625;</i>
+           <div class='xxbox'>
+              <p>ID:<span class="info">{{loginInfo.id}}</span></p>
+              <p>注册时间:<span class="info">{{loginInfo.date}}</span></p>
+              <p class='out' ng-click='outlogin()'>退出账号</p>
+           </div>
+        </div>
+        <!-- 切换语言 -->
+        <div class="lanague">
+            <span class="langa"><a class="en" href="#"></a><a href="">English</a><i class='icon iconfont'>&#xe625;</i></span>
+			<ul class='langbox'>
+				<li class="en"><a href="?lang=en">English</a></li>
+				<li class="cn"><a href="?lang=cn">简体中文</a></li>
+			</ul>
+		</div>
+    </div>
+    <div class="hd_list clearfix">
+        <div class="alist clearfix" id='slId'>
+            <a href="index.html" class="aon" ng-bind="home"></a>
+            <a ng-bind="transaction" href="part/transaction/index.html"></a>
+            <a ng-bind="finance" ng-click='tiaoF()'></a>
+            <a ng-bind="safe" ng-click='tiaoS()'></a>
+            <!--  <a ng-bind="apply" ng-click='tiaoA()'></a>
+            <a  href="part/jiedai/index.html" ng-bind='jiedai'></a>
+             <a href="part/mall/index.html" ng-bind="shop"></a> -->
+            <a ng-bind="help"  href="part/help/index.html"></a>
+            <a href="part/cf/index.html">ICO众筹</a>
+        </div>
+    </div>
+
+  </div>
+</div>
+<!--头部结束-->
+<!--banner 开始-->
+<div class="banner">
+    <div class="container" ng-mouseover="mouse()" ng-mouseout="out()">
+        <div class="imgList" id="imgList">
+            <a ng-repeat="i in list" ng-href="{{i.src}}" ng-class="{'true':'on'}[liIndex==$index]">
+                <img ng-src="{{i.img}}">
+            </a>
+        </div>
+        <ul class="indexList">
+            <li ng-repeat="i in list" data-index="{{$index}}" ng-class="{'true':'on'}[liIndex==$index]" ng-click="change($event)">
+                {{$index+1}}
+            </li>
+        </ul>
+        <a href="javascript:void(0);" id="left" class="btnzy" ng-click="zuo()" ng-style="xianshi">&lt;</a>
+        <a href="javascript:void(0);" id="right" class="btnzy" ng-click="you()" ng-style="xianshi">&gt;</a>
+        <div class="dianji" ng-click="tanchu()"></div>
+        <!-- <div class="login_box"> -->
+             <!-- 登录状态 -->
+           <!--  <div class="login_bg" ng-style="loginxianshi">
+                <h5 class="login_title">欢迎登陆交易平台</h5>
+                <p>您正在使用的账号为：</p>
+                <p class="info">{{loginInfo.username}}</p>
+                <p>ID:<span class="info">{{loginInfo.id}}</span></p>
+                <p>注册时间:<span class="info">{{loginInfo.date}}</span></p>
+                <div class="divlo1">
+                    <a href="part/finance/index.html#/reCard">充值</a>
+                    <a href="part/finance/index.html#/liftNow">提现</a>
+                    <a href="part/finance/index.html#/entrust">委托管理</a>
+                </div>
+                <div class="divlo2">
+                    <a href="part/finance/index.html" class="goon">去财务中心</a>
+                </div>
+                <p class='out' ng-click='outlogin()'>退出账号</p>  
+            </div> -->
+            <!-- 未登录状态 -->
+          <!--   <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate ng-style="formxianshi">
+                <div class="login_box_1">
+                    <div class="login_title">登录平台</div>
+                    <div class="login_text zin100">
+                        <i></i>
+                        <input type="text" name="username" ng-model="username" id="index_username"
+                         class="{'error':userForm.username.$invaild&&userForm.username.$touched}" 
+                         value="" placeholder="请输入手机号" required>
+                        <div class="errorform" ng-if="userForm.username.$dirty&&userForm.username.$invalid&&userForm.username.$error&&userForm.username.$touched">用户不存在</div>
+                    </div>
+                    <div class="login_text zin90">
+                        <i></i>
+                        <input type="password" name="userpassword" ng-model="userpassword" id="index_password"
+                         value="" placeholder="请输入登录密码" required>
+                         <div class="errorform" ng-style="namexianshi">请输入正确的用户名或密码</div>
+                    </div>
+                    <div class="login_button">
+                        <input type="submit" ng-disabled="userForm.$invalid" value="登录" ng-click="upLoginIndex()">
+                        <a href="part/forget/forget.html#/findcode">忘记密码？</a>
+                    </div>                                              
+                    <div class="login-footer">
+                        <a href="javascript:void(0);"> <img src="images/qq2.png">QQ登录</a>
+                        <a href="javascript:void(0);"> <img src="images/weixin.png">微信登录</a>
+                        <span><a href="part/register/register.html">没有账号？点此立即注册</a></span>
+                    </div>
+                </div>
+            </form> -->
+        <!-- </div> -->
+    </div>
+</div>
+<!--banner 结束-->
+<!--每日行情 开始-->
+<div class="market">
+	<div class="container">
+		<!-- <h3 ng-bind="market[0]">每日行情</h3> -->
+	    <ul class="price_today">
+	        <li class="price_l1">
+	            <span style="cursor: default;">币名</span>
+	            <span ng-click="titleP='knockdown';desc=!desc">
+	                <em>最新成交价</em>
+	                <i class="cagret cagret-down"></i>
+	                <i class="cagret cagret-up"></i>
+	            </span>
+	            <span class='lghide' ng-click="titleP='buying';desc=!desc">
+		            <em>24H成交量</em>
+	                <i class="cagret cagret-down"></i>
+		            <i class="cagret cagret-up"></i>
+	            </span>
+	            <span class='mdhide' ng-click="titleP='sale';desc=!desc">
+	                <em>24H成交额</em>
+	                <i class="cagret cagret-down"></i>
+	                <i class="cagret cagret-up"></i>
+	            </span>
+	            <span class='smhide' ng-click="titleP='turnover';desc=!desc">
+	                <em>24H涨跌</em>
+	                <i class="cagret cagret-down"></i>
+	                <i class="cagret cagret-up"></i>
+	            </span>
+	            <span ng-click="titleP='tariff';desc=!desc">
+	                <em>7天涨跌</em>
+	                <i class="cagret cagret-down"></i>
+	                <i class="cagret cagret-up"></i>
+	            </span>
+	        </li>
+	        <li class="price_l2"  ng-repeat="v in hangqing  |orderBy:titleP:desc">
+	            <span style="float:left;">
+	               <a href="javascript:void(0)" class="p_a">
+	               		<ins style="width:30%;float: left;text-align: right;">
+	               			<img ng-src="/sub/getImage.do?value={{v.attr1}}" style="width: 30px;height: 30px;border: 0;">
+	               		</ins>
+	                   	<ins style="width:60%;float: right;text-align: left;">
+	                   		<i ng-bind="v.attr2?v.attr2:null"></i>
+	                   	</ins>
+	               </a>
+	            </span>
+	            <span class="orange" ng-bind="v.newes_deal?v.newes_deal:0"></span>
+	            <span class='lghide' ng-bind="v.buy_price?v.buy_price:0"></span>
+	            <span class='mdhide' ng-bind="v.sell_price?v.sell_price:0"></span>
+	            <span class='smhide' ng-bind="v.deal_num?v.deal_num:0"></span>
+	            <span ng-bind="v.deal_price?v.deal_price:0"></span>
+	        </li>
+	    </ul>
+	</div>
+    
+</div>
+<!--每日行情 结束-->
+<!-- 众筹 开始 -->
+<div class="cfbox">
+	<div class="container clearfix">
+		<div class="cb_tit">众筹项目</div>
+		<div class="cb_boxlist clearfix">
+			<div class="c_box">
+				<div class="cb_img">
+					<a href="./part/cf/index.html#/xiangqing">
+						<img src="images/00001.png">
+					</a>
+				</div>
+				<div class="cb_info">
+					<div class="c_name">巴拉巴拉币</div>
+					<div class="c_jindu">
+						<span class="c_l">目标：<span class='c_col'>200份</span></span>
+						<span class="c_r">进度：<span class='c_col'>100.00%</span></span>
+					</div>
+				</div>
+			</div>
+			<div class="c_box c_two">
+				<div class="cb_img">
+					<a href="./part/cf/index.html#/xiangqing">
+						<img src="images/00001.png">
+					</a>
+				</div>
+				<div class="cb_info">
+					<div class="c_name">巴拉巴拉币</div>
+					<div class="c_jindu">
+						<span class="c_l">目标：<span class='c_col'>200份</span></span>
+						<span class="c_r">进度：<span class='c_col'>100.00%</span></span>
+					</div>
+				</div>
+			</div>
+			<div class="c_box c_three">
+				<div class="cb_img">
+					<a href="./part/cf/index.html#/xiangqing">
+						<img src="images/00001.png">
+					</a>
+				</div>
+				<div class="cb_info">
+					<div class="c_name">巴拉巴拉币</div>
+					<div class="c_jindu">
+						<span class="c_l">目标：<span class='c_col'>200份</span></span>
+						<span class="c_r">进度：<span class='c_col'>100.00%</span></span>
+					</div>
+				</div>
+			</div>
+			<div class="c_box c_last">
+				<div class="cb_img">
+					<a href="./part/cf/index.html#/xiangqing">
+						<img src="images/00001.png">
+					</a>
+				</div>
+				<div class="cb_info">
+					<div class="c_name">巴拉巴拉币</div>
+					<div class="c_jindu">
+						<span class="c_l">目标：<span class='c_col'>200份</span></span>
+						<span class="c_r">进度：<span class='c_col'>100.00%</span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style='text-align: center;'>
+			<span style='border: 1px solid #ccc;border-radius: 6px;padding:4px 10px;' >
+				<a href="./part/cf/index.html#/list" style='color:#999;'>查看更多</a>
+			</span>
+		</div>
+	</div>
+</div>
+<!-- 众筹 结束 -->
+<!--咨询公告 开始-->
+<div class="infodown">
+	<div class="container">
+		<div class="clearfix" style="background: #fff">
+	        <div class="infoL">
+	        	<div class="info_tit clearfix">
+	        		<h4><i style='display:inline-block;width:20px;height:20px;background: url(./images/ggicon.png);background-position: 0px 0px;
+	        		background-size:cover;vertical-align: -4px;margin-right: 6px;'></i><span>行业资讯</span></h4>
+	            	<a ng-href="{{infoR.a}}">查看更多></a>
+	        	</div>
+	            <div class="content clearfix" ng-repeat="i in zxtit|limitTo:5">
+	                <a ng-click='xiangxi(i.id)'><p ng-bind="i.title"></p><p ng-bind="i.date"></p></a>
+	            </div>
+	            <!-- <a class="more" ng-href="{{infoL.a}}" ng-bind="infoL.more"></a> -->
+	        </div>
+	        <div class="infoM">
+	        	<div class="info_tit clearfix">
+	        		<h4><i style='display:inline-block;width:20px;height:20px;background: url(./images/ggicon.png);background-position: 40px 0px;
+	        		background-size:cover;vertical-align: -4px;margin-right: 6px;'></i>官方公告</h4>
+	            	<a ng-href="{{infoR.a}}">查看更多></a>
+	        	</div>
+	            <!-- <h4 ng-bind="infoM.title"></h4> -->
+	            <div class="content clearfix" ng-repeat="i in ggtit|limitTo:5">
+	                <a ng-click='xiangxi(i.id)'><p ng-bind="i.title"></p><p ng-bind="i.date"></p></a>
+	            </div>
+	            <!-- <a ng-href="{{infoM.a}}" class="more" ng-bind="infoM.more"></a> -->
+	        </div>
+	        <div class="infoR">
+	        	<div class="info_tit clearfix">
+	        		<h4><i style='display:inline-block;width:20px;height:20px;background: url(./images/ggicon.png);background-position: 20px 0px;
+	        		background-size:cover;vertical-align: -4px;margin-right: 6px;'></i>常见问题</h4>
+	            	<a ng-href="{{infoR.a}}">查看更多></a>
+	        	</div>
+	            <!-- <h4 ng-bind="infoR.title"></h4> -->
+	            <div class="content" ng-repeat="i in wttit|limitTo:5">
+	                <a ng-click='xiangxi(i.id)'><p ng-bind="i.title"></p><p ng-bind="i.date"></p></a>
+	            </div>
+	            
+	        </div>
+	    </div>
+	</div> 
+</div>
+<!-- 联系方式 Begin -->
+<div class="contact">
+	<div class="container" style="background-color: #333;">
+		<div class="ct_box">
+			<i style=";"></i>
+			<span>交流群：123456789</span>
+		</div>
+		<div class="ct_box">
+			<i style="background-position:50px 0;"></i>
+			<span>交流群：123456789</span>
+		</div>
+		<div class="ct_box">
+			<i style="background-position:50px 0;"></i>
+			<span>交流群：123456789</span>
+		</div>
+	</div>
+</div>
+<!-- 联系方式 End -->
+<div class="links">
+		<div class="inner">
+			<dl>
+				<dt><a style="color: #fff;" href="part/transaction/index.html">交易中心</a></dt>
+				<dd><a ng-click='tiaoF()'>财务中心</a></dd>
+				<dd><a ng-click='tiaoS()'>安全中心</a></dd>
+				<dd><a href="part/help/index.html">帮助中心</a></dd>
+				<dd><a href="part/cf/index.html">ICO众筹</a></dd>
+			</dl>
+			<dl>
+				<dt><a style="color: #fff;" ng-click='tiaoF()'>财务中心</a></dt>
+				<dd><a href="/rate.html">费用说明</a></dd>
+				<dd><a href="/service.html">服务条款</a></dd>
+				<dd><a href="/law.html">法律声明</a></dd>
+			</dl>
+			<dl>
+				<dt><a style="color: #fff;" ng-click='tiaoS()'>安全中心</a></dt>
+				<dd><a href="/wallet.help.html">钱包下载</a></dd>
+                <dd><a href="/api.help.html#open">行情API</a></dd>
+                <dd><a href="/api.help.html#full">交易API</a></dd>
+			</dl>
+			<dl>
+				<dt><a style="color: #fff;" href="part/help/index.html">帮助中心</a></dt>
+								<dd><a href="/chongzhi.help.html">充值指南</a></dd>
+				<dd><a href="/jiaoyi.help.html">交易指南</a></dd>
+			</dl>
+			<dl>
+				<dt><a style="color: #fff;" href="part/cf/index.html">ICO众筹</a></dt>
+				<dd><a href="/wallet.help.html">钱包下载</a></dd>
+                <dd><a href="/api.help.html#open">行情API</a></dd>
+                <dd><a href="/api.help.html#full">交易API</a></dd>
+			</dl>
+		</div>
+        <div style="margin:20px auto 0 auto;width:1000px;font-size:12px;color: rgba(255, 255, 255, 0.49);"><p><span style="color:#cc0000;">风险警告：</span>由于虚拟币交易风险较大，易受外界因素影响，价格波动较大，我们强烈建议您在自身能承受的风险范围内参与虚拟货币交易。</p></div>
+	</div>
+<!-- 版权部分 begin -->
+<!-- <div class="copyRight">
+    <div class="container">
+        <p>版权所有</p>
+    </div>
+</div> -->
+<!-- 版权部分 end -->
+</body>
+</html>

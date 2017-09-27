@@ -1,0 +1,920 @@
+@import url(common.css);
+html {
+  font-size: 16px; }
+
+body {
+  font-size: 16px;
+  background: #ecf0f1; }
+
+.header {
+  z-index: 10000;
+  width: 100%;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.9); }
+  .header .hd_inner {
+    width: 1200px;
+    height: 70px;
+    margin: 0 auto; }
+    .header .hd_inner .hd_logo {
+      float: left; }
+      .header .hd_inner .hd_logo a {
+        display: block;
+        padding: 10px 0; }
+      .header .hd_inner .hd_logo img {
+        height: 50px; }
+    .header .hd_inner .hd_list {
+      float: right; }
+      .header .hd_inner .hd_list .alist {
+        float: left; }
+        .header .hd_inner .hd_list .alist a {
+          float: left;
+          overflow: hidden;
+          display: block;
+          height: 70px;
+          line-height: 70px;
+          color: #fff;
+          font-size: 18px;
+          padding: 0 20px;
+          cursor: pointer; }
+        .header .hd_inner .hd_list .alist a:hover {
+          color: #fff;
+          background-color: #117dc8; }
+        .header .hd_inner .hd_list .alist a.on {
+          color: #fff;
+          background-color: #117dc8; }
+        .header .hd_inner .hd_list .alist a.aon {
+          color: #66def8; }
+    .header .hd_inner .ce {
+      color: #fff;
+      display: block;
+      float: right;
+      margin-top: 40px;
+      cursor: pointer; }
+      .header .hd_inner .ce em {
+        font-size: 16px; }
+      .header .hd_inner .ce em.on {
+        color: red; }
+
+@media only screen and (max-width: 1200px) {
+  .header {
+    height: 60px; }
+    .header .hd_inner {
+      width: 992px;
+      height: 60px; }
+      .header .hd_inner .hd_logo img {
+        height: 40px; }
+      .header .hd_inner .ce {
+        margin-top: 30px; }
+      .header .hd_inner .hd_list .alist a {
+        height: 60px;
+        line-height: 60px;
+        font-size: 16px;
+        padding: 0 15px;
+        cursor: pointer; } }
+@media only screen and (max-width: 992px) {
+  .header {
+    height: 50px; }
+    .header .hd_inner {
+      width: 768px;
+      height: 50px; }
+      .header .hd_inner .hd_logo img {
+        height: 30px; }
+      .header .hd_inner .ce {
+        margin-top: 25px; }
+        .header .hd_inner .ce em {
+          font-size: 14px; }
+      .header .hd_inner .hd_list .alist a {
+        height: 50px;
+        line-height: 50px;
+        font-size: 15px;
+        padding: 0 7px; } }
+@media only screen and (max-width: 768px) {
+  .header {
+    z-index: 10000;
+    width: 100%;
+    height: 75px;
+    overflow: hidden; }
+    .header .hd_inner {
+      width: 100%;
+      height: 75px;
+      margin: 0 0;
+      min-width: 320px; }
+      .header .hd_inner .hd_logo {
+        float: none; }
+        .header .hd_inner .hd_logo a {
+          display: block;
+          padding: 5px 0; }
+        .header .hd_inner .hd_logo img {
+          height: 30px;
+          margin-left: 50px; }
+      .header .hd_inner .ce {
+        color: #fff;
+        display: block;
+        position: absolute;
+        top: -10px;
+        right: 50px;
+        margin-top: 25px;
+        cursor: pointer; }
+        .header .hd_inner .ce em {
+          font-size: 12px; }
+        .header .hd_inner .ce em.on {
+          color: red; }
+      .header .hd_inner .hd_list {
+        float: none;
+        height: 35px;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        background-color: rgba(85, 85, 85, 0.24); }
+        .header .hd_inner .hd_list .alist {
+          position: absolute;
+          display: block;
+          width: 100%;
+          min-width: 550px;
+          height: 35px;
+          box-shadow: 0 3px 3px #ccc; }
+          .header .hd_inner .hd_list .alist a {
+            float: left;
+            overflow: hidden;
+            display: block;
+            height: 35px;
+            line-height: 35px;
+            color: #fff;
+            font-size: 14px;
+            padding: 0 5px; } }
+.nav2Bg {
+  width: 1200px;
+  margin: 30px auto; }
+  .nav2Bg .boxleft {
+    width: 210px;
+    padding-bottom: 30px;
+    border: 1px solid #ebebeb;
+    border-radius: 4px;
+    float: left;
+    background: #FFFFFF;
+    position: absolute;
+    box-shadow: 0px 0px 3px #ccc; }
+    .nav2Bg .boxleft h2 {
+      height: 80px;
+      line-height: 80px;
+      color: #117dc8;
+      padding-left: 24px;
+      font-size: 18px;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(17, 125, 200, 0.67); }
+      .nav2Bg .boxleft h2 i {
+        font-weight: lighter;
+        padding-left: 7px;
+        font-size: 12px; }
+    .nav2Bg .boxleft ul li {
+      width: 100%;
+      line-height: 40px;
+      font-size: 16px;
+      text-align: center;
+      transition: all .3s;
+      cursor: pointer; }
+      .nav2Bg .boxleft ul li a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 5px 0;
+        text-align: left; }
+        .nav2Bg .boxleft ul li a .navIcon {
+          font-size: 24px;
+          color: #76bdef;
+          margin-left: 25px; }
+        .nav2Bg .boxleft ul li a i {
+          display: inline-block;
+          height: 12px;
+          width: 13px;
+          float: right;
+          margin-top: 16px;
+          margin-right: 10px;
+          background: url(https://ofybqrgr4.qnssl.com/images/arrow_right.png) no-repeat center; }
+    .nav2Bg .boxleft ul li:hover {
+      color: #fff; }
+      .nav2Bg .boxleft ul li:hover .navIcon {
+        color: #117dc8; }
+      .nav2Bg .boxleft ul li:hover a {
+        color: #117dc8; }
+
+.active {
+  background-color: #76bdef !important;
+  color: #fff !important; }
+  .active .navIcon {
+    color: #fff !important; }
+  .active a {
+    color: #fff !important; }
+
+@media only screen and (max-width: 1200px) {
+  .nav2Bg {
+    width: 992px;
+    margin: 20px auto; }
+    .nav2Bg .boxleft {
+      width: 170px;
+      padding-bottom: 20px;
+      box-shadow: 0px 0px 2px #ccc; }
+      .nav2Bg .boxleft h2 {
+        height: 60px;
+        line-height: 60px;
+        color: #117dc8;
+        padding-left: 8px;
+        font-size: 16px;
+        font-weight: 600; }
+        .nav2Bg .boxleft h2 i {
+          font-weight: lighter;
+          padding-left: 3px;
+          font-size: 10px; }
+      .nav2Bg .boxleft ul li {
+        line-height: 30px;
+        font-size: 15px; }
+        .nav2Bg .boxleft ul li a .navIcon {
+          font-size: 20px; }
+        .nav2Bg .boxleft ul li a i {
+          height: 11px;
+          width: 12px;
+          float: right;
+          margin-top: 14px;
+          margin-right: 8px; } }
+@media only screen and (max-width: 992px) {
+  .nav2Bg {
+    width: 100%;
+    margin: 20px auto; }
+    .nav2Bg .boxleft {
+      margin-bottom: 20px;
+      width: 100%;
+      padding-bottom: 0;
+      border: 1px solid #ebebeb;
+      border-radius: 4px;
+      float: left;
+      background: #FFFFFF;
+      position: relative;
+      box-shadow: 0px 0px 2px #ccc; }
+      .nav2Bg .boxleft h2 {
+        display: none; }
+      .nav2Bg .boxleft ul li {
+        width: 25%;
+        float: left;
+        line-height: 40px;
+        font-size: 14px; }
+        .nav2Bg .boxleft ul li a {
+          display: block;
+          width: 100%;
+          height: 100%;
+          padding: 5px 0; }
+          .nav2Bg .boxleft ul li a .navIcon {
+            font-size: 20px;
+            color: #76bdef; }
+          .nav2Bg .boxleft ul li a i {
+            display: none; }
+      .nav2Bg .boxleft ul li:hover {
+        background-color: #76bdef;
+        color: #fff; }
+        .nav2Bg .boxleft ul li:hover .navIcon {
+          color: #fff; }
+        .nav2Bg .boxleft ul li:hover a {
+          color: #fff; } }
+@media only screen and (max-width: 768px) {
+  .nav2Bg {
+    margin-top: 20px; }
+    .nav2Bg .boxleft {
+      width: 100%;
+      margin-bottom: 15px;
+      background-color: #fff;
+      box-shadow: 0px 0px 2px #ccc; }
+      .nav2Bg .boxleft ul {
+        background-color: #fff; }
+        .nav2Bg .boxleft ul li {
+          float: left;
+          min-width: 53.33333px;
+          width: 20%;
+          line-height: normal;
+          padding: 10px 0;
+          text-align: center;
+          background-color: #fff;
+          transition: all .3s;
+          color: #555;
+          cursor: pointer; }
+          .nav2Bg .boxleft ul li a {
+            text-align: center; }
+            .nav2Bg .boxleft ul li a .navIcon {
+              display: block;
+              position: relative;
+              font-size: 20px;
+              color: #117dc8;
+              margin-bottom: 10px;
+              margin-left: 0; }
+            .nav2Bg .boxleft ul li a span:nth-child(2) {
+              display: block;
+              position: relative;
+              font-size: 8px; }
+        .nav2Bg .boxleft ul li:hover {
+          background-color: #76bdef;
+          color: #fff; }
+          .nav2Bg .boxleft ul li:hover .navIcon {
+            color: #fff; } }
+@media only screen and (max-width: 480px) {
+  .nav2Bg {
+    margin-top: 20px; }
+    .nav2Bg .boxleft {
+      margin-bottom: 10px; }
+      .nav2Bg .boxleft ul {
+        background-color: #fff; }
+        .nav2Bg .boxleft ul li {
+          float: left;
+          min-width: 53.33333px;
+          width: 25%;
+          line-height: normal;
+          padding: 10px 0;
+          text-align: center;
+          background-color: #fff;
+          transition: all .3s;
+          color: #555;
+          cursor: pointer; }
+          .nav2Bg .boxleft ul li a .navIcon {
+            display: block;
+            position: relative;
+            font-size: 20px;
+            color: #117dc8;
+            margin-bottom: 10px; }
+          .nav2Bg .boxleft ul li a span:nth-child(2) {
+            display: block;
+            position: relative;
+            font-size: 8px; }
+        .nav2Bg .boxleft ul li:hover {
+          background-color: #76bdef;
+          color: #fff; }
+          .nav2Bg .boxleft ul li:hover .navIcon {
+            color: #fff; } }
+#close {
+  display: none;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  left: 50%;
+  margin-left: -15px;
+  border-radius: 15px;
+  background-color: #117dc8;
+  color: #fff;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+  top: -15px;
+  transition: all .3s; }
+
+#close:hover {
+  background-color: #76bdef; }
+
+@media only screen and (max-width: 992px) {
+  #close {
+    display: block; } }
+.subs {
+  width: 96%;
+  padding: 20px 2%;
+  margin-bottom: 60px; }
+  .subs h2 {
+    font-size: 22px;
+    color: #333;
+    font-family: 'microsoft yahei';
+    padding: 0 0 20px 0;
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    margin-bottom: 20px; }
+  .subs .subBox {
+    width: 100%;
+    border: 1px solid #eee;
+    margin-top: 30px; }
+    .subs .subBox .boxTop {
+      font-size: 14px;
+      font-family: 'microsoft yahei';
+      color: #999;
+      padding: 10px; }
+    .subs .subBox .boxBot .bbLeft {
+      float: left;
+      padding: 2%;
+      width: 10%; }
+    .subs .subBox .boxBot .bbRight {
+      float: left;
+      width: 84%; }
+      .subs .subBox .boxBot .bbRight .brTop {
+        width: 100%;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee; }
+        .subs .subBox .boxBot .bbRight .brTop .brtBox {
+          text-align: center;
+          float: left;
+          width: 20%; }
+      .subs .subBox .boxBot .bbRight .brBot {
+        padding-top: 20px; }
+        .subs .subBox .boxBot .bbRight .brBot span {
+          float: left; }
+        .subs .subBox .boxBot .bbRight .brBot .jd {
+          width: 60%;
+          height: 20px;
+          background-color: #ccc;
+          display: block; }
+          .subs .subBox .boxBot .bbRight .brBot .jd i {
+            width: 50%;
+            height: 20px;
+            background-color: #117dc8;
+            display: block; }
+        .subs .subBox .boxBot .bbRight .brBot .bbr {
+          float: right;
+          padding-right: 20px; }
+          .subs .subBox .boxBot .bbRight .brBot .bbr .bbnum {
+            color: #999;
+            margin-right: 30px; }
+          .subs .subBox .boxBot .bbRight .brBot .bbr .btn {
+            border: 1px solid #117dc8;
+            color: #117dc8;
+            padding: 0 10px; }
+
+.powerlay {
+  display: block !important; }
+
+.powerBox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  background-color: rgba(204, 204, 204, 0.61);
+  display: none; }
+  .powerBox .power {
+    position: fixed;
+    top: 25%;
+    left: 18%;
+    width: 64%;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px #ccc; }
+    .powerBox .power .powerTitle {
+      height: 70px;
+      line-height: 50px;
+      padding-left: 30px;
+      position: relative; }
+      .powerBox .power .powerTitle img {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%; }
+      .powerBox .power .powerTitle .guanbi {
+        position: absolute;
+        top: 5px;
+        right: 20px;
+        font-size: 16px;
+        cursor: pointer; }
+    .powerBox .power .powerInfo {
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc; }
+      .powerBox .power .powerInfo .InfoBox {
+        float: left;
+        width: 20%; }
+        .powerBox .power .powerInfo .InfoBox div {
+          text-align: center;
+          height: 30px;
+          line-height: 30px; }
+    .powerBox .power .buyInfo {
+      border-bottom: 1px solid #ccc; }
+      .powerBox .power .buyInfo div {
+        float: left; }
+      .powerBox .power .buyInfo .buyInfoLeft {
+        border-right: 1px solid #ccc;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        width: 49%; }
+        .powerBox .power .buyInfo .buyInfoLeft p {
+          padding-left: 20px;
+          padding-top: 15px;
+          padding-bottom: 15px; }
+      .powerBox .power .buyInfo .buyInfoRight {
+        width: 50%;
+        padding-top: 20px;
+        padding-bottom: 20px; }
+        .powerBox .power .buyInfo .buyInfoRight div {
+          width: 100%;
+          padding-top: 15px;
+          padding-bottom: 7px;
+          text-align: center;
+          margin: 0 auto; }
+          .powerBox .power .buyInfo .buyInfoRight div .buyInfoNum {
+            width: 50%;
+            display: inline-block;
+            border: 1px solid #fff;
+            padding: 0;
+            padding-left: 10px;
+            text-align: right; }
+          .powerBox .power .buyInfo .buyInfoRight div input {
+            width: 50%;
+            display: inline-block;
+            border: 1px solid #000000;
+            padding: 0;
+            padding-left: 10px;
+            height: 30px; }
+          .powerBox .power .buyInfo .buyInfoRight div button {
+            background-color: #117dc8;
+            border: 0;
+            padding: 0;
+            color: #fff;
+            width: 62%;
+            margin: 0 auto;
+            font-size: 20px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            cursor: pointer; }
+        .powerBox .power .buyInfo .buyInfoRight .tishi {
+          position: absolute;
+          width: 400px;
+          height: 70px;
+          border: 1px solid #ccc;
+          z-index: 999;
+          background: #fff;
+          top: 230px;
+          right: 50px; }
+          .powerBox .power .buyInfo .buyInfoRight .tishi h6 {
+            text-align: center; }
+          .powerBox .power .buyInfo .buyInfoRight .tishi p {
+            cursor: pointer;
+            width: 55px;
+            height: 25px;
+            font-size: 14px;
+            display: block;
+            background-color: #76bdef;
+            line-height: 25px;
+            color: #fff;
+            float: right;
+            margin: 25px 30px 0 0; }
+          .powerBox .power .buyInfo .buyInfoRight .tishi p:hover {
+            background-color: #117dc8; }
+
+@media only screen and (max-width: 1200px) {
+  .subs {
+    font-size: 14px; }
+    .subs h2 {
+      font-size: 22px;
+      color: #333;
+      font-family: 'microsoft yahei';
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+      margin: 0;
+      margin-bottom: 20px; }
+    .subs .subBox {
+      width: 100%;
+      border: 1px solid #ccc;
+      border-left: none;
+      border-right: none;
+      margin-top: 30px; }
+      .subs .subBox .boxTop {
+        font-size: 14px;
+        font-family: 'microsoft yahei';
+        color: #999;
+        padding: 10px; }
+      .subs .subBox .boxBot .bbLeft {
+        display: none;
+        float: left;
+        width: 10%; }
+      .subs .subBox .boxBot .bbRight {
+        float: left;
+        width: 100%; }
+        .subs .subBox .boxBot .bbRight .brTop {
+          width: 100%;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #eee; }
+          .subs .subBox .boxBot .bbRight .brTop .brtBox {
+            text-align: center;
+            float: left;
+            width: 20%; }
+        .subs .subBox .boxBot .bbRight .brBot {
+          padding-top: 20px; }
+          .subs .subBox .boxBot .bbRight .brBot span {
+            float: left; }
+          .subs .subBox .boxBot .bbRight .brBot .jd {
+            width: 40%;
+            height: 20px;
+            background-color: #ccc;
+            display: block; }
+            .subs .subBox .boxBot .bbRight .brBot .jd i {
+              width: 50%;
+              height: 20px;
+              background-color: #117dc8;
+              display: block; }
+          .subs .subBox .boxBot .bbRight .brBot .bbr {
+            float: right;
+            padding-right: 20px; }
+            .subs .subBox .boxBot .bbRight .brBot .bbr .bbnum {
+              color: #999;
+              margin-right: 10px; }
+            .subs .subBox .boxBot .bbRight .brBot .bbr .btn {
+              border: 1px solid #117dc8;
+              color: #117dc8;
+              padding: 0 10px; }
+
+  .powerBox .power .powerTitle .guanbi {
+    font-size: 14px; }
+  .powerBox .power .powerInfo {
+    font-size: 14px; }
+    .powerBox .power .powerInfo .InfoBox .tm {
+      line-height: 15px; }
+  .powerBox .power .buyInfo {
+    font-size: 14px; } }
+@media only screen and (max-width: 992px) {
+  .powerBox .power {
+    position: fixed;
+    top: 15%;
+    left: 10%;
+    width: 65%;
+    padding-top: 10px;
+    padding-bottom: 10px; }
+    .powerBox .power .powerTitle {
+      height: 50px;
+      line-height: 40px;
+      padding-left: 30px; }
+      .powerBox .power .powerTitle img {
+        width: 24px;
+        height: 24px; }
+    .powerBox .power .powerInfo .InfoBox .tm {
+      line-height: 15px; }
+    .powerBox .power .buyInfo .buyInfoLeft {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      width: 45%; }
+      .powerBox .power .buyInfo .buyInfoLeft p {
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px; }
+    .powerBox .power .buyInfo .buyInfoRight {
+      width: 54%;
+      padding-top: 10px;
+      padding-bottom: 10px; }
+      .powerBox .power .buyInfo .buyInfoRight div {
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 5px; }
+        .powerBox .power .buyInfo .buyInfoRight div .buyInfoNum {
+          width: 54%;
+          padding-left: 5px; }
+        .powerBox .power .buyInfo .buyInfoRight div input {
+          width: 54%;
+          padding-left: 5px;
+          height: 25px; }
+        .powerBox .power .buyInfo .buyInfoRight div button {
+          width: 62%;
+          font-size: 14px;
+          padding-top: 5px;
+          padding-bottom: 5px; }
+      .powerBox .power .buyInfo .buyInfoRight .tishi {
+        top: 150px;
+        right: 30px; } }
+@media only screen and (max-width: 768px) {
+  .powerBox .power {
+    width: 79%; }
+    .powerBox .power .powerTitle {
+      font-size: 12px; }
+    .powerBox .power .powerInfo {
+      font-size: 12px; }
+    .powerBox .power .buyInfo {
+      font-size: 12px; }
+      .powerBox .power .buyInfo .buyInfoRight .tishi {
+        width: 250px; } }
+@media only screen and (max-width: 480px) {
+  .powerBox .power {
+    top: 10%;
+    left: 0;
+    width: 100%;
+    border: none;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: 0px 0px 0 #ccc; }
+    .powerBox .power .powerTitle {
+      height: 40px;
+      line-height: 30px;
+      padding-left: 20px; }
+      .powerBox .power .powerTitle img {
+        width: 20px;
+        height: 20px; }
+      .powerBox .power .powerTitle .guanbi {
+        font-size: 12px; }
+    .powerBox .power .powerInfo .InfoBox .tm {
+      line-height: 15px; } }
+.bill {
+  width: 96%;
+  padding: 20px 2%; }
+  .bill h2 {
+    font-size: 22px;
+    color: #333;
+    font-family: 'microsoft yahei';
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    margin-bottom: 20px; }
+  .bill .tb table {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: none;
+    border-collapse: collapse; }
+    .bill .tb table thead {
+      background-color: #e5e5e5; }
+      .bill .tb table thead th {
+        padding: 5px 10px;
+        border: 1px solid #e5e5e5; }
+    .bill .tb table td {
+      border: 1px solid #e5e5e5;
+      text-align: center;
+      padding: 5px; }
+  .bill .page {
+    margin: 0 auto;
+    width: 230px; }
+    .bill .page li {
+      float: left;
+      padding: 0 10px; }
+      .bill .page li span {
+        background-color: #117dc8;
+        color: #fff;
+        padding: 5px 10px;
+        transition: all 0.3s;
+        cursor: pointer; }
+      .bill .page li span:hover {
+        background-color: #76bdef; }
+
+.recharge {
+  width: 96%;
+  padding: 20px 2%; }
+  .recharge h2 {
+    font-size: 22px;
+    color: #333;
+    font-family: 'microsoft yahei';
+    padding: 10px 20px;
+    border-bottom: 1px solid #eee;
+    margin: 10px; }
+  .recharge .rechargeTb {
+    padding-left: 30px; }
+    .recharge .rechargeTb li {
+      line-height: 50px; }
+    .recharge .rechargeTb input[type='text'], .recharge .rechargeTb input[type='password'] {
+      height: 25px;
+      width: 190px;
+      padding-left: 10px; }
+    .recharge .rechargeTb select {
+      height: 30px;
+      width: 203px; }
+    .recharge .rechargeTb button {
+      width: 278px;
+      height: 30px;
+      background-color: #117dc8;
+      color: #fff;
+      border: none;
+      font-family: 'microsoft yahei'; }
+  .recharge .tb {
+    overflow-x: scroll;
+    overflow: hidden;
+    margin-top: 30px; }
+    .recharge .tb table {
+      width: 100%;
+      border: none;
+      border-collapse: collapse; }
+      .recharge .tb table thead {
+        background-color: #e5e5e5; }
+        .recharge .tb table thead th {
+          padding: 5px 10px;
+          border: 1px solid #e5e5e5; }
+      .recharge .tb table td {
+        border: 1px solid #e5e5e5;
+        text-align: center;
+        padding: 5px; }
+  .recharge .page {
+    margin: 20px auto;
+    width: 230px; }
+    .recharge .page li {
+      float: left;
+      padding: 0 10px; }
+      .recharge .page li span {
+        background-color: #117dc8;
+        color: #fff;
+        padding: 5px 10px;
+        transition: all 0.3s;
+        cursor: pointer; }
+      .recharge .page li span:hover {
+        background-color: #76bdef; }
+
+@media only screen and (max-width: 1200px) {
+  .recharge {
+    font-size: 14px; }
+    .recharge .tb {
+      overflow-x: scroll; }
+      .recharge .tb table {
+        min-width: 600px; } }
+.log {
+  width: 96%;
+  padding: 20px 2%; }
+  .log .pdtit {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5; }
+  .log table {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: none;
+    border-collapse: collapse; }
+    .log table thead {
+      background-color: #e5e5e5; }
+      .log table thead th {
+        padding: 5px 10px;
+        border: 1px solid #e5e5e5; }
+    .log table td {
+      border: 1px solid #e5e5e5;
+      text-align: center;
+      padding: 5px;
+      cursor: pointer; }
+  .log .addbtn {
+    margin-left: 50px;
+    width: 250px;
+    background-color: #117dc8;
+    border: none;
+    color: #fff;
+    font-family: 'microsoft yahei';
+    height: 40px;
+    transition: background-color .3s;
+    cursor: pointer; }
+  .log .addbtn:hover {
+    background-color: #76bdef; }
+  .log .page {
+    margin: 0 auto;
+    width: 300px; }
+    .log .page li {
+      float: left;
+      padding: 0 10px; }
+      .log .page li span {
+        background-color: #117dc8;
+        color: #fff;
+        padding: 5px 10px;
+        transition: all 0.3s;
+        cursor: pointer; }
+      .log .page li span:hover {
+        background-color: #76bdef; }
+
+@media only screen and (max-width: 1200px) {
+  .log {
+    font-size: 14px;
+    min-width: 320px; }
+    .log .tb {
+      overflow-x: scroll; }
+      .log .tb table {
+        min-width: 600px; } }
+html {
+  font-size: 16px; }
+
+body {
+  font-size: 16px;
+  background: #ecf0f1; }
+
+.footr {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background: #000;
+  line-height: 50px;
+  color: #ccc;
+  font-size: 14px;
+  text-align: center; }
+
+@media only screen and (max-width: 1200px) {
+  .footr {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px; } }
+@media only screen and (max-width: 992px) {
+  .footr {
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    font-size: 12px; } }
+@media only screen and (max-width: 768px) {
+  .footr {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 10px; } }
+.boxright {
+  box-shadow: 0px 0px 3px #ccc;
+  width: 970px;
+  float: right;
+  min-height: 750px;
+  background-color: #fff; }
+
+@media only screen and (max-width: 1200px) {
+  .boxright {
+    width: 805px;
+    min-width: 320px;
+    min-height: 600px; } }
+@media only screen and (max-width: 992px) {
+  .boxright {
+    width: 100%;
+    min-height: 500px; } }
+
+/*# sourceMappingURL=apply.css.map */

@@ -1,0 +1,117 @@
+<style>
+  .btna{
+    width: 120px;
+    height: 28px;
+    background: #58b6f8;
+    border: navajowhite;
+    color:#fff;
+  }
+  .tcbox{
+     position: fixed;
+    top: 35%;
+    left: 60%;
+    width: 300px;
+    height: 100px;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3);
+     z-index: 9999;
+   }
+   .pp{padding: 20px;}
+   .guan{
+     position: absolute;
+     top: 5px;
+     right: 10px;
+     font-size: 18px;
+   }
+   .ag{
+       width: 80px;
+    height: 30px;
+    line-height: 30px;
+    background: #76bdef;
+    display: block;
+    text-align: center;
+    color: #fff;
+    position: absolute;
+    bottom: 10px;
+    left: 120px;
+   }
+   .shiftOut .shiftOutT .shiftOutTT select{
+   	 margin-left: -5px;
+   }
+</style>
+<div class="shiftOut">
+<h3>{{soTitle}}</h3>
+<div class="shiftOutT">
+    <div class="shiftOutTT clearfix">
+        <div class="fl"><label>币种：</label>
+            <select ng-model="bia" ng-options="v.coin_no as v.coin_name for v in bi" ng-change="changebi(bia)">
+               </select>
+        </div>
+        <div class="fl "><span>{{soHeader.usable}}：</span><span>{{binum}}</span></div>
+    </div>
+    <div class="shiftOutTT clearfix">
+        <div class="fl"><label>{{soHeader.address}}：</label>
+            <select ng-model="dizhia" ng-options="v.attr2 as v.attr2 for v in dizhi" ng-change="adChange(soa)">
+            <option value="">请选择钱包地址</option>
+               </select>
+               <a href="../safe/index.html#/sWallet" style="color:red;font-size:14px;">添加其他地址</a>
+        </div>
+    </div>
+    <div class="shiftOutTB clearfix">
+        <div class="shiftOutTBL fl">
+            <div><label>{{soHeader.quantity}}：</label><input type="text" ng-model='numa'/><span>手续费{{fee*100}}%</span></div>
+            <div><label>{{soHeader.password}}：</label><input type="password" ng-model='pawd'/><a href="../forget/forget.html#/index">{{soHeader.forgot}}？</a></div>
+        </div>
+        <div class="shiftOutTBR fl">
+            <div class="clearfix">
+                <div class="fl"><span>{{soHeader.short}}：</span><input type="text" ng-model='codea'/></div>
+                <button class="fl btna" ng-click='hqyzm()'>{{yanzhenma}}</button>
+                <span style='cursor:pointer' ng-click='goa()'>{{tishi}}{{ellipsis(phone)}}</span>
+            </div>
+            <div class="RBtn" ng-click='tijiao()'><span>{{soHeader.sure}}</span></div>
+        </div>
+    </div>
+    <div class='tcbox' ng-style='tsbox'>
+	   <p class='pp'>{{tishia}}</p>
+	   <span class='guan' ng-click='guan()'>X</span>
+	   <a class='ag' ng-click='guan()' href='javascript:;'>确定</a>
+	</div>
+</div>
+<div class="record">
+    <h5>转出记录</h5>
+    <ul class="clearfix ulHeader">
+        <li>{{soUlHeader.time}}</li>
+        <li>{{soUlHeader.type}}</li>
+        <li>{{soUlHeader.address}}</li>
+        <li>{{soUlHeader.num}}</li>
+        <li>{{soUlHeader.fee}}</li>
+        <li>{{soUlHeader.money}}</li>
+        <li>{{soUlHeader.state}}</li>
+    </ul>
+
+    <ul class="clearfix" ng-repeat="i in soUl">
+        <li>{{i.date}}</li>
+        <li>{{binamea}}</li>
+        <li>{{i.address}}</li>
+        <li>{{i.coin_sum}}</li>
+        <li>{{i.poundage}}</li>
+        <li>{{i.actual_price}}</li>
+        <li>{{i.state==0?'未完成':'完成'}}</li>
+    </ul>
+
+    <div class="Jpage" style="display:none;">
+        <p>
+            85条记录1/6页
+        </p>
+        <p>
+            <span>上一页</span>
+            <select>
+                <option>1</option>
+                <option>2</option>
+            </select>
+            <span>下一页</span>
+        </p>
+    </div>
+</div>
+</div>

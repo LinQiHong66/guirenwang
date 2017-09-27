@@ -1,0 +1,1 @@
+var getIp="http://localhost:8080/digiccy-trade-front";

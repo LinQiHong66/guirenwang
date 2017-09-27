@@ -1,0 +1,38 @@
+
+	<div class="log" ng-cloak >
+			<h2 class="pdtit">{{tit}}</h2>
+			<div class="tb">
+				<table>
+					<thead>
+						<th>{{tbtit[0]}}</th>
+						<th>{{tbtit[1]}}</th>
+						<th>{{tbtit[2]}}</th>
+						<th>{{tbtit[3]}}</th>
+						<!-- <th>{{tbtit[4]}}</th> -->
+					</thead>
+					<tbody>
+						<tr ng-repeat='data in tbdata | limitTo:20'>
+							<td>{{data.date}}</td>
+							<td>登录</td>
+							<td>{{data.opt_remark}}</td>
+							<td>{{data.opt_ip}}</td>
+							<!-- <td>{{data[4]}}</td> -->
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<ul class="page clearfix" style="display:none">
+				<li>
+					<span>{{page[0]}}</span>
+				</li>
+				<li>
+					<select >
+						<option ng-repeat='num in pagenum'>{{num}}</option>
+					</select>
+				</li>
+				<li>
+					<span>{{page[1]}}</span>
+				</li>
+			</ul>
+
+	</div>

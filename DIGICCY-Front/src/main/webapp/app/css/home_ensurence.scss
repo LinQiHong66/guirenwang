@@ -1,0 +1,272 @@
+@import "_config";
+@import "_mixins";
+.ensurence{
+  width: 100%;
+  height: 700px;
+  background:url(../images/ensurence.jpg) center center;
+  .container{
+    width: 1200px;
+    margin: 0 auto;
+    padding-top: 50px;
+    .en_tit{
+      // width: 534px;
+      height: 120px;
+      background:url(../images/en_tit.png)center center no-repeat;
+    }
+    .en_cont{
+      position: relative;
+      .en_p1{
+        position: absolute;
+        left: 30px;
+        top:20px;
+        width: 636px;
+        height: 260px;
+        background:url(../images/en_p1.png);
+        transition:all .5s;
+        cursor: pointer;
+      }
+      .en_p1:hover{
+        left:-30px;
+      }
+      .en_p2{
+        position: absolute;
+        top: 30px;
+        right: 20px;
+        width: 534px;
+        height: 214px;
+        background:url(../images/en_p2.png);
+        transition:all .5s;
+        cursor: pointer;
+      }
+      .en_p2:hover{
+        right:-40px;
+      }
+      .en_p3{
+        position: absolute;
+        left: 150px;
+        top: 270px;
+        width: 470px;
+        height: 231px;
+        background:url(../images/en_p3.png);
+        transition:all .5s;
+        cursor: pointer;
+      }
+      .en_p3:hover{
+        left:90px;
+      }
+      .en_p4{
+        position: absolute;
+        right: 120px;
+        top: 285px;
+        width: 428px;
+        height: 230px;
+        background:url(../images/en_p4.png);
+        transition:all .5s;
+        cursor: pointer;
+      }
+      .en_p4:hover{
+        right:60px;
+      }
+    }
+  }
+}
+
+.cfbox {
+  width: 100%;
+  background-color: #f3f3f3;
+  padding: 30px 0;
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+    .cb_tit {
+      // display: inline-block;
+      // margin: 0 auto;
+      text-align: center;
+      font: normal normal 20px/40px 'microsoft yahei';
+    }
+    .cb_boxlist {
+      padding: 20px 0;
+      .c_box {
+        float: left;
+        background-color: #fff;
+        padding-bottom: 20px;
+        margin-right: 20px;
+        .cb_img {
+          img {
+            max-width: 285px;
+          }
+        }
+        .cb_info {
+          padding: 0 20px;
+          .c_name {
+            padding: 10px 0;
+          }
+          .c_jindu {
+            color: #999;
+            font-size: 16px;
+            // font-weight: bold;
+            .c_col {
+              color:#117dc8;
+            }
+            .c_l {
+              float: left;
+            }
+            .c_r {
+              float: right;
+            }
+          }
+        }
+      }
+      .c_last {
+        margin-right: 0;
+      }
+    }
+    
+  }
+}
+
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(lg) {
+  .cfbox {
+    .container {
+      width: 100%;
+      .cb_tit {
+        font: normal normal 20px/40px 'microsoft yahei';
+      }
+      .cb_boxlist {
+        .c_box {
+          float: left;
+          background-color: #fff;
+          padding-bottom: 20px;
+          margin-right: 1%;
+          width: 32.6%;
+          .cb_img {
+            img {
+              max-width: 388px;
+              width: 100%;
+            }
+          }
+          .cb_info {
+            .c_name {
+              padding: 10px 0;
+              font-size: 12px;
+            }
+            .c_jindu {
+              color: #999;
+              font-size: 12px;
+              // font-weight: bold;
+              .c_col {
+                color:#117dc8;
+              }
+            }
+          }
+        }
+        .c_three {
+          margin-right: 0;
+        }
+        .c_last {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(sm) {
+  .cfbox {
+    .container {
+      width: 100%;
+      .cb_tit {
+        font: normal normal 20px/40px 'microsoft yahei';
+      }
+      .cb_boxlist {
+        .c_box {
+          float: left;
+          background-color: #fff;
+          padding-bottom: 20px;
+          margin-right: 1%;
+          width: 49%;
+          .cb_img {
+            img {
+              max-width: 388px;
+              width: 100%;
+            }
+          }
+          .cb_info {
+            .c_name {
+              padding: 10px 0;
+              font-size: 12px;
+            }
+            .c_jindu {
+              color: #999;
+              font-size: 12px;
+              // font-weight: bold;
+              .c_col {
+                color:#117dc8;
+              }
+            }
+          }
+        }
+        .c_three {
+          // margin-right: 0;
+          display: none;
+        }
+        .c_last {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(xs) {
+  .cfbox {
+    .container {
+      width: 100%;
+      .cb_tit {
+        font: normal normal 20px/40px 'microsoft yahei';
+      }
+      .cb_boxlist {
+        .c_box {
+          float: left;
+          background-color: #fff;
+          padding-bottom: 20px;
+          margin-right: 1%;
+          width: 100%;
+          .cb_img {
+            img {
+              max-width: 480px;
+              width: 100%;
+            }
+          }
+          .cb_info {
+            .c_name {
+              padding: 10px 0;
+              font-size: 12px;
+            }
+            .c_jindu {
+              color: #999;
+              font-size: 12px;
+              // font-weight: bold;
+              .c_col {
+                color:#117dc8;
+              }
+            }
+          }
+        }
+        .c_two {
+          display: none;
+        }
+        .c_three {
+          // margin-right: 0;
+          display: none;
+        }
+        .c_last {
+          display: none;
+        }
+      }
+    }
+  }
+}

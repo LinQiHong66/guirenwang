@@ -1,0 +1,456 @@
+html{font-size: 16px;}
+body{font-size: 16px;background: #ecf0f1}
+$bg1:#f5f5f5;
+$tcolor1:#117dc8;
+$tcolor2:#76bdef;
+@import "_config";
+@import "_mixins";
+@import "common.css";
+@import "header";
+@import "footr";
+.banner{
+  background:url(../images/spreadbanner.jpg) center center;
+  width: 100%;
+  height: 500px;
+  background-size: cover;
+}
+
+.cfbox {
+  width: 100%;
+  background-color: #f3f3f3;
+  padding: 30px 0;
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+    .cb_tit {
+      // display: inline-block;
+      // margin: 0 auto;
+      text-align: center;
+      font: normal normal 20px/40px 'microsoft yahei';
+    }
+    .cb_boxlist {
+      padding: 20px 0;
+      .c_box {
+        float: left;
+        background-color: #fff;
+        padding-bottom: 20px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        .cb_img {
+          img {
+            max-width: 285px;
+          }
+        }
+        .cb_info {
+          padding: 0 20px;
+          .c_name {
+            padding: 10px 0;
+          }
+          .c_jindu {
+            color: #999;
+            font-size: 16px;
+            // font-weight: bold;
+            .c_col {
+              color:#117dc8;
+            }
+            .c_l {
+              float: left;
+            }
+            .c_r {
+              float: right;
+            }
+          }
+        }
+      }
+      .c_last {
+        margin-right: 0;
+      }
+    }
+  }
+  // 详细页面
+  .cf_buy {
+    box-shadow: 0 0 10px #ccc;
+    float: right;
+    background-color: #fff;
+    width: 28%;
+    text-align: center;
+    .cf_dec {
+      h4 {
+        // text-align: left;
+        font-size: 24px;
+        padding:10px 16px;
+        // border-bottom: 1px solid #e5e5e5;
+      }
+      .cf_jd {
+        padding: 10px 16px;
+        display: inline-block;
+        .jd_l {
+          float: left;
+          // padding-left: 50px;
+        }
+        .jd_r {
+          float: left;
+          padding-left: 50px;
+        }
+        .jd_num {
+          color:#117dc8;
+          font-size: 24px;
+        }
+      }
+      
+    }
+    .cf_buynow {
+      padding: 20px 10px;
+      border-top: 1px solid #e5e5e5;
+      position: relative;
+      .buy_num {
+        // margin:0 auto;
+        position: relative;
+        text-align: center;
+        line-height: 40px;
+        // padding-left: 20px;
+        span {
+          font-size: 14px;
+          color:#555;
+        }
+        button {
+          background-color: #117dc8;
+          border: none;
+          color:#fff;
+          height: 20px;
+          width: 20px;
+          margin:0;
+        }
+        input[type='text'] {
+          height: 20px;
+          padding: 0;
+          width: 60px;
+        }
+      }
+      .buy_code {
+        // margin:0 auto;
+        text-align: center;
+        line-height: 40px;
+        // padding-left: 20px;
+        span {
+          font-size: 14px;
+          color:#555;
+        }
+        input[type='password'] {
+          height: 20px;
+          padding: 0;
+          width: 120px;
+        }
+        button {
+          background-color: #117dc8;
+          color:#fff;
+          // display: block;
+          border: none;
+          font-family: 'microsoft yahei';
+          line-height: 26px;
+          width: 194px;
+          margin: 10px 0;
+        }
+      }
+    }
+    .cf_img {
+      width: 90%;
+      text-align: center;
+      display: inline-block;
+      padding: 20px 0;
+      img {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+  .cf_info {
+    float: left;
+    width: 66%;
+    background-color: #fff;
+    padding: 2%;
+    box-shadow: 0 0 10px #ccc;
+    height:100%;
+    h1 {
+      font-size: 30px;
+      font-weight: normal;
+      text-align: center;
+      padding-bottom: 30px;
+    }
+    p {
+      // text-indent: 2em;
+      font-size: 14px;
+      line-height: 30px;
+    }
+  }
+}
+
+
+
+
+
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(lg) {
+  .banner{
+    background:url(../images/spreadbanner.jpg) center center;
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+  }
+  .cfbox {
+    .container {
+      width: 100%;
+      .cb_tit {
+        text-align: center;
+        font: normal normal 20px/40px 'microsoft yahei';
+      }
+      .cb_boxlist {
+        padding: 20px 0;
+        .c_box {
+          float: left;
+          background-color: #fff;
+          padding-bottom: 20px;
+          margin-right: 1%;
+          width: 24%;
+          .cb_img {
+            img {
+              max-width: 285px;
+              width: 100%;
+            }
+          }
+          .cb_info {
+            padding: 0 20px;
+            font-size: 12px;
+            .c_name {
+              padding: 10px 0;
+              font-size: 12px;
+            }
+            .c_jindu {
+              color: #999;
+              font-size: 12px;
+              // font-weight: bold;
+              .c_col {
+                color:#117dc8;
+              }
+              .c_l {
+                float: left;
+              }
+              .c_r {
+                float: right;
+              }
+            }
+          }
+        }
+        .c_last {
+          margin-right: 0;
+        }
+      }
+
+
+
+      .cf_buy {
+        box-shadow: 0 0 10px #ccc;
+        float: right;
+        background-color: #fff;
+        width: 28%;
+        text-align: center;
+      }
+      .cf_info {
+        float: left;
+        width: 66%;
+        background-color: #fff;
+        padding: 2%;
+        box-shadow: 0 0 10px #ccc;
+        height:100%;
+      }
+    }
+  }
+}
+
+
+@include respond-to(sm) {
+  .banner{
+    background:url(../images/spreadbanner.jpg) center center;
+    width: 100%;
+    height: 300px;
+    background-size: cover;
+  }
+  .cfbox {
+    .container {
+      width: 100%;
+      .cb_tit {
+        text-align: center;
+        font: normal normal 20px/40px 'microsoft yahei';
+      }
+      .cb_boxlist {
+        padding: 20px 0;
+        .c_box {
+          float: left;
+          background-color: #fff;
+          padding-bottom: 20px;
+          margin-right: 2%;
+          width: 48%;
+          .cb_img {
+            img {
+              max-width: 368px;
+              width: 100%;
+            }
+          }
+          .cb_info {
+            padding: 0 20px;
+            font-size: 12px;
+            .c_name {
+              padding: 10px 0;
+              font-size: 12px;
+            }
+            .c_jindu {
+              color: #999;
+              font-size: 12px;
+              // font-weight: bold;
+              .c_col {
+                color:#117dc8;
+              }
+              .c_l {
+
+                float: left;
+              }
+              .c_r {
+                // display: block;
+                // text-align: center;
+                float: right;
+              }
+            }
+          }
+        }
+        .c_last {
+          margin-right: 0;
+        }
+      }
+
+
+
+
+      .cf_buy {
+        box-shadow: 0 0 10px #ccc;
+        float: none;
+        background-color: #fff;
+        width: 100%;
+        text-align: center;
+        .cf_img {
+          width: 30%;
+          // text-align: center;
+          margin:0 auto;
+          display: block;
+          padding: 20px 0;
+          img {
+            display: block;
+            width: 100%;
+          }
+        }
+      }
+      .cf_info {
+        float: none;
+        width: 96%;
+        background-color: #fff;
+        padding: 2%;
+        box-shadow: 0 0 10px #ccc;
+        height:100%;
+        margin-top: 30px;
+      }
+    }
+  }
+}
+
+
+@include respond-to(xs) {
+  .banner{
+    background:url(../images/spreadbanner.jpg) center center;
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+  }
+  .cfbox {
+    .container {
+      width: 100%;
+      .cb_tit {
+        text-align: center;
+        font: normal normal 20px/40px 'microsoft yahei';
+      }
+      .cb_boxlist {
+        padding: 20px 0;
+        .c_box {
+          float: left;
+          background-color: #fff;
+          padding-bottom: 20px;
+          margin-right: 0%;
+          width: 100%;
+          .cb_img {
+            img {
+              max-width: 468px;
+              width: 100%;
+            }
+          }
+          .cb_info {
+            padding: 0 20px;
+            font-size: 12px;
+            .c_name {
+              padding: 10px 0;
+              font-size: 12px;
+            }
+            .c_jindu {
+              color: #999;
+              font-size: 12px;
+              // font-weight: bold;
+              .c_col {
+                color:#117dc8;
+              }
+              .c_l {
+
+                float: left;
+              }
+              .c_r {
+                // display: block;
+                // text-align: center;
+                float: right;
+              }
+            }
+          }
+        }
+        .c_last {
+          margin-right: 0;
+        }
+      }
+
+
+
+
+      .cf_buy {
+        box-shadow: 0 0 10px #ccc;
+        float: none;
+        background-color: #fff;
+        width: 100%;
+        text-align: center;
+        .cf_img {
+          width: 30%;
+          // text-align: center;
+          margin:0 auto;
+          display: block;
+          padding: 20px 0;
+          img {
+            display: block;
+            width: 100%;
+          }
+        }
+      }
+      .cf_info {
+        float: none;
+        width: 96%;
+        background-color: #fff;
+        padding: 2%;
+        box-shadow: 0 0 10px #ccc;
+        height:100%;
+        margin-top: 30px;
+      }
+    }
+  }
+}

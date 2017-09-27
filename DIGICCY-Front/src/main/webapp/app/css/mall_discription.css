@@ -1,0 +1,125 @@
+.discription {
+  width: 100%;
+  font-size: 14px; }
+  .discription .container {
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px #ccc; }
+
+.disTop {
+  padding: 30px; }
+  .disTop .ileft {
+    float: left;
+    position: relative;
+    padding-left: 20px;
+    width: 45%; }
+    .disTop .ileft .bigImg {
+      float: left;
+      width: 300px;
+      height: 300px;
+      padding: 25px;
+      text-align: center;
+      border: 1px solid #ccc; }
+      .disTop .ileft .bigImg img {
+        max-width: 300px;
+        max-height: 300px; }
+    .disTop .ileft .smallImg {
+      float: right; }
+      .disTop .ileft .smallImg .smbg {
+        width: 80px;
+        height: 80px;
+        background: url(../images/ip.jpg);
+        background-size: cover;
+        border: 1px solid #ccc;
+        margin-bottom: 20px; }
+  .disTop .iRight {
+    float: left;
+    padding-left: 160px; }
+    .disTop .iRight .tit {
+      width: 210px;
+      font-size: 16px;
+      line-height: 24px; }
+    .disTop .iRight .price {
+      color: #117dc8;
+      width: 210px;
+      font-size: 20px;
+      line-height: 30px;
+      vertical-align: middle;
+      position: relative; }
+      .disTop .iRight .price select {
+        height: 22px;
+        margin-top: 4px;
+        float: right; }
+    .disTop .iRight .add {
+      padding: 5px 0; }
+      .disTop .iRight .add div {
+        line-height: 20px; }
+      .disTop .iRight .add select {
+        width: 210px;
+        height: 24px; }
+    .disTop .iRight .pw {
+      padding: 5px 0; }
+      .disTop .iRight .pw div {
+        line-height: 20px; }
+      .disTop .iRight .pw input[type='password'] {
+        width: 200px;
+        height: 18px;
+        padding-left: 6px; }
+    .disTop .iRight .count {
+      padding: 5px 0; }
+      .disTop .iRight .count button {
+        background-color: #117dc8;
+        font-size: 20px;
+        border: none;
+        color: #fff;
+        line-height: 22px;
+        font-family: 'microsoft yahei';
+        width: 30px;
+        text-align: center;
+        vertical-align: middle; }
+      .disTop .iRight .count input[type="num"] {
+        width: 30px;
+        height: 18px;
+        line-height: 18px;
+        text-align: center; }
+    .disTop .iRight .txt {
+      padding: 5px 0; }
+      .disTop .iRight .txt textarea {
+        width: 204px;
+        height: 50px;
+        resize: none; }
+    .disTop .iRight .buy {
+      padding: 5px 0; }
+      .disTop .iRight .buy button {
+        font-family: "microsoft yahei";
+        font-size: 12px; }
+      .disTop .iRight .buy button:nth-child(1) {
+        background-color: #fff;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        width: 100px;
+        line-height: 24px;
+        text-align: center;
+        vertical-align: middle; }
+      .disTop .iRight .buy button:nth-child(2) {
+        float: right;
+        background-color: #117dc8;
+        color: #fff;
+        font-size: 12px;
+        border: none;
+        width: 100px;
+        line-height: 26px;
+        text-align: center;
+        vertical-align: middle; }
+
+.disBot .topTab ul {
+  background-color: #f5f5f5; }
+  .disBot .topTab ul li {
+    float: left;
+    padding: 5px 10px; }
+
+.liActive {
+  background-color: #fff; }
+
+/*# sourceMappingURL=mall_discription.css.map */

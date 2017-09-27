@@ -1,0 +1,43 @@
+
+.bindphone{
+    padding: 20px 2%;
+    width: 96%;
+    background-color: #fff;
+    .autit{
+      font-size: 22px;
+      color:#333;
+      font-family: 'microsoft yahei';
+    }
+    ul{
+      padding-top: 30px;
+      padding-left: 50px;
+      li{
+        padding-top: 20px;
+        line-height: 30px;
+        label{
+          display: block;
+          float: left;
+          // width: 150px;
+          text-align: right;
+          line-height: 30px;
+        }
+        input[type='text']{
+          height: 28px;
+          border: 1px solid #ccc;
+          width: 250px;
+          padding-left: 10px;
+        }
+        b{
+          color:#c0d773;
+          font-size: 38px;
+          padding-right: 10px;
+          line-height: 38px;
+        }
+      }
+      .bp_yz{
+        color:#690;
+        // line-height: 38px;
+        font-size: 16px;
+      }
+    }
+  }

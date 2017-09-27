@@ -1,0 +1,40 @@
+html{font-size: 16px;}
+body{font-size: 16px;background: #ecf0f1}
+@import "_config";
+@import "_mixins";
+@import "common.css";
+@import "header";
+@import "nav2g";
+@import "finance_core";
+@import "finance_reCard";
+@import "finance_liftNow";
+@import "finance_shiftTo";
+@import "finance_shiftOut";
+@import "finance_entrust";
+@import "finance_query";
+@import "finance_generalize";
+@import "finance_prize";
+@import "finance_recommend";
+@import "finance_forward";
+@import "finance_jiedai";
+@import "footr";
+.boxright{
+	box-shadow: 0px 0px 3px #ccc;
+    width: 970px;
+    float:right;
+    min-height:750px;
+    background-color: #fff;
+}
+@include respond-to(lg) {
+  .boxright{
+    width: 805px;
+    min-width: 320px;
+    min-height:600px;
+ }
+}
+@include respond-to(md) {
+  .boxright{
+    width: 100%;
+    min-height:500px;
+  }
+}

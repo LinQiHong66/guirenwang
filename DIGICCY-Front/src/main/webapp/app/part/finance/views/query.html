@@ -1,0 +1,42 @@
+<div class="query">
+	<h3>{{qTitle}}</h3>
+	<div class="queryList">
+		<ul class="ulHeader clearfix">
+			<li>
+				<select ng-model="bi" ng-options="v.coin_no as v.coin_name for v in bitype" ng-change="biChange(bi)"></select>
+			</li>
+			<li>{{qHeader.time}}</li>
+			<li>
+				<select ng-model="cx" ng-options="v.qCx as v.name for v in qHeader.chaxun" ng-change="cxChange(cx)"></select>
+			</li>
+			<li>{{qHeader.price}}</li>
+			<li>{{qHeader.num}}</li>
+			<li>{{qHeader.all}}</li>
+			<li>{{qHeader.fei}}</li>
+		</ul>
+		
+		<ul class="clearfix" ng-repeat="i in qUl">
+			<li><img ng-src="/sub/getImage.do?value={{tphotoa['b'+i.coin_no]}}" style="width: 25px;height: 25px;border-radius: 50%;margin-right: 5px;">{{biarr['a'+i.coin_no]}}</li>
+			<li>{{i.date}}</li>
+			<li>{{maimai[i.deal_type]}}</li>
+			<li>{{i.deal_price}}</li>
+			<li>{{i.deal_num}}</li>
+			<li>{{i.deal_price*i.deal_num}}</li>
+			<li>{{i.deal_price*i.deal_num*0.14 | number:5}}</li>
+		</ul>
+		<div class="Jpage" style="display:none;">
+			<p>
+				85条记录1/6页
+			</p>
+			<p>
+				<span>上一页</span>
+				<select>
+					<option>1</option>
+					<option>2</option>
+				</select>
+				<span>下一页</span>
+			</p>
+		</div>
+	</div>
+</div>
+

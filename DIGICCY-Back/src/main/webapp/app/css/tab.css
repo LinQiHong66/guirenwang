@@ -1,0 +1,53 @@
+.boxK{
+    float: inherit;
+    display: none;
+    position: absolute;
+    width: 450px;
+    top: 50%;
+    left: 50%;
+    background-color: #25c3ce;
+    margin-left: -140px;
+    margin-top: -200px;
+    text-align: center;
+    padding: 20px 0;
+    border-radius: 5px;
+}
+.boxK label{
+    font-size: 16px;
+    font-family: "Microsoft YaHei", 微软雅黑, "Microsoft JhengHei", 华文细黑, STHeiti, MingLiu;
+    color: #FFFFFF;
+}
+.boxK h1,h2,h3,h4,h5{
+    font-weight: bold;
+    font-family: "Microsoft YaHei", 微软雅黑, "Microsoft JhengHei", 华文细黑, STHeiti, MingLiu;
+    color: #FFFFFF;
+    display: inline;
+}
+.closeK{
+    width: 100%;
+
+}
+.closeK i{
+    float: right;
+    font-style: normal;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+}
+.clearfix::after{
+    content:"";
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+}
+#coin_table tbody button{
+    width: 35px;
+}
+#coin_table td:nth-child(10n) #btn_update{
+    width: 67px;
+}
+

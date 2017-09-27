@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" ng-app="tApp" ng-controller="mainCtrl" ng-cloak>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title ng-bind="title"></title>
+    <link type="text/css" rel="stylesheet" href="../../css/transation.css"/>
+    <script type="text/javascript" src="../../js/getip.js"></script>
+    <script type="text/javascript" src="../../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/slide.js"></script>
+    <script type="text/javascript" src="../../lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../../lib/angular/angular-route.min.js"></script>
+    <script type="text/javascript" src="../../js/gundong.js"></script>
+    <script type="text/javascript" src="../../js/echarts.js"></script>
+    <script type="text/javascript" src="js/transaction.js"></script>
+    <script type="text/javascript" src="js/mainCtrl.js"></script>
+    <script type="text/javascript" src="../../js/post.js"></script>
+    <script type="text/javascript" src="../../js/get.js"></script>
+    <script type="text/javascript" src="js/jiaoyi.js"></script>
+    <script type="text/javascript" src="js/hangqing.js"></script>
+    <script type="text/javascript" src="js/liaojie.js"></script>
+    <script type="text/javascript" src="js/pingjia.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/powerange.css">
+                    <script type="text/javascript" src='../../lib/powerange.min.js'></script>
+</head>
+<body>
+<!--头部开始-->
+<div class="header">
+    <div class="hd_inner">
+        <div class="hd_logo"><a href="#"><img ng-src="{{logo}}"/></a></div>
+        <!-- <span class="ce" ng-click="changelg()" data-lg="{{lg}}"><em ng-class="{'true':'on'}[language=='chinese']">中</em>/<em ng-class="{'true':'on'}[language=='english']">E</em></span> -->
+        <div class="hd_list clearfix">
+            <div class="alist clearfix" id='slId'>
+                <a href="../../index.html" ng-bind="home"></a>
+                <a ng-bind="transaction" href="../transaction/index.html" class="on"></a>
+                <a ng-bind="finance" ng-click='tiaoF()'></a>
+                <a ng-bind="safe" ng-click='tiaoS()'></a>
+                <!-- <a ng-bind="apply" ng-click='tiaoA()'></a>
+                <a href="../jiedai/index.html" ng-bind='jiedai'></a> -->
+                <a ng-bind="help" href="../help/index.html"></a>
+              <!--   <a href="../mall/index.html" ng-bind="shop"></a> -->
+               <a href="../cf/index.html">ICO众筹</a>
+            </div>
+        </div>
+        <div class="blist clearfix">
+	        <div class='weixina' id='weixina'>
+	           <img src="../../images/header-weixin-logo.png"><span>关注微信</span>
+	           <div class='wxbox' id='wxbox'><img src="../../images/wx-qrcode.png"></div>
+	        </div>
+	        <!-- 未登录状态 -->
+	        <div class='dlzc' ng-style="loginq"><img src="../../images/zhuce.png"><a class="zc" href="register/register.html">注册</a>|<span class='dl' ng-click="dlshow()">登录</span></div>
+	        <!-- 登录状态 -->
+	        <div class='dlh' ng-style="loginh">
+	           <img src="../../images/zhuce.png"><span class="namea">{{loginInfo.username}}</span><i class='icon iconfont'>&#xe625;</i>
+	           <div class='xxbox'>
+	              <p>ID:<span class="info">{{loginInfo.id}}</span></p>
+	              <p>注册时间:<span class="info">{{loginInfo.date}}</span></p>
+	              <p class='out' ng-click='outlogin()'>退出账号</p>
+	           </div>
+	        </div>
+	        <!-- 切换语言 -->
+	        <div class="lanague">
+	            <span class="langa"><a class="en" href="#"></a><a href="">English</a><i class='icon iconfont'>&#xe625;</i></span>
+				<ul class='langbox'>
+					<li class="en"><a href="?lang=en">English</a></li>
+					<li class="cn"><a href="?lang=cn">简体中文</a></li>
+				</ul>
+			</div>
+	    </div>
+    </div>
+</div>
+<!--头部结束-->
+    <!--导航条开始-->
+    <div class="nav">
+        <div class="caidan clearfix">
+            <div class="nav_cai">
+                <a ng-repeat="i in nav track by $index" class="clearfix alistA"
+                ng-class="{'{{$index}}':'on'}[cdIndex]" ng-click="changecd(i.coin_no)">
+                    <p ng-bind="i.coin_name"></p>
+                </a>
+            </div>
+        </div>
+        <ul class="info b_show clearfix">
+            <li>
+                <img ng-src="/sub/getImage.do?value={{biimg}}" class="imgPci"/>{{day.newes_deal?(day.newes_deal| number : 3):0}}
+            </li>
+            <li class="buy"><p>买一价</p>{{day.buy_price?(day.buy_price| number : 3):0}}</li>
+            <li class="sell"><p>卖一价</p>{{day.sell_price?(day.sell_price |number : 3):0 }}</li>
+            <li class="strike"><p>成交量</p>{{day.deal_num?(day.deal_num | number : 3):0}}</li>
+            <li class="gold"><p>成交额</p>{{day.deal_price?(day.deal_price| number : 3):0}}</li>
+            <li class="redC"><p>日涨跌</p>{{day.day_percent?(day.day_percent| number : 3):0}}%</li>
+        </ul>
+    </div>
+<!--菜单结束-->
+<div class="outBox">
+       <!-- <div class="daohang b_show clearfix" id="qiehuan">
+            <a class='aon' ng-href="#jiaoyi">{{biname}}交易</a>
+            <a ng-href="#hangqing" style="display:none">{{biname}}行情</a>
+            <a ng-href="#liaojie" style="display:none">了解{{biname}}</a>
+            <a ng-href="#pingjia" style="display:none">评价{{biname}}</a>
+        </div>-->
+        <!--导航条结束-->
+        <div ng-view>
+
+        </div>
+</div>
+<div class="footr">
+    <p>CopyRight&copy; 2015-2016 数字交易平台 All Rights Reserved   |  <a href="#">ICP备7777777号-1</a></p>
+</div>
+<script type="text/javascript" >
+    $(function(){
+        $('#qiehuan').find('a').click(function(){
+            $('#qiehuan').find('a').attr('class','');
+            $(this).attr('class','aon');
+        })
+    })
+</script>
+</body>
+</html>

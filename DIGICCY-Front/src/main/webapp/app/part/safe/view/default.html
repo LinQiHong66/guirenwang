@@ -1,0 +1,107 @@
+<div class="default">
+			<h2 class="sa_tit" ng-bind="sTit"></h2>
+			<!-- 安全等级信息 begin -->
+			<div class="level clearfix">
+				<ul>
+					<li class="sa_sl">
+						<div class="sl_top clearfix">
+							<span ng-bind="lev0"></span>
+							<span class="sl_jdt">
+								<i>
+									<b ng-style='lev1'></b>
+								</i>
+							</span>
+							<span class="sl_level" ng-bind='lev2'></span>
+						</div>
+						<div class="sl_bot" ng-bind='lev3'>
+							完成填写常用邮箱，将极大提升您的账户安全性
+						</div>
+					</li>
+					<li class='sa_info'>
+						<span ng-bind='sId'></span>
+						<span ng-bind='sName'></span>
+						<span ng-bind='sUser'></span>
+						<span>{{mailphone}}{{sEmail}}</span>
+					</li>
+				</ul>
+			</div>
+			<!-- 安全等级信息 end -->
+			<!-- 列表项目 begin -->
+			<ul class="safeList">
+				<li class="firstBd clearfix">
+					<div class="sl_left">
+						<i class="iconfont">&#xe621;</i>
+						<div class="sl_box">
+							<div class="tit" ng-bind='smrz0'></div>
+							<div class="txt" ng-bind='smrz1'></div>
+						</div>
+					</div>
+					<div class="sl_right">
+						<span ng-bind='smrz2'></span>
+						<span><a ng-href='#/sAuthentication' ng-bind='smrz3'></a></span>
+					</div>
+				</li>
+				<li class="clearfix">
+					<div class="sl_left">
+						<i class="iconfont">&#xe605;</i>
+						<div class="sl_box">
+							<div class="tit" ng-bind='dlmm0'></div>
+							<div class="txt" ng-bind='dlmm1'></div>
+						</div>
+					</div>
+					<div class="sl_right">
+						<span><a ng-href='#/sPassword' ng-bind='dlmm2'></a></span>
+					</div>
+				</li>
+				<li class="clearfix">
+					<div class="sl_left">
+						<i class="iconfont">&#xe60d;</i>
+						<div class="sl_box">
+							<div class="tit" ng-bind='jymm0'></div>
+							<div class="txt" ng-bind='jymm1'></div>
+						</div>
+					</div>
+					<div class="sl_right">
+						<span><a ng-href='#/sPwset' ng-bind='jymm2'></a></span>
+					</div>
+				</li>
+				<!--<li class="clearfix">
+					<div class="sl_left">
+						<i class="iconfont">&#xe614;</i>
+						<div class="sl_box">
+							<div class="tit" ng-bind='scrz0'></div>
+							<div class="txt" ng-bind='scrz1'></div>
+						</div>
+					</div>
+					<div class="sl_right">
+						<span ng-bind='scrz2'></span>
+						<span><a ng-href='{{scrz4}}' ng-bind='scrz3'></a></span>
+					</div>
+				</li>-->
+				<li class="clearfix">
+					<div class="sl_left">
+						<i class="iconfont">&#xe603;</i>
+						<div class="sl_box">
+							<div class="tit" ng-bind='sjbd0'></div>
+							<div class="txt">{{tishi}}{{ellipsis(phone)}}</div>
+						</div>
+					</div>
+					<div class="sl_right">
+						<span><a ng-href='#/sBindphone'>{{caozuo}}</a></span>
+					</div>
+				</li>
+				<!--<li class="clearfix">
+					<div class="sl_left">
+						<i class="iconfont">&#xe60c;</i>
+						<div class="sl_box">
+							<div class="tit" ng-bind='yxbd0'></div>
+							<div class="txt" ng-bind='yxbd1'></div>
+						</div>
+					</div>
+					<div class="sl_right">
+						<span><a ng-href='{{yxbd3}}' ng-bind='yxbd2'></a></span>
+					</div>
+				</li>-->
+			</ul>
+			<!-- 列表项目 end -->
+		</div>

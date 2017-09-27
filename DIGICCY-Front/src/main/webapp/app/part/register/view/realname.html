@@ -1,0 +1,36 @@
+<div class="container">
+	<h2>实名认证</h2>
+	<div class="jindu">
+		<div class="line"></div>
+		<div class="circle one">1</div>
+		<div class="circle two">2</div>
+		<div class="circle three active">3</div>
+		<div class="circle four">4</div>
+	</div>
+	<div class="reg clearfix">
+		
+		<ul class="regBox clearfix">
+			<div class="message">根据国家相关规定，您需要填写真实身份信息，完成实名认证</div>
+			<li>
+				<table>
+					<tbody>
+						<tr>
+							<td class="fr">真实姓名：</td>
+							<td><input type="text" ng-blur='nametxt()' ng-model='name'><span ng-class="{true:'right',false:'erro'}[nametype]">{{namemessage}}</span></td>
+						</tr>
+						<tr>
+							<td class="fr">身份证号：</td>
+							<td><input type="text" ng-blur='idcard()' ng-model='idc'><span ng-class="{true:'right',false:'erro'}[idcardtype]">{{idcardmessage}}</span></td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</li>
+		</ul>
+		<div class="next">
+			
+			<button ng-click='final()'>下一步</button>
+		</div>
+		
+	</div>
+</div>

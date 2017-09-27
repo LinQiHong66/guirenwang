@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <mvc:annotation-driven/>
+
+    <!-- 激活Spring注解 -->
+    <context:annotation-config />
+
+    <!-- 扫描controller（controller层注入） -->
+    <context:component-scan base-package="com.inesv.digiccy.controller" />
+
+    <context:component-scan base-package="com.inesv.digiccy.validata" />
+
+    <!-- 避免IE在ajax请求时，返回json出现下载 -->
+    <bean id="jacksonMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" />
+            </bean>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                        <property name="dateFormat">
+                            <bean class="java.text.SimpleDateFormat">
+                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+                            </bean>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!-- 对模型视图添加前后缀 -->
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/view/" p:suffix=".jsp" />
+	
+	<mvc:interceptors> 
+       	<mvc:interceptor>  
+          	<mvc:mapping path="/**" />
+          	<mvc:exclude-mapping path="/dealDetail/**"/>
+            <mvc:exclude-mapping path="/user/**"/>
+            <mvc:exclude-mapping path="/reg/**"/>
+            <mvc:exclude-mapping path="/forget/**"/>
+            <mvc:exclude-mapping path="/notice/**"/>
+            <mvc:exclude-mapping path="/front/**"/>
+            <mvc:exclude-mapping path="/dayMarket/**"/>
+            <mvc:exclude-mapping path="/sub/getImage.do"/>
+            <mvc:exclude-mapping path="/common/getBasicCoinTypeExceptRMB.do"/>
+            <mvc:exclude-mapping path="/trade/getEntrustOfTradeCenter.do"/>
+            <mvc:exclude-mapping path="/trade/getAssessList.do"/>
+            <mvc:exclude-mapping path="/trade/kline_h.do"/>
+            <mvc:exclude-mapping path="/other/**"/>
+            <mvc:exclude-mapping path="/front/coin/getInfoByNo.do"/>
+ 
+           <!--   暂时通行-->
+            <!--  <mvc:exclude-mapping path="/trade/**"/> -->
+             <mvc:exclude-mapping path="/balance/**"/>
+              <mvc:exclude-mapping path="/common/**"/> 
+             <mvc:exclude-mapping path="/rmbRecharge/**"/>
+             <mvc:exclude-mapping path="/rmbWithdraw/**"/>
+             <mvc:exclude-mapping path="/virtual/**"/>
+             <mvc:exclude-mapping path="/entrustDeal/**"/>
+             <mvc:exclude-mapping path="/entrustDeal/**"/>
+             <mvc:exclude-mapping path="/notice/**"/>
+             <mvc:exclude-mapping path="/Safety/**"/>
+              <mvc:exclude-mapping path="/inesvuser/**"/>
+            <mvc:exclude-mapping path="/other/**"/>
+ 
+             <mvc:exclude-mapping path="/virtualWith/**"/>
+              <mvc:exclude-mapping path="/inervbank/**"/>
+ 
+            <!-- <mvc:exclude-mapping path="/trade/**"/> -->
+ 
+           <!--   暂时通行-->  
+ 
+            <mvc:exclude-mapping path="/crowFunding/**"/>
+            <mvc:exclude-mapping path="/crowdFundingDetails/**"/>
+            <mvc:exclude-mapping path="/helpCenter/**"/>
+          	<mvc:exclude-mapping path="/trade/**"/>
+          	<mvc:exclude-mapping path="/spread/**"/>
+          	<mvc:exclude-mapping path="/commandRed/**"/>
+
+          	
+          	<mvc:exclude-mapping path="/voucher/**"/>
+          	<mvc:exclude-mapping path="/userOrganization/**"/>
+
+          	<mvc:exclude-mapping path="/Plan/queryBuyPoundatge.do"/>
+            <mvc:exclude-mapping path="/Plan/querySellPoundatge.do"/>
+            <mvc:exclude-mapping path="/address/**"/>
+          	<bean class="com.inesv.digiccy.filter.PublicFilter"></bean>  
+       	</mvc:interceptor>
+    </mvc:interceptors> 
+
+    <!-- 支持上传文件 --> 
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    
+    
+       <!-- 存储区域设置信息 -->
+    <bean id="localeResolver"
+        class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+    <!-- 国际化资源文件 -->
+    <bean id="messageSource"
+        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath*:META-INF/languege/lan" />
+    </bean>
+ 
+    <mvc:interceptors>
+        <bean id="localeChangeInterceptor"
+            class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang" />
+        </bean>
+    </mvc:interceptors>
+</beans>

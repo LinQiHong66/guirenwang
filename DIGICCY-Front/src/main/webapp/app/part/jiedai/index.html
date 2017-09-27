@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app' ng-controller="mainCtr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>数字货币交易平台</title>
+    <link rel="stylesheet" type="text/css" href="../../css/jiedai.css">
+    <script type="text/javascript" src="../../js/getip.js"></script>
+    <script type="text/javascript" src='../../lib/jquery.min.js'></script>
+    <script type="text/javascript" src='../../lib/angular/angular.min.js'></script>
+    <script type="text/javascript" src="../../lib/angular/angular-route.min.js"></script>
+    <script type="text/javascript" src="../../js/autoActive.js"></script>
+    <script type="text/javascript" src="../../js/gundong.js"></script>
+    <script type="text/javascript" src="js/jiedai.js"></script>
+    <script type="text/javascript" src="../../js/post.js"></script>
+</head>
+<body>
+<!--头部开始-->
+<div class="header">
+    <div class="hd_inner">
+        <div class="hd_logo"><a href="#"><img ng-src="{{logo}}"/></a></div>
+        <span class="ce" ng-click="changelg()" data-lg="{{lg}}"><em ng-class="{'true':'on'}[lg=='chinese']">中</em>/<em ng-class="{'true':'on'}[lg=='english']">E</em></span>
+        <div class="hd_list clearfix">
+            <div class="alist clearfix" id='slId'>
+                <a href="../../index.html" ng-bind="home"></a>
+                <a ng-bind="transaction" href="../transaction/index.html"></a>
+                <a ng-bind="finance" ng-click='tiaoF()'></a>
+                <a ng-bind="safe" ng-click='tiaoS()'></a>
+                <a ng-bind="apply" ng-click='tiaoA()'></a>
+                <a href="../jiedai/index.html" ng-bind='jiedai' class="on"></a>
+                <a ng-bind="help"  href="../help/index.html"></a>
+                <a href="../cf/index.html">众筹</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--导航条开始-->
+<nav class="nav2Bg clearfix">
+    <div class="boxleft">
+        <div id="close" class="iconfont">&#xe625;</div>
+         <h2>借贷<i>debit and credit</i></h2>
+        <ul class='clearfix' id="ul2">
+            <li auto-active="active">
+                <a href="#/hPublic" >
+                    <span class="iconfont navIcon">&#xe608;</span>
+                    <span>人民币借贷</span>
+                    <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/hTrade" >
+                    <span class="iconfont navIcon">&#xe621;</span>
+                    <span>比特币借贷</span>
+                    <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/hProblem" >
+                    <span class="iconfont navIcon">&#xe605;</span>
+                    <span>莱特币借贷</span>
+                    <i></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--导航条结束-->
+    <div class='boxright'>
+        <div class="jiedai">
+            <h3>借贷总览 </h3>
+            <ul class="titleA clearfix">
+                <li>
+                    <p>人民币借贷</p>
+                    <span class="buy">0￥</span>
+                </li>
+                <li>
+                    <p>比特币借贷</p>
+                    <span class="gold">0 ฿</span>
+                </li>
+                <li>
+                    <p>以太坊借贷</p>
+                    <span class="buy">0 E</span>
+                </li>
+                <li>
+                    <p>莱特币借贷</p>
+                    <span class="gold">0 Ł</span>
+                </li>
+                <li>
+                    <p>元宝币借贷</p>
+                    <span class="buy">0 Ф</span>
+                </li>
+            </ul>
+            <div class="imgbanner"></div>
+            <div class="infoA">
+                <h3>人民币借贷</h3>
+                <div class="infoB clearfix">
+                    <div class="left">
+                        <div>
+                            <label>已借金额</label>:
+                            <span class="buy">0￥</span>
+                        </div>
+                        <div>
+                            <label>可借人民币</label>:
+                            <span class="gold">0￥</span>
+                        </div>
+                        <div>
+                            <label>借款金额</label>:
+                            <input type="text">
+                        </div>
+                        <div>
+                            <label>日费率</label>:
+                            <span>0%</span>
+                        </div>
+                        <div>
+                            <input type="checkbox">
+                            <span>阅读并同意 <a>《用户协议》</a></span>
+                        </div>
+                        <div>
+                            <button>立即借款</button>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="titleC">当前市场可借人民币: <span class="buy">19966056￥</span></div>
+                        <ul class="clearfix titleG">
+                            <li>放贷排序</li>
+                            <li>日费率</li>
+                            <li>放贷金额</li>
+                        </ul>
+                        <ul class="titleD clearfix">
+                            <li>放贷(1)</li>
+                            <li>0.1%</li>
+                            <li>4022219</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="jielu">
+                <div class="titleD">
+                    <ul class="clearfix" id="tlDinfo">
+                        <li class="on">未还款</li>
+                        <li>借款记录</li>
+                        <li>还款记录</li>
+                    </ul>
+                </div>
+                <div class="jieinfo">
+                    <div class="weihuan">
+                        <ul class="titleE clearfix">
+                            <li>借款单号</li>
+                            <li>借款时间</li>
+                            <li>借款金额</li>
+                            <li>日费率</li>
+                            <li>总手续费</li>
+                            <li>已还款</li>
+                            <li>未还本金</li>
+                            <li>未还手续费</li>
+                            <li>操作</li>
+                        </ul>
+                        <ul class="titleF clearfix">
+                            <li>12316511234</li>
+                            <li>2016/12/17 12:12:12</li>
+                            <li>100</li>
+                            <li>1%</li>
+                            <li>25</li>
+                            <li>55</li>
+                            <li>45</li>
+                            <li>10</li>
+                            <li>操作</li>
+                        </ul>
+                        <ul class="titleF clearfix">
+                            <li>12316511234</li>
+                            <li>2016/12/17 12:12:12</li>
+                            <li>100</li>
+                            <li>1%</li>
+                            <li>25</li>
+                            <li>55</li>
+                            <li>45</li>
+                            <li>10</li>
+                            <li>操作</li>
+                        </ul>
+                        <ul class="titleF clearfix">
+                            <li>12316511234</li>
+                            <li>2016/12/17 12:12:12</li>
+                            <li>100</li>
+                            <li>1%</li>
+                            <li>25</li>
+                            <li>55</li>
+                            <li>45</li>
+                            <li>10</li>
+                            <li>操作</li>
+                        </ul>
+                        <ul class="titleF clearfix">
+                            <li>12316511234</li>
+                            <li>2016/12/17 12:12:12</li>
+                            <li>100</li>
+                            <li>1%</li>
+                            <li>25</li>
+                            <li>55</li>
+                            <li>45</li>
+                            <li>10</li>
+                            <li>操作</li>
+                        </ul>
+                    </div>
+                    <div class="jiekuan hidShow">
+                        <ul class="titleE clearfix">
+                            <li>借款单号</li>
+                            <li>借款时间</li>
+                            <li>借款金额</li>
+                            <li>日费率</li>
+                            <li>总手续费</li>
+                            <li>未还款总额</li>
+                            <li>状态</li>
+                            <li>操作</li>
+                        </ul>
+                        <ul class="titleF clearfix">
+                            <li>12316511234</li>
+                            <li>2016/12/17 12:12:12</li>
+                            <li>100</li>
+                            <li>1%</li>
+                            <li>55</li>
+                            <li>45</li>
+                            <li>10</li>
+                            <li>操作</li>
+                        </ul>
+                    </div>
+                    <div class="huankuan hidShow">
+                        <ul class="titleE clearfix">
+                            <li>还款单号</li>
+                            <li>还款时间</li>
+                            <li>还款总金额</li>
+                            <li>手续费</li>
+                            <li>本金</li>
+                            <li>对应借款单号</li>
+                            <li>状态</li>
+                            <li>操作</li>
+                        </ul>
+                        <ul class="titleF clearfix">
+                            <li>12316511234</li>
+                            <li>2016/12/17 12:12:12</li>
+                            <li>100</li>
+                            <li>1%</li>
+                            <li>25</li>
+                            <li>45</li>
+                            <li>10</li>
+                            <li>操作</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="fengxian">
+                <h3>风险提示</h3>
+                <div>
+                    <p>1.杠杆交易存在很大风险，对服务器网关瓶颈，网站访问不稳定等各种因素造成杠杆交易被平仓的风险，BtcTrade不负任何法律责任。</p>
+                    <p>2.当您的总资产不足申请额度的110%时，系统将按照BtcTrade实时委托单价格对您的全部资产进行强制平仓买入或卖出以归还申请额度。</p>
+                    <p>3.借贷的利率是由放款人设定的。用户进行借贷时，系统会优先以市场中的最低日费率进行放贷。当最低日费率可借贷额度为零时，系统将自动以新的日费率进行放贷。</p>
+                    <p>4.目前申请最大额度不能超过个人净资产的3倍，也不能超过系统设置的最大金额。如用户在申请额度前净资产为100万元，那么最大申请额度为系统设置限制的最大金额，如用户申请额度前净资产为2万元，那么申请额度为个人净资产的3倍6万元。</p>
+                    <p>5.BtcTrade从借贷成功开始计算手续费，24小时为一天，不足24小时按一天计算，超过24小时按照新的一天计算，每天收取的费用为用户申请的额度乘以每日费率。</p>
+                    <p>6.为了资金安全，用户有申请额度未归还时，不能进行提现。</p>
+                    <p>7.用户每次申请杠杆额度和归还都按笔处理，优先支付手续费。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<script>
+    $(function () {
+        $("#tlDinfo li").click(function () {
+            $(this).siblings().removeClass("on");
+            $(this).addClass("on");
+            var _index=$(this).index();
+            $(".jieinfo div").siblings().addClass("hidShow");
+            $(".jieinfo div").eq(_index).removeClass("hidShow");
+        })
+    })
+</script>
+<!-- 版权部分 begin -->
+<div class="footr">
+    <p>CopyRight&copy; 2015-2016 数字交易平台 All Rights Reserved   |  <a href="#">ICP备7777777号-1</a></p>
+</div>
+<!-- 版权部分 end -->
+</body>
+</html>

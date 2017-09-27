@@ -1,0 +1,113 @@
+.bank{
+    padding: 20px 2%;
+    width: 96%;
+    .pdtit{
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    table{
+      width: 100%;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      // margin-left: 50px;
+      // border: none;
+      border: 1px solid #e5e5e5;
+      border-collapse:collapse;
+      thead{
+        background-color: #e5e5e5;
+        th{
+          padding:5px 10px;
+          border: 1px solid #e5e5e5;
+          position: relative;
+          #more{
+            position: absolute;
+            top: 26px;
+            left: 13px;
+            background-color: #fff;
+            display: none;
+            li{
+              cursor: pointer;
+              font-weight: normal;
+              padding: 0 10px;
+              border: 1px solid #e5e5e5;
+              margin-top: -1px;
+            }
+            li:hover{
+              background-color: $tcolor1;
+              color:#fff;
+            }
+          }
+        }
+      }
+      td{
+        border: 1px solid #e5e5e5;
+        text-align: center;
+        padding: 5px;
+      }
+    }
+    .addbtn{
+      // margin-left: 50px;
+      width: 250px;
+      background-color: $tcolor1;
+      border: none;
+      color:#fff;
+      font-family: 'microsoft yahei';
+      height: 40px;
+      transition:background-color .3s;
+      cursor: pointer;
+    }
+    .addbtn:hover{
+      background-color: $tcolor2;
+    }
+  }
+
+
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(lg) {
+  .bank{
+      .pdtit{
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      .tb{
+        min-width: 320px;
+        overflow-x:scroll;
+        table{
+          width: 100%;
+          min-width: 760px;
+          margin-top: 30px;
+          margin-bottom: 30px;
+          margin-left: 0px;
+          // border: none;
+          border: 1px solid #e5e5e5;
+          border-collapse:collapse;
+          thead{
+            background-color: #e5e5e5;
+            th{
+              padding:5px 10px;
+              // border: 1px solid #e5e5e5;
+            }
+          }
+          td{
+            // border: 1px solid #e5e5e5;
+            text-align: center;
+            padding: 5px;
+          }
+        }
+      }
+      .addbtn{
+        // margin-left: 50px;
+        width: 250px;
+        background-color: $tcolor1;
+        border: none;
+        color:#fff;
+        font-family: 'microsoft yahei';
+        height: 40px;
+        transition:background-color .3s;
+        cursor: pointer;
+      }
+      .addbtn:hover{
+        background-color: $tcolor2;
+      }
+    }
+}

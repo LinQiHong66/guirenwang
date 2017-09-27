@@ -1,0 +1,37 @@
+<div class="prize">
+	<h3>{{pTitle}}</h3>
+	<div class="prizeList">
+		<ul class="ulHeader clearfix">
+			<li>{{pHeader.user}}</li>
+			<li>{{pHeader.type}}</li>
+			<li>{{pHeader.show}}</li>
+			<li>{{pHeader.time}}</li>
+			<li>{{pHeader.handle}}</li>
+			<li>{{pHeader.bonus}}</li>
+			<li>{{pHeader.state}}</li>
+		</ul>
+		
+		<ul class="clearfix" ng-repeat="p in pUl">
+			<li>{{p.rec_user}}</li>
+			<li>{{p.prize_type}}</li>
+			<li>{{p.prize_explain}}</li>
+			<li>{{p.date}}</li>
+			<li>{{p.opt_price}}</li>
+			<li>{{p.prize_price}}</li>
+			<li>{{zhuangtai[p.state]}}</li>
+		</ul>
+		<div class="Jpage" style="display:none;">
+			<p>
+				85条记录1/6页
+			</p>
+			<p>
+				<span>上一页</span>
+				<select>
+					<option>1</option>
+					<option>2</option>
+				</select>
+				<span>下一页</span>
+			</p>
+		</div>
+	</div>
+</div>

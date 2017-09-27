@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" ng-app="regApp" ng-controller="mainCtr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title ng-bind="title"></title>
+    <link type="text/css" rel="stylesheet" href="../../css/forget.css"/>
+    <script type="text/javascript" src="../../js/getip.js"></script>
+    <script type="text/javascript" src="../../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../../lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../../lib/angular/angular-route.min.js"></script>
+    <script type="text/javascript" src="../../js/gundong.js"></script>
+
+    <script type="text/javascript" src="./js/register.js"></script>
+    <script type="text/javascript" src="./js/mainCtrl.js"></script>
+    <script type="text/javascript" src="./js/index.js"></script>
+    <script type="text/javascript" src="./js/findcode.js"></script>
+
+    
+
+</head>
+<body>
+<!--头部开始-->
+<div class="header">
+    <div class="hd_inner">
+        <div class="hd_logo"><a href="#"><img ng-src="{{logo}}"/></a></div>
+       <!--  <span class="ce" ng-click="changelg()" data-lg="{{lg}}"><em ng-class="{'true':'on'}[lg=='chinese']">中</em>/<em ng-class="{'true':'on'}[lg=='english']">E</em></span> -->
+        <div class="hd_list clearfix">
+            <div class="alist clearfix" id='slId'>
+                <a href="../../index.html" ng-bind="home"></a>
+                <a ng-bind="transaction" href="../transaction/index.html"></a>
+                <a ng-bind="finance"  ng-click='tiaoF()'></a>
+                <a ng-bind="safe" ng-click='tiaoS()'></a>
+                <!-- <a ng-bind="apply" ng-click='tiaoA()'></a>
+                    <a href="../mall/index.html" ng-bind="shop"></a>
+                 <a href="../jiedai/index.html" ng-bind='jiedai'></a> -->
+                <a ng-bind="help" href="../help/index.html"></a>
+                <a href="../cf/index.html">ICO众筹</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--头部结束-->
+
+<!-- 注册步骤 Begin -->
+<div ng-view class="view"></div>
+<!-- 注册步骤 End -->

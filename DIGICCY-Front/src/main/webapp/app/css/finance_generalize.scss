@@ -1,0 +1,54 @@
+@charset "UTF-8";
+//这里的嵌套格式一定要用花阔号，
+//每句都要用结束符可以使用私有属性
+@import "_config.scss";
+@import "_mixins.scss";
+@import "variable.scss";
+.generalize{
+  width: 96%;
+    padding: 20px 2%;
+  h3{
+    padding: 22px;
+    font-size: 22px;
+  }
+  select,input{
+    border: 1px solid #ccc;
+  }
+  .generalizeR{
+    padding: 20px;
+    width: 60%;
+    display: inline-block;
+    p{
+      line-height: 35px;
+      input[type="text"]{
+        height: 26px;
+        line-height: 26px;
+        border-color: $tcolor1;
+        width: 50%;
+        padding-left: 5px;
+      }
+      button{
+        border: 1px solid $tcolor1;
+        height: 28px;
+        line-height: 26px;
+        color: #fff;
+        cursor: pointer;
+        background-color:$tcolor1;
+        padding: 0 10px;
+      }
+      button:hover{
+        background-color:$tcolor2;
+        border-color: $tcolor2;
+      }
+    }
+  }
+  .title{
+    font-size: 16px;
+    color:$titlcolor;
+  }
+  .codeL{
+    display: inline-block;
+    width: 20%;
+    padding: 20px;
+  }
+}

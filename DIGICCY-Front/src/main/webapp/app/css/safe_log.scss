@@ -1,0 +1,74 @@
+.log{
+   width:96%;
+    padding: 20px 2%;
+    .pdtit{
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    table{
+      width: 100%;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      // margin-left: 50px;
+      border: none;
+      border-collapse:collapse;
+      thead{
+        background-color: #e5e5e5;
+        th{
+          padding:5px 10px;
+          border: 1px solid #e5e5e5;
+        }
+      }
+      td{
+        border: 1px solid #e5e5e5;
+        text-align: center;
+        padding: 5px;
+        cursor: pointer;
+      }
+    }
+    .addbtn{
+      margin-left: 50px;
+      width: 250px;
+      background-color: $tcolor1;
+      border: none;
+      color:#fff;
+      font-family: 'microsoft yahei';
+      height: 40px;
+      transition:background-color .3s;
+      cursor: pointer;
+    }
+    .addbtn:hover{
+      background-color: $tcolor2;
+    }
+    .page{
+      margin: 0 auto;
+      width: 300px;
+      li{
+        float: left;
+        padding: 0 10px;
+        span{
+          background-color: $tcolor1;
+          color:#fff;
+          padding: 5px 10px;
+          transition:all 0.3s;
+          cursor: pointer;
+        }
+        span:hover{
+          background-color: $tcolor2;
+        }
+      }
+    }
+}
+
+@include respond-to(lg) {
+  .log{
+    font-size:14px;
+    min-width: 320px;
+      .tb{
+        overflow-x:scroll;
+        table{
+          min-width: 600px;
+        }
+      }
+    }
+}

@@ -1,0 +1,522 @@
+html{font-size: 16px;}
+body{font-size: 16px;background: #ecf0f1}
+$bg1:#f5f5f5;
+$tcolor1:#117dc8;
+$tcolor2:#76bdef;
+@import "_config";
+@import "_mixins";
+@import "common.css";
+@import "header";
+.banner{
+  background:url(../images/spreadbanner.jpg) center center;
+  width: 100%;
+  height: 500px;
+  background-size: cover;
+}
+.spreadCon{
+  width: 100%;
+  background-color: #fff;
+  // height: 100px;
+  .container{
+    width: 1200px;
+    margin: 0 auto;
+    padding: 50px 10px;
+    h3{
+      font-size: 30px;
+      font-weight: normal;
+      text-align: center;
+    }
+    #pOne{
+      color:#999;
+      padding-top: 50px;
+      line-height: 30px;
+    }
+    .pTwo{
+      line-height: 30px;
+
+    }
+    #aaa{
+      // display: none;
+      // height: 0px;
+      opacity: 0;
+      // visibility: hidden;
+      // float: left;
+      position: absolute;
+    }
+    .yqmArea{
+      float: right;
+      padding-top: 20px;
+      // padding-right: 30px;
+      i{
+        color:$tcolor2;
+      }
+      button{
+        background-color: $tcolor1;
+        border: none;
+        color:#fff;
+        font-family: 'microsoft yahei';
+        // line-height: 30px;
+        padding: 5px 10px;
+        margin-left: 20px;
+        transition:background-color .3s;
+        cursor: pointer;
+      }
+      button:hover{
+        background-color: $tcolor2;
+      }
+    }
+  }
+}
+
+.spreadRule{
+  width: 100%;
+  background-color: #f0f8fb;
+  .container{
+    width: 1200px;
+    margin: 0 auto;
+    padding: 50px 10px;
+    h3{
+      font-size: 30px;
+      font-weight: normal;
+      text-align: center;
+    }
+    .srBox{
+      width: 33.333%;
+      padding: 20px 0 50px 0;
+      float: left;
+      text-align: center;
+      margin-top: 30px;
+      transition:all .3s;
+      cursor: default;
+      .iconfont{
+        font-size: 100px;
+        // border: 1px solid #ccc;
+        transition:all .3s;
+      }
+      .srTxt{
+        font-size: 18px;
+        transition:all .3s;
+      }
+    }
+    .srBox:hover{
+      .iconfont{
+        color:$tcolor1;
+      }
+      .srTxt{
+        color:$tcolor1;
+      }
+    }
+  }
+}
+.spreadRan{
+  width: 100%;
+  background-color: #fff;
+  .container{
+    width: 1200px;
+    margin: 0 auto;
+    padding: 50px 10px;
+    h3{
+      font-size: 30px;
+      font-weight: normal;
+      text-align: center;
+    }
+    .ranTxt{
+      // background-color: #f5f5f5;
+      margin-top: 40px;
+      border: 1px solid #e0e0e0;
+      background-color: #eee;
+      padding: 20px;
+      margin-bottom: 40px;
+      p{
+        line-height: 30px;
+      }
+    }
+    .ranBox{
+      width: 45%;
+      // padding-top: 30px;
+      float: left;
+
+      h4{
+        text-align: center;
+        font-size: 20px;
+        font-weight: normal;
+      }
+      table{
+        width: 100%;
+        padding-top: 40px;
+        th{
+          // border: 1px solid #e0e0e0;
+          border-bottom:1px solid #e0e0e0;
+          background-color: #fff;
+          line-height: 30px;
+        }
+        td{
+          text-align: center;
+          line-height: 40px;
+        }
+      }
+    }
+    .ranBox1{
+      width: 45%;
+      // padding-top: 30px;
+      float: right;
+      h4{
+        text-align: center;
+        font-size: 20px;
+        font-weight: normal;
+      }
+      table{
+        width: 100%;
+        padding-top: 40px;
+        th{
+          // border: 1px solid #e0e0e0;
+          border-bottom:1px solid #e0e0e0;
+          background-color: #fff;
+          line-height: 30px;
+        }
+        td{
+          text-align: center;
+          line-height: 30px;
+        }
+      }
+    }
+  }
+}
+.mySpread{
+  width: 100%;
+  background-color: #f0f8fb;
+  .container{
+    width: 1200px;
+    margin: 0 auto;
+    padding: 50px 10px;
+    h3{
+      font-size: 30px;
+      font-weight: normal;
+      text-align: center;
+    }
+    .tBox{
+      float: left;
+      width: 28.3333%;
+      padding-left: 5%;
+      .boxleft{
+        font-size: 100px;
+        float: left;
+        padding-top: 40px;
+        color:$tcolor1;
+      }
+      .boxright{
+        padding:70px 0 0 50px;
+        float: left;
+        div{
+          font-size: 20px;
+          line-height: 40px;
+        }
+      }
+    }
+    .mysBot{
+      padding-top: 50px;
+      ul{
+        // padding-bottom: 50px;
+        border-bottom: 1px solid $tcolor1;
+        li{
+          float: left;
+          font-size: 16px;
+          padding: 10px 20px;
+          cursor:pointer;
+        }
+
+      }
+
+      table{
+        width: 100%;
+        margin-top: 50px;
+        font-size: 14px;
+        th{
+          // border-bottom: 1px solid #ccc;
+          font-weight: normal;
+          line-height: 30px;
+        }
+        td{
+          text-align: center;
+          line-height: 30px;
+        }
+      }
+    }
+  }
+}
+.selected{
+  background-color: $tcolor1;
+  color:#fff;
+}
+
+
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(lg) {
+  .banner{
+
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+  }
+  .spreadCon{
+    .container{
+      width: 96%;
+      padding:30px 2% ;
+      h3{
+        font-size: 20px;
+      }
+    }
+  }
+
+  .spreadRule{
+    width: 100%;
+    background-color: #f0f8fb;
+    .container{
+      width: 96%;
+      padding:30px 2%;
+      h3{
+        font-size: 20px;
+      }
+      .srBox{
+        width: 33.333%;
+        padding: 0px 0 50px 0;
+        float: left;
+        text-align: center;
+        transition:all .3s;
+        cursor: default;
+      }
+    }
+  }
+
+  .spreadRan{
+    .container{
+      width: 100%;
+      padding:20px 0;
+      h3{
+        font-size: 20px;
+      }
+      .ranTxt{
+        p{
+          font-size: 12px;
+        }
+      }
+
+    }
+  }
+
+  .mySpread{
+    .container{
+      width:100%;
+      padding:20px 0;
+      h3{
+        font-size: 20px;
+      }
+      .tBox{
+        float: left;
+        width: 33.3333%;
+        padding-left: 0;
+        text-align: center;
+        position: relative;
+        .boxleft{
+          display: none;
+
+        }
+        .boxright{
+          // padding:70px 0 0 50px;
+          position: relative;
+          padding: 0;
+          float: none;
+          text-align: center;
+          margin: 0 auto;
+          div{
+            font-size: 16px;
+            line-height: 40px;
+          }
+        }
+      }
+      .mysBot{
+        padding-top: 50px;
+        ul{
+          // padding-bottom: 50px;
+          border-bottom: 1px solid $tcolor1;
+          li{
+            float: left;
+            font-size: 16px;
+            padding: 10px 20px;
+			
+          }
+
+        }
+
+        table{
+          width: 100%;
+          margin-top: 50px;
+          font-size: 14px;
+          th{
+            // border-bottom: 1px solid #ccc;
+            font-weight: normal;
+            line-height: 30px;
+          }
+          td{
+            text-align: center;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+@include respond-to(md) {
+  .banner{
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+  }
+  .spreadRule{
+    .container{
+      .srBox{
+        margin: 0 auto;
+        width: 80%;
+        padding: 0px 0 50px 0;
+        float: none;
+        text-align: center;
+      }
+    }
+  }
+
+  .spreadRan{
+    .container{
+      padding: 0;
+      .ranTxt{
+        // background-color: #f5f5f5;
+        margin-top: 40px;
+        border: 1px solid #e0e0e0;
+        background-color: #eee;
+        padding: 0;
+        margin-bottom: 40px;
+        p{
+          line-height: 30px;
+        }
+      }
+      .ranBox{
+        width: 100%;
+        // padding-top: 30px;
+        float: none;
+
+        h4{
+          text-align: center;
+          font-size: 16px;
+          font-weight: normal;
+        }
+        table{
+          width: 100%;
+          padding-top: 20px;
+          th{
+            // border: 1px solid #e0e0e0;
+            border-bottom:1px solid #e0e0e0;
+            background-color: #fff;
+            line-height: 30px;
+          }
+          td{
+            text-align: center;
+            line-height: 40px;
+          }
+        }
+      }
+      .ranBox1{
+        width: 100%;
+        // padding-top: 30px;
+        float: none;
+        h4{
+          text-align: center;
+          font-size: 16px;
+          font-weight: normal;
+        }
+        table{
+          width: 100%;
+          padding-top: 20px;
+          padding-bottom: 30px;
+          th{
+            // border: 1px solid #e0e0e0;
+            border-bottom:1px solid #e0e0e0;
+            background-color: #fff;
+            line-height: 30px;
+          }
+          td{
+            text-align: center;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+  }
+
+
+  .mySpread{
+    .container{
+      padding:30px 0;
+      .tBox{
+        float: left;
+        width: 33.3333%;
+        padding-left: 0;
+        text-align: center;
+        position: relative;
+        .boxleft{
+          display: none;
+
+        }
+        .boxright{
+          // padding:70px 0 0 50px;
+          position: relative;
+          padding: 0;
+          float: none;
+          text-align: center;
+          margin: 0 auto;
+          div{
+            font-size: 16px;
+            line-height: 40px;
+          }
+        }
+      }
+      .mysBot{
+        padding-top: 20px;
+        ul{
+          // padding-bottom: 50px;
+          border-bottom: 1px solid $tcolor1;
+          li{
+            float: left;
+            font-size: 16px;
+            padding: 10px 20px;
+
+          }
+        }
+        table{
+          margin-top: 20px;
+        }
+        .tb{
+          width: 100%;
+          overflow-x: scroll;
+          table{
+            // width: 100%;
+            margin-top: 20px;
+            font-size: 14px;
+            min-width: 450px;
+            th{
+              // border-bottom: 1px solid #ccc;
+              font-weight: normal;
+              line-height: 30px;
+            }
+            td{
+              text-align: center;
+              line-height: 30px;
+            }
+          }
+        }
+
+      }
+    }
+  }
+}

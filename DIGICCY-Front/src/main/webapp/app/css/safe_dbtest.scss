@@ -1,0 +1,67 @@
+
+
+//begin
+.dbtest{
+  width: 1200px;
+  margin: 0 auto;
+  // margin-top: 100px;
+  .container{
+    min-height:800px;
+    padding: 20px;
+    width: 1160px;
+    background-color: #fff;
+    ul{
+      padding-top: 30px;
+      padding-left: 50px;
+      border-bottom: 1px solid #e5e5e5;
+      padding-bottom: 50px;
+      li{
+        padding-top: 20px;
+        label{
+          padding-left: 10px;
+        }
+        i{
+          color:#999;
+          padding-left: 10px;
+        }
+        input[type='text']{
+          height: 28px;
+          border: 1px solid #ccc;
+          width: 240px;
+          padding-left: 10px;
+        }
+        button{
+          width: 250px;
+          background-color: $tcolor1;
+          border: none;
+          color:#fff;
+          font-family: 'microsoft yahei';
+          height: 40px;
+          transition:background-color .3s;
+          cursor: pointer;
+        }
+        button:hover{
+          background-color: $tcolor2;
+        }
+      }
+    }
+    .ul2{
+      border-bottom: none;
+    }
+  }
+}
+
+@include respond-to(lg) {
+  .dbtest{
+    width: 100%;
+    min-width: 320px;
+    .breadcrumb{
+
+    }
+    .container{
+      min-height:800px;
+      padding: 20px 0;
+      width: 100%;
+    }
+  }
+}

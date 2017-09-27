@@ -1,0 +1,44 @@
+
+<div class="log" ng-cloak>
+			<h2 class="pdtit">分红记录</h2>
+			<div class="tb">
+				<table>
+					<thead>
+						<th>创建时间</th>
+						<th>分红名称</th>
+						<th>分红币种</th>
+						<th>奖励币种</th>
+						<th>分红总额</th>
+						<th>每个分红</th>
+						<th>我的持币</th>
+						<th>我的分红</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat='i in fenhonglog'>
+							<td>{{i.date}}</td>
+							<td>{{i.bonus_name}}</td>
+							<td>{{i.bonus_type}}</td>
+							<td>{{i.reward_type}}</td>
+							<td>{{i.bonus_sum}}</td>
+							<td>{{i.each_bonus}}</td>
+							<td>{{i.coin_num}}</td>
+							<td>{{i.bonus}}</td>
+						
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<ul class="page clearfix" style="display:none">
+				<li>
+					<span>上一页</span>
+				</li>
+				<li>
+					<select >
+						<option ng-repeat='num in pagenum'>{{num}}</option>
+					</select>
+				</li>
+				<li>
+					<span>下一页</span>
+				</li>
+			</ul>
+		</div>

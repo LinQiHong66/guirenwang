@@ -1,0 +1,121 @@
+.footer{
+  width: 100%;
+  height: 300px;
+  background-color: #354051;
+  .container{
+    padding-top: 50px;
+    width: 1200px;
+    margin: 0 auto;
+    .ft_app{
+      float: left;
+      width: 386px;
+      border-right: 1px solid #5c5e5f;
+      .fta_top{
+        padding-bottom: 70px;
+      }
+      .fta_bot{
+        img{
+          width: 148px;
+        }
+      }
+    }
+    .ft_box{
+      // width: 170px;
+      padding-left: 60px;
+      float: left;
+      width: 100px;
+      .ftb_tit{
+        a{
+          font-weight: bold;
+          color:#fff;
+          font-size: 16px;
+          line-height: 50px;
+        }
+      }
+      ul{
+        li{
+          a{
+            color:#fff;
+            font-size: 14px;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+    .ft_call{
+      text-align: center;
+      float: right;
+      width: 270px;
+      // background:green;
+      .phone{
+        color:#fff;
+        font-size: 24px;
+        line-height: 50px;
+        // font-weight: bold;
+      }
+      .ftc_qq{
+        width: 156px;
+        height: 41px;
+        background-color: #7f64b5;
+        margin: 0 auto;
+        font-size: 18px;
+        color:#fff;
+        padding-left: 20px;
+      }
+      .worktime{
+        padding-top: 10px;
+        color:#c4ceca;
+        line-height: 30px;
+      }
+      #qqq{
+        cursor: pointer;
+        width: 120px;
+        // background-color: white;
+        color:#b44392;
+        position: relative;
+        margin:0 auto;
+        i{
+          position: absolute;
+          height: 17px;
+          color: white;
+          font-size: 25px;
+          overflow: hidden;
+          transform: rotate(180deg);
+          top: 7px;
+          right: -10px;
+        }
+        #ql{
+          width: 180px;
+          height: 50px;
+          position: absolute;
+          // background-color: green;
+          top: 30px;
+          left: -30px;
+          color:#c4ceca;
+          border: 1px solid #c4ceca;
+        }
+      }
+    }
+  }
+}
+.copyRight{
+  height: 65px;
+  width:100%;
+  background-color: #1b1b1b;
+  .container{
+    position: relative;
+    font-size: 12px;
+    width: 1200px;
+    margin: 0 auto;
+    line-height: 65px;
+    color:#9da09c;
+    a{
+      color:#9da09c;
+    }
+    .copy_imgs{
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}

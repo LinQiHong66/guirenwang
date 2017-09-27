@@ -1,0 +1,35 @@
+	<style>	
+	.ng-cloak{
+		display:none;
+	}
+</style>
+<div class="core" ng-cloak>
+	<h3 ng-bind="htitle"></h3>
+	<p class="rembi">
+		<span>{{cc.usable}}：{{rmb?rmb:0}}</span>
+		<span>{{cc.frost}}：{{freezeRmb?freezeRmb:0}}</span>
+		<span>{{cc.amount}}：{{zongzichan?zongzichan:0|number:4}}</span>
+	</p>
+	<div class="coreUl" >
+		<ul  class="clearfix ulHeader" >
+			<li>{{titl.coin}}</li>
+			<li>{{titl.balance}}</li>
+			<li>{{titl.bail}}</li>
+			<li>{{titl.gross}}</li>
+			<li>{{titl.lose}}</li>
+			<li>{{titl.operate}}</li>
+		</ul>
+		<ul ng-repeat="v in info" class="clearfix ulData" ng-class-odd="'odd'" ng-class-even="'even'">
+			<li>
+				<img  class='liimg' ng-src="/sub/getImage.do?value={{tphotoa['b'+v.coin_type]}}"></span>
+				<span  class='lisp2'>{{biarr['a'+v.coin_type]}}</span>
+			</li>
+			<li>{{v.enable_coin}}</li>
+			<li>{{v.unable_coin}}</li>
+			<li>{{v.total_price}}</li>
+			<li>{{ellipsis(v.wallet_address)}}</li>
+			<li><a href="../transaction/index.html#/jiaoyi" style="padding: 5px 10px;background-color: #117dc8;color: #fff;">去交易</a></li>
+		</ul>
+	</div>
+</div>
+

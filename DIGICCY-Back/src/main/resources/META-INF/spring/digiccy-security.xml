@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.0.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:annotation-config />
+	<!-- 开启 url 标签认证 -->
+	<bean id="webInvocationFiler"
+		class="org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator">
+		<constructor-arg ref="adminFilter"></constructor-arg>
+	</bean>
+
+
+	<security:http auto-config="true" use-expressions="true">
+		<security:intercept-url pattern="/coin/**"
+			filters="none" />
+		<security:intercept-url pattern="/crowFundingDetail/**"
+			filters="none" />
+		<security:intercept-url pattern="/app/**"
+			filters="none" />
+		<security:intercept-url pattern="/assets/**"
+			filters="none" />
+		<security:intercept-url pattern="/css/**"
+			filters="none" />
+		<security:intercept-url pattern="/font/**"
+			filters="none" />
+		<security:intercept-url pattern="/img/**"
+			filters="none" />
+		<security:intercept-url pattern="/js/**"
+			filters="none" />
+		<security:intercept-url pattern="/favicon.ico"
+			filters="none" />
+		<security:intercept-url pattern="/pollmessage"
+			filters="none" />
+		<security:intercept-url pattern="/login**"
+			filters="none" />
+		<security:intercept-url pattern="/fic/**"
+			filters="none" />
+		<security:intercept-url pattern="/resources/upload/**"
+			filters="none" />
+		<security:intercept-url pattern="/ueditor/jsp/upload/image/**"
+			filters="none" />
+		<security:intercept-url pattern="/notice/**"
+			filters="none" />
+		<security:custom-filter ref="adminFilter"
+			before="FILTER_SECURITY_INTERCEPTOR" />
+		<security:form-login login-page="/login.jsp"
+			login-processing-url="/j_spring_security_check"
+			authentication-success-handler-ref="authenticationSuccessHandler"
+			authentication-failure-handler-ref="authenticationFailureHandler" />
+		<security:logout invalidate-session="true"
+			logout-url="/j_spring_security_logout" logout-success-url="/login.jsp" />
+
+		<!-- &lt;!&ndash; 实现免登陆验证 &ndash;&gt; -->
+		<!-- <security:remember-me data-source-ref="proxyDataSource" token-validity-seconds="1209600"/> -->
+
+		<!-- 控制session 的并发数量 -->
+		<security:session-management
+			session-fixation-protection="migrateSession">
+			<security:concurrency-control
+				max-sessions="1" />
+		</security:session-management>
+
+	</security:http>
+
+	<!-- 配置过滤器 -->
+	<!-- adminAuthenticationManager -->
+	<bean id="adminFilter" class="com.inesv.digiccy.back.filter.FilterSecurityInterceptor">
+		<!-- 用户拥有的权限 -->
+		<property name="authenticationManager" ref="authenticationManager"></property>
+		<!-- 用户是否拥有所请求资源的权限 -->
+		<property name="accessDecisionManager" ref="adminAccessDecisionManager"></property>
+		<!-- 资源与权限对应关系 -->
+		<property name="securityMetadataSource" ref="adminSecurityMetadataSource"></property>
+	</bean>
+
+	<!-- 配置认证管理器 -->
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="myUserDetailService">
+			<security:password-encoder ref="myPasswordEncode">
+				<!--使用用户名当盐值 -->
+				<security:salt-source user-property="username" />
+			</security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<bean id="myUserDetailService" class="com.inesv.digiccy.query.auth.QueryUser" />
+
+	<bean id="adminAccessDecisionManager" class="com.inesv.digiccy.back.security.MyAccessDecisionManager">
+	</bean>
+
+	<bean id="adminSecurityMetadataSource"
+		class="com.inesv.digiccy.back.security.InvocationSecurityMetadataSource">
+	</bean>
+
+	<security:global-method-security
+		jsr250-annotations="enabled" secured-annotations="enabled" />
+
+	<!-- 认证失败处理器 -->
+	<bean id="authenticationFailureHandler"
+		class="com.inesv.digiccy.back.security.AdminAuthenticationFailureHandler" />
+
+	<!-- 认证成功处理器 -->
+	<bean id="authenticationSuccessHandler" class="com.inesv.digiccy.back.security.AuthSuccessHandler">
+		<property name="defaultTargetUrl">
+			<value>/auth/login.do</value>
+		</property>
+	</bean>
+
+	<!-- 盐值 -->
+	<bean id="myPasswordEncode" class="com.inesv.digiccy.back.security.MyPasswordEncode">
+		<constructor-arg name="encode" value="md5"></constructor-arg>
+	</bean>
+
+</beans>
+	

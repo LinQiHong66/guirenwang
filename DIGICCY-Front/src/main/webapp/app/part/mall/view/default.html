@@ -1,0 +1,48 @@
+<div class="mall">
+	<div class="container clearfix">
+		<div class="clearfix">
+			<div class="sel_box">
+				<ul class="sul1 clearfix">
+					<li>{{tit[0]+'：'}}</li>
+					<li ng-repeat='a in fenlei'><a href="#">{{a.name}}</a></li>
+				</ul>
+				<div class="slTop">
+					<ul class="sul2 clearfix">
+						<li>{{tit[1]+'：'}}</li>
+						<li><a href="#">{{paixu[0].name}}</a></li>
+						<li><a href="#">{{paixu[1].name}}<i class="iconfont">&#xe625;</i></a></li>
+						<li><a href="#">{{paixu[2].name}}</a></li>
+						<li><a href="#">{{paixu[3].name}}</a></li>
+					</ul>
+					<div class="searchBox">
+						<input type="text" placeholder="输入想搜索的商品"><button>搜索</button>
+					</div>
+				</div>
+			</div>
+			<div class="listBox clearfix" ng-repeat='a in shangpin'>
+				<a href="#/discription"><img ng-src="{{a.img}}"></a>
+				<div class="li_tit">
+					<a href="#/discription">{{a.tit}}</a>
+				</div>
+				<div class="buy clearfix">
+					<div class="sale">{{a.price+"元"}}</div>
+					<div class="shop">
+						<span class="iconfont"><a href="#">&#xe623;</a></span>
+						<button>{{a.buy}}</button>
+					</div>
+				</div>
+				<div class="sale">{{a.sale}}</div>
+			</div>
+		</div>
+		
+		<div class="page">
+			<button>上一页</button>
+			<select>
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+			</select>
+			<button>下一页</button>
+		</div>
+	</div>
+</div>

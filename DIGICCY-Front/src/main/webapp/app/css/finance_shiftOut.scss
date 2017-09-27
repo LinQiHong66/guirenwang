@@ -1,0 +1,388 @@
+@charset "UTF-8";
+//这里的嵌套格式一定要用花阔号，
+//每句都要用结束符可以使用私有属性
+@import "_config.scss";
+@import "_mixins.scss";
+@import "variable.scss";
+.shiftOut{width: 970px;
+     width: 96%;
+    padding: 20px 2%;
+  h3{
+    padding: 22px;
+    font-size: 22px;
+  }
+  select,input{
+    border: 1px solid #ccc;
+  }
+  .shiftOutT{
+    margin-top: 30px;
+    padding: 20px;
+    .shiftOutTT{
+      label{
+        width: 30%;
+        display: inline-block;
+        text-align: right;
+      }
+      select{
+        height: 30px;
+        width: 200px;
+      }
+      .fl{
+        width: 50%;
+        line-height: 30px;
+      }
+    }
+    .shiftOutTB{
+      .shiftOutTBL,.shiftOutTBR{
+        width: 50%;
+        text-align: left;
+      }
+      .shiftOutTBL{
+        label{
+          width: 30%;
+          display: inline-block;
+          text-align: right;
+        }
+        >div{
+          margin: 10px 0px;
+        }
+        input{
+          padding: 0;
+          padding-left: 5px;
+          width: 193px;
+          height: 26px;
+        }
+        span:nth-child(3),a{
+          padding-left: 10px;
+        }
+      }
+      .shiftOutTBR{
+        >div{
+          margin: 10px 0px;
+        }
+        input{
+          padding: 0;
+          padding-left: 5px;
+          width: 101px;
+          height: 26px;
+        }
+        span:nth-child(2){
+          background-color: $tcolor1;
+          height: 28px;
+          line-height: 28px;
+          cursor: pointer;
+          padding: 0 10px;
+          &:hover{
+            background-color: $tcolor2;
+          }
+        }
+        span:nth-child(3){
+          line-height: 30px;
+          margin-left: 5px;
+        }
+        .RBtn{
+          span{
+            display: inline-block;
+            width: 200px;
+            background-color: $tcolor1;
+            height: 30px;
+            line-height: 30px;
+            color: #fff;
+            text-align: center;
+            margin-left: 70px;
+            cursor: pointer;
+            &:hover{
+              background-color: $tcolor2;
+            }
+          }
+        }
+      }
+    }
+  }
+  .record{
+    h5{
+      padding: 20px;
+    }
+    ul{
+      border-bottom: 1px solid rgba(204, 204, 204, 0.4);
+      li{
+        text-align: center;
+        padding: 10px 0;
+        float: left;
+        width: $width/7;
+      }
+    }
+    ul.ulHeader {
+      background-color: $ulcolor;
+    }
+    .Jpage{
+      text-align: center;
+      span{
+        background-color: $tcolor1;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin:0 10px;
+        color: #fff;
+        &:hover{
+          background-color: $tcolor2;
+        }
+      }
+      p:nth-child(1){
+        padding-top: 20px;
+      }
+      p{
+        padding-top:15px;
+      }
+      p select{
+        width: 50px;
+        margin: 0 10px;
+      }
+    }
+  }
+
+}
+//最大宽屏1200px的时候
+  @include respond-to(lg){
+    .shiftOut{
+  h3{
+    padding: 20px;
+    font-size: 20px;
+  }
+  .shiftOutT{
+    margin-top: 10px;
+    padding: 20px;
+    font-size:14px;
+    .shiftOutTT{
+      label{
+        width: 20%;
+        display: inline-block;
+        text-align: right;
+      }
+      select{
+        height: 30px;
+        width: 200px;
+      }
+      .fl{
+        width: 50%;
+        line-height: 30px;
+      }
+    }
+    .shiftOutTB{
+      .shiftOutTBL,.shiftOutTBR{
+        width: 50%;
+        text-align: left;
+      }
+      .shiftOutTBL{
+        label{
+          width: 20%;
+          display: inline-block;
+          text-align: right;
+        }
+        >div{
+          margin: 10px 0px;
+        }
+        input{
+          padding: 0;
+          padding-left: 5px;
+          width: 193px;
+          height: 26px;
+        }
+        span:nth-child(3),a{
+          padding-left: 10px;
+        }
+      }
+      .shiftOutTBR{
+        >div{
+          margin: 10px 0px;
+        }
+        input{
+          padding: 0;
+          padding-left: 5px;
+              width: 96px;
+          height: 26px;
+        }
+        span:nth-child(2){
+          background-color: $tcolor1;
+          height: 28px;
+          line-height: 28px;
+          cursor: pointer;
+          padding: 0 10px;
+          &:hover{
+            background-color: $tcolor2;
+          }
+        }
+        span:nth-child(3){
+          line-height: 30px;
+          margin-left: 5px;
+        }
+        .RBtn{
+          span{
+            display: inline-block;
+            width: 200px;
+            background-color: $tcolor1;
+            height: 30px;
+            line-height: 30px;
+            color: #fff;
+            text-align: center;
+            margin-left: 70px;
+            cursor: pointer;
+            &:hover{
+              background-color: $tcolor2;
+            }
+          }
+        }
+      }
+    }
+  }
+  .record{
+    h5{
+      padding: 20px;
+    }
+    ul{
+      border-bottom: 1px solid rgba(204, 204, 204, 0.4);
+      li{
+        text-align: center;
+        padding: 10px 0;
+        float: left;
+        width: $width/7;
+      }
+    }
+    ul.ulHeader {
+      background-color: $ulcolor;
+    }
+    .Jpage{
+      text-align: center;
+      span{
+        background-color: $tcolor1;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin:0 10px;
+        color: #fff;
+        &:hover{
+          background-color: $tcolor2;
+        }
+      }
+      p:nth-child(1){
+        padding-top: 20px;
+      }
+      p{
+        padding-top:15px;
+      }
+      p select{
+        width: 50px;
+        margin: 0 10px;
+      }
+    }
+  }
+
+}
+  }
+
+
+//最大宽屏768px的时候
+.shiftOut{
+  .shiftOutT .shiftOutTB .shiftOutTBL{
+    @include respond-to(sm){
+      float: none;
+      width: 100%;
+    }
+    >div{
+      @include respond-to(sm){
+        width: 100%;
+      }
+      label{
+        @include respond-to(sm){
+          width: 15%;
+        }
+      }
+    }
+  }
+  .shiftOutT .shiftOutTB  .shiftOutTBR{
+    @include respond-to(sm){
+      float: none;
+      width: 100%;
+    }
+    .clearfix>div{
+      @include respond-to(sm){
+        margin-left: 5.2%;
+      }
+    }
+    .RBtn{
+      @include respond-to(sm){
+        margin-left: 5.2%;
+      }
+    }
+  }
+}
+//最大宽屏480px的时候
+.shiftOut{
+  .record{
+    @include respond-to(xs){
+      overflow: scroll;
+    }
+    ul{
+      @include respond-to(xs){
+        min-width: 780px;
+      }
+    }
+  }
+  .shiftOutT{
+    .shiftOutTT .fl{
+      @include respond-to(xs){
+        float: none;
+        width: 100%;
+      }
+      label{
+        @include respond-to(xs){
+          display:block;
+          width: auto;
+          text-align: left;
+        }
+      }
+    }
+    .shiftOutTB .shiftOutTBL > div label{
+      @include respond-to(xs){
+        display:block;
+        width: auto;
+        text-align: left;
+      }
+    }
+    .shiftOutTB .shiftOutTBR .clearfix > div{
+      @include respond-to(xs){
+        margin-left: 0;
+        width: 100%;
+        margin-bottom: 5px;
+      }
+      span{
+        @include respond-to(xs){
+          display: block;
+          width: auto;
+          text-align: left;
+          margin-bottom: 1px;
+        }
+      }
+      input{
+        @include respond-to(xs){
+          width: 191px;
+        }
+      }
+    }
+    .shiftOutTB .shiftOutTBR .RBtn{
+      @include respond-to(xs){
+        margin-left: 0;
+      }
+      span{
+        @include respond-to(xs){
+          margin-left: 0;
+        }
+      }
+    }
+  }
+  .record .Jpage{
+    p{
+      @include respond-to(xs){
+        min-width: 680px;
+      }
+    }
+  }
+}

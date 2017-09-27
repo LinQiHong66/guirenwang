@@ -1,0 +1,194 @@
+html{font-size: 16px;}
+body{font-size: 16px;background: #ecf0f1;}
+$bg1:#f5f5f5;
+$tcolor1:#117dc8;
+$tcolor2:#76bdef;
+@import "_config";
+@import "_mixins";
+@import "common.css";
+@import "header";
+@import "nav2g";
+
+.mall{
+	width: 100%;
+	font-size: 12px;
+	.container{
+		width: 1200px;
+		margin: 0 auto;
+		background-color: #fff;
+		box-shadow: 0px 0px 10px #ccc;
+		.sul1{
+			padding-left: 30px;
+			padding-top: 20px;
+			position: relative;
+			li{
+				float: left;
+				padding:0 10px;
+				line-height: 30px;
+			}
+		}
+		.slTop{
+			width: 100%;
+			background-color: $bg1;
+			position: relative;
+		}
+		.sul2{
+			padding-left: 30px;
+			// padding-top: 10px;
+			line-height: 30px;
+			position: relative;
+			li{
+				float: left;
+				padding:0 10px;
+				line-height: 40px;
+				// line-height: 30px;
+				a{
+					display: block;
+					.iconfont{
+						position: absolute;
+						font-size: 5px;
+						transform:rotate(180deg);
+						-ms-transform:rotate(180deg);
+						-moz-transform:rotate(180deg);
+						-webkit-transform:rotate(180deg);
+						-o-transform:rotate(180deg);
+						color:#ccc;
+					}
+				}
+			}
+			li:nth-child(3){
+				padding-right: 20px;
+			}
+		}
+		.searchBox{
+			line-height: 40px;
+			position: absolute;
+			right: 30px;
+			top:0;
+			input[type='text']{
+				padding: 0 10px;
+				border: none;
+				height: 20px;
+				color:#555;
+				font-family:'microsoft yahei';
+			}
+			button{
+				background-color: $tcolor1;
+				font-size: 12px;
+				border: none;
+				color:#fff;
+				height: 20px;
+				font-family: 'microsoft yahei';
+			}
+		}
+
+		//listbox
+		.listBox{
+			float: left;
+			width: 20.7%;
+			margin: 30px 2%;
+			padding: 20px 0;
+			transition: all .4s;
+
+			// border: 1px	solid #ccc;
+			img{
+				width: 90%;
+				padding: 5%;
+			}
+			.li_tit{
+				padding: 10px;
+				a{
+					height: 36px;
+					display: block;
+				}
+			}
+			.buy{
+				position: relative;
+				height: 30px;
+				.sale{
+					position: absolute;
+					left: 0;
+					top: 0;
+					font-size: 18px;
+					color:$tcolor2;
+					padding:5px 10px; 
+				}
+				.shop{
+					position: absolute;
+					padding:5px 10px; 
+					right: 0;
+					top: 0;
+					.iconfont{
+						a{
+							color:#999;
+							margin: 0 10px;
+						}
+						a:hover{
+							color:#ccc;
+							
+						}
+					}
+					button{
+						background-color: $tcolor1;
+						font-size: 12px;
+						border: none;
+						color:#fff;
+						line-height: 25px;
+						font-family: 'microsoft yahei';
+						padding: 0 10px;
+					}
+				}
+			}
+			.sale{
+				padding:5px 10px;
+				color:#ccc; 
+			}
+		}
+		.listBox:hover{
+			box-shadow: 0px 0px 10px #ccc;
+		}
+		.page{
+			padding:20px; 
+			text-align: center;
+			button{
+				background-color: $tcolor1;
+				font-size: 12px;
+				border: none;
+				color:#fff;
+				line-height: 20px;
+				font-family: 'microsoft yahei';
+				padding: 0 10px;
+			}
+		}
+	}
+}
+
+// xs:480px;sm:768px;md:992px;lg:1200px
+//Responsive
+@include respond-to(lg) {
+	.mall{
+		.container{
+			width: 100%;
+			// 0000000000
+		}
+	}
+
+	
+}
+
+@include respond-to(md) {
+	.mall{
+		.container{
+			width: 100%;
+			.listBox{
+				float: left;
+				width: 50%;
+				margin: 5% 0%;
+				padding: 0% 0;
+				transition: all .4s;
+			}
+		}
+	}
+
+	
+}

@@ -1,0 +1,106 @@
+<div class="pj">
+    <div class="pingjia">
+        <div class="pjIntro">
+            <h4 class="pjTitle">{{pjTitle}}</h4>
+            <div class="box-padding-add13">
+                <div class="star-level">
+                    {{pjHeader.xing}}：
+                    <ul id="star">
+                        <li ng-class="{'true':'active'}[xarr[1]==1]"></li>
+                        <li ng-class="{'true':'active'}[xarr[2]==2]"></li>
+                        <li ng-class="{'true':'active'}[xarr[3]==3]"></li>
+                        <li ng-class="{'true':'active'}[xarr[4]==4]"></li>
+                        <li ng-class="{'true':'active'}[xarr[5]==5]"></li>
+                    </ul>
+                    （{{pjHeader.all}} <span style="color: rgba(38, 81, 248, 0.85);">{{pjHeader.num}}</span>{{pjHeader.piao}}）
+                </div>
+                <div class="level-content">
+                    <ul>
+                        <li>{{pjHeader.skill}}：
+                            <div class="progress">
+                                <div class="progress-bar" ng-style="myWidth1"></div>
+                            </div> <span style="color: rgba(38, 81, 248, 0.85);">{{pjHeader.nums}}{{pjHeader.fen}}</span>
+                        </li>
+                        <li>{{pjHeader.application}}：
+                            <div class="progress">
+                                <div class="progress-bar" ng-style="myWidth2"></div>
+                            </div> <span style="color: rgba(38, 81, 248, 0.85);">{{pjHeader.numa}}{{pjHeader.fen}}</span>
+                        </li>
+                        <li>{{pjHeader.foreground}}：
+                            <div class="progress">
+                                <div class="progress-bar" ng-style="myWidth3"></div>
+                            </div> <span style="color: rgba(38, 81, 248, 0.85);">{{pjHeader.numf}}{{pjHeader.fen}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="link-cc">
+            <h4 class="intro-title">{{link.h4}}</h4>
+            <div class="box-padding-add13 clearfix">
+                <div class="linkr">
+                    <ol class="score-ol">
+                        <li>{{link.skill}}：
+                            <label><input name="s1" type="radio" checked="checked" value="5">&nbsp;5{{pjHeader.fen}}</label>
+                            <label><input name="s1" type="radio" value="4">&nbsp;4{{pjHeader.fen}}</label>
+                            <label><input name="s1" type="radio" value="3">&nbsp;3{{pjHeader.fen}}</label>
+                            <label><input name="s1" type="radio" value="2">&nbsp;2{{pjHeader.fen}}</label>
+                            <label><input name="s1" type="radio" value="1">&nbsp;1{{pjHeader.fen}}</label>
+                        </li>
+                        <li>{{link.application}}：
+                            <label><input name="s2" type="radio" checked="checked" value="5">&nbsp;5{{pjHeader.fen}}</label>
+                            <label><input name="s2" type="radio" value="4">&nbsp;4{{pjHeader.fen}}</label>
+                            <label><input name="s2" type="radio" value="3">&nbsp;3{{pjHeader.fen}}</label>
+                            <label><input name="s2" type="radio" value="2">&nbsp;2{{pjHeader.fen}}</label>
+                            <label><input name="s2" type="radio" value="1">&nbsp;1{{pjHeader.fen}}</label>
+                        </li>
+                        <li>{{link.foreground}}：
+                            <label><input name="s3" type="radio" checked="checked" value="5">&nbsp;5{{pjHeader.fen}}</label>
+                            <label><input name="s3" type="radio" value="4">&nbsp;4{{pjHeader.fen}}</label>
+                            <label><input name="s3" type="radio" value="3">&nbsp;3{{pjHeader.fen}}</label>
+                            <label><input name="s3" type="radio" value="2">&nbsp;2{{pjHeader.fen}}</label>
+                            <label><input name="s3" type="radio" value="1">&nbsp;1{{pjHeader.fen}}</label>
+                        </li>
+                    </ol>
+                </div>
+                <div class="linkl">
+                    <textarea id="msgaaa" class="text-area"></textarea>
+                    <div class="pinglun-bonus">
+                        <a ng-click="upcomment()" class="sub-comment">{{link.sub}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="detail-Parameter">
+            <h4 class="intro-title">{{dp.h4}}</h4>
+            <div class="dpd">
+
+                <div class="single-comment" ng-repeat="i in dp.pinglun">
+                    <div class="comment-title">
+                        <span class="cts1">{{i.uesr}}</span>
+                        <span class="cts2">{{i.speak}}：</span>
+                        <span class="comment-content">{{i.content}}</span>
+                    </div>
+                    <div class="cts3">
+                            <span onclick="subcomment(9,1)" class="dianzan"> {{i.zan}}
+                                <span class="dianzan-value" id="zan_7379_2">(0)</span>
+                            </span>
+                            <span onclick="subcomment(9,2)" class="dianzan"> {{i.zhong}}
+                                <span class="dianzan-value" id="zan_7379_1">(0)</span>
+                            </span>
+                            <span onclick="subcomment(9,3)" class="dianzan">{{i.cha}}
+                                <span class="dianzan-value" id="zan_7379_0">(0)</span>
+                            </span>
+                    </div>
+                    <div class="tm">{{i.time}}</div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="pages"> 6 条记录 1/1 页</div>
+    </div>
+</div>

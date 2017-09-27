@@ -1,0 +1,106 @@
+@charset 'utf-8';
+@import "_config";
+@import "_mixins";
+
+.copyRight{
+  height: 65px;
+  width:100%;
+  background-color: #1b1b1b;
+  .container{
+    text-align: center;
+    position: relative;
+    font-size: 12px;
+    width: 100%;
+    margin: 0 auto;
+    line-height: 65px;
+    color:#9da09c;
+  }
+}
+
+.contact {
+  height: 100px;
+  width: 100%;
+  background-color: #555;
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 100px;
+    .ct_box {
+      float: left;
+      width: 33%;
+      i {
+        display: inline-block;
+        background:url(../images/contact.png);
+        background-position:0 0;
+        width: 50px;
+        height: 50px;
+        vertical-align:middle;
+      }
+      span {
+        color:#fff;
+      }
+    }
+  }
+}
+
+// xs:480px;sm:768px;md:992px;lg:1200px;mg:1400px
+@include respond-to(lg) {
+  .contact {
+    height: 100px;
+    width: 100%;
+    background-color: #555;
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 100px;
+      .ct_box {
+        float: left;
+        width: 33%;
+        i {
+          display: inline-block;
+          background:url(../images/contact.png);
+          background-position:0 0;
+          width: 50px;
+          height: 50px;
+          vertical-align:middle;
+        }
+        span {
+          color:#fff;
+        }
+      }
+    }
+  }
+}
+
+// xs:480px;sm:768px;md:992px;lg:1200px;mg:1400px
+@include respond-to(md) {
+  .contact {
+    height: 100px;
+    width: 100%;
+    background-color: #555;
+    display: none;
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 100px;
+      .ct_box {
+        float: left;
+        width: 33%;
+        i {
+          display: inline-block;
+          background:url(../images/contact.png);
+          background-position:0 0;
+          width: 50px;
+          height: 50px;
+          vertical-align:middle;
+        }
+        span {
+          color:#fff;
+        }
+      }
+    }
+  }
+}

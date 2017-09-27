@@ -1,0 +1,9 @@
+reg.controller('finalCtrl',['$scope','$http',function(scope,http){
+	http({
+		url:'../../register.json',
+		method:'GET'
+	})
+	scope.goindex=function(){
+		location.href='/index.html';
+	}
+}])

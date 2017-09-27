@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" ng-app="financeApp" ng-controller="mainCtr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title ng-bind="title"></title>
+    <link type="text/css" rel="stylesheet" href="../../css/finance.css"/>
+    <script type="text/javascript" src="../../js/getip.js"></script>
+    <script type="text/javascript" src="../../lib/jquery-2.2.3.js"></script>
+    <script type="text/javascript" src="../../lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../../lib/angular/angular-animate.min.js"></script>
+    <script type="text/javascript" src="../../lib/angular/angular-route.min.js"></script>
+    <script type="text/javascript" src="../../js/autoActive.js"></script>
+    <script type="text/javascript" src="../../js/gundong.js"></script>
+    <script type="text/javascript" src="../../js/jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="../../js/clipboard.min.js"></script>
+    <script type="text/javascript" src="../../js/ngclipboard.min.js"></script>
+    <script type="text/javascript" src="js/finance.js"></script>
+    <script type="text/javascript" src="js/mainCtr.js"></script>
+    <script type="text/javascript" src="../../js/post.js"></script>
+    <script type="text/javascript" src="../../js/get.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/entrust.js"></script>
+    <script type="text/javascript" src="js/forward.js"></script>
+    <script type="text/javascript" src="js/generalize.js"></script>
+    <script type="text/javascript" src="js/liftNow.js"></script>
+    <script type="text/javascript" src="js/prize.js"></script>
+    <script type="text/javascript" src="js/query.js"></script>
+    <script type="text/javascript" src="js/reCard.js"></script>
+    <script type="text/javascript" src="js/recommend.js"></script>
+    <script type="text/javascript" src="js/shiftOut.js"></script>
+    <script type="text/javascript" src="js/shiftTo.js"></script>
+    <script type="text/javascript" src="js/jiedai.js"></script>
+</head>
+<body>
+<!--头部开始-->
+<div class="header">
+    <div class="hd_inner">
+        <div class="hd_logo"><a href="#"><img ng-src="{{logo}}"/></a></div>
+       <!--  <span class="ce" ng-click="changelg()" data-lg="{{lg}}"><em ng-class="{'true':'on'}[lg=='chinese']">中</em>/<em ng-class="{'true':'on'}[lg=='english']">E</em></span> -->
+       <div class="blist clearfix">
+	        <div class='weixina' id='weixina'>
+	           <img src="../../images/header-weixin-logo.png"><span>关注微信</span>
+	           <div class='wxbox' id='wxbox'><img src="../../images/wx-qrcode.png"></div>
+	        </div>
+	        <!-- 未登录状态 -->
+	        <div class='dlzc' ng-style="loginq"><img src="../../images/zhuce.png"><a class="zc" href="register/register.html">注册</a>|<span class='dl' ng-click="dlshow()">登录</span></div>
+	        <!-- 登录状态 -->
+	        <div class='dlh' ng-style="loginh">
+	           <img src="../../images/zhuce.png"><span class="namea">{{loginInfo.username}}</span><i class='icon iconfont'>&#xe625;</i>
+	           <div class='xxbox'>
+	              <p>ID:<span class="info">{{loginInfo.id}}</span></p>
+	              <p>注册时间:<span class="info">{{loginInfo.date}}</span></p>
+	              <p class='out' ng-click='outlogin()'>退出账号</p>
+	           </div>
+	        </div>
+	        <!-- 切换语言 -->
+	        <div class="lanague">
+	            <span class="langa"><a class="en" href="#"></a><a href="">English</a><i class='icon iconfont'>&#xe625;</i></span>
+				<ul class='langbox'>
+					<li class="en"><a href="?lang=en">English</a></li>
+					<li class="cn"><a href="?lang=cn">简体中文</a></li>
+				</ul>
+			</div>
+	    </div>
+        <div class="hd_list clearfix">
+            <div class="alist clearfix" id='slId'>
+                <a href="../../index.html" ng-bind="home"></a>
+                <a ng-bind="transaction" href="../transaction/index.html"></a>
+                <a ng-bind="finance"  class="on" ng-click='tiaoF()'></a>
+                <a ng-bind="safe" ng-click='tiaoS()'></a>
+               <!--  <a ng-bind="apply" ng-click='tiaoA()'></a>
+                 <a href="../jiedai/index.html" ng-bind='jiedai'></a> -->
+                <a ng-bind="help" href="../help/index.html"></a>
+                <a href="../cf/index.html">ICO众筹</a>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<!--头部结束-->
+<!--导航条开始-->
+<nav class="nav2Bg clearfix">
+    <div class="boxleft">
+        <div id="close" class="iconfont">&#xe625;</div>
+        <h2>财务中心<i>Financial center</i>
+        </h2>
+        <ul class='clearfix' id="ul2">
+            <li auto-active="active">
+                <a href="#/core">
+                    <span class="iconfont navIcon">&#xe615;</span>
+                    <span>{{fCore}}</span>
+                    <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/reCard">
+                    <span class="iconfont navIcon">&#xe617;</span>
+                    <span>{{fReCard}}</span>
+                     <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/liftNow">
+                    <span class="iconfont navIcon">&#xe624;</span>
+                    <span>{{fLiftNow}}</span>
+                     <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/shiftTo">
+                    <span class="iconfont navIcon">&#xe601;</span>
+                    <span>{{fShiftTo}}</span>
+                     <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/shiftOut">
+                    <span class="iconfont navIcon">&#xe600;</span>
+                    <span>{{fShiftOut}}</span>
+                     <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/entrust">
+                    <span class="iconfont navIcon">&#xe60f;</span>
+                    <span>{{fEntrust}}</span>
+                     <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/query">
+                    <span class="iconfont navIcon">&#xe611;</span>
+                    <span>{{fQuery}}</span>
+                     <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/generalize">
+                    <span class="iconfont navIcon">&#xe609;</span>
+                    <span>{{fGeneralize}}</span>
+                     <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/prize">
+                    <span class="iconfont navIcon">&#xe61c;</span>
+                    <span>{{fPrize}}</span>
+                     <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/recommend">
+                    <span class="iconfont navIcon">&#xe61a;</span>
+                    <span>{{fRecommend}}</span>
+                     <i></i>
+                </a>
+            </li>
+            <li auto-active="active">
+                <a href="#/forward">
+                    <span class="iconfont navIcon">&#xe626;</span>
+                    <span>{{fForward}}</span>
+                     <i></i>
+                </a>
+            </li>
+             <li auto-active="active">
+                <a href="#/jiedai" >
+                    <span class="iconfont navIcon">&#xe608;</span>
+                    <span>借贷</span>
+                    <i></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--导航条结束-->
+    <div ng-view class='boxright'></div>
+</nav>
+<!-- 版权部分 begin -->
+<div class="footr">
+    <p>CopyRight&copy; 2015-2016 数字交易平台 All Rights Reserved   |  <a href="#">ICP备7777777号-1</a></p>
+</div>
+<!-- 版权部分 end -->
+</body>
+</html>

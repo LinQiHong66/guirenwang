@@ -1,0 +1,52 @@
+  <style>
+   	   .tanchu{
+   	   	position: absolute;top:30%;right:15%;z-index: 999;width: 260px;height: 50px;background: #fff;border: 1px solid #000;color:#000;  padding:20px 10px;
+   	   }
+   	   .yincang{
+          position: absolute;bottom: 10px;right: 10px;
+   	   }
+   </style>
+<div class="log" ng-cloak>
+			<h2 class="pdtit">新币投票</h2>
+			<div class="tb" style='position: relative;'>
+			    <div ng-style="xianshi" class='tanchu'>{{tanchu}}
+				    <button class="yincang" ng-click='close()'> 确定</button>
+				</div>
+				<table>
+					<thead>
+						<th>币种</th>
+						<th>支持</th>
+						<th>反对</th>
+						<th>总数</th>
+						<th>比例</th>
+						<th>操作</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat='i in bi track by $index'>
+						    <td>{{i.coin_type}}</td>
+						    <td>{{i.support}}</td>
+						    <td>{{i.opposition}}</td>
+						    <td>{{i.total}}</td>
+						    <td>{{i.support}}:{{i.opposition}}</td>
+							<td>
+							    <a style="padding: 3px 10px;background: #117dc8;color:white;cursor:pointer;"  ng-click='zhichi(i.coin_type)'>支持</a>
+							    <a style="padding: 3px 10px;background: #117dc8;color:white;cursor:pointer;"  ng-click='fandui(i.coin_type)'>反对</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<ul class="page clearfix" style="display:none">
+				<li>
+					<span>上一页</span>
+				</li>
+				<li>
+					<select >
+						<option ng-repeat='num in pagenum'>{{num}}</option>
+					</select>
+				</li>
+				<li>
+					<span>下一页</span>
+				</li>
+			</ul>
+		</div>

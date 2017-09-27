@@ -1,0 +1,92 @@
+
+	<div class="subs clearfix" ng-cloak>
+		<h2 class="pdtit">认购中心</h2>
+		<div class="subBox" ng-repeat="data in dataList">
+			<div class="boxTop">
+				<h3>{{data.sub_name}}</h3>
+			</div>
+			<div class="boxBot clearfix">
+				<div class="bbLeft">
+					<img ng-src="/sub/getImage.do?value={{data.photo}}" style="width:80px;height:80px;">
+				</div>
+				<div class="bbRight clearfix">
+					<div class="brTop clearfix">
+						<div class="brtBox">
+							<div>{{data.price}}</div>
+							<div>发行价格</div>
+						</div>
+						<div class="brtBox">
+							<div>{{data.num}}</div>
+							<div>发行数量</div>
+						</div>
+						<div class="brtBox">
+							<div>{{data.already}}</div>
+							<div>已认购</div>
+						</div>
+						<div class="brtBox">
+							<div>{{data.limit_buy}}</div>
+							<div>限购</div>
+						</div>
+						<div class="brtBox">
+							<div>{{data.date}}</div>
+							<div>开启时间</div>
+						</div>
+					</div>
+					<div class="brBot">
+						<div class="bbr">
+							<span class="btn" style="cursor: pointer;" ng-click="reave($index)">立即抢购</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="powerBox" ng-class="{true:'powerlay'}[powerIn]">
+		<div class="power">
+			<div class="powerTitle"><img ng-src="/sub/getImage.do?value={{tphoto}}"><span>{{reaveData.sub_name}}</span>
+			    <button class='guanbi' ng-click='close()'>X</button>
+			</div>
+			<div class="powerInfo clearfix">
+				<div class="InfoBox">
+					<div>发行价格</div>
+					<div>{{reaveData.price}}</div>
+				</div>
+				<div class="InfoBox">
+					<div>发行数量</div>
+					<div>{{reaveData.num}}</div>
+				</div>
+				<div class="InfoBox">
+					<div>已认购</div>
+					<div>{{reaveData.already}}</div>
+				</div>
+				<div class="InfoBox">
+					<div>限购</div>
+					<div>{{reaveData.limit_buy}}</div>
+				</div>
+				<div class="InfoBox">
+					<div>开启时间</div>
+					<div class='tm'>{{reaveData.date}}</div>
+				</div>
+			</div>
+			<div class="buyInfo clearfix">
+				<div class="buyInfoLeft">
+					<p><span>认购币种：</span><span>{{reaveData.sub_name}}</span></p>
+					<p><span>解冻次数：</span><span>{{reaveData.thaw_num}}</span>次</p>
+					<p><span>解冻间隙：</span><span>{{reaveData.cycle}}</span>天</p>
+					<p><span>认购进度：</span><span>{{reaveData.status}}</span>%</p>
+				</div>
+				<div class="buyInfoRight">
+					<div><span>账号余额：</span><span class="buyInfoNum">{{money===null?0:money===undefined?0:(money+'CNY')}}</span></div>
+					<div><spna>认购数量：</spna><input type="text" ng-model="buyNum"></div>
+					<div><spna>交易密码：</spna><input type="password" ng-model="buyPass"></div>
+					<div><button ng-click="buyCoin()">立即认购</button></div>
+					<div class="tishi" ng-style='tsflag'>
+						<h6>{{tishi6}}</h6>
+						<p ng-click='closep()'>确定</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+

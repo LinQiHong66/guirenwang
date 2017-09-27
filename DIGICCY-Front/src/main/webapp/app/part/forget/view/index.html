@@ -1,0 +1,37 @@
+<div class="container">
+	<h2>修改交易密码</h2>
+	<div class="reg clearfix">	
+		<ul class="regBox clearfix">
+			<li >
+				<table>
+					<tbody>
+						<tr>
+							<td class="fr">用户名：</td>
+							<td><input type="text" ng-blur='userName()' ng-model='userval'><span ng-class="{true:'right',false:'erro'}[usertype]">{{usermessage}}</span></td>
+						</tr>
+						<tr>
+							<td class="fr">手机号码：</td>
+							<td><input type="text" ng-blur='phone()' ng-model='phoneval'><span ng-class="{true:'right',false:'erro'}[phonetype]">{{phonemessage}}</span></td>
+						</tr>
+						<tr>
+							<td class="fr">手机验证码：</td>
+							<td><input class='yzma' type="text" ng-blur='phoneyz()' ng-model='phoneyzval'><button ng-click='getphoneyz()' ng-bind='text' ng-disabled="isDisable"></button><span ng-class="{true:'right',false:'erro'}[phoneyztype]">{{phoneyzmessage}}</span></td>
+						</tr>
+						<tr>
+							<td class="fr">新交易密码：</td>
+							<td><input type="password" ng-blur='pdyz()' ng-model='pdyzval'><span ng-class="{true:'right',false:'erro'}[pdyztype]">{{pdyzmessage}}</span></td>
+						</tr>
+						<tr>
+							<td class="fr">确认交易密码：</td>
+							<td><input type="password" ng-blur='againpd()' ng-model='againpdval'><span ng-class="{true:'right',false:'erro'}[againpdtype]">{{againpdmessage}}</span></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="next">
+					<button ng-click='fgpd()'>找回交易密码</button>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+

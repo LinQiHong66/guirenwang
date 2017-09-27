@@ -1,0 +1,276 @@
+@charset "UTF-8";
+@import "_config.scss";
+@import "_mixins.scss";
+@import "variable.scss";
+@import "common.css";
+@import "header";
+@import "nav2g";
+@import "footr";
+
+.boxright{
+  box-shadow: 0px 0px 3px #ccc;
+    width: 970px;
+    float:right;
+    min-height:750px;
+    background-color: #fff;
+}
+@include respond-to(lg) {
+  .boxright{
+    width: 805px;
+    min-width: 320px;
+    min-height:600px;
+ }
+}
+@include respond-to(md) {
+  .boxright{
+    width: 100%;
+    min-height:500px;
+  }
+}
+$width:100%;
+$baise:#fff;
+body{
+  background-color: #ecf0f1;
+  
+}
+.buy {
+  color: #f30606;
+  font-size: 20px;
+}
+.gold {
+  color: #117dc8;
+  font-size: 20px;
+}
+.nav2Bg{
+  margin-bottom: 60px;
+}
+.jiedai{
+    h3{
+      height: 50px;
+      line-height: 50px;
+      text-align: left;
+      padding-left: 20px;
+      font-size: 22px;
+      margin: 15px 0;
+    }
+    .titleA{
+      margin: 0 auto;
+      border-top: 1px solid #5fa7da;
+      li{
+        float: left;
+        list-style: none;
+        width: $width/5;
+        height: 80px;
+        line-height: 40px;
+        padding: 10px 0;
+        text-align: center;
+        p{
+          text-align: center;
+          font-size: 14px;
+          color: #8796ab;
+        }
+      }
+    }
+    .imgbanner{
+      margin: 20px 0;
+      width: 100%;
+      height: 100px;
+      background-image: url("../images/loan_banner.jpg");
+      background-size: cover;
+    }
+    .infoA{
+      .infoB{
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        .left{
+          float: left;
+          width: 60%;
+          div{
+            height: 50px;
+            line-height: 50px;
+            padding-left: 50px;
+            font-size: 16px;
+            input[type="text"]{
+              height: 30px;
+              padding-left: 5px;
+              width: 150px;
+              border: 1px solid #ccc;
+            }
+            button{
+              border: 0;
+              background-color: #117dc8;
+              cursor: pointer;
+              width: 80%;
+              padding: 5px;
+              color: #fff;
+              font-size: 20px;
+              &:hover{
+                background-color:#5fa7da;
+              }
+            }
+            a{
+              cursor: pointer;
+              color:#117dc8;
+            }
+          }
+        }
+        .right{
+          float: right;
+          width: 39%;
+          border-left: 1px dotted #ccc;
+          min-height: 333px;
+          .titleC{
+            height: 40px;
+            line-height: 40px;
+            padding-left: 5px;
+            font-size: 14px;
+          }
+          .titleG{
+            background-color: #f0f0f0;
+            color: #555;
+          }
+          .titleD{
+            border-bottom: 1px solid #f5f5f5;
+          }
+          .clearfix{
+            border-bottom: 1px dotted #ccc;
+            height: 30px;
+            line-height: 30px;
+            cursor: pointer;
+            li{
+              float: left;
+              width: $width/3;
+              text-align: center;
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+    .jielu{
+      text-align: center;
+      margin-top: 30px;
+      .titleD{
+        height: 35px;
+        line-height: 35px;
+        border-bottom: 1px solid #5fa7da;
+        .clearfix{
+          li{
+            float: left;
+            width: $width/3;
+            cursor: pointer;
+            font-size: 16px;
+            &:hover{
+              background-color: #76bdef;
+            }
+            &.on{
+              background-color: #117dc8;
+              color: #fff;
+            }
+          }
+        }
+      }
+      .jieinfo{
+        .hidShow{
+          display: none;
+        }
+        .titleE{
+          background-color: #f0f0f0;
+          color: #555;
+        }
+        .weihuan .titleE,
+        .weihuan .titleF,
+        .jiekuan .titleE,
+        .jiekuan .titleF,
+        .huankuan .titleE,
+        .huankuan .titleF{
+          font-size: 14px;
+          height: 35px;
+          line-height: 35px;
+          cursor: pointer;
+          border-bottom: 1px dotted #ccc;
+          li{
+            float: left;
+          }
+        }
+        .weihuan .titleE li,
+        .weihuan .titleF li{
+          width: $width/9;
+        }
+        .jiekuan .titleE,
+        .jiekuan .titleF,
+        .huankuan .titleE,
+        .huankuan .titleF{
+          li{
+            width: $width/8;
+          }
+        }
+        .weihuan .titleF,
+        .jiekuan .titleF,
+        .huankuan .titleF{
+          li:nth-child(2){
+            line-height: 17px;
+          }
+        }
+      }
+    }
+    .fengxian{
+      div{
+        padding: 25px 20px;
+        line-height: 25px;
+        text-align: justify;
+        text-justify: inter-ideograph;
+        border-top: 1px solid #ccc;
+        font-size: 14px;
+      }
+    }
+}
+// xs:480px;sm:768px;md:992px;lg:1200px;mg:1400px
+@include respond-to(sm) {
+  .nav2Bg {
+    margin-bottom: 50px;
+  }
+  .jieinfo{
+    width: 100%;
+    overflow-y: scroll;
+  }
+  .weihuan,.jiekuan,.huankuan{
+    width: 992px;
+  }
+}
+@include respond-to(xs) {
+  .nav2Bg {
+    margin-bottom: 35px;
+  }
+  .jiedai .titleA {
+    border-top: 1px solid #cccccc;
+  }
+  .jiedai .titleA li {
+    float: none;
+    list-style: none;
+    width: 100%;
+    height: auto;
+    line-height: 20px;
+    padding: 5px 0;
+    text-align: left;
+  }
+  .jiedai .titleA li p {
+    display: inline;
+    padding-left: 15px;
+  }
+  .jiedai .imgbanner{
+    display: none;
+  }
+  .jiedai .infoA .infoB .left {
+    float: none;
+    width: 100%;
+  }
+  .jiedai .infoA .infoB .right {
+    float: none;
+    width: 100%;
+    border-left: 0;
+  }
+  .fengxian{
+    display: none;
+  }
+}

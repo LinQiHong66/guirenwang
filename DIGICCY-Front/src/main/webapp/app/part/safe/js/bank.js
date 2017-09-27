@@ -1,0 +1,247 @@
+app.controller('bkCtrl',['$scope','$http','$timeout',"$rootScope","postInfo","getInfo",function(scope,http,timeout,rootScope,postInfo,getInfo){
+	scope.hsHowFlg=false;
+	scope.bankFlg=false;
+	http({
+		url:'../../safe.json',
+		method:'GET'
+	})
+	.success(function(data){
+		scope.tit=data.bank.tit;
+		scope.tbtit=data.bank.tbtit;
+		scope.addaddress=data.bank.addaddress;
+	});
+	/*查询银行卡*/
+	scope.gongHttp=function(){
+		postInfo.dataInfos(rootScope.ip+"/inervbank/getBankInfo.do",{'userNo':rootScope.userNo,"token":rootScope.tt})  
+		.success(function(data){
+			scope.tbdata=data.bankInfoList;
+		})
+		.error(function(data){
+			console.log("安全中心的银行卡管理报错");
+		});
+	};
+	scope.gongHttp();
+	/*删除银行卡*/
+	scope.deleteBank=function(num){
+		postInfo.dataInfos(rootScope.ip+"/inervbank/getBankInfo.do",{'userNo':rootScope.userNo,"token":rootScope.tt})  
+		.success(function(data){
+			scope.deleteId=data.bankInfoList[num].id;
+			
+			postInfo.dataInfos(rootScope.ip+"/inervbank/delete.do",{'id':scope.deleteId,'userNo':rootScope.userNo,"token":rootScope.tt})  
+			.success(function(data){
+				timeout(function(){
+					scope.gongHttp();
+				},100);
+				return false;
+			})
+			.error(function(dat){
+				console.log("安全中心的银行卡管理删除按钮银行卡地址报错")
+			});
+		})
+		.error(function(dat){
+			console.log("安全中心的银行卡管理删除银行卡地址报错")
+		});
+	};
+	/*弹出框按钮*/
+	scope.addBank=function () {
+		scope.hsHowFlg=true;
+	};
+	/*关闭框按钮*/
+	scope.close=function(){
+		scope.hsHowFlg=false;
+	};
+	/*请求银行json选择银行*/
+	http({
+		url:'../../yinhang.json',
+		method:'GET'
+	})
+	.success(function(data){
+		scope.bankList=data;
+	});
+	scope.bankCalFlg=false;
+	scope.changeBank=function (num) {
+		scope.bankCalFlg=true;
+		scope.num=num;
+		if(scope.num==null){
+			scope.bankCalFlg=false;
+		}else {
+			scope.bankCalFlg=true;
+		};
+		http({
+			url:'../../yinhang.json',
+			method:'GET'
+		})
+		.success(function(data){
+			for(var i=0;i<data.length;i++){
+				if(scope.num==data[i].id){
+					scope.openB=data[i].bank;
+				};
+			};
+		});
+	};
+/*请求省市区json*/
+	/*选择省*/
+	http({
+		url:'../../address.json',
+		method:'GET'
+	})
+	.success(function(data){
+		scope.list=data.province;
+		scope.selVal=scope.list[0].name;
+	});
+	scope.provinceFlg=false;
+	scope.getindex=function(a){
+		try{
+			for(var i=0;i<scope.list.length;i++){
+				if(scope.list[i].name==scope.selVal.name){
+					scope.index=i;
+					scope.province=scope.selVal.name;
+					scope.provinceFlg=true;
+					break;
+				};
+			};
+		}
+		catch(err){
+			scope.index=100;
+			scope.provinceFlg=false;
+		};
+	};
+	scope.cityFlg=false;
+	scope.getindex1=function(a){
+		try{
+			for(var i=0;i<scope.list[scope.index].city.length;i++){
+				if(scope.list[scope.index].city[i].name==scope.selVal1.name){
+					scope.index1=i;
+					scope.city=scope.selVal1.name;
+					scope.cityFlg=true;
+					break;
+				};
+			};
+		}
+		catch(err){
+			scope.index1=100;
+			scope.cityFlg=false;
+		};
+	};
+	/*选择市区*/
+	scope.getindex2=function(a){
+		scope.area=scope.selVal2.name;
+	}
+	/*添加银行卡*/
+	scope.onceAppend=function(){
+		if(scope.bankCalFlg==false){
+			scope.bindphoneflg=true;
+			scope.bindphoneTip="请选择开户银行!";
+			timeout(function(){
+				scope.bindphoneflg=false;
+			},1000);
+			return false;
+		};
+		if(scope.provinceFlg==false||scope.cityFlg==false){
+			scope.bindphoneflg=true;
+			scope.bindphoneTip="请选择开户省市!";
+			timeout(function(){
+				scope.bindphoneflg=false;
+			},1000);
+			return false;
+		};
+		if(scope.subbranch!=null){
+			if(scope.subbranch.length<0){
+				scope.bindphoneflg=true;
+				scope.bindphoneTip="开户支行不能为空!";
+				timeout(function(){
+					scope.bindphoneflg=false;
+				},1000);
+				return false;
+			};
+		}else{
+			scope.bindphoneflg=true;
+			scope.bindphoneTip="开户支行不能为空!";
+			timeout(function(){
+				scope.bindphoneflg=false;
+			},1000);
+			return false;
+		};
+		if(scope.compell!=null){
+			if(scope.compell.length<0){
+				scope.bindphoneflg=true;
+				scope.bindphoneTip="姓名不能为空!";
+				timeout(function(){
+					scope.bindphoneflg=false;
+				},1000);
+				return false;
+			}
+		}else{
+			scope.bindphoneflg=true;
+			scope.bindphoneTip="姓名不能为空!";
+			timeout(function(){
+				scope.bindphoneflg=false;
+			},1000);
+			return false;
+		};
+		if(scope.bankCard!=null){
+			if(scope.bankCard.length>14){
+				postInfo.dataInfos(rootScope.ip+"/common/getTradePassword.do",{'userNo':rootScope.userNo,"token":rootScope.tt,'dealPwd':scope.passWord})  
+				.success(function(data){
+					if(data.code==100){
+						scope.cityArea=scope.city+scope.area;
+			            postInfo.dataInfos(rootScope.ip+"/inervbank/bankinfo.do",
+			               {'userNo':rootScope.userNo,
+			               "token":rootScope.tt,
+			                'remark_name':scope.annotate,
+							'bank':scope.openB,
+							'province':scope.province,
+							'city':scope.cityArea,
+							'branch':scope.subbranch,
+							'name':scope.compell,
+							'bank_num':scope.bankCard})  			
+						.success(function(data){
+							scope.annotate=scope.subbranch=scope.compell=scope.bankCard=scope.passWord="";
+							scope.hsHowFlg=false;
+							timeout(function(){
+								scope.gongHttp();
+							},100);
+							return false;
+						})
+						.error(function(data){
+							console.log("安全中心的银行卡管理报错");
+						});
+					}else if(data.code==22){
+						scope.bindphoneflg=true;
+						scope.bindphoneTip="请输入正确的交易密码!";
+						scope.passWord="";
+						timeout(function(){
+							scope.bindphoneflg=false;
+						},1000);
+						return false;
+					}else if(data.code==200){
+						scope.bindphoneflg=true;
+						scope.bindphoneTip="添加银行卡地址失败!";
+						timeout(function(){
+							scope.bindphoneflg=false;
+						},1000);
+						return false;
+					};
+				})
+				.error(function(data){
+					console.log("安全中心的银行卡管理报错");
+				});
+			}else{
+				scope.bindphoneflg=true;
+				scope.bindphoneTip="请输入正确的银行卡号!";
+				scope.bankCard="";
+				timeout(function(){
+					scope.bindphoneflg=false;
+				},1000);
+				return false;
+			};
+		}else{
+			scope.bindphoneflg=true;
+			scope.bindphoneTip="银行卡号不能为空!";
+			timeout(function(){
+				scope.bindphoneflg=false;
+			},1000);
+			return false;
+		};		
+	};
+}]);

@@ -1,0 +1,323 @@
+@charset "UTF-8";
+html{font-size: 16px;}
+body{font-size: 16px;}
+@import "_config";
+@import "_mixins";
+@import "common.css";
+@import "variable";
+@import "header";
+// .register{
+//   width: 100%;
+//   padding-top: 30px;
+
+//   .container{
+//   	padding: 20px;
+//     width: 1160px;
+//     background-color: #fff;
+//     margin: 0 auto;
+//     box-shadow: 0px 0px 10px #ccc;
+//   }
+// }
+.view{
+	
+	// width: 1200px;
+	
+}
+
+.container{
+	margin: 0 auto;
+	box-shadow: 0px 0px 10px #ccc;
+	margin-top: 30px;
+	background-color: #fff;
+	width: 1160px;
+	padding: 20px;
+	h2{
+		text-align: center;
+		font-size: 24px;
+		font-weight: bold;
+	}
+}
+
+.jindu{
+	width: 80%;
+	margin: 0 auto;
+	padding-top: 50px;
+	position: relative;
+	.line{
+		width: 100%;
+		height: 2px;
+		background-color: #e5e5e5;
+	}
+	.circle{
+		width: 20px;
+		height: 20px;
+		background-color: #ccc;
+		border-radius: 10px;
+		position: absolute;
+		text-align: center;
+		font-size: 12px;
+		line-height: 20px;
+		color:#fff;
+	}
+	.one{
+		left: 0;
+		top: 40px;
+		margin-left: -10px;
+	}
+	.two{
+		left: 33%;
+		top: 40px;
+		margin-left: -10px;
+	}
+	.three{
+		left: 66%;
+		top: 40px;
+		margin-left: -10px;
+	}
+	.four{
+		left: 100%;
+		top: 40px;
+		margin-left: -10px;
+	}
+}
+
+.reg{
+	width: 800px;
+	margin: 0 auto;
+	padding-top: 100px;
+	padding-bottom: 50px;
+
+
+		.message{
+			font-size: 12px;
+			color:#c00;
+			width: 100%;
+			background-color: #fdf3f3;
+			padding:6px 0;
+			text-align: center;
+		}
+		.allright{
+			font-size: 14px;
+			color:#44a200;
+			width: 100%;
+			background-color: #f3fdf4;
+			padding:6px 0;
+			text-align: center;
+		}
+		td{
+			line-height: 30px;
+			padding:10px 10px;
+			input[type='text']{
+				padding-left: 10px;
+				width: 240px;
+				height: 26px;
+				border: 1px solid #ccc;
+			}
+			#phone {
+				width: 144px;
+			}
+			input[type='password']{
+				padding-left: 10px;
+				width: 240px;
+				height: 26px;
+				border: 1px solid #ccc;
+			}
+			.erro{
+				padding-left: 10px;
+				color:red;
+			}
+			.right{
+				padding-left: 10px;
+				color:green;
+			}
+			.getp {
+				background-color: #126eb4;
+				border: none;
+				color:white;
+				font: normal normal 14px/28px 'microsoft yahei';
+				cursor: pointer;
+			}
+		}
+
+		
+
+
+	.next{
+		padding-top: 20px;
+		padding-left: 20px;
+			button{
+				width: 200px;
+				background-color: #126eb4;
+				padding:8px 20px; 
+				border: none;
+				color:#fff;
+				font-family: 'microsoft yahei';
+				font-size: 14px;
+				cursor:pointer;
+			}
+		}
+}
+.selLi{
+	background-color: #ccc;
+	color:#fff
+}
+.fr{
+	text-align: right;
+}
+.active{
+	background-color: #126eb4 !important;
+}
+// maskbox
+.mask{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background-color: rgba(0,0,0,0.5);
+	top: 0;
+	left: 0;
+	.xieyi{
+		position: relative;
+		padding:50px 10px 20px 10px;
+		margin: 200px auto;
+		width: 500px;
+		height: 600px;
+		background-color: #fff;
+		.content{
+			font-size: 12px;
+			height: 600px;
+			overflow-y: scroll;
+			p{
+				text-indent: 2em;
+			}
+		}
+		.tit{
+			position: absolute;
+			top: 0;
+			left: 50%;
+			margin-left: -56px;
+			font-size: 14px;
+			font-weight: bold;
+			padding-top: 10px;
+		}
+		.close{
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			text-align: center;
+			line-height: 20px;
+			color: #fff;
+			background-color: #126eb4;
+			top: 10px;
+			right: 10px;
+			cursor: pointer;
+		}
+	}
+}
+.fr{
+	float: right;
+}
+.pt{
+	cursor: pointer;
+}
+.pt:hover{
+	color:red;
+}
+
+// respond
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(lg) {
+	.container{
+		padding:20px 0;
+		width: 100%;
+	}
+	.reg{
+		width: 100%;
+		padding-top: 30px;
+		.regType{
+			li{
+				padding: 5px 10px;
+				font-size: 12px;
+			}
+		}
+		li{
+			// width: 100%;
+			padding-top: 10px;
+			tr{
+				max-width: 300px;
+			}
+			td{
+				padding: 0 !important;
+				font-size: 10px;
+				input{
+
+					max-width: 120px;
+				}
+				.yzma{
+					max-width: 100px;
+				}
+				.yzmimg{
+					max-width: 100px;
+				}
+				.erro{
+					font-size: 10px;
+					position: absolute;
+					line-height: 15px;
+					max-width: 100px;
+					padding-left: 10px;
+					color:red;
+				}
+				.right{
+					max-width: 100px;
+					padding-left: 10px;
+					color:green;
+				}
+			}
+		}
+	}
+	// maskbox
+	.mask{
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		background-color: rgba(0,0,0,0.5);
+		top: 0;
+		left: 0;
+		.xieyi{
+			position: relative;
+			padding:50px 10px 20px 10px;
+			margin: 10% auto;
+			width: 90%;
+			height: 80%;
+			background-color: #fff;
+			.content{
+				font-size: 12px;
+				height: 100%;
+				overflow-y: scroll;
+				p{
+					text-indent: 2em;
+				}
+			}
+			.tit{
+				position: absolute;
+				top: 0;
+				left: 50%;
+				margin-left: -56px;
+				font-size: 14px;
+				font-weight: bold;
+				padding-top: 10px;
+			}
+			.close{
+				position: absolute;
+				width: 20px;
+				height: 20px;
+				text-align: center;
+				line-height: 20px;
+				color: #fff;
+				background-color: #126eb4;
+				top: 10px;
+				right: 10px;
+				cursor: pointer;
+			}
+		}
+	}
+}

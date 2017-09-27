@@ -1,0 +1,9 @@
+<div class="h_problem b_show">
+        <h4>常见问题</h4>
+        <div ng-repeat="i in data">
+            <a ng-click='xiangxi(i.id)' class="clearfix"><span ng-bind="i.title"></span><i ng-bind="i.date"></i></a>
+        </div>
+        <div class="page" style='display:none'>
+            <span> 1/1 页</span>
+        </div>
+</div>

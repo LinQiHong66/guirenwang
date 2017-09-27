@@ -1,0 +1,37 @@
+
+	<div class="log" ng-cloak>
+			<h2 class="pdtit">{{tit}}</h2>
+			<div class="tb">
+				<table >
+					<thead>
+						<th>创建时间</th>
+						<th>上次解冻时间</th>
+						<th>认购名称</th>
+						<th>认购价格</th>
+						<th>认购数量</th>
+						<th>认购总价</th>
+						<th>解冻次数</th>
+						<th>生育冻结</th>
+						<th>状态</th>
+						<th>操作</th>
+					</thead>
+					<tbody>	
+						<tr ng-repeat='data in tbdata'>
+							<td>{{data[0]}}</td>
+							<td>{{data[1]}}</td>
+							<td>{{data[2]}}</td>
+							<td>{{data[3]}}</td>
+							<td>{{data[4]}}</td>
+							<td>{{data[5]}}</td>
+							<td>{{data[6]}}</td>
+							<td>{{data[7]}}</td>
+							<td>{{data[7]}}</td>
+							<td><a href="#">{{data[8]}}</a></td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+			<button class="addbtn">{{addaddress}}</button>
+		</div>
+

@@ -1,0 +1,92 @@
+.footer {
+  width: 100%;
+  height: 300px;
+  background-color: #354051; }
+  .footer .container {
+    padding-top: 50px;
+    width: 1200px;
+    margin: 0 auto; }
+    .footer .container .ft_app {
+      float: left;
+      width: 386px;
+      border-right: 1px solid #5c5e5f; }
+      .footer .container .ft_app .fta_top {
+        padding-bottom: 70px; }
+      .footer .container .ft_app .fta_bot img {
+        width: 148px; }
+    .footer .container .ft_box {
+      padding-left: 60px;
+      float: left;
+      width: 100px; }
+      .footer .container .ft_box .ftb_tit a {
+        font-weight: bold;
+        color: #fff;
+        font-size: 16px;
+        line-height: 50px; }
+      .footer .container .ft_box ul li a {
+        color: #fff;
+        font-size: 14px;
+        line-height: 30px; }
+    .footer .container .ft_call {
+      text-align: center;
+      float: right;
+      width: 270px; }
+      .footer .container .ft_call .phone {
+        color: #fff;
+        font-size: 24px;
+        line-height: 50px; }
+      .footer .container .ft_call .ftc_qq {
+        width: 156px;
+        height: 41px;
+        background-color: #7f64b5;
+        margin: 0 auto;
+        font-size: 18px;
+        color: #fff;
+        padding-left: 20px; }
+      .footer .container .ft_call .worktime {
+        padding-top: 10px;
+        color: #c4ceca;
+        line-height: 30px; }
+      .footer .container .ft_call #qqq {
+        cursor: pointer;
+        width: 120px;
+        color: #b44392;
+        position: relative;
+        margin: 0 auto; }
+        .footer .container .ft_call #qqq i {
+          position: absolute;
+          height: 17px;
+          color: white;
+          font-size: 25px;
+          overflow: hidden;
+          transform: rotate(180deg);
+          top: 7px;
+          right: -10px; }
+        .footer .container .ft_call #qqq #ql {
+          width: 180px;
+          height: 50px;
+          position: absolute;
+          top: 30px;
+          left: -30px;
+          color: #c4ceca;
+          border: 1px solid #c4ceca; }
+
+.copyRight {
+  height: 65px;
+  width: 100%;
+  background-color: #1b1b1b; }
+  .copyRight .container {
+    position: relative;
+    font-size: 12px;
+    width: 1200px;
+    margin: 0 auto;
+    line-height: 65px;
+    color: #9da09c; }
+    .copyRight .container a {
+      color: #9da09c; }
+    .copyRight .container .copy_imgs {
+      position: absolute;
+      top: 0;
+      right: 0; }
+
+/*# sourceMappingURL=home_footer.css.map */

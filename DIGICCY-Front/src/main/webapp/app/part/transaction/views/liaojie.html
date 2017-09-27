@@ -1,0 +1,49 @@
+<div class="liaojie">
+    <div class="box">
+        <div class="top">
+            <h4 class="ljTitle">{{ljTitle}}</h4>
+            <div class="clearfix">
+                <div class="ljLogo"><img ng-src="{{ljLogo}}" alt=""></div>
+                <div class="ljContent">
+                    <div class="ljcon">
+                        <h4>{{ljcon4}}</h4>
+                        <h5>{{ljcon5}}</h5>
+                    </div>
+                    <p>
+                    <span>{{ljsp1}}</span>
+                        <br>
+                        <br>
+                        <span>{{lgsp2}}</span>
+                        <br>
+                        <br>
+                        <span>{{lgsp3}}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="ljLink">
+            <h4 class="lkTitle">{{ljlkt}}</h4>
+            <ul class="clearfix">
+                <li ng-repeat="i in ljDown"><a target="_blank" class="btn-usul" ng-href="{{i.href}}">{{i.name}}</a></li>
+            </ul>
+        </div>
+        <div class="foot">
+            <h4>{{ljFoot}}</h4>
+            <table>
+                <tbody>
+                <tr ng-repeat="i in ljtable">
+                    <td><span>{{i.a}}</span>{{i.aa}}</td>
+                    <td><span>{{i.b}}</span>{{i.bb}}</td>
+                    <td><span>{{i.c}}</span>{{i.cc}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><span>{{ljts}}</span>{{lims}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><span>{{ljqd}}</span>{{ljqda}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

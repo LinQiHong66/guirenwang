@@ -1,0 +1,36 @@
+
+	<div class="log" ng-cloak>
+			<h2 class="pdtit">分红中心</h2>
+			<div class="tb">
+				<table>
+					<thead>
+						<th>币种</th>
+						<th>全站总额</th>
+						<th>我的资产</th>
+						<th>持有比例</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat='i in fenhong'>
+							<td>{{i.coin_type}}</td>
+							<td>{{i.sumCoin}}</td>
+							<td>{{i.myCoin}}</td>
+							<td>{{i.ratio}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<ul class="page clearfix" style="display:none">
+				<li>
+					<span>上一页</span>
+				</li>
+				<li>
+					<select >
+						<option ng-repeat='num in pagenum'>{{num}}</option>
+					</select>
+				</li>
+				<li>
+					<span>下一页</span>
+				</li>
+			</ul>
+		</div>
+

@@ -1,0 +1,65 @@
+html, body, div, span, iframe,h1, h2, h3, h4, h5, h6, p,blockquote, pre, a, address, big, cite, code, del, em, font, img, ins, small, strong, var, b, u, i, center,
+dl, dt, dd, ol, ul, li, fieldset, form, label, legend {  margin: 0;  padding: 0;  }
+body {
+    font-family: 微软雅黑, 黑体, 宋体, Arial, sans-serif;
+    color: rgb(60, 60, 60);
+    font-size: 14px;
+    line-height: 1.4;
+    background-color: rgb(244, 244, 244);
+    word-wrap: break-word;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    margin: 0;
+    padding: 0;
+}
+ol, ul {  list-style: none;  }
+:focus {  outline: 0;  }
+a{text-decoration: none;  color: #555;  }
+a img {  border: 0;  }
+img {  vertical-align: middle;  }
+table {  empty-cells: show;  }
+ins {  text-decoration: none;  }
+del {  text-decoration: line-through;  }
+em {  font-style: normal;  }
+i{  font-style: normal;  }
+button::-moz-focus-inner,
+input[type=reset]::-moz-focus-inner,
+input[type=button]::-moz-focus-inner,
+input[type=submit]::-moz-focus-inner,
+input[type=file] > input[type=button]::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.clearfix:after{
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.clearfix {
+    zoom: 1;
+}
+.b-shaw {
+    box-shadow: -1px 0px 3px #dee2e3,0px -2px 3px #dee2e3,1px 0px 3px #dee2e3,0px 2px 3px #dee2e3;
+    -webkit-box-shadow: -1px 0px 3px #dee2e3,0px -2px 3px #dee2e3,1px 0px 3px #dee2e3,0px 2px 3px #dee2e3;
+    -moz-box-shadow: -1px 0px 3px #dee2e3,0px -2px 3px #dee2e3,1px 0px 3px #dee2e3,0px 2px 3px #dee2e3;
+}
+@font-face {
+    font-family: 'iconfont';
+    src: url("../fonts/iconfont.eot");
+    /* IE9*/
+    src: url("../fonts/iconfont.eot?#iefix") format("embedded-opentype"), url("../fonts/iconfont.woff") format("woff"), url("../fonts/iconfont.ttf") format("truetype"), url("../fonts/iconfont.svg#iconfont") format("svg");
+    /* iOS 4.1- */ }
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale; }

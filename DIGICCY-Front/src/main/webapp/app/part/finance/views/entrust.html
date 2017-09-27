@@ -1,0 +1,44 @@
+<div class="entrust">
+	<h3>{{enTitle}}</h3>
+	<div class="entrustList">
+		<ul class="ulHeader clearfix">
+			<li>
+				<select ng-model="entrustCoin" ng-options="v.coin_no as v.coin_name for v in bitype" ng-change="changeCoin(entrustCoin)"></select>
+			</li>
+			<li>{{enHeader.time}}</li>
+			<li>
+				<select ng-model="entrustType" ng-options="v.entrustType as v.name for v in enHeader.maitype" ng-change="changeType(entrustType)"></select>
+			</li>
+			<li>{{enHeader.price}}</li>
+			<li>{{enHeader.num}}</li>
+			<li>{{enHeader.chengjiao}}</li>
+			<li>
+				<select ng-model="state" ng-options="v.state as v.name for v in enHeader.zhuangtai" ng-change="changeState(state)"></select>
+			</li>
+		</ul>
+		
+		<ul class="clearfix" ng-repeat="i in enUl">
+			<li><img ng-src="/sub/getImage.do?value={{tphotoa['b'+i.entrust_coin]}}" style="width: 25px;height: 25px;border-radius: 50%;margin-right: 5px;">{{biarr['a'+i.entrust_coin]}}</li>
+			<li>{{i.date}}</li>
+			<li>{{maimai[i.entrust_type]}}</li>
+			<li>{{i.entrust_price}}</li>
+			<li>{{i.entrust_num}}</li>
+			<li>{{i.deal_num}}</li>
+			<li ng-show='zhuangtai[i.state]=="撤销"?true:false'><button ng-click='changebtn($index)'>{{zhuangtai[i.state]}}</button></li>
+			<li ng-hide='zhuangtai[i.state]=="撤销"?true:false'>{{zhuangtai[i.state]}}</li>
+		</ul>
+		<div class="Jpage" style="display:none;">
+			<p>
+				85条记录1/6页
+			</p>
+			<p>
+				<span>上一页</span>
+				<select>
+					<option>1</option>
+					<option>2</option>
+				</select>
+				<span>下一页</span>
+			</p>
+		</div>
+	</div>
+</div>

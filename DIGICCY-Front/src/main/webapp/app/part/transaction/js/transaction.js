@@ -1,0 +1,29 @@
+var app=angular.module('tApp',["ngRoute"]);
+app.constant("Routes",{
+    jiaoyi:"/jiaoyi",
+    hangqing:"/hangqing",
+    liaojie:"/liaojie",
+    pingjia:"/pingjia"
+});
+app.config(["$routeProvider","Routes",function($routeProvider,Routes){
+    $routeProvider
+        .when(Routes.jiaoyi,{
+            templateUrl:"views/jiaoyi.html",
+            controller:"jiaoyi"
+        })
+        .when(Routes.hangqing,{
+            templateUrl:"views/hangqing.html",
+            controller:"hangqing"
+        })
+        .when(Routes.liaojie,{
+            templateUrl:"views/liaojie.html",
+            controller:"liaojie"
+        })
+        .when(Routes.pingjia,{
+            templateUrl:"views/pingjia.html",
+            controller:"pingjia"
+        })
+        .otherwise({
+            redirectTo:Routes.jiaoyi
+        })
+}]);

@@ -1,0 +1,37 @@
+html{font-size: 16px;}
+body{font-size: 16px;background: #ecf0f1}
+$bg1:#f5f5f5;
+$tcolor1:#117dc8;
+$tcolor2:#76bdef;
+@import "_config";
+@import "_mixins";
+@import "common.css";
+@import "header";
+@import "nav2g";
+@import "safe_authentication";
+@import "safe_bindphone";
+@import "safe_default";
+@import "safe_log";
+@import "safe_password";
+@import "safe_wallet";
+@import "footr";
+.boxright{
+	box-shadow: 0px 0px 3px #ccc;
+    width: 970px;
+    float:right;
+    min-height:750px;
+    background-color: #fff;
+}
+@include respond-to(lg) {
+  .boxright{
+    width: 805px;
+    min-width: 320px;
+    min-height:600px;
+ }
+}
+@include respond-to(md) {
+  .boxright{
+    width: 100%;
+    min-height:500px;
+  }
+}

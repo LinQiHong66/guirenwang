@@ -1,0 +1,96 @@
+@import "_config";
+@import "_mixins";
+$bg1:#f5f5f5;
+$tcolor1:#117dc8;
+$tcolor2:#76bdef;
+.recharge{
+   width: 96%;
+  padding: 20px 2%;
+  h2{
+    font-size: 22px;
+    color:#333;
+    font-family: 'microsoft yahei';
+       padding: 10px 20px;
+    border-bottom: 1px solid #eee;
+    margin: 10px;
+  }
+  .rechargeTb{
+      padding-left: 30px;
+
+    li{
+      line-height: 50px;
+    }
+    input[type='text'],input[type='password']{
+      height: 25px;
+      width: 190px;
+      padding-left: 10px
+    }
+    select{
+      height: 30px;
+      width: 203px;
+    }
+    button{
+      width: 278px;
+      height: 30px;
+      background-color: $tcolor1;
+      color: #fff;
+      border: none;
+      font-family: 'microsoft yahei';
+    }
+  }
+  .tb{
+    overflow-x:scroll;
+    overflow:hidden;
+    margin-top: 30px;
+    table{
+      width: 100%;
+      // margin-left: 50px;
+      border: none;
+      border-collapse:collapse;
+      thead{
+        background-color: #e5e5e5;
+        th{
+          padding:5px 10px;
+          border: 1px solid #e5e5e5;
+        }
+      }
+      td{
+        border: 1px solid #e5e5e5;
+        text-align: center;
+        padding: 5px;
+      }
+    }
+  }
+  .page{
+    margin: 20px auto;
+    width: 230px;
+    li{
+      float: left;
+      padding: 0 10px;
+      span{
+        background-color: $tcolor1;
+        color:#fff;
+        padding: 5px 10px;
+        transition:all 0.3s;
+        cursor: pointer;
+      }
+      span:hover{
+        background-color: $tcolor2;
+      }
+    }
+  }
+}
+
+
+@include respond-to(lg) {
+  .recharge{
+    font-size:14px;
+
+      .tb{
+        overflow-x:scroll;
+        table{
+          min-width: 600px;
+        }
+      }
+  }
+}

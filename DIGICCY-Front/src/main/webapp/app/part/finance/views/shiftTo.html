@@ -1,0 +1,58 @@
+<div class="shiftTo">
+    <h3>{{sfTitle}}</h3>
+    <ul class="currency clearfix">
+        <li>
+            <select ng-model="sft" ng-options="v.coin_no as v.coin_name for v in bitype" ng-change="biChange()"></select>
+        </li>
+        <li>
+        <span>{{sfHeader.keyong}}</span>:<span>{{qian}}</span>
+        </li>
+    </ul> 
+    <div class="site clearfix">
+        <div class="siteL">
+            <span>{{sfHeader.shuoming}}：</span> 
+            <p>{{address}}</p>
+        </div>
+        <div class="siteR" id="code">
+        </div>
+    </div>
+    <div class="point">
+        <h5>{{sfHeader.zhuanru}}：</h5>
+        <p>{{sfHeader.shuoming1}}</p>
+        <p>{{sfHeader.shuoming2}}</p>
+    </div>
+    <div class="record">
+        <h5>{{sfH5}}</h5>
+        <ul class="clearfix ulHeader">
+            <li>{{sfUlHeader.address}}</li>
+            <li>{{sfUlHeader.reality}}</li>
+            <li>{{sfUlHeader.giving}}</li>
+            <li>{{sfUlHeader.all}}</li>
+            <li>{{sfUlHeader.time}}</li>
+            <li>{{sfUlHeader.type}}</li>
+        </ul>
+        <ul class="clearfix" ng-repeat="i in sfUl">
+            <li>{{i.address}}</li>
+            <li>{{i.actual_price}}</li>
+            <li>{{i.give_price}}</li>
+            <li>{{i.sum_price}}</li>
+            <li>{{i.date}}</li>
+            <li>{{i.state==0?'未完成':'完成'}}</li>
+        </ul>
+
+        <div class="Jpage" style="display:none;">
+            <p>
+                85条记录1/6页
+            </p>
+            <p>
+                <span>上一页</span>
+                <select>
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+                <span>下一页</span>
+            </p>
+        </div>
+    </div>
+
+</div>

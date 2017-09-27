@@ -1,0 +1,31 @@
+<div class="recommend">
+	<h3>我的推荐</h3>
+	<div class="recommendList">
+		<ul class="ulHeader clearfix">
+			<li>{{rcHeader.type}}</li>
+			<li>{{rcHeader.user}}</li>
+			<li>{{rcHeader.time}}</li>
+			<li>{{rcHeader.flag}}</li>
+		</ul>
+		<ul class="clearfix" ng-repeat="r in rcUl">
+			<li>{{r.rec_type}}</li>
+			<li>{{r.rec_user}}</li>
+			<li>{{r.date}}</li>
+			<li>{{r.auth==1?'已认证':'未认证'}}</li>
+		</ul>
+
+		<div class="Jpage" style="display:none;">
+			<p>
+				85条记录1/6页
+			</p>
+			<p>
+				<span>上一页</span>
+				<select>
+					<option>1</option>
+					<option>2</option>
+				</select>
+				<span>下一页</span>
+			</p>
+		</div>
+	</div>
+</div>

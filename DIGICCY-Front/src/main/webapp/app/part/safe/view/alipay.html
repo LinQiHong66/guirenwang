@@ -1,0 +1,44 @@
+<style>
+	.bindphone .alipayPrevious div{padding-left: 50px;padding-top: 10px;padding-bottom: 10px;}
+	.bindphone .alipayPrevious div label{display: block;padding-bottom: 5px;}
+	.bindphone .alipayPrevious div input{
+		padding-left: 10px;width: 250px;height: 28px;border: 1px solid #ccc;display: block;}
+	.bindphone .alipayPrevious div button{
+		width: 262px;padding: 0;height: 32px;border: 1px solid #117dc8;
+		background-color: #117dc8;color: #fff;font-size: 18px;line-height: 32px;cursor: pointer;}
+	.bindAlipay{display:none !important;}
+	.bindphone .alipayBox{color: red;position: relative;display: none;text-align: left;padding-left: 35px;}
+	.bindphone .hideShow{display: block;}
+	.bindphone .alipayPrevious .AtextBtn{border: 1px solid #76bdef;background-color: #76bdef;}
+	@media screen and (max-width: 480px){
+		.bindphone .alipayPrevious div{padding-left: 0px;}
+		.bindphone .alipayPrevious div label{display: inline-block;width: 100px;text-align: right;}
+		.bindphone .alipayPrevious div input{width: 200px;display: inline-block;}
+		.bindphone .alipayPrevious div button{width: 212px;display: inline-block;margin-left: 105px;}}
+</style>
+		<div class="bindphone" ng-cloak>
+			<h2 class="pdtit">{{tit}}</h2>
+			<ul ng-class="{true:'bindAlipay'}[bindAlipayFlg]">
+				<li class="bp_yz"><b class="iconfont">&#xe60e;</b>{{info}}</li>
+				<li><label >{{user}}</label><input type="text" disabled="disabled" ng-model="bindAlipayA"><i></i></li>
+			</ul>
+			<div class="alipayPrevious" ng-class="{false:'bindAlipay'}[bindAlipayFlg]">
+				<div>
+					<label>支付宝账号:</label>
+					<input type="text" ng-model="alipayYell">
+				</div>
+				<div>
+					<label>手机号码:</label>
+					<input type="text" ng-model="honeAlipayA">
+					<button style="margin-top: 10px;" ng-click="AlipayHone()" ng-bind="Atext" ng-disabled="isDisable" ng-class="{true:'AtextBtn'}[AtextBtnFlg]"></button>
+				</div>
+				<div>
+					<label>短信验证码：</label>
+					<input type="text" ng-model="honeAlipayB">
+				</div>
+				<div>
+					<button ng-click="bAlipay()">绑定支付宝</button>
+				</div>
+			</div>
+			<div class="alipayBox" ng-class="{true:'hideShow'}[passwordflg]">{{passwordTip}}</div>
+		</div>

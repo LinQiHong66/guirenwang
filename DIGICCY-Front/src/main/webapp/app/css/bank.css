@@ -1,0 +1,85 @@
+html {
+  font-size: 16px; }
+
+body {
+  font-size: 16px;
+  background: #ecf0f1; }
+
+.bank {
+  width: 1200px;
+  margin: 0 auto; }
+  .bank .container {
+    min-height: 800px;
+    padding: 20px;
+    width: 1160px;
+    background-color: #fff; }
+    .bank .container .pdtit {
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e5e5e5; }
+    .bank .container table {
+      width: 100%;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      border: 1px solid #e5e5e5;
+      border-collapse: collapse; }
+      .bank .container table thead {
+        background-color: #e5e5e5; }
+        .bank .container table thead th {
+          padding: 5px 10px; }
+      .bank .container table td {
+        text-align: center;
+        padding: 5px; }
+    .bank .container .addbtn {
+      width: 250px;
+      background-color: #117dc8;
+      border: none;
+      color: #fff;
+      font-family: 'microsoft yahei';
+      height: 40px;
+      transition: background-color .3s;
+      cursor: pointer; }
+    .bank .container .addbtn:hover {
+      background-color: #76bdef; }
+
+@media only screen and (max-width: 1200px) {
+  .bank {
+    width: 100%;
+    margin: 0 auto; }
+    .bank .container {
+      min-height: 800px;
+      padding: 0;
+      width: 100%;
+      background-color: #fff;
+      padding: 20px 0; }
+      .bank .container .pdtit {
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e5e5e5; }
+      .bank .container .tb {
+        overflow-x: scroll; }
+        .bank .container .tb table {
+          width: 100%;
+          min-width: 760px;
+          margin-top: 30px;
+          margin-bottom: 30px;
+          border: 1px solid #e5e5e5;
+          border-collapse: collapse; }
+          .bank .container .tb table thead {
+            background-color: #e5e5e5; }
+            .bank .container .tb table thead th {
+              padding: 5px 10px; }
+          .bank .container .tb table td {
+            text-align: center;
+            padding: 5px; }
+      .bank .container .addbtn {
+        width: 250px;
+        background-color: #117dc8;
+        border: none;
+        color: #fff;
+        font-family: 'microsoft yahei';
+        height: 40px;
+        transition: background-color .3s;
+        cursor: pointer; }
+      .bank .container .addbtn:hover {
+        background-color: #76bdef; } }
+
+/*# sourceMappingURL=bank.css.map */

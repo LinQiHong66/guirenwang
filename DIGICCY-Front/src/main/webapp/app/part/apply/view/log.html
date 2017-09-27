@@ -1,0 +1,66 @@
+   <style>
+   	   .tanchu{
+   	   	position: absolute;top:30%;right:15%;z-index: 999;width: 260px;height: 50px;background: #fff;border: 1px solid #000;color:#000;  padding:20px 10px;
+   	   }
+   	   .yincang{
+          position: absolute;bottom: 10px;right: 10px;
+   	   }
+   </style>
+    <div class="log" ng-cloak>
+			<h2 class="pdtit">认购记录</h2>
+			<div class="tb" style='position: relative;'>
+				<div ng-style="xianshi" class='tanchu'>{{tanchu}}
+				    <button class="yincang" ng-click='close()'> 确定</button>
+				</div>
+				<table>
+					<thead>
+						<th>创建时间</th>
+						<th>上次解冻时间</th>
+						<th>认购名称</th>
+						<th>认购价格</th>
+						<th>认购数量</th>
+						<th>认购总价</th>
+						<th>解冻次数</th>
+						<th>剩余冻结</th>
+						<th>状态</th>
+						<th>操作</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat='i in log track by $index'>
+						    <td style="display:none">{{i.id}}{{i.coin_no}}{{i.state}}</td>
+						    <td>{{i.date}}</td>
+						    <td>{{i.thaw_time}}</td>
+						    <td>{{i.sub_name}}</td>
+						    <td>{{i.sub_price}}</td>
+						    <td>{{i.sub_num}}</td>
+						    <td>{{i.sum_price}}</td>
+						    <td>{{i.thaw_num}}</td>
+						    <td>{{i.sur_frozen}}</td>
+						    <td>
+						        <span ng-if='i.state ==1'>解冻中</span>
+						        <span ng-if='i.state ==0'>未解冻</span>
+						        <span ng-if='i.state ==2'>已完成</span> 
+						    </td>
+							<td>
+							    <button ng-click='jiedong()' ng-if='i.state ==0' style="cursor: pointer;">解冻</button>
+							    <button ng-click='jiedong()' ng-if='i.state ==1' style="cursor: pointer;">解冻</button>
+							    <button ng-click='jiedong()' ng-if='i.state ==2' disabled="disabled">解冻</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<ul class="page clearfix" style="display:none">
+				<li>
+					<span>上一页</span>
+				</li>
+				<li>
+					<select >
+						<option ng-repeat='num in pagenum'>{{num}}</option>
+					</select>
+				</li>
+				<li>
+					<span>下一页</span>
+				</li>
+			</ul>
+		</div>

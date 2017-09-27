@@ -1,0 +1,75 @@
+<style>
+.recharge .rechargeTb input[type='password'] {
+    height: 25px;
+    width: 190px;
+    padding-left: 10px;
+}
+</style>
+<div class="recharge clearfix" ng-cloak>
+		<h2 class="pdtit">话费充值</h2>
+		<ul class='rechargeTb'>
+			<li>可用余额：{{zichan}}元</li>
+			<li>
+				<span>充值手机：</span>
+				<input type="text" name="" ng-model='myphone'>
+			</li>
+			<li>
+				<span>充值金额：</span>
+				<select ng-model="mypay" ng-options="x.id as x.name for x in pays">
+				<option value="">选择充值金额</option>
+				</select>
+			</li>
+			<li>
+				<span>付款方式：</span>
+				<select ng-model="myfangshi" ng-options="x.type as x.name for x in fangshi">
+				<option value="">选择付款方式</option>
+				</select>
+			</li>
+			<li>
+				<span>交易密码：</span>
+				<input type="password" name="" ng-model='mypwd'>
+			</li>
+			<li>
+				<button ng-click='chongzhi()' style="cursor: pointer;">确认充值</button>
+			</li>
+			<li></li>
+		</ul>
+		<p id="tis" style="color: red;">{{tis}}</p>
+		<div class="tb">
+			<table>
+				<thead>
+					<th>充值手机</th>
+					<th>充值金额</th>
+					<th>充值时间</th>
+					<th>付款方式</th>
+					<th>付款金额</th>
+					<th>状态</th>
+					<th>处理时间</th>
+				</thead>
+				<tbody>
+						<tr ng-repeat='i in jilu | orderBy :"-date"'>
+							<td>{{i.recharge_phone}}</td>
+							<td>{{i.recharge_price}}</td>
+							<td>{{i.date}}</td>
+							<td>{{changetype(i.pay_type)}}</td>
+							<td>{{i.pay_price}}</td>
+							<td>{{zhuangtai[i.state]}}</td>
+							<td>{{i.handle_date}}</td>
+						</tr>
+					</tbody>
+			</table>
+		</div>
+		<ul class="page clearfix" style="display:none">
+			<li>
+				<span>上一页</span>
+			</li>
+			<li>
+				<select >
+					<option ng-repeat='num in pagenum'>{{num}}</option>
+				</select>
+			</li>
+			<li>
+				<span>下一页</span>
+			</li>
+		</ul>
+	</div>

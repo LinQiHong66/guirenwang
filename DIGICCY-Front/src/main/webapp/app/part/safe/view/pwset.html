@@ -1,0 +1,18 @@
+<style>
+	@media screen and (max-width: 480px){
+		.pd .container ul li label{width: 130px;}
+	}
+</style>
+<div class="pwset" style="margin-bottom: 35px;">
+	<div class="container">
+		<h2 class="pdtit" ng-bind="tit"></h2>
+		<ul>
+			<li ng-bind="data0"></li>
+			<li><input type="radio" name="rd" checked="checked"><label ng-bind="data1"></label> </li>
+			<li><input type="radio" name="rd"><label ng-bind="data2"></label> </li>
+			<li><input type="radio" name="rd"><label ng-bind="data3"></label> </li>
+			<li><input type="text" ng-cloak placeholder="{{data4}}"></li>
+			<li><button ng-bind="data5"></button></li>
+		</ul>
+	</div>
+</div>

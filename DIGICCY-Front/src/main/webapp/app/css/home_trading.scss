@@ -1,0 +1,31 @@
+.trading{
+  width: 100%;
+  background:url(../images/slogan_bg2.png) bottom center no-repeat;
+  // background-size: cover;
+  height: 500px;
+  .container{
+    width: 1200px;
+    margin: 0 auto;
+    padding-top: 100px;
+    .td_tit{
+      text-align: center;
+      font-size: 36px;
+      color:#4d4d4d;
+    }
+    .td_txt{
+      padding-top: 10px;
+      text-align: center;
+      font-size: 16px;
+      color:#777;
+    }
+    .td_num{
+      text-align: center;
+      color:#fc8026;
+      font-size: 70px;
+      font-family: helvetica;
+      // text-indent: 20px;
+      letter-spacing: 10px;
+      padding-top: 50px;
+    }
+  }
+}

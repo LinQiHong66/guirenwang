@@ -1,0 +1,360 @@
+<div class="jiaoyi">
+    <div style="height:auto;background:#fff;box-shadow: 0px 0px 10px #ccc;">
+        <div id="kLine">   </div>
+        <div id="kBtn">
+            <button ng-click="blockedOut(12)">全部</button>
+            <button ng-click="blockedOut(24)">日线</button>
+            <button ng-click="blockedOut(60)">1小时</button>
+            <button ng-click="blockedOut(30)">30分钟</button>
+            <button ng-click="blockedOut(15)">15分钟</button>
+            <button ng-click="blockedOut(5)">5分钟</button>
+            <button ng-click="blockedOut(6)" class="on">1分钟</button>
+        </div>
+        <style>
+            .jiaoyi #kBtn button.on{
+                border: 1px solid #117dc8;
+                background-color: #117dc8;
+                color: #fff;
+            }
+        </style>
+        <script>
+            $(function(){
+                $("#kBtn>button").click(function () {
+                    $(this).siblings().removeClass("on");
+                    $(this).addClass("on");
+                })
+            })
+        </script>
+    </div>
+    <ul class="zichan b_show clearfix">
+        <li><p>可用{{biname}}<span class="font01" id="my_xnb">{{enablecoin?(enablecoin| number : 3):0}}</span></p></li>
+        <li><p>冻结{{biname}}<i class="font02" id="my_xnbd">{{unableType?(unableType| number : 3):0}}</i></p></li>
+        <li><p>可用人民币<span class="font01" id="my_rmb">{{rmb?(rmb| number : 3):0}}</span></p></li>
+        <li><p>冻结人民币<span class="font02" id="my_rmbd">{{freezeRmb?(freezeRmb| number : 3):0}}</span></p></li>
+        <li><p>账户总资产<span class="font01" id="user_finance">{{zongzichan?(zongzichan| number : 3):0 }}</span></p></li>
+    </ul>
+    <div class="maimai clearfix">
+        <div class="box b_show clearfix">
+            <div class='hqbox' ng-style='hqflag'>
+                <div class='title'>每日行情</div>
+                <a href="javascript:;" class='guan' ng-click='guana()'>x</a>
+                <ul>
+                    <li class="clearfix">
+                        <div class="fl">交易币种：</div><div class="fr">{{biname}}</div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">最新成交价：</div><div class="fr">{{day.newes_deal?(day.newes_deal | number : 3):0}}</div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">买一价：</div><div class="fr">{{day.buy_price?(day.buy_price | number : 3):0}}</div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">卖一价：</div><div class="fr">{{day.sell_price?(day.sell_price | number : 3):0}}</div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">成交量：</div><div class="fr">{{day.deal_num?(day.deal_num | number : 3):0}}</div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">成交额：</div><div class="fr">{{day.deal_price?(day.deal_price | number : 3):0}}</div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">日涨跌：</div><div class="fr">{{day.day_percent?(day.day_percent | number : 3):0}}%</div>
+                    </li>
+                </ul>
+                <a href="javascript:;" class='guan2' ng-click='guana()'>确定</a>
+            </div>
+            <div class='jiaoyicg' ng-style='jiaoyicg'>
+                {{jiaoyia}}
+            </div>
+            <form class="ft_box">
+                <dl>
+                    <dt class="orange">买入</dt>
+                    <dd>
+                    	<!-- <input type="text" placeholder="买入价格"> -->
+                    	<input type="text" id="buy_price" name="price" placeholder="买入价格 {{att1}}" value="" ng-model="buyEprice" ng-change='maiaa()'>
+                    	<span class='bprice'>最新买价 {{newpb?(newpb| number : 3):0}}</span>
+                        <!-- <p>最新买价：</p>
+                        <span class="orange" id="buy_best_price">￥{{newpb?(newpb| number : 3):0}}     CNY/{{att1}}</span>
+                        <a style="float: right;margin-right: 60px;color:#e55600;cursor:pointer;" class="market_hangqing" ng-click="hangqing()">今日行情</a> -->
+                    </dd>
+                   <!--  <dd>
+                        <p>买入价格：</p>
+                        <input type="text" id="buy_price" name="price" placeholder="此出价为1个币的价格" value="" ng-model="buyEprice" ng-change='maiaa()'>
+                    </dd> -->
+                    <!-- <dd>
+                        <p>最大可买：</p>
+                        <span class="col_333">{{maxbuynum?(maxbuynum | number : 3):0}}</span> {{att1}}
+                    </dd> -->
+                    
+                    <dd>
+                        <!-- <p>买入数量：</p> -->
+                        <input type="text" id="buy_num" name="num" placeholder="买入数量" ng-model="buyEnum" ng-change='buynumaa()'>
+                        <span class='bprice'>最大可买：{{maxbuynum?(maxbuynum | number : 3):0}}</span>
+
+                    </dd>
+                    <dd class="bili smbot">
+                        <!-- <p>买出比例：</p> -->
+                        <span class="b-tit">买入比例：</span>
+                        <!-- <div id="buyBL">
+                            <div id="buy-bar"></div>
+                            <div id="buy-barQ"></div>
+                            <div id="buy-block" ng-mousedown="buyDown()"></div>
+                        </div> -->
+                        <div class="slider-wrapper" style='float: left;width: 50%;padding: 0 20px;'>
+							<input type="text" class="js-decimal" />
+                            
+							<!-- <label class="display-box-label">Value:</label>
+							<div id="js-display-decimal" class="display-box"></div> -->
+						</div>
+                        <span  id='mrbl'></span>
+						<!-- <script type="text/javascript">
+							var dec = document.querySelector('.js-decimal');
+					    	var initDec = new Powerange(dec, { decimal: true, callback: function(){
+                                console.log(dec.value);
+                                // scope.mrbl=dec.value;
+                            }, max: 50, start: 19.12,hideRange:true});
+						</script> -->
+                        <!-- <div id="buyShow"><span id="buyArea">0</span>%</div> -->
+                    </dd>
+                    <dd class="smbot">
+                        <span class="b-tit">总价：</span>
+                        <span class="col_333" id="buy_mum">{{zongjiabuy?(zongjiabuy | number : 3):0}}</span> CNY     </dd>
+                    <dd class="smbot">
+                        <span class="b-tit">手续费率：</span><span>{{buyshouxufeilv*100?buyshouxufeilv*100:0}}%</span>
+                    </dd>
+                     <!-- <dd>
+                        <p>总手续费：</p><span>{{buyzongshouxufei?(buyzongshouxufei | number : 3):0}}</span>
+                    </dd> -->
+                    <dd class="pwdtrade">
+                        <!-- <p>交易密码：</p> -->
+                        <input id="buy_paypassword" name="pwtrade" type="password" ng-model="buyEpass" placeholder="请输入交易密码"><!--  <span onclick="layertpwd()" class="settings"></span> -->
+                    </dd>
+                    <dd>
+                    	<div class="tan_btn" id="tm-buy"></div>
+                        <input type="button" class='buy-btn' value="买入" ng-click="buyEnter()">
+                    </dd>
+                </dl>
+                <!-- <div>
+                    <div class="trader_btn">
+                        <div class="tan_btn" id="tm-buy"></div>
+                        <input type="button" value="买入" ng-click="buyEnter()">
+                    </div>
+                </div> -->
+            </form>
+            <form class="ft_box nobr" id="form-sell">
+                <dl>
+                    <dt class="green">卖出</dt>
+                    <dd>
+                    	<input type="text" id="sell_price" name="price" placeholder="卖出价格 {{att1}}" value="" ng-model="buyOprice" ng-change='sellaa()'>
+                    	<span class='bprice'>最新卖价 {{newps?(newps| number : 3):0}}</span>
+                    </dd>
+                    <dd>
+                        <input type="text" id="sell_num" name="num" placeholder="卖出数量" ng-model="buyOnum" ng-change='sellnumaa()'>
+                        <span class='bprice'>最大可卖：{{maxsellnum?(maxsellnum | number : 3):0}}</span>
+
+                    </dd>
+                    <dd class="bili smbot">
+                        <span class="b-tit">卖出比例：</span>
+                        <div class="slider-wrapper" style='float: left;width: 50%;padding: 0 20px;'>
+							<input type="text" class="js-decimal1" />
+						</div>
+                        <span  id='mcbl'></span>
+						<script type="text/javascript">
+							
+						</script>
+                    </dd>
+                    <dd class="smbot">
+                        <span class="b-tit">总价：</span>
+                        <span class="col_333" id="sell_mum">{{zongjiasell?(zongjiasell | number : 3):0}}</span> CNY     </dd>
+                    <dd class="smbot">
+                        <span class="b-tit">手续费率：</span><span>{{sellshouxufeilv*100?sellshouxufeilv*100 :0}}%</span>
+                    </dd>
+                    <dd class="pwdtrade">
+                        <!-- <p>交易密码：</p> -->
+                        <input id="sell_paypassword" name="pwtrade" type="password" ng-model="buyOpass" placeholder="请输入交易密码"><!--  <span onclick="layertpwd()" class="settings"></span> -->
+                    </dd>
+                    <dd>
+                    	<div class="tan_btn" id="tm-sell"></div>
+                        <input type="button" class='sell-btn' value="卖出" ng-click="buyOnter()">
+                    </dd>
+                    <!-- 
+                    <dd class="bili">
+                        <p>卖出比例：</p>
+                        <div id="sellBL">
+                            <div id="sell-bar"></div>
+                            <div id="sell-barQ"></div>
+                            <div id="sell-block"></div>
+                        </div>
+                       <div id="sellShow"><span id="sellArea">0</span>%</div>
+                    </dd>
+                    <dd>
+                        <p>总价：</p>
+                        <span class="col_333" id="sell_mum">{{zongjiasell?(zongjiasell | number : 3):0}}</span> CNY     </dd>
+                     <dd>
+                        <p>手续费率：</p><span>{{sellshouxufeilv*100?sellshouxufeilv*100 :0}}%</span>
+                    </dd>
+                    <dd>
+                        <p>总手续费：</p><span>{{sellzongshouxufei?(sellzongshouxufei| number : 3):0}}</span>
+                    </dd>
+                    <dd class="pwdtrade">
+                        <p>交易密码：</p>
+                        <input id="sell_paypassword" name="pwtrade" type="password" ng-model="buyOpass"> <! <span class="settings"></span> -->
+                 <!--    </dd> 
+                </dl>
+                <div>
+                    <div class="trader_btn">
+                        <div class="tan_btn" id="tm-sell"></div>
+                        <input class="bg_green" type="button" value="卖出" ng-click="buyOnter()">
+                    </div>
+                </div> -->
+            </form>
+            <div class="bindphoneBox" ng-class="{true:'hideShow'}[bindphoneflg]">{{bindphoneTip}}</div>
+        </div>
+        <div class="box2 b_show">
+            <ul class="navBox2 clearfix">
+                <li class="act">买卖模式</li>
+                <li>买模式</li>
+                <li>卖模式</li>
+            </ul>
+            <div class="box2_info">
+                <div class="box2_list info">
+                    <ul class="b2_nav clearfix">
+                        <li>{{b2Name}}</li>
+                        <li>{{b2Price}}</li>
+                        <li>{{b2Num}}</li>
+                        <li>{{b2Rmb}}</li>
+                    </ul>
+                    <div class="b2_dl" id="scrB">
+                        <ul ng-repeat="i in selllist |orderBy:'entrust_price'" ng-click="sellGain(i.entrust_price,i.entrust_num)" class="clearfix box_sell" ng-class-odd="'oddBg'" ng-class-even="'evenBg'">
+                            <li>卖({{$index+1}})</li>
+                            <li>{{i.entrust_price}}</li>
+                            <li>{{i.entrust_num}}</li>
+                            <li>{{i.entrust_price*i.entrust_num|currency : '￥'}}</li>
+                        </ul>
+                    </div>
+                    <div class="b2_dl b2_d2" id="scrT">
+                        <ul ng-repeat="i in buylist |orderBy:'entrust_price'" ng-click="buyGain(i.entrust_price,i.entrust_num)" class="clearfix box_buy" ng-class-odd="'oddBg'" ng-class-even="'evenBg'">
+                            <li>买({{$index+1}})</li>
+                            <li>{{i.entrust_price}}</li>
+                            <li>{{i.entrust_num}}</li>
+                            <li>{{i.entrust_price*i.entrust_num|currency : '￥'}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box3_list info actshow">
+                    <ul class="b2_nav clearfix">
+                        <li>买</li>
+                        <li>{{b2Price}}</li>
+                        <li>{{b2Num}}</li>
+                        <li>{{b2Rmb}}</li>
+                    </ul>
+                    <ul ng-repeat="i in buylist |orderBy:'entrust_price'" ng-click="buyGain(i.entrust_price,i.entrust_num)" class="clearfix box_buy" ng-class-odd="'oddBg'" ng-class-even="'evenBg'">
+                        <li>买({{$index+1}})</li>
+                        <li>{{i.entrust_price}}</li>
+                        <li>{{i.entrust_num}}</li>
+                        <li>{{i.entrust_price*i.entrust_num|currency : '￥'}}</li>
+                    </ul>
+                </div>
+                <div class="box4_list info actshow">
+                    <ul class="b2_nav clearfix">
+                        <li>卖</li>
+                        <li>{{b2Price}}</li>
+                        <li>{{b2Num}}</li>
+                        <li>{{b2Rmb}}</li>
+                    </ul>
+                    <ul ng-repeat="i in selllist|orderBy:'entrust_price'" ng-click="sellGain(i.entrust_price,i.entrust_num)" class="clearfix box_sell" ng-class-odd="'oddBg'" ng-class-even="'evenBg'">
+                        <li>卖({{$index+1}})</li>
+                        <li>{{i.entrust_price}}</li>
+                        <li>{{i.entrust_num}}</li>
+                        <li>{{i.entrust_price*i.entrust_num|currency : '￥'}}</li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+    </div>
+   <!-- <div class="weituo b_show">
+    	<p id="tis" ng-class="{true:'show'}[tisFalg]">{{tis}}</p>
+        <h3 class="wtTitle">{{wtTitle}}</h3>
+        <div class="outTb">
+            <table>
+                <thead>
+                <tr>
+                    <th width="15%">{{wtTime}}</th>
+                    <th width="7%">{{wtMaimai}}</th>
+                    <th>{{wtPrice}}</th>
+                    <th>{{wtNum}}</th>
+                    <th>{{wtOver}}</th>
+                    <th>{{wtAll}}</th>
+                    <th width="7.1%">{{wtCaozuo}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="i in wtList">
+                    <td>{{i.date}}</td>
+                    <td>{{changewei(i.entrust_type)}}</td>
+                    <td>{{i.entrust_price}}</td>
+                    <td>{{i.entrust_num}}</td>
+                    <td>{{i.deal_num}}</td>
+                    <td>{{i.entrust_price*i.entrust_num| number :2}}</td>
+                    <td>
+                        <button ng-click="chexiao(i.id)" style="border:0;padding:5px 10px;background-color:#1383d1;color:#fff;cursor:pointer;">撤销</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7"><a href="../finance/index.html#/entrust" style="color: #2674FF;">更多委托</a>&nbsp;&nbsp;</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>-->
+    <script>
+        $(function () {
+            $(".navBox2 li").click(function () {
+                $(this).siblings().removeClass("act");
+                $(this).addClass("act");
+                var $index=$(this).index();
+                $(".box2_info .info").addClass("actshow");
+                $(".box2_info .info").eq($index).removeClass("actshow");
+            });
+          /*  new SlideBar({
+                actionBlock : 'buy-block',
+                actionBar : 'buy-barQ',
+                slideBar : 'buy-bar',
+                barLength : 200,
+                interval : 50,
+                maxNumber : 100,
+                showArea : 'buyArea'
+            });
+            new SlideBar({
+                actionBlock : 'sell-block',
+                actionBar : 'sell-barQ',
+                slideBar : 'sell-bar',
+                barLength : 200,
+                interval : 50,
+                maxNumber : 100,
+                showArea : 'sellArea'
+            }); */
+        });
+    </script>
+    <div class="jilu b_show">
+        <h3 class="wtTitle">{{jlTitle}}</h3>
+        <div class="outJL">
+            <ul class="clearfix headT">
+                <li>{{jlTime}}</li>
+                <li>{{jlMaimai}}</li>
+                <li>{{jlPrice}}</li>
+                <li>{{jlNum}}</li>
+                <li>{{jlAll}}</li>
+            </ul>
+            <div class="bodyI">
+                <ul class="clearfix JLinfo" ng-repeat="i in dealDetailList |orderBy:'-date'">
+                    <li>{{i.date}}</li>
+                    <li ng-class="{true:'JL_buy',false:'JL_sell'}[i.deal_type==1]">{{changetype(i.deal_type)}}</li>
+                    <li ng-class="{'JL_buy':i.deal_type==1,'JL_sell':i.deal_type==0}">{{i.deal_price}}</li>
+                    <li>{{i.deal_num}}</li>
+                    <li>{{i.sum_price}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

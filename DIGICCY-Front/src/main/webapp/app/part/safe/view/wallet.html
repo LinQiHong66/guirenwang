@@ -1,0 +1,94 @@
+<style>
+	.bank .bankPop{
+		position: fixed;display: none;top: 0;left: 0;
+		width: 100%;height: 100%;background-color:rgba(204, 204, 204, 0.5);}
+	.bank .bankPop .bankBok{
+		position: absolute;top:5%;left: 25%;width: 50%;height: auto;
+		padding: 10px;background-color: #fff;border-radius: 10px;min-width: 288px;}
+	.bank .bankPop .bankBok div{padding-bottom: 5px;padding-left: 16px;}
+	.bank .bankPop .bankBok div label,
+	.bank .bankPop .bankBok div input,
+	.bank .bankPop .bankBok div select{display: block;padding: 0;}
+	.bank .bankPop .bankBok div input{
+		border: 1px solid #117dc8;width: 250px;padding-left: 5px;height: 25px;}
+	.bank .bankPop .bankBok div select{
+		border: 1px solid #117dc8;width: 257px;height: 27px;}
+	.bank .bankPop .bankBok div:nth-child(1){
+		padding-bottom: 5px;padding-left:0;border-bottom: 1px solid #117dc8;}
+	.bank .bankPop .bankBok div:nth-child(1) span{padding-left: 5px;font-size:18px;}
+	.bank .bankPop .bankBok div:nth-child(2){padding-top: 15px;}
+	.bank .bankPop .bankBok div:nth-child(4) select{width: 125px;float: left;margin-right: 7px;}
+	.bank .bankPop .bankBok .close{
+		font-size: 35px;cursor: pointer;float: right;height: 30px;line-height: 25px;}
+	.bank .bankPop .bankBok div button{
+		padding: 0;border: 1px solid #117dc8;width: 255px;height: 27px;
+		background-color: #117dc8;cursor: pointer;font-size: 18px;line-height: 27px;color: #fff;}
+	.bank .hideShow{display: block!important;}
+	.bank .bindphoneBox{
+		width: 270px;border: 1px solid #117dc8;background-color: #117dc8;color: #fff;padding: 10px;border-radius: 10px;
+		position: absolute;top: 50%;left: 50%;margin-left: -135px;display: none;text-align: center;}
+	.bank .hideShow{display: block !important;}
+	.bank .tb .spanA{
+		padding: 1px 5px;background-color: #117dc8;color: #fff;cursor: pointer;}
+	@media screen and (max-width: 480px){
+		.bank .bankPop .bankBok{left: 50%;width: 288px;margin-left: -154px;}
+		.bank .tb table{min-width: 900px;}
+		.bank .addbtn{position: relative;left: 50%;margin-left: -125px;}
+	}
+</style>
+<div class="bank" ng-cloak>
+		<h2 class="pdtit">{{tit}}</h2>
+		<div class="tb">
+			<table >
+				<thead>
+					<th>{{tbtit[0]}}</th>
+					<th>{{tbtit[1]}}</th>
+					<th>{{tbtit[2]}}</th>
+					<th>{{tbtit[3]}}</th>
+					<th>{{tbtit[4]}}</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat='data in tbdata'>
+						<td>{{data.coin_no}}</td>
+						<td>{{data.idtf}}</td>
+						<td>{{data.address}}</td>
+						<td>{{data.date}}</td>
+						<td><span class="spanA" ng-click="deleteDz($index)">删除</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<button class="addbtn" ng-click="notecase()">{{addaddress}}</button>
+		<div class="bankPop" ng-class="{true:'hideShow'}[hsHowFlg]">
+			<div class="bankBok">
+				<div>
+					<span>添加钱包</span>
+					<i class="close" ng-click="close()">×</i>
+				</div>
+				<div>
+					<label>币种名称：</label>
+					<select ng-model='coinn' ng-options="v.coin_no as v.coin_name for v in conData" ng-change="changeA(coinn)">
+						<option value="">请选择</option>
+					</select>
+				</div>
+				<div>
+					<label>钱包标识：</label>
+					<input type="text" ng-model="charact">
+				</div>
+				<div>
+					<label>钱包地址：</label>
+					<input type="text" ng-model="site">
+				</div>
+				<div>
+					<label>交易密码：</label>
+					<input type="password" ng-model="passCoin">
+					<span><a href="../forget/forget.html#/index">忘记交易密码？</a></span>
+				</div>
+				<div>
+					<button ng-click="superinduce()">立即添加</button>
+				</div>
+				<div class="bindphoneBox" ng-class="{true:'hideShow'}[bindphoneflg]">{{bindphoneTip}}</div>
+			</div>
+		</div>
+
+</div>

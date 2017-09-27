@@ -1,0 +1,109 @@
+<style>
+  .btna{
+    width: 120px;
+    height: 28px;
+    background: #58b6f8;
+    border: navajowhite;
+    color:#fff;
+  }
+  .tcbox{
+     position: fixed;
+    top: 35%;
+    left: 60%;
+    width: 300px;
+    height: 100px;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3);
+     z-index: 9999;
+   }
+   .pp{padding: 20px;}
+   .guan{
+     position: absolute;
+     top: 5px;
+     right: 10px;
+     font-size: 18px;
+   }
+   .ag{
+       width: 80px;
+    height: 30px;
+    line-height: 30px;
+    background: #76bdef;
+    display: block;
+    text-align: center;
+    color: #fff;
+    position: absolute;
+    bottom: 10px;
+    left: 120px;
+   }
+   .forward .forwardT .forwardTT select{
+   margin-left: -4px;
+   }
+   .forward .forwardT .forwardTB .forwardTBR .RBtn{
+   background-color: rgb(17, 125, 200);
+   }
+</style>
+<div class="forward">
+	<h3>{{fwTitle}}</h3>
+	<div class="forwardT">
+		<div class="forwardTT clearfix">
+			<div class="fl"><label>{{fHeader.currency}}：</label>
+				<select ng-model="fw" ng-options="v.coin_no as v.coin_name for v in fwtype" ng-change="biChange()"></select>
+			</div>
+			<div class="fl"><span>{{fHeader.avail}}：</span><span>{{money}}</span></div>
+	</div>
+	<div class="forwardTB clearfix">
+		<div class="forwardTBL fl">
+			<div><label>{{fHeader.userId}}：</label><input type="text" ng-model='uid'/><span>手续费{{fei*100}}%</span></div>
+			<div><label>转账数量：</label><input type="text" ng-model='unum'/></div>
+		</div>
+		<div class="forwardTBR fl">
+			<div class="clearfix"><div class="fl"><span>{{fHeader.duanxin}}：</span>
+				<input type="text" ng-model='codea'/></div><button class="fl btna" ng-click='hqyzm()'>{{yanzhenma}}</button>
+				<span style='cursor:pointer' ng-click='goa()'>{{tishi}}{{ellipsis(phone)}}</span></div>
+				<div>
+					<label>{{fHeader.password}}：</label>
+					<input type="password" ng-model='pswd'/>
+					<a class="forget" href="../forget/forget.html#/index">{{fHeader.forgot}}？</a>
+					<span class="RBtn" ng-click='dianji()'>{{fHeader.sure}}</span>
+				</div> 
+		</div>
+	</div>
+	<div class='tcbox' ng-style='tsbox'>
+	   <p class='pp'>{{tishia}}</p>
+	   <span class='guan' ng-click='guan()'>X</span>
+	   <a class='ag' ng-click='guan()' href='javascript:;'>确定</a>
+	</div>
+</div>
+<div class="record">
+	<h5>{{fwUlHeader.h5}}</h5>
+	<ul class="clearfix ulHeader">
+		<li>{{fwUlHeader.time}}</li>
+		<li>{{fwUlHeader.type}}</li>
+		<li>{{fwUlHeader.user}}</li>
+		<li>{{fwUlHeader.num}}</li>
+		<li>{{fwUlHeader.fei}}</li>
+	</ul>
+
+	<ul class="clearfix" ng-repeat="i in fwUl">
+		<li>{{i.date}}</li>
+		<li>{{i.coin_type===10?bibi[0].coin_name:i.coin_type===20?bibi[1].coin_name:i.coin_type===30?bibi[2].coin_name:bibi[3].coin_name}}</li>
+		<li>{{i.tran_user}}</li>
+		<li>{{i.tran_num}}</li>
+		<li>{{i.poundage}}</li>
+	</ul>
+	<div class="Jpage" style="display:none;">
+			<p>
+				85条记录1/6页
+			</p>
+			<p>
+				<span>上一页</span>
+				<select>
+					<option>1</option>
+					<option>2</option>
+				</select>
+				<span>下一页</span>
+			</p>
+		</div>
+</div>
+</div>

@@ -1,0 +1,123 @@
+{
+  "chinese":{
+      "header":{
+      "biaoti":"数字货币交易平台",
+      "logo": "images/hd_logo.png",
+      "title":["首页","交易中心","财务中心","安全中心","应用中心","云购商城","帮助中心","推广返佣","借贷"]
+    },
+      "home_banner": [
+        {
+          "src": "#",
+          "img": "images/banner1.png"
+        },
+        {
+          "src": "#",
+          "img": "images/banner2.png"
+        },
+        {
+          "src": "#",
+          "img": "images/banner3.png"
+        },
+        {
+          "src": "#",
+          "img": "images/banner4.png"
+        }],
+      "home_notice": {
+        "qq":{
+          "logo": "images/QQ.png",
+          "p1":"暂无",
+          "p2":"在线QQ客服"
+        },
+        "wb":{
+          "logo": "images/XL.png",
+          "p1":"暂无",
+          "p2":"新浪官方微博"
+        },
+        "qun":{
+          "logo": "images/QUN.png",
+          "p1":"暂无",
+          "p2":"交流QQ群"
+        }
+      },
+      "home_info":{
+        "infoL":{
+          "title":"行业咨询",
+          "more":"查看更多>>",
+          "a":"part/help/index.html#/hTrade"
+        },
+        "infoM":{
+          "title":"常见问题",
+          "more":"查看更多>>",
+          "a":"part/help/index.html#/hProblem"
+        },
+        "infoR":{
+          "title":"公告",
+          "more":"查看更多>>",
+          "a":"part/help/index.html"
+        }
+      },
+      "home_market":{
+        "today":["每日行情","交易市场","最新成交价","买一价","卖一价","成交量","成交额","日涨跌","价格趋势(3日)","操作"]
+      }
+  },
+  "english":{
+    "header":{
+      "biaoti":"Digital currency trading platform",
+      "logo": "images/hd_logo.png",
+      "title":["Home","Trade","Financial","Security","Applications","Shopping","Help","Promotion","debt"]
+    },
+    "home_banner": [
+      {
+        "src": "#",
+        "img": "images/banner1.png"
+      },
+      {
+        "src": "#",
+        "img": "images/banner2.png"
+      },
+      {
+        "src": "#",
+        "img": "images/banner3.png"
+      },
+      {
+        "src": "#",
+        "img": "images/banner4.png"
+      }],
+    "home_notice": {
+      "qq":{
+        "logo": "images/QQ.png",
+        "p1":"Not available",
+        "p2":"Online QQ customer service"
+      },
+      "wb":{
+        "logo": "images/XL.png",
+        "p1":"Not available",
+        "p2":"Sina micro-blog"
+      },
+      "qun":{
+        "logo": "images/QUN.png",
+        "p1":"Not available",
+        "p2":"AC QQ group"
+      }
+    },
+    "home_info":{
+      "infoL":{
+        "title":" professional information",
+        "more":"查看更多>>",
+        "a":"part/help/index.html#/hTrade"
+      },
+      "infoM":{
+        "title":"common problem","more":"查看更多>>",
+        "a":"part/help/index.html#/hProblem"
+      },
+      "infoR":{
+        "title":"announcemen",
+        "more":"查看更多>>",
+        "a":"part/help/index.html"
+      }
+    },
+    "home_market":{
+      "today":["每日行情","交易市场","最新成交价","买一价","卖一价","成交量","成交额","日涨跌","价格趋势(3日)","操作"]
+    }
+  }
+}

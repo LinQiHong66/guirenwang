@@ -1,0 +1,154 @@
+<div class="hangqing">
+    <div style="background: #fff">
+        <div id="double"></div>
+    </div>
+    <div id="content-trade" class="content clearfix">
+        <div class="left con con1" >
+            <table class="t1">
+                <thead>
+                <tr>
+                    <th width="15%">{{con.buy}}</th>
+                    <th width="22.6%">{{con.price}}</th>
+                    <th width="34.4%">{{con.num}}</th>
+                    <th width=""><span class="tsp1">{{con.bili}}</span></th>
+                </tr>
+                </thead>
+                </table>
+            <div class="tb">
+                <table class="t1">
+                <tbody id="marketbuylist" class="tb">
+                <tr ng-repeat="i in con1">
+                    <td class="buy" width="16%">{{i.buy}}</td>
+                    <td class="buy" width="25.6%">{{i.price}}</td>
+                    <td class="buy" width="38.4%">{{i.num}}</td>
+                    <td width="31%">
+                        <span class="buySpan" ng-style="{'width':i.bili+'px'}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+                </div>
+        </div>
+        <div class="left con con2">
+            <table class="t1">
+                <thead>
+                <tr>
+                    <th width="15%">{{con.sell}}</th>
+                    <th width="22.6%">{{con.price}}</th>
+                    <th width="34.4%">{{con.num}}</th>
+                    <th width=""><span class="tsp1">{{con.bili}}</span></th>
+                </tr>
+                </thead>
+                </table>
+            <div class="tb">
+                <table class="t1">
+                    <tbody id="marketselllist" class="tb">
+                    <tr ng-repeat="i in con2">
+                        <td class="sell" width="16%">{{i.sell}}</td>
+                        <td class="sell" width="25.6%">{{i.price}}</td>
+                        <td class="sell" width="38.4%">{{i.num}}</td>
+                        <td width="31%">
+                            <span class="sellSpan" ng-style="{'width':i.bili+'px'}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="right con con3">
+            <table class="t1">
+                <thead>
+                    <tr>
+                        <th width="70">{{con.time}}</th>
+                        <th width="70">{{con.price}}</th>
+                        <th width="100">{{con.num}}</th>
+                        <th><span class="tsp1">{{con.money}}</span></th>
+                    </tr>
+                </thead>
+            </table>
+           <div class="tb">
+               <table class="t1">
+                   <tbody id="marketorderlist" >
+                   <tr ng-repeat="i in con3">
+                       <td class="buy" width="70">{{i.time}}</td>
+                       <td class="buy" width="70">{{i.price}}</td>
+                       <td class="buy" width="100">{{i.num}}</td>
+                       <td class="buy">{{i.price*i.num|number:6}}</td>
+                   </tr>
+                   </tbody>
+               </table>
+           </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        var chart = document.getElementById('double');
+        var echart = echarts.init(chart);
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            toolbox: {
+                feature: {
+                    dataView: {show: false, readOnly: true},
+                    magicType: {show: false, type: ['line', 'line']},
+                    restore: {show: false},
+                    saveAsImage: {show: false}
+                }
+            },
+            legend: {
+                data:['买入','卖出']
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '买入',
+                    min: 0,
+                    max: 300,
+                    interval: 60,
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '卖出',
+                    min: 0,
+                    max: 25,
+                    interval: 5,
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name:'买入',
+                    radius : '100%',
+                    type:'line',
+                    smooth:true,
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                },
+                {
+                    name:'卖出',
+                    radius : '100%',
+                    type:'line',
+                    smooth:true,
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    yAxisIndex: 1,
+                    data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                }
+            ]
+        };
+        echart.setOption(option);
+        //window.onresize = chart.resize;
+    });
+</script>

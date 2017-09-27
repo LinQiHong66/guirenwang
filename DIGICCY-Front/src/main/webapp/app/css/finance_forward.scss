@@ -1,0 +1,297 @@
+﻿@charset "UTF-8";
+//这里的嵌套格式一定要用花阔号，
+//每句都要用结束符可以使用私有属性
+@import "_config.scss";
+@import "_mixins.scss";
+@import "variable.scss";
+.forward{
+    width: 970px;
+    float:right;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+    h3{
+        padding: 22px;
+        font-size: 22px;
+    }
+     select,input{
+            border: 1px solid #ccc;
+        }
+    .forwardT{
+        margin-top: 30px;
+        padding: 20px;
+        .forwardTT{
+            label{
+                width: 25%;
+                display: inline-block;
+                text-align: right;
+            }
+            select{
+                height: 30px;
+                width: 200px;
+            }
+            .fl{
+                width: 50%;
+                line-height: 30px;
+            }
+        }
+       .forwardTB{
+           .forwardTBL,.forwardTBR{
+               width: 50%;
+               text-align: left;
+           }
+           .forwardTBL{
+               label{
+                    width:25%;
+                    display: inline-block;
+                    text-align: right;
+               }
+                >div{
+                   margin: 10px 0px;
+                }
+               input{
+                   padding: 0;
+                   padding-left: 5px;
+                   width: 193px;
+                   height: 26px;
+               }
+               span:nth-child(3),a{
+                   padding-left: 10px;
+                   line-height: 20px;
+                    color: rgba(224, 27, 16, 0.81);
+                    font-size: 14px;
+               }
+           }
+           .forwardTBR{
+               >div{
+                   margin: 10px 0px;
+               }
+               input{
+                   padding: 0;
+                   padding-left: 5px;
+                   width: 80px;
+                   height: 26px;
+               }
+               .forget{
+                    line-height: 20px;
+                    color: rgba(224, 27, 16, 0.81);
+                    font-size: 16px;
+                    margin-left: 5px;
+                    &:hover{
+                         color: $tcolor2;
+                      }
+               }
+               span:nth-child(2){
+                   background-color: $tcolor1;
+                   height: 28px;
+                   line-height: 28px;
+                   cursor: pointer;
+                   padding: 0 10px;
+                   &:hover{
+                       background-color: $tcolor2;
+                   }
+               }
+               span:nth-child(3){
+                    line-height: 20px;
+                    color: rgba(224, 27, 16, 0.81);
+                    font-size: 14px;
+                    margin-left: 5px;
+               }
+               .RBtn{
+                    display: inline-block;
+                    width: 100px;
+                    background-color: rgba(7, 38, 92, 0.66);
+                    height: 30px;
+                    line-height: 30px;
+                    color: #fff;
+                    text-align: center;
+                    margin-left: 27px;
+                    cursor: pointer;
+                      &:hover{
+                          background-color: $tcolor2;
+                      }
+               }
+           }
+       }
+    } 
+    .record{
+        h5{
+            padding: 20px;
+        }
+        ul{
+             border-bottom: 1px solid rgba(204, 204, 204, 0.4);
+            li{
+                text-align: center;
+                padding: 10px 0;
+                float: left;
+                width: $width/5;
+            }
+        }
+        ul.ulHeader {
+            background-color: $ulcolor;
+        }
+        .Jpage{
+        text-align: center;
+        span{
+            background-color: $tcolor1;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin:0 10px; 
+            color: #fff;
+            &:hover{
+                background-color: $tcolor2;
+            }
+        }
+        p:nth-child(1){
+            padding-top: 20px;
+        }
+        p{
+            padding-top:15px;
+        }
+        p select{
+            width: 50px;
+            margin: 0 10px;
+        }
+    }
+    }        
+
+}
+// xs:480px;sm:768px;md:992px;lg:1200px;mg:1400px
+@include respond-to(lg) {
+    .forward {
+         width: 805px;
+         font-size:14px;
+         min-height:600px;
+      }
+ }
+//最大宽屏992px的时候
+.forwardPlace,.forward{
+    @include respond-to(md){
+        width: 99%; 
+        min-height:500px;
+    }
+}
+//最大宽屏768px的时候
+.forwardPlace{
+    @include respond-to(sm){
+        width: 99%;
+        min-height:400px;
+    }
+}
+.forward{
+    @include respond-to(sm){
+        width: 100%;
+        border: 0;
+    }
+    .forwardT .forwardTB .forwardTBL{
+        @include respond-to(sm){
+            float: none;
+            width: 100%;
+        }
+        >div{
+            @include respond-to(sm){
+                width: 100%;
+            } 
+            label{
+                @include respond-to(sm){
+                 width: 15%;
+                }  
+            }
+        }
+    }
+    .forwardT .forwardTB  .forwardTBR{
+        @include respond-to(sm){
+            float: none;
+            width: 100%;
+        }
+        .clearfix>div{
+            @include respond-to(sm){
+                margin-left: 5.2%;
+            }  
+        }
+        .RBtn{
+            @include respond-to(sm){
+                margin-left: 5.2%;
+            }
+        }
+    }
+}
+//最大宽屏480px的时候
+.forwardPlace{
+    @include respond-to(xs){
+        width: 100%;
+    }
+}
+.forward{
+    @include respond-to(xs){
+        width: 100%;
+    }
+    .record{
+        @include respond-to(xs){
+            overflow: scroll;
+        }
+        ul{
+           @include respond-to(xs){
+                min-width: 780px;
+            }
+        }
+    }
+    .forwardT{
+        .forwardTT .fl{
+            @include respond-to(xs){
+                float: none;
+                width: 100%;
+            }
+            label{
+                @include respond-to(xs){
+                    display:block;
+                    width: auto;
+                    text-align: left;
+                }
+            }
+        }
+        .forwardTB .forwardTBL > div label{
+             @include respond-to(xs){
+                    display:block;
+                    width: auto;
+                    text-align: left;
+                }   
+        }
+        .forwardTB .forwardTBR .clearfix > div{
+            @include respond-to(xs){
+                   margin-left: 0;
+                   width: 100%;
+                   margin-bottom: 5px;
+                }
+            span{
+                @include respond-to(xs){
+                    display: block;
+                    width: auto;
+                    text-align: left;
+                    margin-bottom: 1px;
+                }
+            } 
+            input{
+                @include respond-to(xs){
+                    width: 191px;
+                }
+            }    
+        }
+        .forwardTB .forwardTBR .RBtn{
+             @include respond-to(xs){
+                   margin-left: 0;
+            }
+            span{
+                @include respond-to(xs){
+                   margin-left: 0;
+                }
+            }
+        }
+    }
+    .record .Jpage{
+        p{
+            @include respond-to(xs){
+                min-width: 680px;
+            } 
+        }
+    }
+}

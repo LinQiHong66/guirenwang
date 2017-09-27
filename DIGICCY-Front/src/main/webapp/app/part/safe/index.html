@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='myApp' ng-controller='myController' ng-cloak>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>{{title}}</title>
+	<link rel="stylesheet" type="text/css" href="../../css/safe.css">
+	<link rel="stylesheet" href="../../css/zyupload-1.0.0.min.css " type="text/css">
+	<script type="text/javascript" src="../../js/getip.js"></script>
+	<script type="text/javascript" src='../../lib/jquery.min.js'></script>
+	<script type="text/javascript" src='../../js/js.KinerCode.js'></script>
+	<script type="text/javascript" src='../../lib/angular/angular.min.js'></script>
+	<script type="text/javascript" src='../../lib/angular/angular-route.min.js'></script>
+	<script type="text/javascript" src="../../js/gundong.js"></script>
+	<script type="text/javascript" src='../../js/autoActive.js'></script>
+	<script type="text/javascript" src="../../js/zyupload-1.0.0.min.js"></script>
+
+
+	<!-- <script type="text/javascript" src="js/sDefault.js"></script> -->
+	
+	<!-- angular files -->
+	<!-- <script type="text/javascript" src='js/safeCtr.js'></script> -->
+	<!-- <script type="text/javascript" src="js/sDefault.js"></script> -->
+	
+	<!-- <script type="text/javascript" src='js/safe.js'></script> -->
+</head>
+<body>
+<!--头部开始-->
+<div class="header">
+	<div class="hd_inner">
+		<div class="hd_logo"><a href="#"><img ng-src="{{logo}}"/></a></div>
+		<!-- <span class="ce" ng-click="changelg()" data-lg="{{lg}}"><em ng-class="{'true':'on'}[lg=='chinese']">中</em>/<em ng-class="{'true':'on'}[lg=='english']">E</em></span> -->
+		<div class="blist clearfix">
+	        <div class='weixina' id='weixina'>
+	           <img src="../../images/header-weixin-logo.png"><span>关注微信</span>
+	           <div class='wxbox' id='wxbox'><img src="../../images/wx-qrcode.png"></div>
+	        </div>
+	        <!-- 未登录状态 -->
+	        <div class='dlzc' ng-style="loginq"><img src="../../images/zhuce.png"><a class="zc" href="register/register.html">注册</a>|<span class='dl' ng-click="dlshow()">登录</span></div>
+	        <!-- 登录状态 -->
+	        <div class='dlh' ng-style="loginh">
+	           <img src="../../images/zhuce.png"><span class="namea">{{loginInfo.username}}</span><i class='icon iconfont'>&#xe625;</i>
+	           <div class='xxbox'>
+	              <p>ID:<span class="info">{{loginInfo.id}}</span></p>
+	              <p>注册时间:<span class="info">{{loginInfo.date}}</span></p>
+	              <p class='out' ng-click='outlogin()'>退出账号</p>
+	           </div>
+	        </div>
+	        <!-- 切换语言 -->
+	        <div class="lanague">
+	            <span class="langa"><a class="en" href="#"></a><a href="">English</a><i class='icon iconfont'>&#xe625;</i></span>
+				<ul class='langbox'>
+					<li class="en"><a href="?lang=en">English</a></li>
+					<li class="cn"><a href="?lang=cn">简体中文</a></li>
+				</ul>
+			</div>
+	    </div>
+		<div class="hd_list clearfix">
+			<div class="alist clearfix" id='slId'>
+				<a href="../../index.html" ng-bind="home"></a>
+				<a ng-bind="transaction" href="../transaction/index.html"></a>
+                <a ng-bind="finance" ng-click='tiaoF()'></a>
+                <a ng-bind="safe" class="on" ng-click='tiaoS()'></a>
+                <!-- <a ng-bind="apply" ng-click='tiaoA()'></a>
+                 <a href="../jiedai/index.html" ng-bind='jiedai'></a> -->
+                <a ng-bind="help"  href="../help/index.html"></a>
+			<!-- 	<a href="../mall/index.html" ng-bind="shop"></a> -->
+				 <a href="../cf/index.html">ICO众筹</a>
+			</div>
+		</div>
+		   
+	</div>
+</div>
+<!--头部结束-->
+	<nav class="nav2Bg clearfix">
+		<div class="boxleft">
+			<div id="close" class="iconfont">&#xe625;</div>
+			<h2>安全中心<i>Safe center</i></h2>
+			<ul class='clearfix' id="ul2">
+				<li auto-active="active">
+					<a href="#/sDefault" >
+						<span class="iconfont navIcon">&#xe608;</span>
+						<span ng-bind='safeNav1'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+				 	<a href="#/sAuthentication" >
+						<span class="iconfont navIcon">&#xe621;</span>
+						<span ng-bind='safeNav2'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sPassword" >
+						<span class="iconfont navIcon">&#xe605;</span>
+						<span ng-bind='safeNav3'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sPwset" >
+						<span class="iconfont navIcon">&#xe610;</span>
+						<span ng-bind='safeNav4'></span>
+						<i></i>
+					</a>
+				</li>
+				<!-- <li auto-active="active">
+					<a href="#/sDbtest" >
+						<span class="iconfont navIcon">&#xe614;</span>
+						<span ng-bind='safeNav5'></span>
+						<i></i>
+					</a>
+				</li> -->
+				<li auto-active="active">
+					<a href="#/sBindphone" >
+						<span class="iconfont navIcon">&#xe603;</span>
+						<span ng-bind='safeNav6'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sAlipay">
+						<span class="iconfont navIcon">&#xe604;</span>
+						<span ng-bind='safeNav7'></span>
+						<i></i>
+					</a>
+				</li>
+				<!-- <li auto-active="active">
+					<a href="#/sPaypassword">
+						<span class="iconfont navIcon">&#xe613;</span>
+						<span ng-bind='safeNav8'></span>
+						<i></i>
+					</a>
+				</li> -->
+				<li auto-active="active">
+					<a href="#/sBank">
+						<span class="iconfont navIcon">&#xe619;</span>
+						<span ng-bind='safeNav9'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sWallet">
+						<span class="iconfont navIcon">&#xe607;</span>
+						<span ng-bind='safeNav10'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sAddress">
+						<span class="iconfont navIcon">&#xe60b;</span>
+						<span ng-bind='safeNav11'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sLog">
+						<span class="iconfont navIcon">&#xe61e;</span>
+						<span ng-bind='safeNav12'></span>
+						<i></i>
+					</a>
+				</li> 
+			</ul>
+			</div>
+			<div ng-view class="boxright"></div>
+		</nav>
+<!-- 版权部分 begin -->
+<div class="footr">
+    <p>CopyRight&copy; 2015-2016 数字交易平台 All Rights Reserved   |  <a href="#">ICP备7777777号-1</a></p>
+</div>
+<!-- 版权部分 end -->
+</body>
+	<script type="text/javascript" src="js/myController.js"></script>
+	<script type="text/javascript" src='../../js/post.js'></script>
+	<script type="text/javascript" src='../../js/get.js'></script>
+	<script type="text/javascript" src="js/default.js"></script>
+	<script type="text/javascript" src="js/authentication.js"></script>
+	<script type="text/javascript" src="js/password.js"></script>
+	<script type="text/javascript" src="js/pdset.js"></script>
+	<script type="text/javascript" src="js/dbtest.js"></script>
+	<script type="text/javascript" src="js/bindphone.js"></script>
+	<script type="text/javascript" src="js/alipay.js"></script>
+	<script type="text/javascript" src="js/paypassword.js"></script>
+	<script type="text/javascript" src="js/bank.js"></script>
+	<script type="text/javascript" src="js/wallet.js"></script>
+	<script type="text/javascript" src="js/address.js"></script>
+	<script type="text/javascript" src="js/log.js"></script>
+</html>

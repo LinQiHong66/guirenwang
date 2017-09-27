@@ -1,0 +1,58 @@
+@import "_config";
+@import "_mixins";
+$bg1:#f5f5f5;
+$tcolor1:#117dc8;
+$tcolor2:#76bdef;
+.bill{
+    width: 96%;
+  padding: 20px 2%;
+  h2{
+    font-size: 22px;
+    color:#333;
+    font-family: 'microsoft yahei';
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+  .tb{
+    table{
+      width: 100%;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      // margin-left: 50px;
+      border: none;
+      border-collapse:collapse;
+      thead{
+        background-color: #e5e5e5;
+        th{
+          padding:5px 10px;
+          border: 1px solid #e5e5e5;
+        }
+      }
+      td{
+        border: 1px solid #e5e5e5;
+        text-align: center;
+        padding: 5px;
+      }
+    }
+  }
+  .page{
+    margin: 0 auto;
+    width: 230px;
+    li{
+      float: left;
+      padding: 0 10px;
+      span{
+        background-color: $tcolor1;
+        color:#fff;
+        padding: 5px 10px;
+        transition:all 0.3s;
+        cursor: pointer;
+      }
+      span:hover{
+        background-color: $tcolor2;
+      }
+    }
+  }
+}

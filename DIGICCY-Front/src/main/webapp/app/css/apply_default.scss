@@ -1,0 +1,457 @@
+@import "_config";
+@import "_mixins";
+$bg1:#f5f5f5;
+$tcolor1:#117dc8;
+$tcolor2:#76bdef;
+.subs{
+   width: 96%;
+  padding: 20px 2%;
+  margin-bottom:60px;
+  h2{
+    font-size: 22px;
+    color:#333;
+    font-family: 'microsoft yahei';
+    padding: 0 0 20px 0;
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+  .subBox{
+    width: 100%;
+    border: 1px solid #eee;
+    margin-top:30px;
+    .boxTop{
+      font-size: 14px;
+      font-family: 'microsoft yahei';
+      color:#999;
+      padding: 10px;
+    }
+    .boxBot{
+      .bbLeft{
+        float: left;
+        padding: 2%;
+        width: 10%;
+      }
+      .bbRight{
+        float: left;
+        width: 84%;
+        .brTop{
+          width: 100%;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #eee;
+          .brtBox{
+            text-align: center;
+            float: left;
+            width: 20%;
+          }
+        }
+        .brBot{
+          padding-top: 20px;
+          span{
+            float: left;
+          }
+          .jd{
+            width: 60%;
+            height: 20px;
+            background-color: #ccc;
+            display: block;
+            // float: left;
+            i{
+              width: 50%;
+              height: 20px;
+              background-color: $tcolor1;
+              display: block;
+            }
+          }
+          .bbr{
+            float: right;
+            padding-right: 20px;
+            .bbnum{
+              color:#999;
+              margin-right: 30px;
+            }
+            .btn{
+              border: 1px solid $tcolor1;
+              color:$tcolor1;
+              padding:0 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+    .powerlay{
+      display: block! important;
+    } 
+    .powerBox{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      background-color: rgba(204, 204, 204, 0.61);
+      display: none;
+      .power{
+        position: fixed;
+          top: 25%;
+        left: 18%;
+        width: 64%;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        height: auto;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px #ccc;
+        .powerTitle{
+          height: 70px;
+          line-height:50px;
+          padding-left: 30px;
+          position: relative;
+          img{
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+          }
+          .guanbi{
+             position: absolute;
+             top:5px;
+             right: 20px;
+             font-size: 16px;
+             cursor: pointer;
+
+         }
+        }
+        .powerInfo{
+          border-top:1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+          .InfoBox{
+            float: left;
+            width: 20%;
+            div{
+              text-align: center;
+              height: 30px;
+              line-height: 30px;
+            }
+          }
+        }
+        .buyInfo{
+          border-bottom: 1px solid #ccc;
+          div{
+            float: left;
+          }
+          .buyInfoLeft{
+            border-right: 1px solid #ccc;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            width: 49%;
+            p{
+              padding-left: 20px;
+              padding-top:15px;
+              padding-bottom: 15px;
+            }
+          }
+          .buyInfoRight{
+            width: 50%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            div{
+              width: 100%;
+              padding-top: 15px;
+              padding-bottom: 7px;
+              text-align: center;
+              margin:0 auto;
+              .buyInfoNum{
+                width: 50%;
+                display: inline-block;
+                border: 1px solid #fff;
+                padding: 0;
+                padding-left: 10px;
+                text-align: right;
+              }
+              input{
+                width: 50%;
+                display: inline-block;
+                border: 1px solid #000000;
+                padding: 0;
+                padding-left: 10px;
+                height: 30px;
+              }
+              button{
+                background-color:#117dc8;
+                border: 0;
+                padding: 0;
+                color: #fff;
+                width: 62%;
+                margin: 0 auto;
+                font-size: 20px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                cursor: pointer;
+              }
+            }
+            .tishi{
+                  
+                  position: absolute;
+                  width: 400px;
+                  height: 70px;
+                  border: 1px solid #ccc;
+                  z-index: 999;
+                  background: #fff;
+                  top: 230px;
+                  right: 50px;
+                  h6{
+                    text-align: center;
+                  } 
+                  p{
+                  cursor: pointer;
+                    width: 55px;
+                    height: 25px;
+                    font-size: 14px;
+                    display: block;
+                    background-color: #76bdef;
+                    line-height: 25px;
+                    color: #fff;
+                    float: right;
+                        margin:25px 30px 0 0;
+                 }
+                 p:hover{
+                    background-color: #117dc8;
+                }
+              }
+          }
+        }
+      }
+    }
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(lg) {
+  .subs{
+       font-size: 14px;
+    h2{
+      font-size: 22px;
+      color:#333;
+      font-family: 'microsoft yahei';
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+      margin: 0;
+      margin-bottom: 20px;
+    }
+    .subBox{
+      width: 100%;
+      border: 1px solid #ccc;
+      border-left: none;
+      border-right: none;
+      margin-top:30px;
+      .boxTop{
+        font-size: 14px;
+        font-family: 'microsoft yahei';
+        color:#999;
+        padding: 10px;
+      }
+      .boxBot{
+        .bbLeft{
+          display:none;
+          float: left;
+          // padding: 2%;
+          width: 10%;
+        }
+        .bbRight{
+          float: left;
+          width: 100%;
+          .brTop{
+            width: 100%;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            .brtBox{
+              text-align: center;
+              float: left;
+              width: 20%;
+            }
+          }
+          .brBot{
+            padding-top: 20px;
+            span{
+              float: left;
+            }
+            .jd{
+
+              width: 40%;
+              height: 20px;
+              background-color: #ccc;
+              display: block;
+              // display: none;
+              // float: left;
+              i{
+
+                width: 50%;
+                height: 20px;
+                background-color: $tcolor1;
+                display: block;
+              }
+            }
+            .bbr{
+              float: right;
+              padding-right: 20px;
+              .bbnum{
+                color:#999;
+                margin-right: 10px;
+              }
+              .btn{
+                border: 1px solid $tcolor1;
+                color:$tcolor1;
+                padding:0 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .powerBox{
+      .power{
+        .powerTitle{
+          .guanbi{
+             font-size: 14px;
+         }
+        }
+        .powerInfo{
+          font-size: 14px;
+          .InfoBox{
+            .tm{
+               line-height: 15px;
+            }
+          }
+        }
+        .buyInfo{
+             font-size: 14px;
+        }
+      }
+    }
+}
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(md) {
+    .powerBox{
+      .power{
+        position: fixed;
+          top: 15%;
+        left: 10%;
+        width: 65%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        .powerTitle{
+          height: 50px;
+          line-height:40px;
+          padding-left: 30px;
+          img{
+            width: 24px;
+            height: 24px;
+          }
+        }
+         .powerInfo{
+          .InfoBox{
+            .tm{
+               line-height: 15px;
+            }
+          }
+        }
+        .buyInfo{
+          .buyInfoLeft{
+            padding-top: 10px;
+            padding-bottom: 10px;
+            width: 45%;
+            p{
+              padding-left: 10px;
+              padding-top:10px;
+              padding-bottom: 10px;
+            }
+          }
+          .buyInfoRight{
+            width: 54%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            div{
+              width: 100%;
+              padding-top: 10px;
+              padding-bottom: 5px;
+              .buyInfoNum{
+                width: 54%;
+                padding-left: 5px;
+              }
+              input{
+                width: 54%;
+                padding-left: 5px;
+                height: 25px;
+              }
+              button{
+                width: 62%;
+                font-size: 14px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+              }
+              
+            }
+            .tishi{
+                  top: 150px;
+                  right: 30px;
+              }
+          }
+        }
+      }
+    }
+}
+// xs:480px;sm:768px;md:992px;lg:1200px
+@include respond-to(sm) {
+     .powerBox{
+      .power{
+        width: 79%;
+        .powerTitle{
+         font-size: 12px;
+        }
+         .powerInfo{
+         font-size: 12px;
+        }
+        .buyInfo{
+         font-size: 12px;
+          .buyInfoRight{
+            .tishi{
+                width: 250px;
+              }
+          }
+        }
+      }
+    }
+}
+@include respond-to(xs){
+  .powerBox{
+      .power{
+        top: 10%;
+        left: 0;
+        width: 100%;
+        border: none;
+        height: auto;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        box-shadow: 0px 0px 0 #ccc;
+        .powerTitle{
+          height: 40px;
+          line-height:30px;
+          padding-left: 20px;
+          img{
+            width: 20px;
+            height: 20px;
+          }
+          .guanbi{
+             font-size: 12px;
+         }
+        }
+        .powerInfo{
+          .InfoBox{
+            .tm{
+               line-height: 15px;
+            }
+          }
+        }
+      }
+    }
+}

@@ -1,0 +1,951 @@
+html{font-size: 16px;}
+body{font-size: 16px;background: #ecf0f1}
+@import "_config";
+@import "_mixins";
+@import "common.css";
+@import "header";
+@import "footr";
+$width:100%;
+$ativerBgC:#117dc8;
+$white:#fff;
+$gray:#8796ab;
+$strike:#00a8ac;
+$red:#f30606;
+$gold:#f5c165;
+$buy:#ff690f;
+$sell:#88ca00;
+.none{
+  display: none;
+}
+.block{
+  display: block;
+}
+.oddBg,.evenBg{
+  border-bottom: 1px solid #f5f5f5;
+}
+.outBox{
+  margin-bottom: 70px;
+}
+.nav{
+  width: 100%;
+  .caidan{
+    width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0px 3px 5px #ccc;
+  .nav_cai{
+    width: 100%;
+  }
+  a{
+    display: block;
+    float: left;
+    cursor: pointer;
+    padding: 10px 0;
+    width: $width/10;
+    img{
+      width: 40px;
+      display: block;
+      float: left;
+      margin-right: 10px;
+      margin-top: 10px;
+
+    }
+    p{
+      width: 100%;
+      font-size: 16px;
+      float: left;
+      text-align: center;
+    }
+}
+a.on{
+  background: $ativerBgC;
+  color:$white;
+}
+}
+.info{
+width: 1170px;
+height: 70px;
+margin: 20px auto 0;
+background: #fff;
+padding-top: 15px;
+padding-left: 30px;
+box-shadow: 0px 0px 10px #ccc;
+dt,li:first-child{
+  height: 50px;
+  line-height: 50px;
+  float: left;
+  width: 20%;
+  text-align: left;
+  padding-left: 12px;
+  color: #e55600;
+  font-size: 32px;
+  .imgPci{
+    border: none;
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    vertical-align: middle;
+    float: left;
+  }
+}
+dd,li {
+  float: left;
+  width: 15%;
+  text-align: center;
+  font-size: 20px;
+  color: #666;
+  line-height: 22px;
+  padding-top: 6px;
+  p {
+    line-height: 22px;
+    font-size: 14px;
+    color: $gray;
+  }
+  &.redC{
+    color: $red;
+  }
+  &.gold{
+    color: $ativerBgC;
+  }
+  &.sell{
+    color: $ativerBgC;
+  }
+  &.buy{
+    color:$red;
+  }
+  &.strike{
+    color: $red;
+  }
+}
+}
+}
+.daohang{
+width: 1200px;
+height: 40px;
+margin: 20px auto;
+background: #fff;
+border-bottom: 2px solid rgba(23, 149, 244, 0.85);
+a{
+float: left;
+height: 40px;
+line-height: 40px;
+font-size: 14px;
+color: #666;
+padding: 0 35px;
+}
+a.aon {
+background-color: rgba(18, 110, 180, 0.92);
+border-bottom-color: rgba(23, 149, 244, 0.85);
+color: #fff;
+}
+}
+
+.jiaoyi{
+width:1200px;
+margin: 20px auto;
+  #kLine{
+    height: 500px;
+  }
+  #kBtn{
+    text-align: center;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    button{
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      padding: 5px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+.zichan{
+width: 100%;
+margin: 20px auto;
+background: #fff;
+box-shadow: 0px 0px 10px #ccc;
+li {
+  float: left;
+  text-align: center;
+  padding: 20px 0;
+  width: $width/5;
+  p {
+    font-size: 14px;
+    color: $gray;
+    line-height: 25px;
+  }
+  .font01 {
+    display: block;
+    color: $red;
+    font-size: 20px;
+  }
+  .font02{
+    display: block;
+    color:$ativerBgC;
+    font-size: 20px;
+  }
+}
+}
+
+.maimai{
+width: 1200px;
+margin: 0 auto;
+.box{
+  position:relative;
+  float: left;
+  /*width: 790px;*/
+      width: 66%;
+      border: 1px solid #efefef;
+      background: #fff;
+      padding: 9px 0 5px;
+      box-shadow: 0px 0px 10px #ccc;
+      .hqbox{
+         position:fixed;
+         top:50%;
+         left:40%;    
+         /*width: 260px;*/
+         width: 25%;
+         height: 300px;
+         background:#fff;
+         border:1px solid #ccc;
+          box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+          z-index:9999;
+          .title{
+              padding: 0 80px 0 10px;
+              height: 35px;
+              line-height: 35px;
+              border-bottom: 1px solid #D5D5D5;
+              font-size: 14px;
+              color: #333;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              background-color: #EAEAEA;
+          }
+          .guan{
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 16px;
+            height: 16px;
+            line-height:16px;
+            text-align:center;
+          }
+          ul{
+            li{
+              div{width:50%;line-height:30px;font-size:14px;}
+              div.fl{
+                 text-align:right;
+              }
+            }
+          }
+          .guan2{
+            display: block;
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background: #37b0f9;
+            margin: 10px auto;
+          }
+      }
+      .jiaoyicg{
+          position: absolute;
+          bottom: 100px;
+          left: 300px;
+          width: 150px;
+          height: 50px;
+          background: #fff;
+          border: 1px solid #ccc;
+          box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3);
+          z-index: 9999;
+          text-align: center;
+          line-height: 50px;
+      }
+      .ft_box {
+        float: left;
+        width: 392px;
+        border-right: 1px dashed #d2d2d2;
+        padding-bottom: 24px;
+        dl{
+          dt {
+            margin-bottom: 16px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 20px;
+            padding-left: 20px;
+          }
+          .orange {
+            color: #e55600;
+          }
+          .green {
+            color: #690;
+          }
+          .col_333 {
+            color: #333;
+          }
+          .bili{
+            overflow: hidden;
+          }
+          .smbot {
+              margin-bottom: 20px;
+            }
+          dd {
+            height: 34px;
+            line-height: 34px;
+            margin-bottom: 40px;
+            color: #999;
+            font-size: 12px;
+            padding-left: 20px;
+            position: relative;
+            p {
+              float: left;
+              width: 106px;
+              text-align: right;
+              color: #333;
+              margin-left: -106px;
+            }
+
+            .hangqing{
+              float: right;
+              margin-right: 60px;
+              color: #e55600;
+            }
+            .bprice {
+              position: absolute;
+              right:60px;
+              line-height: 42px;
+            }
+            .b-tit {
+              color:#555;
+              float: left;
+              font-size: 14px;
+
+            }
+            .slider-wrapper {
+              margin-top:16px;
+
+            }
+            .range-handle {
+              width: 20px;
+              height: 20px;
+              top:-9px;
+            }
+            input[type='text'] {
+              width: 90%;
+              height: 20px;
+              line-height: 20px;
+              font-size: 14px;
+              padding: 10px 0;
+              color: #333;
+              border: 1px solid #e1e1e1;
+              background: none;
+              padding-left: 2%;
+              font-family: 'microsoft yahei';
+            }
+            input[type='password'] {
+              width: 90%;
+              height: 20px;
+              line-height: 20px;
+              font-size: 14px;
+              padding: 10px 0;
+              color: #333;
+              border: 1px solid #e1e1e1;
+              background: none;
+              padding-left: 2%;
+              font-family: 'microsoft yahei';
+            }
+            // input[type='button'] {
+            //   width: 90%;
+            //   height: 20px;
+            //   line-height: 20px;
+            //   font-size: 14px;
+            //   padding: 10px 5px;
+            //   color: #333;
+            //   border: 1px solid #e1e1e1;
+            //   background: none;
+            //   font-family: 'microsoft yahei';
+            // }
+            .buy-btn {
+              width: 92%;
+              // height: 20px;
+              line-height: 20px;
+              font-size: 16px;
+              padding: 10px 0;
+              color: #fff;
+              border: none;
+              // background: none;
+              font-family: 'microsoft yahei';
+              background-color: #e55600;
+              cursor: pointer;
+            }
+            .sell-btn {
+              width: 92%;
+              // height: 20px;
+              line-height: 20px;
+              font-size: 16px;
+              padding: 10px 0;
+              color: #fff;
+              border: none;
+              // background: none;
+              font-family: 'microsoft yahei';
+              background-color: #669900;
+              cursor: pointer;
+            }
+            #sellBL,#buyBL{
+              width: 200px;
+              position: relative;
+            }
+            #buy-bar,#sell-bar{
+              width: 100%;
+              height: 10px;
+              top: 12px;
+              left: 0;
+              position: absolute;
+              background: #fff;
+              border-radius: 10px;
+              border: 1px solid #ccc;
+            }
+            #buy-barQ,#sell-barQ{
+              top: 12px;
+              height: 12px;
+              position: absolute;
+              border-radius: 10px;
+            }
+            #buy-barQ{
+              background: $buy;
+            }
+            #sell-barQ{
+              background: $sell;
+            }
+            #buy-block,#sell-block{
+              top: 9px;
+              width: 8px;
+              left: 0;
+              height: 16px;
+              cursor: pointer;
+              position: absolute;
+              border-radius: 5px;
+            }
+            #buy-block{
+              left: 0;
+              border: 1px solid $buy;
+              background-color: $buy;
+            }
+            #sell-block{
+              left: 0;
+              border: 1px solid $sell;
+              background-color: $sell;
+            }
+            #buyShow,#sellShow{
+              position: absolute;
+              width: 40px;
+              right: 35px;
+            }
+            .settings {
+              display: inline-block;
+              width: 20px;
+              height: 20px;
+              position: relative;
+              left: -28px;
+              background: url(../images/mimashezhi.png)no-repeat;
+              top: 4px;
+            }
+            .settings:hover {
+              background: url(../images/mimashezhi.png)no-repeat 0 -30px;
+            }
+          }
+        }
+        .trader_btn {
+          width: 264px;
+          height: 35px;
+          margin: 20px auto 0;
+          .tan_btn {
+            position: absolute;
+            background: #fff;
+            display: none;
+            color: #669900;
+            font-size: 14px;
+            text-align: center;
+            margin-top: -100px;
+            width: 264px;
+            height: 73px;
+            box-shadow: 0 0 18px #ddd;
+            line-height: 73px;
+          }
+          input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            cursor: pointer;
+            background: #e55600;
+            font-size: 16px;
+            color: #fff;
+          }
+          .bg_green {
+            background: #690;
+          }
+          .bg_green:hover {
+            background: #88ca00;
+          }
+          input:hover {
+            background: #ff690f;
+          }
+        }
+      }
+      .nobr {
+        border-right: none!important;
+      }
+    }
+    .navBox2{
+      li{
+        float: left;
+        width: $width/3;
+        text-align: center;
+        padding: 5px 0;
+        cursor: pointer;
+        &.act{
+          background-color:$ativerBgC;
+          color: $white;
+        }
+      }
+    }
+    .box2{
+      width: 33%;
+      float: right;
+      background-color: $white;
+      box-shadow: 0px 0px 10px #ccc;
+      .box_buy{
+        color: #e55600;
+        font-size: 12px;
+      }
+      .box_sell{
+        color: #669900;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .actshow{
+        display: none;
+      }
+
+      .b2_d2{
+        border-top: 1px dotted #ccc;
+      }
+      .navBox2{
+        border-bottom: 1px solid $gray;
+      }
+      .box2_list{
+        .b2_nav{
+          width: 100%;
+          background-color: #f0f0f0;
+          color: #555;
+          font-size: 14px;
+          text-align: center;
+          li{
+            float: left;
+            width: $width/4;
+            padding: 2px 0px;
+          }
+        }
+        .b2_dl{
+          text-align: center;
+          overflow-y: scroll;
+          height: 248px;
+          li{
+            float: left;
+            width: $width/4;
+            padding: 2px 0px;
+            cursor: pointer;
+          }
+        }
+      }
+      .box3_list,
+      .box4_list{
+        text-align: center;
+        height: 460px;
+        overflow-y: scroll;
+        .b2_nav{
+          width: 100%;
+          background-color: #f0f0f0;
+          color:#555;
+          font-size: 14px;
+          text-align: center;
+          li{
+            float: left;
+            width: $width/4;
+            padding: 2px 0px;
+          }
+        }
+      }
+      .box3_list{
+        .buy{
+          text-align: center;
+          li{
+            float: left;
+            width: $width/4;
+            padding: 2px 0px;
+          }
+        }
+        .box_buy{
+          width: 100%;
+          cursor: pointer;
+          li{
+            float: left;
+            width: $width/4;
+          }
+        }
+      }
+      .box4_list{
+        .sell{
+          text-align: center;
+          li{
+            float: left;
+            width: $width/4;
+            padding: 2px 0px;
+          }
+        }
+        .box_sell{
+          width: 100%;
+          cursor: pointer;
+          li{
+            float: left;
+            width: $width/4;
+          }
+        }
+      }
+    }
+  }
+  .weituo{
+    width: 1200px;
+    margin:20px auto;
+    .wtTitle{
+      height: 36px;
+      line-height: 36px;
+      overflow: hidden;
+      width: 1185px;
+      font-size: 18px;
+      font-weight: 100;
+      color: #37b0f9;
+      padding-left: 15px;
+      text-align: left;
+    }
+    table {
+      width:100%;
+      thead{
+        tr{
+          background: none repeat scroll 0 0 #e6e6e6;
+          th {
+            background: none repeat scroll 0 0 #e6e6e6;
+            font-weight: bold;
+            height: 28px;
+            line-height: 28px;
+            font-size: 14px;
+          }
+        }
+      }
+      tbody {
+        tr {
+          background: none repeat scroll 0 0 #fff;
+          td {
+            background: none repeat scroll 0 0 #fff;
+            font-weight: 100;
+            height: 32px;
+            line-height: 32px;
+            font-size: 12px;
+            text-align: center;
+          }
+        }
+        tr:hover {
+          background-color: #ebf4fe;
+        }
+      }
+    }
+  }
+  .jilu{
+    box-shadow: 0px 0px 10px #ccc;
+    background-color: #fff;
+    margin-top: 20px;
+    h3{
+      color: #37b0f9;
+      padding: 20px;
+      font-size: 18px;
+      font-weight: normal;
+    }
+    ul.headT{
+      background-color: #f0f0f0;
+      color: #555;
+      padding: 5px 0;
+    }
+    .bodyI{
+      height: 500px;
+      overflow-y: scroll;
+      ul{
+        padding: 3px 0;
+        cursor: pointer;
+        &:hover{
+          background-color: #f0f0f0;
+        }
+        .JL_buy{
+          color:$buy;
+        }
+        .JL_sell{
+          color:$sell;
+        }
+      }
+    }
+    ul{
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      li{
+        float: left;
+      }
+      li:first-child{
+        width:20%;
+      }
+      li:nth-child(2){
+        width: 10%;
+      }
+      li:nth-child(3){
+        width: 20%;
+      }
+      li:nth-child(4){
+        width: 25%;
+      }
+      li:last-child{
+        width: 25%;
+      }
+    }
+  }
+
+}
+ .maimai .box div.bindphoneBox{
+   width: 270px;
+   border: 1px solid #117dc8;
+   background-color: #117dc8;
+   color: #fff;
+   padding: 10px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   margin-left: -135px;
+   display: none;
+   text-align: center;
+   border-radius: 10px;
+ }
+.maimai .box div.hideShow{
+  display: block!important;
+}
+.hide{
+  display: none!important;
+}
+.show{
+  display: block!important;
+}
+.weituo{
+  position: relative;}
+#tis{
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  margin-left: -150px;
+  background-color: #117dc8;
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
+  line-height: 45px;
+}
+// xs:480px;sm:768px;md:992px;lg:1200px;mg:1400px
+@include respond-to(sm) {
+  .outBox{
+    margin-bottom: 35px;
+  }
+  .nav{
+    .caidan{
+      width: 100%;
+      a{
+        width: $width/5;
+      }
+    }
+    .info{
+      width:98%;
+      padding-left:0;
+      margin: 1%;
+    }
+  }
+  .jiaoyi{
+    width: 98%;
+    margin: 1%;
+    .zichan{
+      width: 100%;
+      margin:1% 0;
+    }
+    .maimai{
+      width: 100%;
+      margin: 1% 0;
+      box-shadow: 0px 0px 10px #ccc;
+      .box{
+        width: 100%;
+        float: none;
+        box-shadow:none;
+        border:0;
+        padding:0;
+        .hqbox{
+          top: 15%;
+          left: 50%;
+          width: 260px;
+          margin-left: -130px;
+        }
+        .jiaoyicg{
+          bottom: 50%;
+          left: 50%;
+          width: 200px;
+          height: auto;
+          background: #fff;
+          color: red;
+          box-shadow: none;
+          z-index: 9999;
+          text-align: center;
+          line-height: 15px;
+          margin-left: -100px;
+          padding: 10px 0;
+        }
+        .ft_box{
+          width: 49%;
+        }
+        .nobr{
+          width: 50%;
+        }
+      }
+      .box2{
+        width: 100%;
+        float: none;
+        .navBox2{
+          border-top: 1px solid $gray;
+        }
+      }
+    }
+    .jilu{
+      margin: 1% 0;
+      ul{
+        li:first-child{
+          width:25%;
+        }
+        li:nth-child(2){
+          width: 15%;
+        }
+        li:nth-child(3){
+          width: 20%;
+        }
+        li:nth-child(4){
+          width: 20%;
+        }
+        li:last-child{
+          width: 20%;
+        }
+      }
+    }
+  }
+  .jiaoyi .maimai .box .ft_box dl dd #buyShow,
+  .jiaoyi .maimai .box .ft_box dl dd #sellShow{
+    right: 0px;
+  }
+}
+@include respond-to(xs) {
+  .nav{
+    .caidan{
+      width: 98%;
+      margin: 0 1%;
+      a{
+        width: $width/3;
+      }
+    }
+    .info{
+      height: auto;
+      li:first-child{
+        width: 50%;
+        padding: 0;
+        img{
+          margin-left: 10px;
+        }
+      }
+      li{
+        width: 50%;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 10px;
+      }
+    }
+  }
+  .jiaoyi{
+    #kLine{
+      height: 300px!important;
+    }
+    .zichan{
+        li{
+          float: none;
+          width: auto;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          padding-left: 20px;
+          text-align: left;
+          p{
+            display: inline;
+          }
+          .font01,
+          .font02{
+            display: inline;
+            padding-left: 10px;
+          }
+        }
+    }
+    .jilu{
+      display: none;
+    }
+  }
+  .jiaoyi #kBtn{
+    margin-top: 8px;
+    padding-bottom: 10px;
+  }
+  .jiaoyi #kBtn button{
+    padding: 2px 12px;
+    margin-top: 8px;
+  }
+  .jiaoyi .maimai .box .ft_box{
+    width: 100%;
+    border-right: 0;
+  }
+  .jiaoyi .maimai .box .nobr{
+    width: 100%;
+  }
+  .jiaoyi .maimai .box .ft_box .trader_btn .bg_green {
+    margin: 0 auto;
+  }
+  .jiaoyi .maimai .box2 .box2_list .b2_nav li,
+  .jiaoyi .maimai .box2 .box3_list .b2_nav li,
+  .jiaoyi .maimai .box2 .box4_list .b2_nav li,
+  .jiaoyi .maimai .box2 .box4_list .box_sell li,
+  .jiaoyi .maimai .box2 .box3_list .box_buy li,
+  .jiaoyi .maimai .box2 .box2_list .b2_dl li{
+    width:(85%/3);
+  }
+  .jiaoyi .maimai .box2 .box2_list .b2_nav li:first-child,
+  .jiaoyi .maimai .box2 .box3_list .b2_nav li:first-child,
+  .jiaoyi .maimai .box2 .box4_list .box_sell li:first-child,
+  .jiaoyi .maimai .box2 .box4_list .b2_nav li:first-child,
+  .jiaoyi .maimai .box2 .box3_list .box_buy li:first-child,
+  .jiaoyi .maimai .box2 .box2_list .b2_dl li:first-child{
+    width: 15%;
+  }
+  .jiaoyi .maimai .box .ft_box dl .bili{
+    display: none;
+  }
+  .jiaoyi .maimai .box .ft_box dl dd p{
+    margin-left: 0;
+    width: auto;
+  }
+  .jiaoyi .maimai .box .ft_box dl dd{
+    padding-left: 10px;
+  }
+}

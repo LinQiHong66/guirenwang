@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='myApp' ng-controller='myController' ng-cloak>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>{{title}}</title>
+	<link rel="stylesheet" type="text/css" href="../../css/apply.css">
+	<script type="text/javascript" src="../../js/getip.js"></script>
+	<script type="text/javascript" src='../../lib/jquery.min.js'></script>
+	<script type="text/javascript" src='../../lib/angular/angular.min.js'></script>
+	<script type="text/javascript" src='../../lib/angular/angular-route.min.js'></script>
+	<script type="text/javascript" src="../../js/gundong.js"></script>
+	<script type="text/javascript" src='../../js/autoActive.js'></script>
+</head>
+<body>
+<!--头部开始-->
+<div class="header">
+	<div class="hd_inner">
+		<div class="hd_logo"><a href="#"><img ng-src="{{logo}}"/></a></div>
+		<span class="ce" ng-click="changelg()" data-lg="{{lg}}"><em ng-class="{'true':'on'}[lg=='chinese']">中</em>/<em ng-class="{'true':'on'}[lg=='english']">E</em></span>
+		<div class="hd_list clearfix">
+			<div class="alist clearfix" id='slId'>
+				<a href="../../index.html" ng-bind="home"></a>
+				<a ng-bind="transaction" href="../transaction/index.html"></a>
+                <a ng-bind="finance" ng-click='tiaoF()'></a>
+                <a ng-bind="safe" ng-click='tiaoS()'></a>
+                <a ng-bind="apply" class="on" ng-click='tiaoA()'></a>
+                 <a href="../jiedai/index.html" ng-bind='jiedai'></a>
+                <a ng-bind="help" href="../help/index.html"></a>
+				<!-- <a href="../mall/index.html" ng-bind="shop"></a> -->
+               <a href="../cf/index.html">众筹</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!--头部结束-->
+	<nav class="nav2Bg">
+		<div class="boxleft">
+			<div id="close" class="iconfont">&#xe625;</div>
+			<h2>应用中心<i>Apply center</i></h2>
+			<ul class='clearfix' id="ul2">
+				<li auto-active="active">
+					<a href="#/sDefault" >
+						<span class="iconfont navIcon">&#xe623;</span>
+						<span ng-bind='safeNav1'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+				 	<a href="#/sLog" >
+						<span class="iconfont navIcon">&#xe61f;</span>
+						<span ng-bind='safeNav2'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sBonus" >
+						<span class="iconfont navIcon">&#xe60a;</span>
+						<span ng-bind='safeNav3'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sBill" >
+						<span class="iconfont navIcon">&#xe601;</span>
+						<span ng-bind='safeNav4'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sRecharge" >
+						<span class="iconfont navIcon">&#xe622;</span>
+						<span ng-bind='safeNav5'></span>
+						<i></i>
+					</a>
+				</li>
+				<li auto-active="active">
+					<a href="#/sVote">
+						<span class="iconfont navIcon">&#xe610;</span>
+						<span ng-bind='safeNav8'></span>
+						<i></i>
+					</a>
+				</li>
+				
+			</ul>
+		</div>
+		<div ng-view class="boxright"></div>
+	</nav>
+	<!-- 版权部分 begin -->
+<div class="footr">
+    <p>CopyRight&copy; 2015-2016 数字交易平台 All Rights Reserved   |  <a href="#">ICP备7777777号-1</a></p>
+</div>
+<!-- 版权部分 end -->
+</body>
+	<script type="text/javascript" src="js/myController.js"></script>
+	<script type="text/javascript" src="../../js/post.js"></script>
+    <script type="text/javascript" src="../../js/get.js"></script>
+	<script type="text/javascript" src="js/default.js"></script>
+    <script type="text/javascript" src="js/log.js"></script>
+    <script type="text/javascript" src="js/bonus.js"></script>
+    <script type="text/javascript" src="js/bill.js"></script>
+    <script type="text/javascript" src="js/recharge.js"></script>
+
+    <script type="text/javascript" src="js/vote.js"></script>
+    
+</html>

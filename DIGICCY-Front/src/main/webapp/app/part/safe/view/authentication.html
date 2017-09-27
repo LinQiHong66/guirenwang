@@ -1,0 +1,132 @@
+<style>
+	.auth .au_info table tr td img{
+		width: 150px;
+		height: 100px;
+	}
+	.auth .au_info .photo{
+		display: none;
+		position: absolute;
+		top: 50%;
+		width: 300px;
+		height: 300px;
+		background-color: #117dc8;
+		left: 50%;
+		margin-top: -150px;
+		margin-left: -150px;
+	}
+	.auth .au_info .photoFlag{
+		display: block !important;
+	}
+	.auth .au_info .photo .default{
+		width: 69px;
+		position: absolute;
+		left: 45px;
+		bottom: 10px;
+		margin-left: -35px;
+		border: 0;
+		cursor: pointer;
+	}
+	.auth .au_info .photo .submit{
+		position: absolute;
+		right: 10px;
+		bottom: 10px;
+		cursor: pointer;
+	}
+	#shanch{
+		display: inline-block;
+		background-color: #117dc8;
+		color: #fff;
+		cursor: pointer;
+		padding: 5px 10px;
+		line-height: 25px;
+		height: 25px;
+	}
+</style>
+	<div class="auth">
+			<h2 class="autit" ng-bind='auTit'></h2>
+			<div class="au_info">
+				<div class="ai_tit" ng-bind='auInfo'></div>
+				<table>
+					<tr>
+						<td ng-bind='auName1'></td>
+						<td ng-bind='auName2'></td>
+					</tr>
+					<tr>
+						<td ng-bind='auType1'></td>
+						<td ng-bind='auType2'></td>
+					</tr>
+					<tr>
+						<td ng-bind='auId1'></td>
+						<td ng-bind='auId2'></td>
+					</tr>
+					<tr>
+						<td ng-bind="auTime1"></td>
+						<td ng-bind="auTime2"></td>
+					</tr>
+					<!-- <tr>
+						<td>手持身份证 :</td>
+						<td><img ng-src="{{auData1}}"><span id="shanch" ng-click="shangchaung()">上传图片</span></td>
+					</tr> -->
+				</table>
+				<!--  <div id="zyupload" class="zyupload"></div> -->
+			</div>
+			<div class="au_info">
+				<div class="ai_tit" ng-bind='info2'></div>
+				<p ng-bind='auData0'></p>
+				<span><img ng-src="{{auData1}}"><p class="sinfo" ng-bind="auData2"></p></span>
+				<p ng-bind="auData3"></p>
+				<p ng-bind="auData4"></p>
+			</div>
+			<span class="service" ng-click='all()' ng-cloak>
+				<i class="iconfont">&#xe62d;</i>{{auData5}}
+			</span>
+		</div>
+<script type="text/javascript">
+			$(function(){
+				// 初始化插件
+				$("#zyupload").zyUpload({
+					width            :   "300px",                 // 宽度
+					height           :   "400px",                 // 宽度
+					itemWidth        :   "270px",                 // 文件项的宽度
+					itemHeight       :   "115px",                 // 文件项的高度
+					url              :   "/inesvuser/authenticationUser.do",  // 上传文件的路径
+					
+					fileType         :   ["jpg","png"],// 上传文件的类型
+					fileSize         :   51200000,                // 上传文件的大小
+					multiple         :   false,                    // 是否可以多个文件上传
+					dragDrop         :   false,                    // 是否可以拖动上传文件
+					tailor           :   false,                    // 是否可以裁剪图片
+					del              :   true,                    // 是否可以删除文件
+					finishDel        :   false,  				  // 是否在上传文件完成后删除预览
+					/* 外部获得的回调接口 */
+					onSelect: function(selectFiles, allFiles){    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+						console.info("当前选择了以下文件：");
+						console.info(selectFiles);
+						/* $(".upload_choose").css({"display":"none"}) */
+					},
+					onDelete: function(file, files){              // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
+						console.info("当前删除了此文件：");
+						console.info(file.name);
+					},
+					onSuccess: function(file, response){          // 文件上传成功的回调方法
+						console.info("此文件上传成功：");
+						console.info(file.name);
+						console.info("此文件上传到服务器地址：");
+						console.info(response);
+						$("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
+					},
+					onFailure: function(file, response){          // 文件上传失败的回调方法
+						console.info("此文件上传失败：");
+						console.info(file.name);
+						/*$("#zyupload").css({"display":"none"})*/
+					},
+					onComplete: function(response){           	  // 上传完成的回调方法
+						console.info("文件上传完成");
+						console.info(response);
+					}
+				});
+				
+			});
+		</script> 
+<!-- </body>
+</html> -->

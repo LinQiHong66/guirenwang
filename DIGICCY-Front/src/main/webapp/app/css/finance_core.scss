@@ -1,0 +1,189 @@
+@charset "UTF-8";
+//这里的嵌套格式一定要用花阔号，
+//每句都要用结束符可以使用私有属性
+@import "_config.scss";
+@import "_mixins.scss";
+@import "variable.scss";
+.coin{color: #F0AD4E;}
+.core{
+    width: 96%;
+    padding: 20px 2%;
+    h3{
+        font-size: 22px;
+        padding: 20px;
+    }
+    .rembi{
+        padding: 20px;
+        img{
+            width: 25px;
+            height: 25px;
+        }
+        span{
+            margin-right: 30px;
+        }
+    }
+    ul li{
+        width: $width/6;
+        float: left;
+        text-align: center;
+        padding:10px 0;
+    }
+    .coreUl{
+        ul.ulHeader{
+            background-color: $ulcolor;
+            }
+        ul.ulData{
+            border-bottom:1px solid rgba(204, 204, 204, 0.4);
+             li:first-child{
+                   text-align: left;
+                }
+            li{
+                font-size: 14px;
+               
+                .liimg{
+                    width: 25px;height: 25px;border-radius: 50%;margin-right: 5px;    margin-left: 25px;
+                }
+                .lisp2{
+                    display: inline-block;text-align: left;
+                }
+                a{
+                    font-size: 14px;
+                    color: $atcolor1;
+                    &:hover{
+                        color: $atcolor2;
+                    }
+                }
+            }
+        }
+        .ulData:hover{
+            background-color: rgba(102, 222, 248, 0.17);
+        }
+    }
+}
+// xs:480px;sm:768px;md:992px;lg:1200px;mg:1400px
+@include respond-to(lg) {
+    .core{
+        h3{
+            font-size: 20px;
+            padding: 15px;
+        }
+        .rembi{
+            font-size:14px;
+            padding: 10px;
+            img{
+                width: 20px;
+                height: 20px;
+            }
+            span{
+                margin-right: 30px;
+            }
+        }
+        ul li{
+            width: $width/6;
+            float: left;
+            text-align: center;
+            padding:10px 0;
+        }
+        .coreUl{
+            ul.ulHeader{
+                background-color: $ulcolor;
+            }
+            ul{
+                border-bottom:1px solid rgba(204, 204, 204, 0.4);
+                li{
+                    font-size: 14px;
+                     .liimg{
+                        width: 20px;height: 20px;border-radius: 50%;margin-right: 5px;    margin-left: 15px;
+                    }
+                    .lisp2{
+                        display: inline-block;text-align: left;
+                    }
+                }
+            }
+        }
+    }
+ }
+//最大宽屏992px的时候
+@include respond-to(md){
+       .core{
+            h3{
+                font-size: 22px;
+                padding: 20px;
+            }
+            .rembi{
+                padding: 20px;
+                img{
+                    width: 25px;
+                    height: 25px;
+                }
+                span{
+                    margin-right: 30px;
+                }
+            }
+            ul li{
+                width: $width/6;
+                float: left;
+                text-align: center;
+                padding:10px 0;
+            }
+            .coreUl{
+                ul.ulHeader{
+                    background-color: $ulcolor;
+                    }
+                ul.ulData{
+                    border-bottom:1px solid rgba(204, 204, 204, 0.4);
+                     li:first-child{
+                           text-align: left;
+                        }
+                    li{
+                        font-size: 14px;
+                       
+                        .liimg{
+                            width: 25px;height: 25px;border-radius: 50%;margin-right: 5px;    margin-left: 25px;
+                        }
+                        .lisp2{
+                            display: inline-block;text-align: left;
+                        }
+                        a{
+                            font-size: 14px;
+                            color: $atcolor1;
+                            &:hover{
+                                color: $atcolor2;
+                            }
+                        }
+                    }
+                }
+                .ulData:hover{
+                    background-color: rgba(102, 222, 248, 0.17);
+                }
+            }
+        }
+}
+
+//最大宽屏480px的时候
+
+.core{
+    .coreUl{
+        @include respond-to(xs){
+            overflow: scroll;
+        }
+        ul{
+            @include respond-to(xs){
+                min-width: 680px;
+            }
+        }
+    }
+    .rembi {
+        img{
+            @include respond-to(xs){
+                float: left;
+            }
+        }
+        span{
+            @include respond-to(xs){
+                display: block;
+                line-height: 25px;
+            }
+        }
+    }
+}

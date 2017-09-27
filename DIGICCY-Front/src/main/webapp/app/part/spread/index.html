@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app' ng-controller="mainCtr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="../../css/spread.css">
+    <script type="text/javascript" src="../../js/getip.js"></script>
+    <script type="text/javascript" src='../../lib/angular/angular.min.js'></script>
+    <script type="text/javascript" src='../../js/clipboard.min.js'></script>
+    <script type="text/javascript" src='../../js/ngclipboard.min.js'></script>
+    <script type="text/javascript" src='../../lib/jquery.min.js'></script>
+    <script type="text/javascript" src="../../js/gundong.js"></script>
+    <script type="text/javascript" src="js/spread.js"></script>
+    <script type="text/javascript" src="../../js/post.js"></script>
+  
+</head>
+<body>
+<!--头部开始-->
+<div class="header">
+    <div class="hd_inner">
+        <div class="hd_logo"><a href="#"><img ng-src="{{logo}}"/></a></div>
+        <span class="ce" ng-click="changelg()" data-lg="{{lg}}"><em ng-class="{'true':'on'}[lg=='chinese']">中</em>/<em ng-class="{'true':'on'}[lg=='english']">E</em></span>
+        <div class="hd_list clearfix">
+            <div class="alist clearfix" id='slId'>
+                <a href="../../index.html" ng-bind="home"></a>
+                <a ng-bind="transaction" href="../transaction/index.html"></a>
+                <a ng-bind="finance" ng-click='tiaoF()'></a>
+                <a ng-bind="safe" ng-click='tiaoS()'></a>
+                <a ng-bind="apply" ng-click='tiaoA()'></a>
+                 <a href="../jiedai/index.html" ng-bind='jiedai'></a>
+                <a ng-bind="help" href="../help/index.html" ></a>
+        <!--         <a href="../mall/index.html" ng-bind="shop"></a> -->
+                <a href="../spread/index.html" class="on" ng-bind="spread"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--头部结束-->
+<div class="banner">
+
+</div>
+<div class="spreadCon">
+    <div class="container clearfix">
+        <h3>推广方法</h3>
+        <p id='pOne'>点击“复制推广文本”按钮，发送推广文本到任意平台邀请朋友注册使用即可获得丰厚奖励！</p>
+        <input id='aaa' type="text" value="新平台，新机遇！币友投币第三方交易平台震撼上线。百万红包！每日分红，人气火爆！打造最正规的数字货币交易平台！网站：{{webadd}}{{yqma.invite_num}}" name="">
+        <p class='pTwo'>新平台，新机遇！币友投币第三方交易平台震撼上线。百万红包！每日分红，人气火爆！打造最正规的数字货币交易平台！网站：{{webadd}}{{yqma.invite_num}}</p>
+        <div class="yqmArea">
+            <span>我的邀请码：<i>{{yqma.invite_num}}</i></span><button ngclipboard  data-clipboard-target="#aaa">复制推广文本</button>
+        </div>
+    </div>
+</div>
+<div class="spreadRule clearfix">
+    <div class="container">
+        <h3>奖励机制</h3>
+        <div class="srBox">
+            <div class="iconfont">
+                &#xe60a;
+            </div>
+            <div class="srTxt">
+                一次推广，终身拿佣金
+            </div>
+        </div>
+        <div class="srBox">
+            <div class="iconfont">
+                &#xe615;
+            </div>
+            <div class="srTxt">
+                奖励下线充值金额的0.5%
+            </div>
+        </div>
+        <div class="srBox">
+            <div class="iconfont">
+                &#xe623;
+            </div>
+            <div class="srTxt">
+                奖励下线买入金额的0.05%
+            </div>
+        </div>
+    </div>
+</div>
+<div class="spreadRan">
+    <div class="container clearfix">
+        <h3>推广排行</h3>
+        <div class="ranTxt">
+            <p>活动时间：2016年8月15日-2016年9月5日</p>
+            <p>活动说明：分为邀请达人（相同ip算一人）和收益（充值奖励和交易奖励之和）达人两种，每种前十名获得奖品</p>
+            <p>活动奖品：</p>
+            <p>邀请达人：第一名奖2000投币，2-3名奖1000投币，4-10名奖500投币</p>
+            <p>收益达人：第一名奖2000投币+1000元，2-3名奖1000投币+600元，4-10名奖500投币+200元</p>
+        </div>
+        <div class="ranBox" ng-show='phb'>
+            <h4>邀请人数排行榜</h4>
+            <table cellspacing="0">
+                <thead>
+                <tr>
+                    <th>排名</th>
+                    
+                    <th>用户ID</th>
+                    <th>邀请人数</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat='yqrs in yqrs'>
+                    <td>{{yqrs.rank}}</td>
+                    <td>{{yqrs.user_no}}</td>
+                    <td>{{yqrs.people}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="ranBox1" ng-show='phb'>
+            <h4>收益排行榜</h4>
+            <table cellspacing="0">
+                <thead>
+                <tr>
+                    <th>排名</th>
+                    <th>用户ID</th>
+                    <th>收益总额</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat='data in syph'>
+                    <td>{{data.rank}}</td>
+                    <td>{{data.user_no}}</td>
+                    <td>{{data.detail}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="mySpread clearfix">
+    <div class="container">
+        <h3>我的推广</h3>
+        <div class="mysTop clearfix">
+            <div class="tBox">
+                <div class="boxleft iconfont">&#xe615;</div>
+                <div class="boxright">
+                    <div>总收入</div>
+                    <div><i>{{mysp.price?mysp.price:0}}</i>元</div>
+                </div>
+            </div>
+            <div class="tBox">
+                <div class="boxleft iconfont">&#xe609;</div>
+                <div class="boxright">
+                    <div>推荐注册</div>
+                    <div><i>{{mysp.register?mysp.register:0}}</i>人</div>
+                </div>
+            </div>
+            <div class="tBox">
+                <div class="boxleft iconfont">&#xe619;</div>
+                <div class="boxright">
+                    <div>充值人数</div>
+                    <div><i>{{mysp.recharge?mysp.recharge:0}}</i>人</div>
+                </div>
+            </div>
+        </div>
+        <div class="mysBot" ng-show='phb'>
+            <ul class="clearfix">
+                <li ng-class={"selected":!isSel} ng-click='changetb(0)'>已推荐会员</li>
+                <li ng-class={"selected":isSel} ng-click='changetb(1)'>收入明细</li>
+            </ul>
+            <div class="tb">
+                <table cellspacing="0" id="tb1" ng-show='!tbshow'>
+                    <thead>
+                    <tr>
+                        <th>用户</th>
+                        <th>联系方式</th>
+                        <th>注册时间</th>
+                        <th>是否充值</th>
+                        <th>是否进行交易</th>
+                        <th>是否实名</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat='data in myRec'>
+                        <td>{{data.id}}</td>
+                        <td>{{data.phone}}</td>
+                        <td>{{data.reg_date}}</td>
+                        <td>{{data.recharge==1?'是':'否'}}</td>
+                        <td>{{data.deal==1?'是':'否'}}</td>
+                        <td>{{data.real==1?'是':'否'}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <table cellspacing="0" id="tb2" ng-show='tbshow'>
+                <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>数量</th>
+                    <th>说明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat='data in myRec'>
+                    <td>{{data.reg_date}}</td>
+                    <td>{{data.profit_price}}</td>
+                    <td>{{data.profit_remark}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
