@@ -1,5 +1,6 @@
 ##ignore this file##
 /target/ 
+/catalina.home_IS_UNDEFINED/
 .classpath
 .project
 .settings      
