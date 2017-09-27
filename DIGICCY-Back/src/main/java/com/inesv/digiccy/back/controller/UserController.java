@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.InesvUserDto;
 import com.inesv.digiccy.validata.EntrustDealValidate;
 import com.inesv.digiccy.validata.InesvAddressValidata;
 import com.inesv.digiccy.validata.TradeValidata;
 import com.inesv.digiccy.validata.UserBalanceValidate;
+import com.inesv.digiccy.validata.UserVoucherValidate;
 import com.inesv.digiccy.validata.bank.InesvBankInfoValidata;
 import com.inesv.digiccy.validata.user.InesvUserValidata;
 import com.inesv.digiccy.validata.user.OpUserValidata;
@@ -48,6 +50,9 @@ public class UserController {
 
 	@Autowired
 	InesvAddressValidata inesvAddressValidata;
+
+	@Autowired
+	UserVoucherValidate userVoucherValidate;
 
 	/*
 	 * 测试
@@ -166,8 +171,16 @@ public class UserController {
 	@ResponseBody
 	public Map<String, Object> updateUserInfo(String no, String name, String real, String mail, String phone,
 			String certificate, String alipay) {
-		Map<String, Object> map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no), real, mail, phone,
-				certificate, alipay);
+		// 判断身份证与名字是否一致
+		Map<String, Object> map1 = userVoucherValidate.validateCardId(real, certificate);
+		Map<String, Object> map = new HashMap<>();
+		if ("100".equals(map1.get("code"))) {
+			// 确认通过审核
+			map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no), real, mail, phone, certificate, alipay);
+		} else {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "用戶名和证件号不一致");
+		}
 		return map;
 	}
 
