@@ -93,11 +93,11 @@ Website: http://thevectorlab.net/
                                 </div>
                                 <div class="form-group" style="margin-top: 5px">
                                     <label class="form-label">用户账号   :</label>&nbsp;&nbsp;
-                                    <input type="text" id="name" class="form-control" style="border-radius: 5px" value="${data.username}">
+                                    <label class="form-label">${data.username}</label>&nbsp;&nbsp;
                                 </div>
                                 <div class="form-group" style="margin-top: 5px">
                                     <label class="form-label">真实姓名   :</label>&nbsp;&nbsp;
-                                    <input type="text" id="realname" class="form-control" style="border-radius: 5px" value="${data.real_name}">
+                                    <label class="form-label">${data.real_name}</label>&nbsp;&nbsp;
                                 </div>
                                 <div class="form-group" style="margin-top: 5px">
                                     <label class="form-label">登录密码   :</label>&nbsp;&nbsp;
@@ -113,15 +113,15 @@ Website: http://thevectorlab.net/
                                 </div>
                                 <div class="form-group" style="margin-top: 5px">
                                     <label class="form-label">手机号码     :</label>&nbsp;&nbsp;
-                                    <input type="text" id="phone" class="form-control" style="border-radius: 5px" value="${data.phone}">
+                                    <label class="form-label">${data.phone}</label>&nbsp;&nbsp;
                                 </div>
                                 <div class="form-group" style="margin-top: 5px">
                                     <label class="form-label">身份证:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="text" id="certificate_num" class="form-control" style="border-radius: 5px" value="${data.certificate_num}">
+                                    <label class="form-label">${data.certificate_num}</label>&nbsp;&nbsp;
                                 </div>
                                 <div class="form-group" style="margin-top: 5px">
                                     <label class="form-label">支付宝:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="text" id="alipay" class="form-control" style="border-radius: 5px" value="${data.alipay}">
+                                    <label class="form-label">${data.alipay}</label>&nbsp;&nbsp;
                                 </div>
                                 <div class="form-group" style="margin-top: 5px">
                                     <button type="button" class="btn blue" id="add_Role" onclick="updateInfo()"><i class="icon-ok"></i>修改</button>
