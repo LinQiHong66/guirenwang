@@ -232,7 +232,7 @@ public class PlanValidata {
 	/**
 	 * 鑷姩鐢熸垚濮旀墭璁″垝
 	 * @throws SQLException 
-	 * */
+	 * *//*
 	public void doTrade() throws SQLException{
 		List<PlanDto> planDtos = queryPlan.queryPlanIng();
 		EntrustDto entrustDto = new EntrustDto();
@@ -332,5 +332,5 @@ public class PlanValidata {
 				}
 			}
 		}
-	}
+	}*/
 }

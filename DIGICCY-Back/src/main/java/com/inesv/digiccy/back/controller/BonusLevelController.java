@@ -29,6 +29,7 @@ public class BonusLevelController {
 	public Map<String,Object> queryAll(){
 		return bonusValidata.queryAll();
 	}
+	
 	//导出excel
 	@RequestMapping(value="/getExcel", method=RequestMethod.POST)
 	public void getExcel(HttpServletResponse response){

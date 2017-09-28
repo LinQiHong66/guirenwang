@@ -19,7 +19,8 @@ public class CoinLevelProportionAggregate extends AbstractAnnotatedAggregateRoot
 	
 	@CommandHandler
 	public CoinLevelProportionAggregate(CoinLevelProportionCommand event){
-		apply(new CoinLevelProportionEvent(event.getId(),event.getCoin_no(),event.getLevel_one(),event.getLevel_two(),event.getLevel_three(),event.getOperation()));
+		apply(new CoinLevelProportionEvent(event.getId(),event.getCoin_no(),event.getLevel_one(),event.getLevel_two(),event.getLevel_three(),event.getLevel_four(),event.getLevel_five(),
+				event.getLevel_type(),event.getState(),event.getAttr1(),event.getAttr2(),event.getOperation()));
 	}
 	
 	@EventHandler
