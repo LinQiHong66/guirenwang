@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.inesv.digiccy.common.ResponseCode;
+import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.util.QiniuUploadUtil;
 import com.inesv.digiccy.validata.UserVoucherValidate;
 import com.inesv.digiccy.validata.user.OpUserValidata;
@@ -40,25 +41,33 @@ public class UserVoucherController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			Name = new String(Name.getBytes("iso-8859-1"), "utf-8");
+
+			System.out.println(Name);
+			// 添加审核记录
+			userVoucherValidate.startVoucher(cardId, 1, "", "", "", userNo, Name, "");
+			// 判断身份证与名字是否一致
+			Map<String, Object> map1 = userVoucherValidate.validateCardId(Name, cardId);
+			if ("100".equals(map1.get("code"))) {
+				// 确认通过审核
+				opUserValidata.modifyVoucher(userNo, 4);
+				map.put("code", ResponseCode.SUCCESS);
+				map.put("desc", ResponseCode.SUCCESS_DESC);
+				map.put("msg", "验证成功");
+			} else if ("300".equals(map1.get("code"))) {
+
+				map.put("code", ResponseCode.FAIL);
+				map.put("desc", ResponseCode.FAIL_DESC);
+				map.put("msg", "请求超时，请重试");
+			} else {
+				map.put("code", ResponseCode.FAIL);
+				map.put("desc", ResponseCode.FAIL_DESC);
+				map.put("msg", "用戶名和证件号不一致");
+			}
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(Name);
-		// 添加审核记录
-		userVoucherValidate.startVoucher(cardId, 1, "", "", "", userNo, Name, "");
-		// 判断身份证与名字是否一致
-		Map<String, Object> map1 = userVoucherValidate.validateCardId(Name, cardId);
-		if ("100".equals(map1.get("code"))) {
-			// 确认通过审核
-			opUserValidata.modifyVoucher(userNo, 4);
-			map.put("code", ResponseCode.SUCCESS);
-			map.put("desc", ResponseCode.SUCCESS_DESC);
-			map.put("msg", "验证成功");
-		} else {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);
-			map.put("msg", "用戶名和证件号不一致");
+			map.put("msg", "系统繁忙，请稍后重试");
+			e.printStackTrace();
 		}
 		return map;
 	}

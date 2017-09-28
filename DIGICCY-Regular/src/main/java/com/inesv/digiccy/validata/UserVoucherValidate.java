@@ -124,36 +124,37 @@ public class UserVoucherValidate {
 	public Map<String, Object> validateCardId(String name, String idcard) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		Map<String, Object> r = UserCardIdUtil.validateCardId(name, idcard);
-		Object code = r.get("code");
-		Object data = r.get("data");
-        Map<String, Object> dataM = JSON.parseObject((data==null||"null".equals(data))?"{}":data.toString(), Map.class);
-        Object result = dataM==null?"0":dataM.get("result");
-        if("10000".equals(code)){
-        	if("1".equals(result)){
-				map.put("code", ResponseCode.SUCCESS);
-				map.put("desc", ResponseCode.SUCCESS_DESC);
-    			map.put("msg", "验证成功");
-        	}else{
-    			map.put("code", ResponseCode.FAIL);
-    			map.put("desc", ResponseCode.FAIL_DESC);
-    			map.put("msg", "用户名和证件号不符");
-    			
-
-//				map.put("code", ResponseCode.SUCCESS);
-//				map.put("desc", ResponseCode.SUCCESS_DESC);
-//    			map.put("msg", "验证成功");
-        	}
-        }else{
-			map.put("code", ResponseCode.FAIL);
+		try {
+			Map<String, Object> r = UserCardIdUtil.validateCardId(name, idcard);
+			Object code = r.get("code");
+			Object data = r.get("data");
+	        Map<String, Object> dataM = JSON.parseObject((data==null||"null".equals(data))?"{}":data.toString(), Map.class);
+	        Object result = dataM==null?"0":dataM.get("result");
+	        if("10000".equals(code)){
+	        	if("1".equals(result)){
+					map.put("code", ResponseCode.SUCCESS);
+					map.put("desc", ResponseCode.SUCCESS_DESC);
+	    			map.put("msg", "验证成功");
+	        	}else{
+	    			map.put("code", ResponseCode.FAIL);
+	    			map.put("desc", ResponseCode.FAIL_DESC);
+	    			map.put("msg", "用户名和证件号不符");
+	    			
+	        	}
+	        }else{
+				map.put("code", ResponseCode.FAIL);
+				map.put("desc", ResponseCode.FAIL_DESC);
+				map.put("msg", "请求失败");
+				
+	        }
+	        return map;
+		}catch(Exception e){
+			logger.debug(e.getMessage());
+			map.put("code", "300");
 			map.put("desc", ResponseCode.FAIL_DESC);
-			map.put("msg", "请求失败");
-			
-
-//			map.put("code", ResponseCode.SUCCESS);
-//			map.put("desc", ResponseCode.SUCCESS_DESC);
-//			map.put("msg", "验证成功");
-        }
-        return map;
+			map.put("msg", "请求超时，请重试");
+			return map;
+		}
+		
     }
 }

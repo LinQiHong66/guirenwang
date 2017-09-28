@@ -153,7 +153,7 @@ public class QueryUserInfo implements UserDetailsService {
 	}
 
 	public InesvUserDto loadUserByPhoneNumber(String mobile) throws UsernameNotFoundException {
-		String sql = "select * from t_inesv_user where mobile = ?";
+		String sql = "select * from t_inesv_user where username = ?";
 		queryResourceURL();
 		Object params[] = { mobile };
 		InesvUserDto userdto = null;

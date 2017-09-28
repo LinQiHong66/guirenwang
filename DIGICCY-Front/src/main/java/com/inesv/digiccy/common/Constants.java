@@ -10,7 +10,7 @@ public @interface  Constants {
 	public final String SYS_SUCCESS_MSG="成功";
 	
 
-	public final int SYS_FAILURE=-1;
+	public final int SYS_FAILURE=301;
 	public final String SYS_FAILURE_MSG="失败";
 	
 	

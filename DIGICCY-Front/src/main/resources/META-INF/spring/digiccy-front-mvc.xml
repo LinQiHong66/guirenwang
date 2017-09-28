@@ -77,6 +77,7 @@
             <!--  <mvc:exclude-mapping path="/trade/**"/> -->
              <mvc:exclude-mapping path="/balance/**"/>
               <mvc:exclude-mapping path="/common/**"/> 
+              <mvc:exclude-mapping path="/userbasic/**"/> 
              <mvc:exclude-mapping path="/rmbRecharge/**"/>
              <mvc:exclude-mapping path="/rmbWithdraw/**"/>
              <mvc:exclude-mapping path="/virtual/**"/>
