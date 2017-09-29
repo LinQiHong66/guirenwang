@@ -74,7 +74,7 @@ public class QueryRmbRechargeInfo {
     }
 
     /* 查询人民币充值总条数 **/
-    public long getRechargeSize(String userName, String state, String startDate, String endDate) throws SQLException {
+    public long getRechargeSize(String userName, String state, String startDate, String endDate, String orderNumber) throws SQLException {
         String sql = "select count(*) as cun from t_inesv_rmb_recharge r join t_inesv_user u on r.user_no = u.user_no";
         ArrayList<Object> paramArr = new ArrayList<>();
         if (userName != null && !"".equals(userName) && !"-1".equals(userName)) {
@@ -94,6 +94,14 @@ public class QueryRmbRechargeInfo {
             paramArr.add(Date.valueOf(startDate));
             paramArr.add(Date.valueOf(endDate));
         }
+        
+
+        if(orderNumber != null && !"".equals(orderNumber)) {
+        	String str = sql.contains("where")?" and r.recharge_order like ?":" where r.recharge_order like ?";
+        	sql += str;
+        	paramArr.add("%"+orderNumber+"%");
+        }
+        
         return (Long) queryRunner.query(sql, new ColumnListHandler<>("cun"), paramArr.toArray(new Object[] {})).get(0);
     }
 
@@ -101,7 +109,7 @@ public class QueryRmbRechargeInfo {
      * 根据用户查询出用户的rmb充值信息
      *
      */
-    public List<RmbRechargeDto> qureyRechargeInfo(String userName, String state, String startDate, String endDate, int curPage, int pageItem) {
+    public List<RmbRechargeDto> qureyRechargeInfo(String userName, String state, String startDate, String endDate, int curPage, int pageItem, String orderNumber) {
         List<RmbRechargeDto> list = new ArrayList();
         String sql = "select r.*,u.username AS attr1 from t_inesv_rmb_recharge r join t_inesv_user u " + "on r.user_no = u.user_no";
         String last = " limit ?,?";
@@ -123,6 +131,14 @@ public class QueryRmbRechargeInfo {
             paramArr.add(Date.valueOf(startDate));
             paramArr.add(Date.valueOf(endDate));
         }
+        
+        if(orderNumber != null && !"".equals(orderNumber)) {
+        	String str = sql.contains("where")?" and r.recharge_order like ?":" where r.recharge_order like ?";
+        	sql += str;
+        	paramArr.add("%"+orderNumber+"%");
+        }
+        
+        
         sql += " order by r.date desc";
         sql += last;
         paramArr.add((curPage - 1) * pageItem);

@@ -121,12 +121,12 @@ $
 										str = '<button class="btn btn-info" '
 												+ 'onclick="confirmRecharge(\''
 												+ str
-												+ '\')">'
+												+ '\',this)">'
 												+ '<i class="icon-money icon-white"></i>&nbsp;确认到账</button>';
 										if (b.state != 0) {
 											str = '已到账';
 										}
-										var tpe = '网银';
+										var tpe = '易付通';
 										// if (b.recharge_type == 1) {
 										// tpe = '支付宝';
 										// }
@@ -257,7 +257,7 @@ function selectRecharge(curPagev, pageItemv) {
 	var state = $('#state').val();
 	var startDate = $('#startDate').val();
 	var endDate = $('#endDate').val();
-
+	var orderNumber = $('#orderNumber').val();
 	$
 			.ajax({
 				url : '/rmb/getRecharge.do',
@@ -269,7 +269,8 @@ function selectRecharge(curPagev, pageItemv) {
 					startDate : startDate,
 					endDate : endDate,
 					curPage : curPagev,
-					pageItem : pageItemv
+					pageItem : pageItemv,
+					orderNumber:orderNumber
 				},
 				success : function(data) {
 					if (data.code = 100) {
@@ -290,10 +291,13 @@ function selectRecharge(curPagev, pageItemv) {
 											str = '<button class="btn btn-info" '
 													+ 'onclick="confirmRecharge(\''
 													+ str
-													+ '\')">'
+													+ '\',this)">'
 													+ '<i class="icon-money icon-white"></i>&nbsp;确认到账</button>';
 											if (b.state != 0) {
 												str = '已到账';
+											}
+											if(b.state == 2){
+												str = '人工到账';
 											}
 											var tpe = '易付通';
 											// if (b.recharge_type == 1) {
@@ -351,7 +355,7 @@ function selectRecharge(curPagev, pageItemv) {
 			});
 
 }
-function confirmRecharge(str){
+function confirmRecharge(str,btn){
 	var r = confirm("确认到账?");
 	if(r){
 		$.ajax({
@@ -363,9 +367,14 @@ function confirmRecharge(str){
 			},
 			success : function(msg) {
 				window.location.reload();
+			},
+			error:function(e){
+				window.location.reload();
 			}
 		});
 	}
+	console.log(btn);
+	btn.attr('disable','disable');
 }
 function confirmWithdraw(value) {
 	var strArr = value.split(",");

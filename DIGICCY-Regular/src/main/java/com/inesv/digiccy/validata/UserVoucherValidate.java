@@ -69,7 +69,6 @@ public class UserVoucherValidate {
 //				return map;
 //			}
 //		}
-		SimpleDateFormat forMat = new SimpleDateFormat("yyyy-MM-dd");
 		UserVoucherCommand command = new UserVoucherCommand();
 		command.setCardId(cardId);
 		command.setCardType(type);
@@ -79,10 +78,10 @@ public class UserVoucherValidate {
 		command.setUserNo(userNo);
 		command.setRealName(realName);
 		try {
+			SimpleDateFormat forMat = new SimpleDateFormat("yyyy-MM-dd");
 			command.setEndDate(forMat.parse(endDate));
 			command.setStartDate(forMat.parse(startDate));
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		command.setMyvoucherType(myvoucherType);

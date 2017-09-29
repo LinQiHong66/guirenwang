@@ -26,6 +26,8 @@ public class UserVoucherHandler {
 		dto.setState(event.getState());
 		dto.setTrueName(event.getRealName());
 		dto.setUserNo(event.getUserNo());
+		dto.setEnDateDate(event.getEnDateDate());
+		dto.setStartDate(event.getStartDate());
 		dto.setMyvoucherType(event.getMyvoucherType());
 		String operation = event.getOperating();
 		

@@ -24,8 +24,8 @@ public class CrowMission implements Runnable{
 	@Override
 	@Scheduled(cron="0 0 2 * * ?") 
 	public void run() {
-		crowdValidata.validataEditCrowdState();
-		LOGGER.info("**********************定时器处理众筹状态**********************************:"+new Date());
+		/*crowdValidata.validataEditCrowdState();
+		LOGGER.info("**********************定时器处理众筹状态**********************************:"+new Date());*/
 	}
     
 }

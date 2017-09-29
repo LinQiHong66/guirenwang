@@ -1,5 +1,7 @@
 package com.inesv.digiccy.event;
 
+import java.util.Date;
+
 public class UserVoucherEvent {
 	// id
 	private int id;
@@ -19,13 +21,17 @@ public class UserVoucherEvent {
 	private String realName;
 
 	private String myvoucherType;
-	
+
+	private Date startDate;
+	private Date enDateDate;
 	private String operating;
 
 	public UserVoucherEvent() {
 		// TODO Auto-generated constructor stub
 	}
-	public UserVoucherEvent(int id, String cardId, int cardType, String imgUrl1, String imgUrl2, String imgUrl3, int state, int userNo, String realName, String operating, String myvoucherType){
+
+	public UserVoucherEvent(int id, String cardId, int cardType, String imgUrl1, String imgUrl2, String imgUrl3,
+			int state, int userNo, String realName, String operating, String myvoucherType, Date startDate, Date endDate) {
 		this.id = id;
 		this.cardId = cardId;
 		this.cardType = cardType;
@@ -33,12 +39,14 @@ public class UserVoucherEvent {
 		this.imgUrl2 = imgUrl2;
 		this.imgUrl3 = imgUrl3;
 		this.state = state;
+		this.startDate = startDate;
+		this.enDateDate = endDate;
 		this.userNo = userNo;
 		this.realName = realName;
 		this.operating = operating;
 		this.myvoucherType = myvoucherType;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -118,11 +126,28 @@ public class UserVoucherEvent {
 	public void setOperating(String operating) {
 		this.operating = operating;
 	}
+
 	public String getMyvoucherType() {
 		return myvoucherType;
 	}
+
 	public void setMyvoucherType(String myvoucherType) {
 		this.myvoucherType = myvoucherType;
 	}
-	
+
+	public Date getEnDateDate() {
+		return enDateDate;
+	}
+
+	public void setEnDateDate(Date enDateDate) {
+		this.enDateDate = enDateDate;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 }

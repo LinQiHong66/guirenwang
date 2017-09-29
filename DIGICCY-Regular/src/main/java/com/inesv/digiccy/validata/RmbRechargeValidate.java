@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,6 +58,7 @@ public class RmbRechargeValidate {
 
     @Autowired
     QueryRmbWithdrawInfo   queryRmbWithdrawInfo;
+    private static Logger logger = LoggerFactory.getLogger(RmbRechargeValidate.class);
 
 
     /**
@@ -203,19 +206,19 @@ public class RmbRechargeValidate {
     }
 
     /* 查询人民币充值总条数 **/
-    private long getRechargeSize(String userName, String state, String startDate, String endDate) throws SQLException {
-        return queryRmbRechargeInfo.getRechargeSize(userName, state, startDate, endDate);
+    private long getRechargeSize(String userName, String state, String startDate, String endDate, String orderNumber) throws SQLException {
+        return queryRmbRechargeInfo.getRechargeSize(userName, state, startDate, endDate, orderNumber);
     }
 
     /**
      * 校验查询充值信息
      */
-    public Map<String, Object> validateQueryRecord(String userName, String state, String startDate, String endDate, int curPage, int pageItem) {
+    public Map<String, Object> validateQueryRecord(String userName, String state, String startDate, String endDate, int curPage, int pageItem, String orderNumber) {
         Map<String, Object> map = new HashMap();
-        List<RmbRechargeDto> list = queryRmbRechargeInfo.qureyRechargeInfo(userName, state, startDate, endDate, curPage, pageItem);
+        List<RmbRechargeDto> list = queryRmbRechargeInfo.qureyRechargeInfo(userName, state, startDate, endDate, curPage, pageItem, orderNumber);
         long size = 0;
         try {
-            size = getRechargeSize(userName, state, startDate, endDate);
+            size = getRechargeSize(userName, state, startDate, endDate, orderNumber);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -234,9 +237,9 @@ public class RmbRechargeValidate {
 
     /** 获取表格 
      * @throws SQLException */
-    public void getExcel(HttpServletResponse response, String userName, String state, String startDate, String endDate) throws SQLException {
-    	long size = queryRmbRechargeInfo.getRechargeSize(userName, state, startDate, endDate);
-    	List<RmbRechargeDto> dtos = queryRmbRechargeInfo.qureyRechargeInfo(userName, state, startDate, endDate, 1, Integer.parseInt(size+""));
+    public void getExcel(HttpServletResponse response, String userName, String state, String startDate, String endDate, String orderNumber) throws SQLException {
+    	long size = queryRmbRechargeInfo.getRechargeSize(userName, state, startDate, endDate, orderNumber);
+    	List<RmbRechargeDto> dtos = queryRmbRechargeInfo.qureyRechargeInfo(userName, state, startDate, endDate, 1, Integer.parseInt(size+""), orderNumber);
         HashMap<String, List<String>> contact = new HashMap<String, List<String>>();
         String title1 = "用户名称";
         String title2 = "充值方式";
@@ -304,15 +307,17 @@ public class RmbRechargeValidate {
     public void validateRechargeInfo() {
         Map<String, Object> map = new HashMap();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        System.out.println("*********************************");
         List<RmbRechargeDto> dtos = queryRmbRechargeInfo.qureyRechargeInfoByNo();
         for (int i = 0; i < dtos.size(); i++) {
             map = EasyPayUtil.query(dtos.get(i).getRecharge_order(), sdf.format(dtos.get(i).getDate()));
             if (map == null) {
                 continue;
             } else {
+            	logger.debug("第" + i + "张订单返回respCode：" + map);
                 if (String.valueOf(map.get("respCode")).equals("0000")) {
                     try {
-                        rmbRechargePersistence.confirmToOrder(dtos.get(i).getRecharge_order().toString());
+                        rmbRechargePersistence.confirmToOrder(dtos.get(i).getRecharge_order().toString(), 1);
                     } catch (Exception e) {
                         e.printStackTrace();
                         continue;

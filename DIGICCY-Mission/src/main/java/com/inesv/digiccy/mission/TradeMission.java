@@ -36,8 +36,8 @@ public class TradeMission implements Runnable{
  	 */
  	@Scheduled(cron="0 0/1 * * * ?")  //1分钟               
  	public void run() {
- 		rmbRechargeValidate.validateRechargeInfo();
-		LOGGER.info("**********************定时器处理充值单号成功**********************************:"+new Date());
+ 		/*rmbRechargeValidate.validateRechargeInfo();
+		LOGGER.info("**********************定时器处理充值单号成功**********************************:"+new Date());*/
  	} 
     
 }
