@@ -938,37 +938,4 @@ public class TradeValidata {
 		}
 	}
 
-	/**
-	 * 使用定时器处理买卖
-	 */
-	public void doTrade() {
-		// 以买为主,查询委托记录表中未交易的买的记录列表
-		List<EntrustDto> buyList = queryEntrustInfo.queryEntrustByEntrustTypeAndState(0, 0);
-		if (buyList == null || buyList.size() <= 0) {
-			return;
-		}
-		BigDecimal buy_poundatge = new BigDecimal("0");
-		BigDecimal sell_poundatge = new BigDecimal("0");
-		for (int i = 0; i < buyList.size(); i++) {
-			EntrustDto buyEntrust = buyList.get(i);
-			CoinDto coinDto = queryCoin.queryBuyPoundatge(Long.valueOf(buyEntrust.getEntrust_coin()));
-			if (coinDto != null) {
-				if (coinDto.getBuy_poundatge() != null) {
-					buy_poundatge = coinDto.getBuy_poundatge();// 买手续费比例
-				}
-				if (coinDto.getSell_poundatge() != null) {
-					sell_poundatge = coinDto.getSell_poundatge();// 卖手续费比例
-				}
-			}
-			System.out.println("开始对第" + i + "条买的记录进行交易");
-			try {
-				tradePersistence.trade(buyEntrust, buy_poundatge, sell_poundatge);
-			} catch (Exception e) {
-				log.debug("定时交易第" + i + "条失败！！！");
-				e.printStackTrace();
-				continue;
-			}
-			System.out.println("结束对第" + i + "条买的记录进行交易");
-		}
-	}
 }

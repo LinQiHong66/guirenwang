@@ -26,6 +26,8 @@ import com.inesv.digiccy.api.command.UserCommand;
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.InesvUserDto;
 import com.inesv.digiccy.dto.LoginLogDto;
+import com.inesv.digiccy.dto.UserBasicInfoDto;
+import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
@@ -38,7 +40,10 @@ public class UserController {
 
 	@Autowired
 	private QueryUserInfo queryUserInfo;
-
+	
+	@Autowired
+	QueryUserBasicInfo queryUserBasicInfo;
+	
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
@@ -76,65 +81,75 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "login")
-    public @ResponseBody Map<String,Object> login(HttpSession session,HttpServletRequest request,HttpServletResponse resp,@RequestParam String username,@RequestParam String password,@RequestParam String ip){
-      Map<String,Object> map = new HashMap<String,Object>();
-        InesvUserDto user = queryUserInfo.loadUser(username,password);
-        if(user == null) {
-        	map.put("code", ResponseCode.FAIL);
-            map.put("desc","用户名或密码错误！");
-            return map;
-        }
-        if(user.getState() != 1) {
-        	map.put("code", ResponseCode.FAIL);
-            map.put("desc","该用户未启动，请联系管理人员！");
-            return map;
-        }
-        if(ip==null || ip.equals("")){
-        	 map.put("code", ResponseCode.FAIL);
-             map.put("desc","IP地址不能为空");
-             return map;
-        }
-        String valtoken = (String) redisTemplate.opsForValue().get(username);
-        if(valtoken != null) {
-        	Date lastDate = (Date) redisTemplate.opsForValue().get(valtoken+":lastTime");
-        	Date curDate = new Date(System.currentTimeMillis());
-        	Long secend = curDate.getTime()-lastDate.getTime();
-        	if(secend <= 10*1000) {
-        		map.put("code", ResponseCode.FAIL);
-        		map.put("msg","在别处已登录！！！");
-        		return map;
-        	}
-        }
-        if(user!=null){
-          String tokens=request.getParameter("token");
-          try {
-        	  redisTemplate.delete(tokens);
-          }catch(Exception e) {
-        	  
-          }
-          Long tokenStr = user.getId()+new Date().getTime();
-          String token = new MD5().getMD5(String.valueOf(tokenStr));
-          redisTemplate.opsForValue().set(username,token, 7, TimeUnit.DAYS);
-          redisTemplate.opsForValue().set(token,token, 7, TimeUnit.DAYS);
-          redisTemplate.opsForValue().set(token+":lastTime", new Date(System.currentTimeMillis()));
-          session.setAttribute("userName", username);
-          map.put("code", ResponseCode.SUCCESS);
-          map.put("msg", ResponseCode.SUCCESS_DESC);
-          user.setPassword("******");
-          user.setDeal_pwd("******");
-          map.put("loginUserInfo", user);
-          map.put("token", token);
-          LoginLogCommand loginLogCommand = new LoginLogCommand(user.getUser_no(),1,"通过用户名登录",ip,"",1,new Date());
-          commandGateway.send(loginLogCommand);
-        }else{
-          map.put("code", ResponseCode.FAIL);
+	public @ResponseBody Map<String, Object> login(HttpSession session, HttpServletRequest request,
+			HttpServletResponse resp, @RequestParam String username, @RequestParam String password,
+			@RequestParam String ip) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		InesvUserDto user = queryUserInfo.loadUser(username, password);
+		if (user == null) {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "用户名或密码错误！");
+			return map;
+		}
+		if (user.getState() != 1) {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "该用户未启动，请联系管理人员！");
+			return map;
+		}
+		if (ip == null || ip.equals("")) {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "IP地址不能为空");
+			return map;
+		}
+		String valtoken = (String) redisTemplate.opsForValue().get(username);
+		if (valtoken != null) {
+			Date lastDate = (Date) redisTemplate.opsForValue().get(valtoken + ":lastTime");
+			Date curDate = new Date(System.currentTimeMillis());
+			Long secend = curDate.getTime() - lastDate.getTime();
+			if (secend <= 10 * 1000) {
+				map.put("code", ResponseCode.FAIL);
+				map.put("msg", "在别处已登录！！！");
+				return map;
+			}
+		}
+		if (user != null) {
+			String tokens = request.getParameter("token");
+			try {
+				redisTemplate.delete(tokens);
+			} catch (Exception e) {
 
-//          map.put("msg", ResponseCode.FAIL_DESC);
-          map.put("msg", "用户账号密码不正确！！！");
+			}
+			Long tokenStr = user.getId() + new Date().getTime();
+			String token = new MD5().getMD5(String.valueOf(tokenStr));
+			UserBasicInfoDto basicUserInfo = queryUserBasicInfo.getUserBasicInfo(user.getUser_no());
+			redisTemplate.opsForValue().set(username, token, 7, TimeUnit.DAYS);
+			redisTemplate.opsForValue().set(token, token, 7, TimeUnit.DAYS);
+			redisTemplate.opsForValue().set(token + ":lastTime", new Date(System.currentTimeMillis()));
+			session.setAttribute("userName", username);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("msg", ResponseCode.SUCCESS_DESC);
+			user.setPassword("******");
+			user.setDeal_pwd("******");
+			map.put("loginUserInfo", user);
+			map.put("token", token);
+			if (user.getCertificate_num() == null || "".equals(user.getCertificate_num())) {
+				map.put("isvoucher", false);
+			} else {
+				map.put("isvoucher", true);
+			}
+			map.put("basicUserInfo", basicUserInfo);
+			map.put("basicUserInfoState", !(basicUserInfo==null));
+			LoginLogCommand loginLogCommand = new LoginLogCommand(user.getUser_no(), 1, "通过用户名登录", ip, "", 1,
+					new Date());
+			commandGateway.send(loginLogCommand);
+		} else {
+			map.put("code", ResponseCode.FAIL);
+			// map.put("msg", ResponseCode.FAIL_DESC);
+			map.put("msg", "用户账号密码不正确！！！");
 
-        }
-        return map;
-    }
+		}
+		return map;
+	}
 
 	@RequestMapping(value = "logout")
 	public @ResponseBody Map<String, Object> logout(HttpSession session, HttpServletRequest request,
@@ -144,7 +159,7 @@ public class UserController {
 			String userName = (String) session.getAttribute("userName");
 			redisTemplate.delete(userName);
 			redisTemplate.delete(token);
-			redisTemplate.delete(token+":lastTime");
+			redisTemplate.delete(token + ":lastTime");
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("msg", ResponseCode.SUCCESS_DESC);
 		} catch (Exception e) {

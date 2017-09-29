@@ -92,6 +92,36 @@ public class BonusOperation {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * 分红业务
+     * @param bonusId
+     * @param bonusName
+     * @param coinId
+     * @param num
+     */
+    @Transactional(rollbackFor={Exception.class, RuntimeException.class})
+    public void doLevelBonus(Long entrustNo,BigDecimal level_price,Integer coin_type,Integer rel_user_no,Integer user_no,Integer entrustType) throws Exception{
+    	/*
+    	 * 插入分红记录
+    	 */
+    	String insertBonus = "INSERT INTO t_inesv_bonus_level(bonus_source,bonus_coin,bonus_rel,bonus_user,bonus_type,bonus,remark) " +
+                "VALUES (?,?,?,?,?,?,?)";
+    	if(entrustType == 0 || entrustType == 1) {
+    		Object bonusParam[] = {entrustNo,coin_type,rel_user_no,user_no,entrustType,level_price,"交易-产生分红"};
+            queryRunner.update(insertBonus,bonusParam);
+    	}else {
+    		Object bonusParam[] = {entrustNo,coin_type,rel_user_no,user_no,entrustType,level_price,"其他-产生分红"};
+            queryRunner.update(insertBonus,bonusParam);
+    	}
+    	/*
+    	 * 修改货币金额
+    	 */
+    	 String update = "UPDATE t_inesv_user_balance SET enable_coin = enable_coin + ?,total_price = total_price + ? WHERE user_no=? and coin_type = ?";
+         Object params[] = {level_price,level_price,rel_user_no,coin_type};
+         queryRunner.update(update,params);
+            
+    }
 
 
 }

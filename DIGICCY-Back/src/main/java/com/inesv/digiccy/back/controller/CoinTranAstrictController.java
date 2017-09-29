@@ -5,28 +5,17 @@ import com.inesv.digiccy.dto.CoinTranAstrictDto;
 import com.inesv.digiccy.validata.coin.CoinTranAstrictValidata;
 import com.inesv.digiccy.validata.coin.CoinValidata;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.*;
-import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,7 +84,6 @@ public class CoinTranAstrictController {
     @ResponseBody
     public Map<String,Object> update(CoinTranAstrictDto coinTranAstrictDto,String beginDate,String endDate) throws Exception{
     	Map<String,Object> result=new HashMap<>();
-    	System.out.println("+++++++++++" + coinTranAstrictDto.getSingle_max_price());
     	CoinTranAstrictDto dto1=coinTranAstrictValidata.getByCoin_no(String.valueOf(coinTranAstrictDto.getCoin_no()));
     	CoinTranAstrictDto dto2=coinTranAstrictValidata.getByCoin_id(String.valueOf(coinTranAstrictDto.getId()));
     	if(dto1==null || dto1.getId()==dto2.getId()){

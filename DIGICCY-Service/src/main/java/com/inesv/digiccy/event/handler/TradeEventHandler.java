@@ -38,9 +38,9 @@ public class TradeEventHandler {
 				event.getDate(),event.getAttr1());
 		String operation = event.getOperation();
 		switch (operation) {
-		case "insert":
+		/*case "insert":
 			insertOp(entrust);
-			break;
+			break;*/
 		case "inserts":
 			insertOps(entrust);
 			break;
@@ -65,7 +65,7 @@ public class TradeEventHandler {
 	 * @throws SQLException 
 	 * @throws Exception
 	 */
-	private void insertOp(EntrustDto entrust) throws Exception{
+	/*private void insertOp(EntrustDto entrust) throws Exception{
 		//虚拟币	
 		UserBalanceDto xnb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), entrust.getEntrust_coin().toString());
 		//人民币
@@ -82,7 +82,7 @@ public class TradeEventHandler {
 			rmb.setUnable_coin(rmb.getUnable_coin().add(entrust.getPiundatge()));
 		}
 		EntrustPersistence.addEntrust(entrust,xnb,rmb);
-	}
+	}*/
 	
 	/**
 	 * 添加操作：买卖操作

@@ -1,5 +1,6 @@
 package com.inesv.digiccy.controller;
 
+import com.inesv.digiccy.dto.CoinDto;
 import com.inesv.digiccy.validata.CoinValidate;
 import com.inesv.digiccy.validata.RmbRechargeValidate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +78,7 @@ public class CoinController {
     @ResponseBody
     public Map<String,Object> getAllCoinType(){
         Map<String, Object> map = coinValidate.validateCoinTypeInfo();
+        List<CoinDto> dtos = (List<CoinDto>) map.get("data");
         return map;
     }
 

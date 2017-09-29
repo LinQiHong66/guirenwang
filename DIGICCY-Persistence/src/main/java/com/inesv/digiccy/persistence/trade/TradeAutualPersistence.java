@@ -6,6 +6,7 @@ import com.inesv.digiccy.dto.CoinLevelProportionDto;
 import com.inesv.digiccy.dto.DayMarketDto;
 import com.inesv.digiccy.dto.DealDetailDto;
 import com.inesv.digiccy.dto.EntrustDto;
+import com.inesv.digiccy.dto.InesvUserDto;
 import com.inesv.digiccy.dto.UserBalanceDto;
 import com.inesv.digiccy.dto.UserRelations;
 import com.inesv.digiccy.persistence.bonus.BonusOperation;
@@ -47,25 +48,10 @@ public class TradeAutualPersistence {
 	@Autowired
 	BonusOperation bonusOperation;
 	
-	//@Transactional(rollbackFor={Exception.class, RuntimeException.class})
+		/*
+		 * 实时交易--数据兑换
+		 */
 		public EntrustDto buy_sell_TradeCompleteBySql(String buyTradeType,EntrustDto buyEntrust,EntrustDto sellEntrust,BigDecimal buy_poundatge,BigDecimal sell_poundatge,BigDecimal tradeNum,BigDecimal buyPrice,BigDecimal sellPrice) throws Exception{
-			//查询币种相应上级分红比例
-			//币合
-			/*CoinLevelProportionDto coinLevelProportionDto = new CoinLevelProportionDto();
-			coinLevelProportionDto = queryByCoinNo(Long.valueOf(buyEntrust.getEntrust_coin()));
-			UserRelations userRelations = new UserRelations();
-			UserRelations userRelations2 = new UserRelations();
-			userRelations = queryRelationByUserNo(Long.valueOf(buyEntrust.getUser_no()));
-			if(userRelations != null && userRelations.getUser_no() != null && !"".equals(userRelations.getUser_no().toString())){
-				userRelations2 = queryRelationByUserNo(userRelations.getRelations_no());
-			}
-			BigDecimal level_one = null;
-			BigDecimal level_two = null;
-			if(coinLevelProportionDto!=null&&coinLevelProportionDto.getLevel_one() != null && !"".equals(coinLevelProportionDto.getLevel_one().toString())){
-				level_one = coinLevelProportionDto.getLevel_one().multiply(tradeNum);
-				level_two = coinLevelProportionDto.getLevel_two().multiply(tradeNum);
-			}*/
-			//4.修改买的用户的资产表（人民币，对应货币资产）人民币减少 对应货币增加
 			//买的人的虚拟币
 			UserBalanceDto buyXnb=queryUserBalanceInfoByUserNoAndCoinType(buyEntrust.getUser_no(), buyEntrust.getEntrust_coin());
 			//买的人的人民币
@@ -88,18 +74,9 @@ public class TradeAutualPersistence {
 			String updateUserBalanceRmb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where id=?";
 			Object updateRmbParams[] = {buyRmb.getEnable_coin(),buyRmb.getUnable_coin(),buyRmb.getEnable_coin().add(buyRmb.getUnable_coin()),buyRmb.getId()};
 			queryRunner.update(updateUserBalanceRmb, updateRmbParams);
-			//给相应的的上级用户分红
-			//币合
-			/*if(userRelations != null && userRelations.getRelations_no() != null && !"".equals(userRelations.getRelations_no().toString())){
-				bonusOperation.updateBalance(level_one,level_one, userRelations.getRelations_no().intValue(), buyEntrust.getEntrust_coin().intValue());
-			}
-			if(userRelations2 != null && userRelations2.getRelations_no() != null && !"".equals(userRelations2.getRelations_no().toString())){
-				bonusOperation.updateBalance(level_two,level_two, userRelations2.getRelations_no().intValue(), buyEntrust.getEntrust_coin().intValue());
-			}*/
-			//5.修改交易对象卖的资产表（人民币，对应货币资产）
-			//交易对象虚拟币
+			//卖的人虚拟币
 			UserBalanceDto sellXnb=queryUserBalanceInfoByUserNoAndCoinType(sellEntrust.getUser_no(), sellEntrust.getEntrust_coin());
-			//交易对象人民币
+			//卖的人人民币
 			UserBalanceDto sellRmb=queryUserBalanceInfoByUserNoAndCoinType(sellEntrust.getUser_no(), 0);
 			//5-1.虚拟币
 			sellXnb.setUnable_coin(sellXnb.getUnable_coin().subtract(tradeNum));
@@ -146,24 +123,8 @@ public class TradeAutualPersistence {
 					Object opObjEntrustParams[] = { sellEntrust.getDeal_num(),
 							sellEntrust.getState(), sellEntrust.getId() };
 					queryRunner.update(opObjEntrust, opObjEntrustParams);
-			//3.生成一条新的交易记录
-			//4.修改货币最新市场行情表
-			//6.判断买卖用户是不是第一次交易，是第一次交易则修改交易用户的推荐人的收益表	
-			//判断是否是第一次交易
-			/*String tradeBuyFristsql="select * from t_inesv_deal_detail where user_no=?";
-			List<DealDetailDto> deatBuyList= queryRunner.query(tradeBuyFristsql,new BeanListHandler<DealDetailDto>(DealDetailDto.class),buyEntrust.getUser_no());
-			if(deatBuyList==null || deatBuyList.size()<=0){
-				String updateProfit="UPDATE t_inesv_rec_profit SET deal=1 WHERE rec_user = ? ";
-				queryRunner.update(updateProfit,buyEntrust.getUser_no());
-			}
-			String tradeSellFristsql="select * from t_inesv_deal_detail where user_no=?";
-			List<DealDetailDto> deatSellList= queryRunner.query(tradeSellFristsql,new BeanListHandler<DealDetailDto>(DealDetailDto.class),sellEntrust.getUser_no());
-			if(deatSellList==null || deatSellList.size()<=0){
-				String updateProfit="UPDATE t_inesv_rec_profit SET deal=1 WHERE rec_user = ? ";
-				queryRunner.update(updateProfit,sellEntrust.getUser_no());
-			}*/
-			//交易货币最新行情
-			List<DayMarketDto> dayMarketDtoList=queryDayMarketInfoByCoinType(buyEntrust.getEntrust_coin());
+			//生成一条新的买卖交易记录
+			List<DayMarketDto> dayMarketDtoList=queryDayMarketInfoByCoinType(buyEntrust.getEntrust_coin());//交易货币最新行情
 			if(tradeNum.doubleValue()!=0){
 				//3-1.生成一条新买的交易记录
 				String insertBuyDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,?,?,?)";
@@ -184,7 +145,6 @@ public class TradeAutualPersistence {
 					sellEntrust.getUser_no(),sellEntrust.getEntrust_price(),tradeNum,tradeNum.multiply(sellPrice).multiply(sell_poundatge),buyEntrust.getId(),sellEntrust.getId(),new Date()};
 			queryRunner.update(insertTradeDetail,tradeDetailParam);
 			//4-1.查詢貨幣最新數據
-			System.out.println("//4-1.查詢貨幣最新數據");
 			DayMarketDto inesvDayMarketDto=queryDealDetailInfoByDayAndCoin(buyEntrust.getEntrust_coin());
 			//4-2.修改货币最新市场行情表
 			System.out.println("//4-2.修改货币最新市场行情表");
@@ -211,12 +171,77 @@ public class TradeAutualPersistence {
 			String insertSellPoundage = "INSERT INTO t_inesv_poundage(user_no,optype,type,money,date) VALUES(?,?,?,?,?)";
 			Object sellPoundageParam[] = {sellEntrust.getUser_no(),sellEntrust.getEntrust_type(),sellEntrust.getEntrust_coin(),sellPrice.multiply(tradeNum).multiply(sell_poundatge),new Date()};
 			queryRunner.update(insertSellPoundage,sellPoundageParam);
+			//买家分红
+			userLevelDetailed(buyEntrust.getUser_no(),buyEntrust.getEntrust_coin(),tradeNum.multiply(buy_poundatge),buyPrice.multiply(buy_poundatge),buyEntrust.getId(),buyEntrust.getEntrust_type());
+			//卖家分红
+			userLevelDetailed(sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),tradeNum.multiply(sell_poundatge),sellPrice.multiply(sell_poundatge),sellEntrust.getId(),sellEntrust.getEntrust_type());
 			return buyEntrust;
 		}
+		
+		/*
+		 * 交易分红
+		 */
+		public void userLevelDetailed(Integer user_no, Integer coin_no, BigDecimal tradeNum, BigDecimal entrustPrice, Long entrustNo, Integer entrustType) throws Exception{
+			//查询币种相应上级分红比例
+			CoinLevelProportionDto coinLevelProportionDto = queryByCoinNo(Long.valueOf(coin_no)); //货币分红比例
+			//买家上级分红
+			BigDecimal level_one = null;
+			BigDecimal level_two = null;
+			BigDecimal level_three = null;
+			BigDecimal level_four = null;
+			BigDecimal level_five = null;
+			if(coinLevelProportionDto != null && coinLevelProportionDto.getState() == 0){
+				if(coinLevelProportionDto.getLevel_type() == 0) {
+					level_one = coinLevelProportionDto.getLevel_one().multiply(entrustPrice);
+					level_two = coinLevelProportionDto.getLevel_two().multiply(entrustPrice);
+					level_three = coinLevelProportionDto.getLevel_one().multiply(entrustPrice);
+					level_four = coinLevelProportionDto.getLevel_two().multiply(entrustPrice);
+					level_five = coinLevelProportionDto.getLevel_one().multiply(entrustPrice);
+				}else {
+					level_one = coinLevelProportionDto.getLevel_one().multiply(tradeNum);
+					level_two = coinLevelProportionDto.getLevel_two().multiply(tradeNum);
+					level_three = coinLevelProportionDto.getLevel_one().multiply(tradeNum);
+					level_four = coinLevelProportionDto.getLevel_two().multiply(tradeNum);
+					level_five = coinLevelProportionDto.getLevel_one().multiply(tradeNum);
+				}
+			}else {
+				return;
+			}
+			
+			InesvUserDto buyUserDto1 = queryUserByID(user_no);
+			if(buyUserDto1 == null || buyUserDto1.getUser_no() == user_no) {
+				return;
+			}else {
+				bonusOperation.doLevelBonus(entrustNo, level_one, coinLevelProportionDto.getLevel_type(), buyUserDto1.getUser_no(), user_no, entrustType);
+			}
+			InesvUserDto buyUserDto2 = queryUserByID(buyUserDto1.getUser_no());
+			if(buyUserDto2 == null || buyUserDto2.getUser_no() == buyUserDto1.getUser_no()) {
+				return;
+			}else {
+				bonusOperation.doLevelBonus(entrustNo, level_two, coinLevelProportionDto.getLevel_type(), buyUserDto2.getUser_no(), buyUserDto1.getUser_no(), entrustType);
+			}
+			InesvUserDto buyUserDto3 = queryUserByID(buyUserDto2.getUser_no());
+			if(buyUserDto3 == null || buyUserDto3.getUser_no() == buyUserDto2.getUser_no()) {
+				return;
+			}else {
+				bonusOperation.doLevelBonus(entrustNo, level_three, coinLevelProportionDto.getLevel_type(), buyUserDto3.getUser_no(), buyUserDto2.getUser_no(), entrustType);
+			}
+			InesvUserDto buyUserDto4 = queryUserByID(buyUserDto3.getUser_no());
+			if(buyUserDto4 == null || buyUserDto4.getUser_no() == buyUserDto3.getUser_no()) {
+				return;
+			}else {
+				bonusOperation.doLevelBonus(entrustNo, level_four, coinLevelProportionDto.getLevel_type(), buyUserDto4.getUser_no(), buyUserDto3.getUser_no(), entrustType);
+			}
+			InesvUserDto buyUserDto5 = queryUserByID(buyUserDto4.getUser_no());
+			if(buyUserDto5 == null || buyUserDto5.getUser_no() == buyUserDto4.getUser_no()) {
+				return;
+			}else {
+				bonusOperation.doLevelBonus(entrustNo, level_five, coinLevelProportionDto.getLevel_type(), buyUserDto5.getUser_no(), buyUserDto4.getUser_no(), entrustType);
+			}
+		}
+		
 		/**
-		 * 委托实时买卖交易--数据库
-		 * @param entrustDto
-		 * @return
+		 * 委托实时买卖交易--查询货币手续费
 		 */
 		@Transactional(rollbackFor={Exception.class, RuntimeException.class})
 	    public void validateTradeCoinActualBySQL(EntrustDto entrustDto) throws Exception{
@@ -239,14 +264,11 @@ public class TradeAutualPersistence {
 	        System.out.println("-------我们来操作一下mysql交易--buy--sell");
 			TradeSql("buySellTradeSQL","sql",entrustDto,entrustList,buy_poundatge,sell_poundatge);
 	        System.out.println("结束买-卖的记录进行交易");
-	        
 	    }
+		
 		/**
-		 * 委托交易----买卖
-		 * @param entrustDto
-		 * @return
+		 * 委托实时买卖交易----递归查询符合买卖的委托单号
 		 */
-		//@Transactional(rollbackFor={Exception.class, RuntimeException.class})
 		public void TradeSql(String entrustType,String sqlType,EntrustDto buy_sell_EntrustDto,List<EntrustDto> buy_sell_entrustList,BigDecimal buy_poundatge,BigDecimal sell_poundatge) throws Exception{
 			List<EntrustDto> getUnSellList = null;
 			if(buy_sell_EntrustDto.getEntrust_type()==0){
@@ -293,37 +315,26 @@ public class TradeAutualPersistence {
 				}
 			}
 		}
+		
 		/**
 		 * 根据委托价格，货币类型，交易类型，委托状态查找委托记录
-		 * @param entrustPrice
-		 * @param entrustCoin
-		 * @param entrustType
-		 * @param state
-		 * @return
-		 * @throws SQLException 
 		 */
 		public List<EntrustDto> queryEntrustByEntrustPriceEntrustCoinAndEntrustTypeAndState(BigDecimal entrustPrice, Integer entrustCoin,Integer userNo,Integer entrustType,Integer state) throws SQLException{
 			String sql="select * from t_inesv_entrust where entrust_price=? and entrust_coin =? and entrust_type=? and state=? and entrust_num!=deal_num order by date asc for update";
 			Object params[] = {entrustPrice,entrustCoin,entrustType,state};
 			/*String sql = null;
 			if(entrustType==0) {	//卖家-寻找买的用户
-				System.out.println("-------------111");
-				System.out.println("-------------" + entrustPrice + "--" + entrustCoin + "--" + userNo+ "--" + entrustType + "--" + state);
 				sql="select * from t_inesv_entrust where entrust_price>=? and entrust_coin =? and entrust_type=? and state=? and entrust_num!=deal_num and user_no!=? order by date asc,entrust_price desc for update";
 			}else if(entrustType==1){		//买家-寻找卖的用户
-				System.out.println("-------------222");
 				sql="select * from t_inesv_entrust where entrust_price<=? and entrust_coin =? and entrust_type=? and state=? and entrust_num!=deal_num and user_no!=? order by date asc,entrust_price desc for update";
 			}
 			Object params[] = {entrustPrice,entrustCoin,entrustType,state,userNo};*/
-			List<EntrustDto> list = null;
-			list = queryRunner.query(sql,new BeanListHandler<EntrustDto>(EntrustDto.class),params);
+			List<EntrustDto> list = queryRunner.query(sql,new BeanListHandler<EntrustDto>(EntrustDto.class),params);
 			return list;
 		}
+		
 		/**
 		 * 根据委托单号查询记录
-		 * @param id
-		 * @return
-		 * @throws SQLException 
 		 */
 		public EntrustDto queryEntrustById(Long id) throws SQLException{
 			String sql="select * from t_inesv_entrust where id = ? for update";
@@ -331,35 +342,29 @@ public class TradeAutualPersistence {
 			EntrustDto dto= queryRunner.query(sql,new BeanHandler<EntrustDto>(EntrustDto.class),params);
 			return dto;
 		}
+		
 		/**
-		 * 用户资产
-		 * @param user_no
-		 * @param entrust_coin
-		 * @return
-		 * @throws SQLException
+		 * 根据用户ID+货币ID 查询用户资产
 		 */
 		private UserBalanceDto queryUserBalanceInfoByUserNoAndCoinType(Integer user_no, Integer entrust_coin) throws SQLException {
-				String querySql = "select * from t_inesv_user_balance where user_no=? and coin_type=? for update";
-				Object params[] = {user_no,entrust_coin};
-				UserBalanceDto userBalanceInfo=queryRunner.query(querySql,new BeanHandler<UserBalanceDto>(UserBalanceDto.class),params);
-				return userBalanceInfo;
+	        String querySql = "select * from t_inesv_user_balance where user_no=? and coin_type=? for update";
+	        Object params[] = {user_no,entrust_coin};
+	        UserBalanceDto userBalanceInfo=queryRunner.query(querySql,new BeanHandler<UserBalanceDto>(UserBalanceDto.class),params);
+			return userBalanceInfo;
 		}
+		
 		/**
-		 * 货币每日行情表
-		 * @param entrust_coin
-		 * @return
-		 * @throws SQLException
+		 * 根据货币ID 查询每日行情表
 		 */
 		private List<DayMarketDto> queryDayMarketInfoByCoinType(Integer entrust_coin) throws SQLException {
-				String querySql = "SELECT * FROM t_inesv_day_market WHERE TO_DAYS(DATE) = TO_DAYS(NOW()) and coin_type=?";
-				Object params[] = {entrust_coin};
-				List<DayMarketDto> dayMarketDtoList=queryRunner.query(querySql,new BeanListHandler<DayMarketDto>(DayMarketDto.class),params);
-				return dayMarketDtoList;
+	        String querySql = "SELECT * FROM t_inesv_day_market WHERE TO_DAYS(DATE) = TO_DAYS(NOW()) and coin_type=?";
+	        Object params[] = {entrust_coin};
+	        List<DayMarketDto> dayMarketDtoList=queryRunner.query(querySql,new BeanListHandler<DayMarketDto>(DayMarketDto.class),params);
+			return dayMarketDtoList;
 		}
+		
 		/**
-		 * 貨幣最新信息
-		 * @return
-		 * @throws SQLException 
+		 * 根据货币ID 查询货币最新信息
 		 */
 		public DayMarketDto queryDealDetailInfoByDayAndCoin(Integer coin_no) throws Exception{
 			DayMarketDto inesvDayMarketDto = new DayMarketDto();
@@ -379,16 +384,24 @@ public class TradeAutualPersistence {
 				inesvDayMarketDto = queryRunner.query(querySql,new BeanHandler<DayMarketDto>(DayMarketDto.class),params);
 			return inesvDayMarketDto;
 		}
+		
+		/*
+		 * 根据货币ID 查询货币分红比例
+		 */
 		public CoinLevelProportionDto queryByCoinNo(Long coin_no) throws Exception{
-			String sql = "select * from t_coin_level_proportion where coin_no = ?";
+			String sql = "select * from t_coin_level_proportion where coin_no = ? and state != 2";
 			CoinLevelProportionDto coinLevelProportionDto = new CoinLevelProportionDto();
 				coinLevelProportionDto = queryRunner.query(sql, new BeanHandler<CoinLevelProportionDto>(CoinLevelProportionDto.class),coin_no);
 			return coinLevelProportionDto;
 		}
-		public UserRelations queryRelationByUserNo(Long user_no) throws Exception{
-			String sql = "select * from t_user_relations where user_no = ?";
-			UserRelations Relations = new UserRelations();
-				Relations = queryRunner.query(sql, new BeanHandler<UserRelations>(UserRelations.class),user_no);
-			return Relations;
+		
+		/*
+		 * 根据用户ID 查询用户上级
+		 */
+		public InesvUserDto queryUserByID(Integer user_no) throws Exception{
+			String sql = "SELECT user_no FROM t_inesv_user WHERE org_code = (SELECT org_parent_code FROM t_inesv_user WHERE user_no = ?)";
+			InesvUserDto relUser = new InesvUserDto();
+			relUser = queryRunner.query(sql, new BeanHandler<InesvUserDto>(InesvUserDto.class),user_no);
+			return relUser;
 		}
 }

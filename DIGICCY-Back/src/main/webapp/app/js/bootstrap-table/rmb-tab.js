@@ -117,8 +117,7 @@ $
 							.each(
 									data.data,
 									function(a, b) {
-										var str = b.id + ',' + b.user_no + ','
-												+ b.recharge_price;
+										var str = b.recharge_order;
 										str = '<button class="btn btn-info" '
 												+ 'onclick="confirmRecharge(\''
 												+ str
@@ -274,7 +273,6 @@ function selectRecharge(curPagev, pageItemv) {
 				},
 				success : function(data) {
 					if (data.code = 100) {
-
 						var countItem = $('#countItemR');
 						var curPage = $('#curPageR');
 						var pageItem = $('#pageItemR');
@@ -288,9 +286,7 @@ function selectRecharge(curPagev, pageItemv) {
 								.each(
 										data.data,
 										function(a, b) {
-											console.log(b);
-											var str = b.id + ',' + b.user_no
-													+ ',' + b.recharge_price;
+											var str = b.recharge_order;
 											str = '<button class="btn btn-info" '
 													+ 'onclick="confirmRecharge(\''
 													+ str
@@ -299,7 +295,7 @@ function selectRecharge(curPagev, pageItemv) {
 											if (b.state != 0) {
 												str = '已到账';
 											}
-											var tpe = '网银';
+											var tpe = '易付通';
 											// if (b.recharge_type == 1) {
 											// tpe = '支付宝';
 											// }
@@ -354,6 +350,22 @@ function selectRecharge(curPagev, pageItemv) {
 				}
 			});
 
+}
+function confirmRecharge(str){
+	var r = confirm("确认到账?");
+	if(r){
+		$.ajax({
+			url:'/rmb/doRecharge.do',
+			type : "post",
+			dataType : "json",
+			data : {
+				ordId:str,
+			},
+			success : function(msg) {
+				window.location.reload();
+			}
+		});
+	}
 }
 function confirmWithdraw(value) {
 	var strArr = value.split(",");

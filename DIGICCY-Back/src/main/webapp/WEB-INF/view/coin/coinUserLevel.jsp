@@ -87,11 +87,8 @@ Website: http://thevectorlab.net/
                             </span>
                         </div>
                         <div class="widget-body">
-                            <button class="btn btn-success" id="btn_add"><i class="icon-plus icon-white"></i>&nbsp;新增</button>
-                            <%--<button class="btn btn-inverse" id="btn_update"><i class="icon-pencil icon-white"></i>&nbsp;修改</button>--%>
-                            <%--<button class="btn btn-primary" id="btn_delete"><i class="icon-remove icon-white"></i>&nbsp;删除</button>--%>
+                            <a href="/coinproportion/gotoAdd.do"><button class="btn btn-success" id="btn_add"><i class="icon-plus icon-white"></i>&nbsp;新增</button></a>
                             <table id="coin_user_level_table">
-
                             </table>
                         </div>
                     </div>
@@ -100,104 +97,6 @@ Website: http://thevectorlab.net/
             </div>
         </div>
         <!-- END PAGE CONTAINER-->
-    </div>
-    <!-- END PAGE -->
-    <!-- 新增角色 -->
-    <div class="boxK" id="box_add">
-        <div class="closeK clearfix"><i class="icon-remove icon-white" id="close_add"></i></div>
-        <h4>分红信息</h4><br/><br/>
-        <form class="form-inline">
-            <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">货币编号:</label>&nbsp;&nbsp;
-                <input type="text"  id="coin_no" class="form-control" style="border-radius: 5px">
-            </div>
-            <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">货币名称:</label>&nbsp;&nbsp;
-                <input type="text"  id="coin_name" class="form-control" style="border-radius: 5px">
-            </div>
-           <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">推荐人比例:</label>&nbsp;&nbsp;
-                <input type="text"  id="level_one" class="form-control" style="border-radius: 5px">
-            </div>
-             <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">推荐人上级比例:</label>&nbsp;&nbsp;
-                <input type="text"  id="level_two" class="form-control" style="border-radius: 5px">
-            </div>
-            <div class="form-group" style="margin-top: 5px">
-                <button type="button" class="btn blue" id="add_Role" onclick="addCoin()"><i class="icon-ok"></i> 新增</button>
-                <button type="reset" class="btn"><i class=" icon-remove"></i> Cancel</button>
-            </div>
-        </form>
-    </div>
-    <!-- 修改角色 -->
-    <div class="boxK" id="box_update">
-        <div class="closeK clearfix"><i class="icon-remove icon-white" id="close_update"></i></div>
-        <h4>修改虚拟货币</h4><br/><br/>
-        <form class="form-inline">
-            <input type="hidden" id="update_id">
-            <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">货币编号:</label>&nbsp;&nbsp;
-                <input type="text" disabled="true" style="" id="update_coin_no" class="form-control" style="border-radius: 5px">
-            </div>
-            <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">货币名称:</label>&nbsp;&nbsp;
-                <input type="text"  id="update_coin_name" class="form-control" style="border-radius: 5px">
-            </div>
-            <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">推荐人比例:</label>&nbsp;&nbsp;
-                <input type="text"  id="update_level_one" class="form-control" style="border-radius: 5px">
-            </div>
-            <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">推荐人上级比例:</label>&nbsp;&nbsp;
-                <input type="text"  id="update_level_two" class="form-control" style="border-radius: 5px">
-            </div>
-            <div class="form-group" style="margin-top: 5px">
-                <button type="button" class="btn blue" id="update_Role" onclick="updateCoin()"><i class="icon-ok"></i> Save</button>
-                <button type="reset" class="btn"><i class=" icon-remove"></i> Cancel</button>
-            </div>
-        </form>
-    </div>
-    <!-- 投票结果 -->
-    <div class="boxK" id="box_vote">
-        <div class="closeK clearfix"><i class="icon-remove icon-white" id="close_vote"></i></div>
-        <h4>投票结果</h4><br/><br/>
-        <div id="count" style="width:80%;margin:0 auto">
-            <div class="control-group">
-                <label class="control-label">支持:</label>
-                <div class="controls">
-                    <div class="progress progress-striped progress-success" id="sup">
-                    </div>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">反对:</label>
-                <div class="controls">
-                    <div class="progress progress-striped progress-danger" id="opp">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="boxK" id="box_icon">
-        <div class="closeK clearfix"><i class="icon-remove icon-white" id="close_icon"></i></div>
-        <h4>货币图标</h4><br/><br/>
-        <div class="control-group">
-            <div class="controls">
-                <div class="fileupload fileupload-new" data-provides="fileupload">
-                    <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
-                    <div>
-                        <form action="/coin/uploadIcon.do" method="post" enctype="multipart/form-data">
-                            <input type="hidden" class="default" id="id" name="id"/>
-                            <span class="btn btn-file"><span class="fileupload-new">选择图片</span>
-                            <span class="fileupload-exists">更改</span>
-                            <input type="file" class="default" id="icon" name="icon"/></span>
-                            <input type="submit" type="submit" class="btn fileupload-exists" />
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <!-- END CONTAINER -->

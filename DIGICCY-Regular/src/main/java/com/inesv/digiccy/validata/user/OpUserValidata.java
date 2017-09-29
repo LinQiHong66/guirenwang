@@ -203,7 +203,7 @@ public class OpUserValidata {
 	/**
 	 * 新增用户
 	 */
-	public Map<String, Object> validataRegUser(String phone, String password, String invite_num) {
+	public synchronized Map<String, Object> validataRegUser(String phone, String password, String invite_num) {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			if (StringUtils.isBlank(phone) || StringUtils.isBlank(password)) {
@@ -253,7 +253,8 @@ public class OpUserValidata {
 			if (organizationStructureResult.getOrg_type() == 0) {
 				inesvUserDto.setState(0);// 机构用户，暂不能登陆，需要后台审核
 			}
-			regUserPersistence.addUser(inesvUserDto, recCode, invite_num);
+			long userNo = regUserPersistence.addUser(inesvUserDto, recCode, invite_num);
+			map.put("userNo", userNo);
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		} catch (Exception e) {
@@ -499,7 +500,7 @@ public class OpUserValidata {
 		commandGateway.sendAndWait(command);
 		if (ok) {
 			// 如果验证码发送成功则将发送短信日志写到表里面
-			modifyMessageLog(null, mCode + "");
+			modifyMessageLog(inesvUserDto, mCode + "");
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 			map.put("validataCode", mCode);

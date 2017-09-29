@@ -22,10 +22,10 @@ public class CrowMission implements Runnable{
      * 定时器处理众筹状态（每天凌晨2点执行）
      */
 	@Override
-	@Scheduled(cron="0 0 2 * * ?") 
+	/*@Scheduled(cron="0 0 2 * * ?") */
 	public void run() {
-		crowdValidata.validataEditCrowdState();
-		LOGGER.info("**********************定时器处理众筹状态**********************************:"+new Date());
+		/*crowdValidata.validataEditCrowdState();
+		LOGGER.info("**********************定时器处理众筹状态**********************************:"+new Date());*/
 	}
     
 }

@@ -21,23 +21,21 @@ public class TradeMission implements Runnable{
     
     /**
      * 定时处理交易（每分钟执行一次）
-     */
+     *//*
  	@Override
-	/*@Scheduled(cron="0 0/2 * * * ?") */
- 	/*
+	@Scheduled(cron="0 0/2 * * * ?") 
+ 	
 	public void run() {
 		tradeValidata.doTrade();
 		LOGGER.info("**********************定时器处理买卖成功**********************************:"+new Date());
- 	} 
- 	*/
- 	
- 	/*
- 	 * 定时处理充值单号
- 	 */
- 	@Scheduled(cron="0 0/1 * * * ?")  //1分钟               
- 	public void run() {
- 		rmbRechargeValidate.validateRechargeInfo();
-		LOGGER.info("**********************定时器处理充值单号成功**********************************:"+new Date());
+ 	} */
+ 	 /*
+ 	  *  定时处理充值单号
+ 	  */
+ 	/*@Scheduled(cron="0/5 * * * * ?")  //1分钟               
+*/ 	public void run() {
+ 		/*LOGGER.info("=====================定时器处理充值单号成功======================:"+new Date());
+ 		rmbRechargeValidate.validateRechargeInfo();*/
  	} 
     
 }

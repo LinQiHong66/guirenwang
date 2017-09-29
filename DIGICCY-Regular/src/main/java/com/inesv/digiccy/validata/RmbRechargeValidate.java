@@ -273,10 +273,10 @@ public class RmbRechargeValidate {
     /**
      * 校验充值到账
      */
-    public Map<String, Object> confirmToAccount(int recordId, int user, BigDecimal price) {
+    public Map<String, Object> confirmToAccount(String ordId) {
         Map<String, Object> map = new HashMap();
         try {
-            RmbRechargeCommand command = new RmbRechargeCommand(recordId, user, price, "confirm");
+            RmbRechargeCommand command = new RmbRechargeCommand(0,ordId, 0, "confirm");
             commandGateway.send(command);
             map.put("code", ResponseCode.SUCCESS);
             map.put("desc", ResponseCode.SUCCESS_DESC);
@@ -304,9 +304,11 @@ public class RmbRechargeValidate {
     public void validateRechargeInfo() {
         Map<String, Object> map = new HashMap();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        System.out.println("*********************************");
         List<RmbRechargeDto> dtos = queryRmbRechargeInfo.qureyRechargeInfoByNo();
         for (int i = 0; i < dtos.size(); i++) {
             map = EasyPayUtil.query(dtos.get(i).getRecharge_order(), sdf.format(dtos.get(i).getDate()));
+            System.out.println("第" + i + "张订单返回respCode：" + map.get("respCode"));
             if (map == null) {
                 continue;
             } else {
