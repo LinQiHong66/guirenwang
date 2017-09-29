@@ -309,6 +309,18 @@ public class QueryUserInfo implements UserDetailsService {
 		return userInfo;
 	}
 
+	public InesvUserDto getUserInfoByNo(int userNo) {
+		String sql = "select * from t_inesv_user where user_no = ?";
+		Object param[] = { userNo };
+		InesvUserDto userInfo = null;
+		try {
+			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), param);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userInfo;
+	}
+
 	/**
 	 * 鏌ヨ鐢ㄦ埛ip
 	 * 

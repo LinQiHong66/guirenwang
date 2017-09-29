@@ -186,6 +186,20 @@ public class OpUserValidata {
 		return map;
 	}
 
+	public Map<String, Object> validataGetUserInfoByNo(int userNo) {
+		Map<String, Object> map = new HashMap<>();
+		InesvUserDto info = queryUser.getUserInfoByNo(userNo);
+		if (info == null) {
+			map.put("code", ResponseCode.FAIL_BILL_INFO);
+			map.put("desc", ResponseCode.FAIL_BILL_INFO_DESC);
+		} else {
+			map.put("data", info);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", ResponseCode.SUCCESS_DESC);
+		}
+		return map;
+	}
+
 	/**
 	 * 新增用户
 	 */
