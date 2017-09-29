@@ -99,22 +99,27 @@ Website: http://thevectorlab.net/
            						<div class="form-group" style="margin-top: 5px">
                 					<label class="form-label">推荐人比例:</label>&nbsp;&nbsp;
                 					<input type="text"  id="level_one"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
+                					<span style="color:red">注意：请填小数</span>
             					</div>
             					<div class="form-group" style="margin-top: 5px">
                 					<label class="form-label">推荐人一代比例:</label>&nbsp;&nbsp;
                 					<input type="text"  id="level_two"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
+                					<span style="color:red">注意：请填小数</span>
             					</div>
             					<div class="form-group" style="margin-top: 5px">
                 					<label class="form-label">推荐人二代比例:</label>&nbsp;&nbsp;
                 					<input type="text"  id="level_three"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
+                					<span style="color:red">注意：请填小数</span>
             					</div>
            					 	<div class="form-group" style="margin-top: 5px">
             					    <label class="form-label">推荐人三代比例:</label>&nbsp;&nbsp;
            					     	<input type="text"  id="level_four"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
+           					     	<span style="color:red">注意：请填小数</span>
        					    	 </div>
         					    <div class="form-group" style="margin-top: 5px">
           					      	<label class="form-label">推荐人四代比例:</label>&nbsp;&nbsp;
            					     	<input type="text"  id="level_five"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
+           					     	<span style="color:red">注意：请填小数</span>
           					 	</div>
           					  	<div class="form-group" style="margin-top: 5px">
                                     <label class="form-label">分红货币类型:</label>&nbsp;&nbsp;

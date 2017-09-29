@@ -304,9 +304,11 @@ public class RmbRechargeValidate {
     public void validateRechargeInfo() {
         Map<String, Object> map = new HashMap();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        System.out.println("*********************************");
         List<RmbRechargeDto> dtos = queryRmbRechargeInfo.qureyRechargeInfoByNo();
         for (int i = 0; i < dtos.size(); i++) {
             map = EasyPayUtil.query(dtos.get(i).getRecharge_order(), sdf.format(dtos.get(i).getDate()));
+            System.out.println("第" + i + "张订单返回respCode：" + map.get("respCode"));
             if (map == null) {
                 continue;
             } else {
