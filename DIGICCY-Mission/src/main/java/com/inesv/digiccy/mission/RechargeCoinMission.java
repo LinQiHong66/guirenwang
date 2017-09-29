@@ -22,14 +22,13 @@ public class RechargeCoinMission implements Runnable {
      */
 	@Override
 	/*@Scheduled(cron="0 0/1 * * * ?")*/
-	@Scheduled(cron="0 0/3 * * * ?")
+	/*@Scheduled(cron="0 0/3 * * * ?")*/
 	public void run() {
 		/*try {
 			ficRechargeValidate.validateRechargeCoinNew();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!定时器处理虚拟币充值成功!!!!!!!!!!!!!!!!!!!!" + new Date());
         LOGGER.info("**********************定时器处理虚拟币充值**********************************:" + new Date());*/
 	}
 }

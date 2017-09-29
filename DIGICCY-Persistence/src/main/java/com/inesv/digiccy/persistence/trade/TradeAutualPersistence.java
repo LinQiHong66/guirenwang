@@ -172,16 +172,16 @@ public class TradeAutualPersistence {
 			Object sellPoundageParam[] = {sellEntrust.getUser_no(),sellEntrust.getEntrust_type(),sellEntrust.getEntrust_coin(),sellPrice.multiply(tradeNum).multiply(sell_poundatge),new Date()};
 			queryRunner.update(insertSellPoundage,sellPoundageParam);
 			//买家分红
-			userLevelDetailed(buyEntrust.getUser_no(),buyEntrust.getEntrust_coin(),tradeNum,buyPrice,sellPrice,buyEntrust.getId(),buyEntrust.getEntrust_type());
+			userLevelDetailed(buyEntrust.getUser_no(),buyEntrust.getEntrust_coin(),tradeNum.multiply(buy_poundatge),buyPrice.multiply(buy_poundatge),buyEntrust.getId(),buyEntrust.getEntrust_type());
 			//卖家分红
-			userLevelDetailed(sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),tradeNum,buyPrice,sellPrice,sellEntrust.getId(),sellEntrust.getEntrust_type());
+			userLevelDetailed(sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),tradeNum.multiply(sell_poundatge),sellPrice.multiply(sell_poundatge),sellEntrust.getId(),sellEntrust.getEntrust_type());
 			return buyEntrust;
 		}
 		
 		/*
 		 * 交易分红
 		 */
-		public void userLevelDetailed(Integer user_no, Integer coin_no, BigDecimal tradeNum, BigDecimal buyPrice, BigDecimal sellPrice, Long entrustNo, Integer entrustType) throws Exception{
+		public void userLevelDetailed(Integer user_no, Integer coin_no, BigDecimal tradeNum, BigDecimal entrustPrice, Long entrustNo, Integer entrustType) throws Exception{
 			//查询币种相应上级分红比例
 			CoinLevelProportionDto coinLevelProportionDto = queryByCoinNo(Long.valueOf(coin_no)); //货币分红比例
 			//买家上级分红
@@ -190,13 +190,13 @@ public class TradeAutualPersistence {
 			BigDecimal level_three = null;
 			BigDecimal level_four = null;
 			BigDecimal level_five = null;
-			if(coinLevelProportionDto != null){
+			if(coinLevelProportionDto != null && coinLevelProportionDto.getState() == 0){
 				if(coinLevelProportionDto.getLevel_type() == 0) {
-					level_one = coinLevelProportionDto.getLevel_one().multiply(buyPrice);
-					level_two = coinLevelProportionDto.getLevel_two().multiply(buyPrice);
-					level_three = coinLevelProportionDto.getLevel_one().multiply(buyPrice);
-					level_four = coinLevelProportionDto.getLevel_two().multiply(buyPrice);
-					level_five = coinLevelProportionDto.getLevel_one().multiply(buyPrice);
+					level_one = coinLevelProportionDto.getLevel_one().multiply(entrustPrice);
+					level_two = coinLevelProportionDto.getLevel_two().multiply(entrustPrice);
+					level_three = coinLevelProportionDto.getLevel_one().multiply(entrustPrice);
+					level_four = coinLevelProportionDto.getLevel_two().multiply(entrustPrice);
+					level_five = coinLevelProportionDto.getLevel_one().multiply(entrustPrice);
 				}else {
 					level_one = coinLevelProportionDto.getLevel_one().multiply(tradeNum);
 					level_two = coinLevelProportionDto.getLevel_two().multiply(tradeNum);
@@ -204,34 +204,36 @@ public class TradeAutualPersistence {
 					level_four = coinLevelProportionDto.getLevel_two().multiply(tradeNum);
 					level_five = coinLevelProportionDto.getLevel_one().multiply(tradeNum);
 				}
+			}else {
+				return;
 			}
 			
 			InesvUserDto buyUserDto1 = queryUserByID(user_no);
-			if(buyUserDto1 == null) {
+			if(buyUserDto1 == null || buyUserDto1.getUser_no() == user_no) {
 				return;
 			}else {
 				bonusOperation.doLevelBonus(entrustNo, level_one, coinLevelProportionDto.getLevel_type(), buyUserDto1.getUser_no(), user_no, entrustType);
 			}
 			InesvUserDto buyUserDto2 = queryUserByID(buyUserDto1.getUser_no());
-			if(buyUserDto2 == null) {
+			if(buyUserDto2 == null || buyUserDto2.getUser_no() == buyUserDto1.getUser_no()) {
 				return;
 			}else {
 				bonusOperation.doLevelBonus(entrustNo, level_two, coinLevelProportionDto.getLevel_type(), buyUserDto2.getUser_no(), buyUserDto1.getUser_no(), entrustType);
 			}
 			InesvUserDto buyUserDto3 = queryUserByID(buyUserDto2.getUser_no());
-			if(buyUserDto3 == null) {
+			if(buyUserDto3 == null || buyUserDto3.getUser_no() == buyUserDto2.getUser_no()) {
 				return;
 			}else {
 				bonusOperation.doLevelBonus(entrustNo, level_three, coinLevelProportionDto.getLevel_type(), buyUserDto3.getUser_no(), buyUserDto2.getUser_no(), entrustType);
 			}
 			InesvUserDto buyUserDto4 = queryUserByID(buyUserDto3.getUser_no());
-			if(buyUserDto4 == null) {
+			if(buyUserDto4 == null || buyUserDto4.getUser_no() == buyUserDto3.getUser_no()) {
 				return;
 			}else {
 				bonusOperation.doLevelBonus(entrustNo, level_four, coinLevelProportionDto.getLevel_type(), buyUserDto4.getUser_no(), buyUserDto3.getUser_no(), entrustType);
 			}
 			InesvUserDto buyUserDto5 = queryUserByID(buyUserDto4.getUser_no());
-			if(buyUserDto5 == null) {
+			if(buyUserDto5 == null || buyUserDto5.getUser_no() == buyUserDto4.getUser_no()) {
 				return;
 			}else {
 				bonusOperation.doLevelBonus(entrustNo, level_five, coinLevelProportionDto.getLevel_type(), buyUserDto5.getUser_no(), buyUserDto4.getUser_no(), entrustType);
