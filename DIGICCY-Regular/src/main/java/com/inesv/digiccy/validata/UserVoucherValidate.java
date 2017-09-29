@@ -1,6 +1,8 @@
 package com.inesv.digiccy.validata;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +56,7 @@ public class UserVoucherValidate {
 	 * @return
 	 */
 	public Map<String, Object> startVoucher(String cardId, int type, String imgUrl1, String imgUrl2, String imgUrl3,
-			int userNo, String realName, String myvoucherType) {
+			int userNo, String realName, String myvoucherType, String startDate, String endDate) {
 		HashMap<String, Object> map = new HashMap<>();
 		
 		//验证用户名和身份证号是否一致
@@ -67,7 +69,7 @@ public class UserVoucherValidate {
 //				return map;
 //			}
 //		}
-		
+		SimpleDateFormat forMat = new SimpleDateFormat("yyyy-MM-dd");
 		UserVoucherCommand command = new UserVoucherCommand();
 		command.setCardId(cardId);
 		command.setCardType(type);
@@ -76,6 +78,13 @@ public class UserVoucherValidate {
 		command.setImgUrl3(imgUrl3);
 		command.setUserNo(userNo);
 		command.setRealName(realName);
+		try {
+			command.setEndDate(forMat.parse(endDate));
+			command.setStartDate(forMat.parse(startDate));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		command.setMyvoucherType(myvoucherType);
 		UserVoucherDto dto = queryUserVoucher.findByUserNo(userNo);
 		String operation = "";
@@ -124,36 +133,37 @@ public class UserVoucherValidate {
 	public Map<String, Object> validateCardId(String name, String idcard) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		Map<String, Object> r = UserCardIdUtil.validateCardId(name, idcard);
-		Object code = r.get("code");
-		Object data = r.get("data");
-        Map<String, Object> dataM = JSON.parseObject((data==null||"null".equals(data))?"{}":data.toString(), Map.class);
-        Object result = dataM==null?"0":dataM.get("result");
-        if("10000".equals(code)){
-        	if("1".equals(result)){
-				map.put("code", ResponseCode.SUCCESS);
-				map.put("desc", ResponseCode.SUCCESS_DESC);
-    			map.put("msg", "验证成功");
-        	}else{
-    			map.put("code", ResponseCode.FAIL);
-    			map.put("desc", ResponseCode.FAIL_DESC);
-    			map.put("msg", "用户名和证件号不符");
-    			
-
-//				map.put("code", ResponseCode.SUCCESS);
-//				map.put("desc", ResponseCode.SUCCESS_DESC);
-//    			map.put("msg", "验证成功");
-        	}
-        }else{
-			map.put("code", ResponseCode.FAIL);
+		try {
+			Map<String, Object> r = UserCardIdUtil.validateCardId(name, idcard);
+			Object code = r.get("code");
+			Object data = r.get("data");
+	        Map<String, Object> dataM = JSON.parseObject((data==null||"null".equals(data))?"{}":data.toString(), Map.class);
+	        Object result = dataM==null?"0":dataM.get("result");
+	        if("10000".equals(code)){
+	        	if("1".equals(result)){
+					map.put("code", ResponseCode.SUCCESS);
+					map.put("desc", ResponseCode.SUCCESS_DESC);
+	    			map.put("msg", "验证成功");
+	        	}else{
+	    			map.put("code", ResponseCode.FAIL);
+	    			map.put("desc", ResponseCode.FAIL_DESC);
+	    			map.put("msg", "用户名和证件号不符");
+	    			
+	        	}
+	        }else{
+				map.put("code", ResponseCode.FAIL);
+				map.put("desc", ResponseCode.FAIL_DESC);
+				map.put("msg", "请求失败");
+				
+	        }
+	        return map;
+		}catch(Exception e){
+			logger.debug(e.getMessage());
+			map.put("code", "300");
 			map.put("desc", ResponseCode.FAIL_DESC);
-			map.put("msg", "请求失败");
-			
-
-//			map.put("code", ResponseCode.SUCCESS);
-//			map.put("desc", ResponseCode.SUCCESS_DESC);
-//			map.put("msg", "验证成功");
-        }
-        return map;
+			map.put("msg", "请求超时，请重试");
+			return map;
+		}
+		
     }
 }

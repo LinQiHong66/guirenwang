@@ -3,6 +3,9 @@ package com.inesv.digiccy.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.QuerySendDetailsRequest;
@@ -15,6 +18,8 @@ import com.aliyuncs.profile.IClientProfile;
 
 public class SmsUtil {
 
+	private static Logger logger = LoggerFactory.getLogger(SmsUtil.class);
+	
 	// 产品名称:云通信短信API产品,开发者无需替换
 	static final String product = "Dysmsapi";
 	// 产品域名,开发者无需替换
@@ -64,7 +69,6 @@ public class SmsUtil {
 		// 可自助调整超时时间
 		System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
 		System.setProperty("sun.net.client.defaultReadTimeout", "10000");
-
 		// 初始化acsClient,暂不支持region化
 		IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
 		DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
@@ -91,11 +95,13 @@ public class SmsUtil {
 	}
 
 	public static boolean sendMySms(String phone, String contant) throws ClientException, InterruptedException {
-
+		
 		// 发短信
 		SendSmsResponse response = sendSms(phone, contant);
 		System.out.println("短信接口返回的数据----------------");
-		System.out.println("Code=" + response.getCode());
+		String code = response.getCode();
+		logger.debug("mymessage-----**********--------"+code);
+		System.out.println("Code=" + code);
 		System.out.println("Message=" + response.getMessage());
 		System.out.println("RequestId=" + response.getRequestId());
 		System.out.println("BizId=" + response.getBizId());

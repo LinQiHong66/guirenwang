@@ -3,6 +3,8 @@ package com.inesv.digiccy.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * 币种Dto
  * Created by JimJim on 2016/11/17 0017.
@@ -186,6 +188,5 @@ public class CoinDto {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-
 	
 }

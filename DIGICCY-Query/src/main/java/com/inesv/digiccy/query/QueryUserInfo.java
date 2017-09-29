@@ -153,7 +153,7 @@ public class QueryUserInfo implements UserDetailsService {
 	}
 
 	public InesvUserDto loadUserByPhoneNumber(String mobile) throws UsernameNotFoundException {
-		String sql = "select * from t_inesv_user where mobile = ?";
+		String sql = "select * from t_inesv_user where username = ?";
 		queryResourceURL();
 		Object params[] = { mobile };
 		InesvUserDto userdto = null;
@@ -447,7 +447,7 @@ public class QueryUserInfo implements UserDetailsService {
 	 * @return list
 	 */
 	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo, String startTime, String endTime) {
-		String sql = "select * from t_inesv_message_log where user_no = ? and update_time between ? and ? order by date desc";
+		String sql = "select * from t_inesv_message_log where user_id = ? and update_time between ? and ? order by date desc";
 		Object params[] = { userNo, startTime, endTime };
 		List<MessageLogDto> list = null;
 		try {
