@@ -22,7 +22,7 @@ public class RechargeCoinMission implements Runnable {
      */
 	@Override
 	/*@Scheduled(cron="0 0/1 * * * ?")*/
-	@Scheduled(cron="0 0/3 * * * ?")
+	/*@Scheduled(cron="0 0/3 * * * ?")*/
 	public void run() {
 		/*try {
 			ficRechargeValidate.validateRechargeCoinNew();
