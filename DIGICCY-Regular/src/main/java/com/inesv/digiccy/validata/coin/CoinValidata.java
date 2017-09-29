@@ -162,7 +162,6 @@ public class CoinValidata {
             map.put("desc",ResponseCode.SUCCESS_DESC);
         }
         return map;
-
     }
 
 	/**
@@ -322,6 +321,7 @@ public class CoinValidata {
         }
         return map;
 	}
+	
 	public Map<String, Object> querySellPoundatge1(Long coin_no) {
 		Map<String,Object> map = new HashMap<>();
         BigDecimal sell_poundatge = queryCoin.querySellPoundatge1(coin_no);

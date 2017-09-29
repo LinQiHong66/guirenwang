@@ -12,9 +12,13 @@ public class BonusLevelDto {
 	
 	private Long bonus_user;
 	
+	private Long bonus_rel;
+	
 	private int bonus_type;
 	
 	private BigDecimal bonus;
+
+	private String remark;
 
 	public Long getId() {
 		return id;
@@ -48,6 +52,14 @@ public class BonusLevelDto {
 		this.bonus_user = bonus_user;
 	}
 
+	public Long getBonus_rel() {
+		return bonus_rel;
+	}
+
+	public void setBonus_rel(Long bonus_rel) {
+		this.bonus_rel = bonus_rel;
+	}
+
 	public int getBonus_type() {
 		return bonus_type;
 	}
@@ -56,7 +68,6 @@ public class BonusLevelDto {
 		this.bonus_type = bonus_type;
 	}
 
-	
 	public BigDecimal getBonus() {
 		return bonus;
 	}
@@ -65,13 +76,12 @@ public class BonusLevelDto {
 		this.bonus = bonus;
 	}
 
-	public String toString() {
-		return "BonusLevelDto [id=" + id + ", bonus_source=" + bonus_source
-				+ ", bonus_coin=" + bonus_coin + ", bonus_user=" + bonus_user
-				+ ", bonus_type=" + bonus_type + ", bonus=" + bonus + "]";
+	public String getRemark() {
+		return remark;
 	}
 
-	
-	
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 	
 }

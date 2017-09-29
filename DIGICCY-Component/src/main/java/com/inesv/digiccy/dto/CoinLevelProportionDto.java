@@ -13,9 +13,19 @@ public class CoinLevelProportionDto {
 	private BigDecimal level_two;
 	
 	private BigDecimal level_three;
+	
+	private BigDecimal level_four;
+	
+	private BigDecimal level_five;
+	
+	private Integer level_type;
+	
+	private Integer state;
+	
+	private String attr1;
+	
+	private String attr2;
 
-	
-	
 	public Long getId() {
 		return id;
 	}
@@ -56,15 +66,52 @@ public class CoinLevelProportionDto {
 		this.level_three = level_three;
 	}
 
-	@Override
-	public String toString() {
-		return "CoinLevelProportionDto [id=" + id + ", coin_no=" + coin_no
-				+ ", level_one=" + level_one + ", level_two=" + level_two
-				+ ", level_three=" + level_three + "]";
+	public BigDecimal getLevel_four() {
+		return level_four;
 	}
-	
-	
-	
-	
-	
+
+	public void setLevel_four(BigDecimal level_four) {
+		this.level_four = level_four;
+	}
+
+	public BigDecimal getLevel_five() {
+		return level_five;
+	}
+
+	public void setLevel_five(BigDecimal level_five) {
+		this.level_five = level_five;
+	}
+
+	public Integer getLevel_type() {
+		return level_type;
+	}
+
+	public void setLevel_type(Integer level_type) {
+		this.level_type = level_type;
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
+	public String getAttr1() {
+		return attr1;
+	}
+
+	public void setAttr1(String attr1) {
+		this.attr1 = attr1;
+	}
+
+	public String getAttr2() {
+		return attr2;
+	}
+
+	public void setAttr2(String attr2) {
+		this.attr2 = attr2;
+	}
+
 }

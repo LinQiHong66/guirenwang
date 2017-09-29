@@ -118,7 +118,6 @@ public class QueryCoin {
 			if (rmbBalances.size() != 0) {
 				rmbDouble += rmbBalances.get(0).getRmb();
 			}
-			System.out.println("=========rmb :" + rmbDouble);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,7 +148,6 @@ public class QueryCoin {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return curprice;
@@ -172,13 +170,11 @@ public class QueryCoin {
 			String sql = "SELECT SUM(deal_price) prices,SUM(deal_num) sums FROM t_inesv_deal_detail WHERE TO_DAYS( NOW( ) ) - TO_DAYS(DATE) = 0 AND coin_no=?";
 			List<pricesSumsDto> pricesSumslist = queryRunner.query(sql, new BeanListHandler<>(pricesSumsDto.class),
 					params);
-			System.out.println("=========pricesSumslist==========" + pricesSumslist.size());
 			if (pricesSumslist.size() != 0) {
 				pricesSums = pricesSumslist.get(0);
 			}
 
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
 
@@ -186,7 +182,6 @@ public class QueryCoin {
 		sums = pricesSums.getSums();
 
 		if (prices == null) {
-
 			map.put("prices", 0);
 		} else {
 			map.put("prices", prices);
@@ -195,10 +190,7 @@ public class QueryCoin {
 			map.put("sums", 0);
 		} else {
 			map.put("sums", sums);
-
 		}
-
-		System.out.println("===========map================" + map);
 		return map;
 	}
 
