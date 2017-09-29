@@ -47,8 +47,8 @@ public class RmbController {
 
     @RequestMapping(value = "getRecharge",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> getRecharge(String userName, String state, String startDate, String endDate,int curPage, int pageItem){
-        Map<String,Object> map = rmbRechargeValidate.validateQueryRecord(userName, state, startDate, endDate, curPage, pageItem);
+    public Map<String,Object> getRecharge(String userName, String state, String startDate, String endDate,int curPage, int pageItem, String orderNumber){
+        Map<String,Object> map = rmbRechargeValidate.validateQueryRecord(userName, state, startDate, endDate, curPage, pageItem, orderNumber);
         return map;
     }
 
@@ -75,8 +75,8 @@ public class RmbController {
     }
     
     @RequestMapping(value="getRechargeExcel")
-    public void getRechargeExcel(HttpServletResponse response, String userName, String state, String startDate, String endDate) throws SQLException{
-    	rmbRechargeValidate.getExcel(response, userName, state, startDate, endDate);
+    public void getRechargeExcel(HttpServletResponse response, String userName, String state, String startDate, String endDate, String orderNumber) throws SQLException{
+    	rmbRechargeValidate.getExcel(response, userName, state, startDate, endDate, orderNumber);
     }
 
     @RequestMapping(value="getWithdrawExcel")

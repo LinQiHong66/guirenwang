@@ -1,6 +1,7 @@
 package com.inesv.digiccy.persistence.other;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.slf4j.Logger;
@@ -27,11 +28,28 @@ public class UserVoucherOperation {
 
 	// 开始审核
 	public void insert(UserVoucherDto dto) {
-		String sql = "insert into t_inesv_user_voucher (voucher_cardid, voucher_type, voucher_imgurl1, voucher_imgurl2, voucher_imgurl3, voucher_state, userNo, realName, voucher_mytype) values (?,?,?,?,?,?,?,?,?)";
-		Object[] params = { dto.getCardId(), dto.getCardType(), dto.getImgUrl1(), dto.getImgUrl2(), dto.getImgUrl3(), 1,
-				dto.getUserNo(), dto.getTrueName(), dto.getCardType() == 0 ? dto.getMyvoucherType() : "" };
+		String sql = "insert into t_inesv_user_voucher (voucher_cardid, voucher_type, voucher_imgurl1, voucher_imgurl2, voucher_imgurl3, voucher_state, userNo, realName, voucher_mytype"
+				+ (dto.getStartDate() == null ? "" : ", id_startdate")
+				+ ((dto.getEnDateDate() == null ? "" : ", id_enddate")) + ") values (?,?,?,?,?,?,?,?,?"
+				+ (dto.getStartDate() == null ? "" : ", ?") + (dto.getEnDateDate() == null ? "" : ", ?") + ")";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(dto.getCardId());
+		params.add(dto.getCardType());
+		params.add(dto.getImgUrl1());
+		params.add(dto.getImgUrl2());
+		params.add(dto.getImgUrl3());
+		params.add(1);
+		params.add(dto.getUserNo());
+		params.add(dto.getTrueName());
+		params.add(dto.getCardType() == 0 ? dto.getMyvoucherType() : "");
+		if(dto.getStartDate() != null) {
+			params.add(dto.getStartDate());
+		}
+		if(dto.getEnDateDate() != null) {
+			params.add(dto.getEnDateDate());
+		}
 		try {
-			queryRunner.update(sql, params);
+			queryRunner.update(sql, params.toArray(new Object[] {}));
 		} catch (SQLException e) {
 			logger.error("添加一条身份验证数据失败");
 			e.printStackTrace();
@@ -60,9 +78,9 @@ public class UserVoucherOperation {
 		String sql1 = "update t_inesv_user set certificate_num=?, certificate_type=?,real_name=? where user_no=?";
 		Object[] params1;
 		if (dto.getState() == 4) {
-			params1 = new Object[] { dto.getCardId(), dto.getCardType(),dto.getTrueName(), dto.getUserNo() };
+			params1 = new Object[] { dto.getCardId(), dto.getCardType(), dto.getTrueName(), dto.getUserNo() };
 		} else {
-			params1 = new Object[] { "", "","", dto.getUserNo() };
+			params1 = new Object[] { "", "", "", dto.getUserNo() };
 		}
 		queryRunner.update(sql1, params1);
 	}

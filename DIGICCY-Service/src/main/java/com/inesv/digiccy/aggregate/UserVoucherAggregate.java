@@ -24,7 +24,7 @@ public class UserVoucherAggregate extends AbstractAnnotatedAggregateRoot {
 	public UserVoucherAggregate(UserVoucherCommand command) {
 		apply(new UserVoucherEvent(command.getId(), command.getCardId(), command.getCardType(), command.getImgUrl1(),
 				command.getImgUrl2(), command.getImgUrl3(), command.getState(), command.getUserNo(),
-				command.getRealName(), command.getOperating(), command.getMyvoucherType()));
+				command.getRealName(), command.getOperating(), command.getMyvoucherType(), command.getStartDate(), command.getEndDate()));
 	}
 
 	@EventHandler

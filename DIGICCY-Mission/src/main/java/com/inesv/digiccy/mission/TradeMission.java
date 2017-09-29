@@ -28,6 +28,7 @@ public class TradeMission implements Runnable{
 	public void run() {
 		tradeValidata.doTrade();
 		LOGGER.info("**********************定时器处理买卖成功**********************************:"+new Date());
+
  	} */
  	 /*
  	  *  定时处理充值单号

@@ -93,7 +93,9 @@ Website: http://thevectorlab.net/
                             <%--<button class="btn btn-primary" id="btn_delete"><i class="icon-remove icon-white"></i>&nbsp;删除</button>--%>
                             <form action="/rmb/getRechargeExcel.do" method="post">
                             <div>
-                            	用戶名<input type="text" name='userName' id='names' style='width:20%'/>状态<select style='width:20%' name='state' id='state'>
+                            	用戶名<input type="text" name='userName' id='names' style='width:10%'/>
+                            	订单编号<input type="text" name='orderNumber' id='orderNumber' style='width:10%'/>
+                            	状态<select style='width:20%' name='state' id='state'>
                             		<option value='-1' selected>请选择</option>
                             		<option value='1'>已到账</option>
                             		<option value='0'>未到账</option>

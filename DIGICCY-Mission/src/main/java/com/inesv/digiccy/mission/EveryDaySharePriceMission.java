@@ -20,7 +20,7 @@ public class EveryDaySharePriceMission implements Runnable {
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void run() {
 		tradeValidata.addDayMarket();
-        /*LOGGER.info("**********************每日股价更新成功**********************************:" + new Date());*/
+        LOGGER.info("**********************每日股价更新成功**********************************:" + new Date());
 	}
 
 }
