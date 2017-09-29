@@ -22,7 +22,7 @@ public class RechargeMission implements Runnable {
      * 定时处理虚拟币充值（每分钟执行一次）
      */
 	@Override
-	@Scheduled(cron="0/1 * * * * ?")  //1分钟              
+	@Scheduled(cron="0 0/2 * * * ?")  //1分钟              
 	public void run() {
 		try {
 			rmbRechargeValidate.validateRechargeInfo();
