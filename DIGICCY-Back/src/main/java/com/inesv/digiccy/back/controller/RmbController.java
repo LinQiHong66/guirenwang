@@ -62,8 +62,8 @@ public class RmbController {
 
     @RequestMapping(value = "doRecharge",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> doRecharge(String recId,String name,String price ){
-        Map<String,Object> map = rmbRechargeValidate.confirmToAccount(Integer.valueOf(recId), Integer.valueOf(name),new BigDecimal(price));
+    public Map<String,Object> doRecharge(String ordId ){
+        Map<String,Object> map = rmbRechargeValidate.confirmToAccount(ordId);
         return map;
     }
 

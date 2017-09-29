@@ -48,6 +48,7 @@ public class RmbRechargePersistence {
      */
     @Transactional(rollbackFor={Exception.class, RuntimeException.class})
     public void confirmToOrder(String order) throws Exception{
+    	System.out.println(order);
     	  String sql = "SELECT * FROM t_inesv_rmb_recharge WHERE recharge_order = ? ";
           	Object parmas[] = {order};
           	RmbRechargeDto  rmbOrder = (RmbRechargeDto)queryRunner.query(sql,new BeanHandler(RmbRechargeDto.class),parmas);

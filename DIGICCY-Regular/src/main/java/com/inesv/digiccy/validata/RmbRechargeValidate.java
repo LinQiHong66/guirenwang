@@ -273,10 +273,10 @@ public class RmbRechargeValidate {
     /**
      * 校验充值到账
      */
-    public Map<String, Object> confirmToAccount(int recordId, int user, BigDecimal price) {
+    public Map<String, Object> confirmToAccount(String ordId) {
         Map<String, Object> map = new HashMap();
         try {
-            RmbRechargeCommand command = new RmbRechargeCommand(recordId, user, price, "confirm");
+            RmbRechargeCommand command = new RmbRechargeCommand(0,ordId, 0, "confirm");
             commandGateway.send(command);
             map.put("code", ResponseCode.SUCCESS);
             map.put("desc", ResponseCode.SUCCESS_DESC);
