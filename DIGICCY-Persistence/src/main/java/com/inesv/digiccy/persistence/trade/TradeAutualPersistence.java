@@ -1,14 +1,11 @@
 package com.inesv.digiccy.persistence.trade;
 
-import com.inesv.digiccy.dto.CoinAndWalletLinkDto;
 import com.inesv.digiccy.dto.CoinDto;
 import com.inesv.digiccy.dto.CoinLevelProportionDto;
 import com.inesv.digiccy.dto.DayMarketDto;
-import com.inesv.digiccy.dto.DealDetailDto;
 import com.inesv.digiccy.dto.EntrustDto;
 import com.inesv.digiccy.dto.InesvUserDto;
 import com.inesv.digiccy.dto.UserBalanceDto;
-import com.inesv.digiccy.dto.UserRelations;
 import com.inesv.digiccy.persistence.bonus.BonusOperation;
 import com.inesv.digiccy.persistence.plan.PlanOperation;
 
@@ -23,10 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 交易中心 委托记录 增删改
@@ -127,16 +122,16 @@ public class TradeAutualPersistence {
 			List<DayMarketDto> dayMarketDtoList=queryDayMarketInfoByCoinType(buyEntrust.getEntrust_coin());//交易货币最新行情
 			if(tradeNum.doubleValue()!=0){
 				//3-1.生成一条新买的交易记录
-				String insertBuyDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,?,?,?)";
+				String insertBuyDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,now(),?,?)";
 				Object buyDealParam[] = {buyEntrust.getUser_no(),buyEntrust.getEntrust_coin(),buyEntrust.getEntrust_type(),
 						buyPrice,tradeNum,tradeNum.multiply(buyPrice),
-					tradeNum.multiply(buyPrice).multiply(buy_poundatge),new Date(),buyEntrust.getId(),sellEntrust.getId()};
+					tradeNum.multiply(buyPrice).multiply(buy_poundatge),buyEntrust.getId(),sellEntrust.getId()};
 				queryRunner.update(insertBuyDeal,buyDealParam);
 				//3-2.生成一条新的卖的交易记录
-				String insertSellDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date) VALUES(?,?,?,?,?,?,?,?)";
+				String insertSellDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date) VALUES(?,?,?,?,?,?,?,now())";
 				Object sellDealParam[] = {sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),sellEntrust.getEntrust_type(),
 					sellPrice,tradeNum,tradeNum.multiply(sellPrice),
-					tradeNum.multiply(sellPrice).multiply(sell_poundatge),new Date()};
+					tradeNum.multiply(sellPrice).multiply(sell_poundatge)};
 				queryRunner.update(insertSellDeal,sellDealParam);
 			}
 			//4-0.添加交易详细记录
@@ -190,7 +185,7 @@ public class TradeAutualPersistence {
 			BigDecimal level_three = null;
 			BigDecimal level_four = null;
 			BigDecimal level_five = null;
-			if(coinLevelProportionDto != null && coinLevelProportionDto.getState() == 0){
+			if(coinLevelProportionDto != null && coinLevelProportionDto.getState() == 1){
 				if(coinLevelProportionDto.getLevel_type() == 0) {
 					level_one = coinLevelProportionDto.getLevel_one().multiply(entrustPrice);
 					level_two = coinLevelProportionDto.getLevel_two().multiply(entrustPrice);
