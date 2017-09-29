@@ -1,7 +1,5 @@
 package com.inesv.digiccy.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 

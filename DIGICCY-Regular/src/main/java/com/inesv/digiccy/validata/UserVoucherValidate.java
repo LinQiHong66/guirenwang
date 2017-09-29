@@ -1,6 +1,8 @@
 package com.inesv.digiccy.validata;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +56,7 @@ public class UserVoucherValidate {
 	 * @return
 	 */
 	public Map<String, Object> startVoucher(String cardId, int type, String imgUrl1, String imgUrl2, String imgUrl3,
-			int userNo, String realName, String myvoucherType) {
+			int userNo, String realName, String myvoucherType, String startDate, String endDate) {
 		HashMap<String, Object> map = new HashMap<>();
 		
 		//验证用户名和身份证号是否一致
@@ -67,7 +69,7 @@ public class UserVoucherValidate {
 //				return map;
 //			}
 //		}
-		
+		SimpleDateFormat forMat = new SimpleDateFormat("yyyy-MM-dd");
 		UserVoucherCommand command = new UserVoucherCommand();
 		command.setCardId(cardId);
 		command.setCardType(type);
@@ -76,6 +78,13 @@ public class UserVoucherValidate {
 		command.setImgUrl3(imgUrl3);
 		command.setUserNo(userNo);
 		command.setRealName(realName);
+		try {
+			command.setEndDate(forMat.parse(endDate));
+			command.setStartDate(forMat.parse(startDate));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		command.setMyvoucherType(myvoucherType);
 		UserVoucherDto dto = queryUserVoucher.findByUserNo(userNo);
 		String operation = "";

@@ -37,14 +37,14 @@ public class UserVoucherController {
 	@RequestMapping(value = "validateCardId", method = RequestMethod.POST)
 	@ResponseBody
 	// 判断用户身份证是否正确 正确就通过实名认证
-	public Map<String, Object> cardIdIsTrue(String Name, String cardId, int userNo) {
+	public Map<String, Object> cardIdIsTrue(String Name, String cardId, int userNo, String startDate, String endDate) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			Name = new String(Name.getBytes("iso-8859-1"), "utf-8");
 
 			System.out.println(Name);
 			// 添加审核记录
-			userVoucherValidate.startVoucher(cardId, 1, "", "", "", userNo, Name, "");
+			userVoucherValidate.startVoucher(cardId, 1, "", "", "", userNo, Name, "",startDate,endDate);
 			// 判断身份证与名字是否一致
 			Map<String, Object> map1 = userVoucherValidate.validateCardId(Name, cardId);
 			if ("100".equals(map1.get("code"))) {
