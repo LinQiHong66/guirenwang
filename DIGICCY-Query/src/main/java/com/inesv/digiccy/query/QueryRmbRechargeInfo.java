@@ -157,7 +157,8 @@ public class QueryRmbRechargeInfo {
      */
     public List<RmbRechargeDto> qureyRechargeInfoByNo() {
         List<RmbRechargeDto> list = new ArrayList<RmbRechargeDto>();
-        String sql = "select * from t_inesv_rmb_recharge where state = 0 and date > DATE_SUB(NOW(), INTERVAL 720 MINUTE)";
+        //String sql = "select * from t_inesv_rmb_recharge where state = 0 and date > DATE_SUB(NOW(), INTERVAL 720 MINUTE)";
+        String sql = "select * from t_inesv_rmb_recharge";
         try {
             list = (List<RmbRechargeDto>) queryRunner.query(sql, new BeanListHandler(RmbRechargeDto.class));
         } catch (SQLException e) {
