@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.UserBasicInfoDto;
@@ -26,13 +28,15 @@ public class UserBasicInfoController {
 
 	@Autowired
 	OpUserValidata opUserValidata;
-	
+
 	@Autowired
 	QueryUserBasicInfo queryUserBasicInfo;
 
 	// 添加基本信息
-	@RequestMapping(value = "addinfo")
-	public void addInfo(int userNo, String nationality, String sex, String job, String birthday, String realName) {
+	@RequestMapping(value = "addinfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> addInfo(int userNo, String nationality, String sex, String job, String birthday,
+			String realName) {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			job = new String(job.getBytes("iso-8859-1"), "utf-8");
@@ -42,13 +46,16 @@ public class UserBasicInfoController {
 			// 添加基本信息
 			userBasicInfoValidate.addUserInfo(userNo, nationality, sex, job, birthday, realName);
 			UserBasicInfoDto dto = queryUserBasicInfo.getUserBasicInfo(userNo);
-			map.put("code", ResponseCode.FAIL);
-			map.put("desc", ResponseCode.FAIL_DESC);
-			map.put("basicinfo", dto);
-			map.put("basicUserInfoState", !(dto==null));
-		} catch (Exception e) {
+			
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
+			map.put("basicinfo", dto);
+			map.put("basicUserInfoState", !(dto == null));
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", ResponseCode.FAIL_DESC);
 		}
+		return map;
 	}
 }
