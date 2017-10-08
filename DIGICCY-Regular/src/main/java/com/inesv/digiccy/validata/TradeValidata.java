@@ -568,7 +568,6 @@ public class TradeValidata {
 	@Transactional(rollbackFor = { Exception.class, RuntimeException.class })
 	public Map<String, Object> validateTradeCoinActual(String userNo, BigDecimal tradeNum, BigDecimal tradePrice,
 			BigDecimal poundatge, String tradePassword, String coinType, String tradeType) {
-		long startTime = System.currentTimeMillis(); // 获取开始时间
 		Map<String, Object> map = new HashMap<>();
 		// 判断交易数量
 		if (tradeNum.doubleValue() < 0.01) {

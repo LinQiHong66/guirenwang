@@ -30,7 +30,15 @@ public class TradeDetailDto {
     private String sell_entrusr;
     
     private Date date;
+    
+    private String end_buy_rmb_price;
+    
+    private String end_buy_coin_price;
+    
+    private String end_sell_rmb_price;
 
+    private String end_sell_coin_price;
+    
 	public Integer getCoin_type() {
 		return coin_type;
 	}
@@ -126,5 +134,37 @@ public class TradeDetailDto {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-    
+
+	public String getEnd_buy_rmb_price() {
+		return end_buy_rmb_price;
+	}
+
+	public void setEnd_buy_rmb_price(String end_buy_rmb_price) {
+		this.end_buy_rmb_price = end_buy_rmb_price;
+	}
+
+	public String getEnd_buy_coin_price() {
+		return end_buy_coin_price;
+	}
+
+	public void setEnd_buy_coin_price(String end_buy_coin_price) {
+		this.end_buy_coin_price = end_buy_coin_price;
+	}
+
+	public String getEnd_sell_rmb_price() {
+		return end_sell_rmb_price;
+	}
+
+	public void setEnd_sell_rmb_price(String end_sell_rmb_price) {
+		this.end_sell_rmb_price = end_sell_rmb_price;
+	}
+
+	public String getEnd_sell_coin_price() {
+		return end_sell_coin_price;
+	}
+
+	public void setEnd_sell_coin_price(String end_sell_coin_price) {
+		this.end_sell_coin_price = end_sell_coin_price;
+	}
+	
 }

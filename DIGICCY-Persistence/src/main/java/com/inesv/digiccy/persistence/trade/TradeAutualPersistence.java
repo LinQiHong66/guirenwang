@@ -135,9 +135,12 @@ public class TradeAutualPersistence {
 				queryRunner.update(insertSellDeal,sellDealParam);
 			}
 			//4-0.添加交易详细记录
-			String insertTradeDetail = "INSERT INTO t_trade_detail (coin_type,buy_user,buy_price,buy_number,buy_poundatge,sell_user,sell_price,sell_number,sell_poundatge,buy_entrust,sell_entrust,date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+			String insertTradeDetail = "INSERT INTO t_trade_detail (coin_type,buy_user,buy_price,buy_number,buy_poundatge,sell_user,sell_price,sell_number,sell_poundatge,buy_entrust,sell_entrust,date,end_buy_rmb_price,end_buy_coin_price,end_sell_rmb_price,end_sell_coin_price)"
+					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			Object tradeDetailParam[] = {buyEntrust.getEntrust_coin(),buyEntrust.getUser_no(),buyEntrust.getEntrust_price(),tradeNum,tradeNum.multiply(buy_poundatge),
-					sellEntrust.getUser_no(),sellEntrust.getEntrust_price(),tradeNum,tradeNum.multiply(sellPrice).multiply(sell_poundatge),buyEntrust.getId(),sellEntrust.getId(),new Date()};
+					sellEntrust.getUser_no(),sellEntrust.getEntrust_price(),tradeNum,tradeNum.multiply(sellPrice).multiply(sell_poundatge),buyEntrust.getId(),sellEntrust.getId(),
+					new Date(),buyRmb.getTotal_price().subtract(tradeNum.multiply(buyPrice)),buyXnb.getTotal_price().add(tradeNum.subtract(tradeNum.multiply(buy_poundatge))),
+					sellRmb.getTotal_price().add(tradeNum.multiply(sellPrice).subtract(tradeNum.multiply(sellPrice).multiply(sell_poundatge))),sellXnb.getTotal_price().subtract(tradeNum)};
 			queryRunner.update(insertTradeDetail,tradeDetailParam);
 			//4-1.查詢貨幣最新數據
 			DayMarketDto inesvDayMarketDto=queryDealDetailInfoByDayAndCoin(buyEntrust.getEntrust_coin());
@@ -315,15 +318,15 @@ public class TradeAutualPersistence {
 		 * 根据委托价格，货币类型，交易类型，委托状态查找委托记录
 		 */
 		public List<EntrustDto> queryEntrustByEntrustPriceEntrustCoinAndEntrustTypeAndState(BigDecimal entrustPrice, Integer entrustCoin,Integer userNo,Integer entrustType,Integer state) throws SQLException{
-			String sql="select * from t_inesv_entrust where entrust_price=? and entrust_coin =? and entrust_type=? and state=? and entrust_num!=deal_num order by date asc for update";
-			Object params[] = {entrustPrice,entrustCoin,entrustType,state};
-			/*String sql = null;
+			/*String sql="select * from t_inesv_entrust where entrust_price=? and entrust_coin =? and entrust_type=? and state=? and entrust_num!=deal_num order by date asc for update";
+			Object params[] = {entrustPrice,entrustCoin,entrustType,state};*/
+			String sql = null;
 			if(entrustType==0) {	//卖家-寻找买的用户
 				sql="select * from t_inesv_entrust where entrust_price>=? and entrust_coin =? and entrust_type=? and state=? and entrust_num!=deal_num and user_no!=? order by date asc,entrust_price desc for update";
 			}else if(entrustType==1){		//买家-寻找卖的用户
 				sql="select * from t_inesv_entrust where entrust_price<=? and entrust_coin =? and entrust_type=? and state=? and entrust_num!=deal_num and user_no!=? order by date asc,entrust_price desc for update";
 			}
-			Object params[] = {entrustPrice,entrustCoin,entrustType,state,userNo};*/
+			Object params[] = {entrustPrice,entrustCoin,entrustType,state,userNo};
 			List<EntrustDto> list = queryRunner.query(sql,new BeanListHandler<EntrustDto>(EntrustDto.class),params);
 			return list;
 		}

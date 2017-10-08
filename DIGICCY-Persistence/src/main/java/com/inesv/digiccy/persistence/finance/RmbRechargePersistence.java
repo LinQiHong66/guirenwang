@@ -53,11 +53,9 @@ public class RmbRechargePersistence {
 		RmbRechargeDto rmbselect = new RmbRechargeDto();
 		String sqlselect = "SELECT * FROM t_inesv_rmb_recharge WHERE recharge_order = ? ";
 		Object parmas1[] = { order };
-
 		rmbselect = (RmbRechargeDto) queryRunner.query(sqlselect, new BeanHandler(RmbRechargeDto.class), parmas1);
+		
 		if (rmbselect != null && rmbselect.getState() == 0) {
-
-			System.out.println(order);
 			String sql = "SELECT * FROM t_inesv_rmb_recharge WHERE recharge_order = ? ";
 			Object parmas[] = { order };
 			RmbRechargeDto rmbOrder = (RmbRechargeDto) queryRunner.query(sql, new BeanHandler(RmbRechargeDto.class),
