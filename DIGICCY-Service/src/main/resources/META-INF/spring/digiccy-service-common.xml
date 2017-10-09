@@ -166,6 +166,10 @@
     <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CoinTranAstrictAggregate" id="CoinTranAstrictRepository"/>
     <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CoinTranAstrictAggregate" repository="CoinTranAstrictRepository" command-bus="disruptorCommandBus"/>
     <bean class="com.inesv.digiccy.event.handler.CoinTranAstrictEventHandler"/>
+    
+    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CoinTranTypeAggregate" id="CoinTranTypeRepository"/>
+    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CoinTranTypeAggregate" repository="CoinTranTypeRepository" command-bus="disruptorCommandBus"/>
+    <bean class="com.inesv.digiccy.event.handler.CoinTranTypeEventHandler"/>
 	
 <!-- 	<axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.InesvAddressAggregate" id="InesvAddressRepository"/>
     <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.InesvAddressAggregate" repository="InesvAddressRepository" command-bus="disruptorCommandBus"/>

@@ -22,7 +22,9 @@ public class TradeAggregate extends AbstractAnnotatedAggregateRoot {
 
     @CommandHandler
     public TradeAggregate(EntrustCommand entrustCommand){
-        apply(new EntrustEvent(entrustCommand.getId(),entrustCommand.getUser_no(),entrustCommand.getEntrust_coin(),entrustCommand.getEntrust_type(),entrustCommand.getEntrust_price(),entrustCommand.getEntrust_num(),entrustCommand.getDeal_num(),entrustCommand.getPiundatge(),entrustCommand.getState(),entrustCommand.getDate(),entrustCommand.getOperation(),entrustCommand.getAttr1()));
+        apply(new EntrustEvent(entrustCommand.getId(),entrustCommand.getUser_no(),entrustCommand.getEntrust_coin(),entrustCommand.getConvert_coin(),
+        		entrustCommand.getConvert_price(),entrustCommand.getEntrust_type(),entrustCommand.getEntrust_price(),entrustCommand.getEntrust_num(),
+        		entrustCommand.getDeal_num(),entrustCommand.getPiundatge(),entrustCommand.getState(),entrustCommand.getDate(),entrustCommand.getOperation()));
     }
 
     @EventHandler

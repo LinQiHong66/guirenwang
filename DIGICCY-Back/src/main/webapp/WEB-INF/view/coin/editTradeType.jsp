@@ -59,7 +59,7 @@ Website: http://thevectorlab.net/
             <div class="row-fluid">
                 <div class="span12">
                     <h3 class="page-title">
-                       虚拟货币交易条件信息
+                       虚拟货币交易类型信息
                         <%--<small>simple form layouts</small>--%>
                     </h3>
                     <ul class="breadcrumb">
@@ -67,9 +67,9 @@ Website: http://thevectorlab.net/
                             <a href="#"><i class="icon-home"></i></a><span class="divider">&nbsp;</span>
                         </li>
                         <li>
-                            <a href="#">虚拟货币交易条件信息</a> <span class="divider">&nbsp;</span>
+                            <a href="#">虚拟货币交易类型信息</a> <span class="divider">&nbsp;</span>
                         </li>
-                        <li><a href="#">新增货币交易条件</a><span class="divider-last">&nbsp;</span></li>
+                        <li><a href="#">修改货币交易类型</a><span class="divider-last">&nbsp;</span></li>
                     </ul>
                 </div>
             </div>
@@ -79,70 +79,47 @@ Website: http://thevectorlab.net/
                     <!-- BEGIN SAMPLE FORMPORTLET-->
                     <div class="widget">
                         <div class="widget-title">
-                            <h4><i class="icon-reorder"></i>新增货币交易条件</h4>
+                            <h4><i class="icon-reorder"></i>修改货币交易类型</h4>
                             <span class="tools">
                                         <a href="javascript:;" class="icon-chevron-down"></a>
                                         <a href="javascript:;" class="icon-remove"></a>
                             </span>
                         </div>
                         <div class="widget-body">
+                            <%--<button class="btn btn-inverse" id="btn_update"><i class="icon-pencil icon-white"></i>&nbsp;修改</button>--%>
+                            <%--<button class="btn btn-primary" id="btn_delete"><i class="icon-remove icon-white"></i>&nbsp;删除</button>--%>
                                 <div class="form-group" style="margin-top: 5px">
                                     <label class="form-label">虚拟货币类型:</label>&nbsp;&nbsp;
-                                    <input type="hidden" name="id" id="id" class="form-control" style="border-radius: 5px" value="${level.dto.id}">
-                                	<select  class="input-large m-wrap" tabindex="1" id="coin_no" name="coin_no" disabled >
-										<c:forEach items="${level_coin.coinList}" var="level_coin" >
-											<option value="${level_coin.coin_no}" ${level.dto.coin_no==level_coin.coin_no ? "selected" : ""}>${level_coin.coin_name}</option>
+                                    <input type="hidden" name="id" id="id" class="form-control" style="border-radius: 5px" value="${coin.data.id}">
+                                	<select  class="input-large m-wrap" tabindex="1" id="coin_no" name="coin_no">
+										<c:forEach items="${coins.data}" var="coins">
+											<option value="${coins.coin_no}" ${coin.data.coin_no==coins.coin_no ? "selected" : ""}>${coins.coin_name}</option>
 										</c:forEach>
 									</select>
                                 </div>
                                 <div class="form-group" style="margin-top: 5px">
-                					<label class="form-label">推荐人比例:</label>&nbsp;&nbsp;
-                					<input type="text"  id="level_one" value="${level.dto.level_one}" onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
-                					<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
-            					</div>
-            					<div class="form-group" style="margin-top: 5px">
-                					<label class="form-label">推荐人一代比例:</label>&nbsp;&nbsp;
-                					<input type="text"  id="level_two" value="${level.dto.level_two}" onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
-                					<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
-            					</div>
-            					<div class="form-group" style="margin-top: 5px">
-                					<label class="form-label">推荐人二代比例:</label>&nbsp;&nbsp;
-                					<input type="text"  id="level_three" value="${level.dto.level_three}" onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
-                					<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
-            					</div>
-           					 	<div class="form-group" style="margin-top: 5px">
-            					    <label class="form-label">推荐人三代比例:</label>&nbsp;&nbsp;
-           					     	<input type="text"  id="level_four" value="${level.dto.level_four}" onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
-           					     	<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
-       					    	 </div>
-        					    <div class="form-group" style="margin-top: 5px">
-          					      	<label class="form-label">推荐人四代比例:</label>&nbsp;&nbsp;
-           					     	<input type="text"  id="level_five" value="${level.dto.level_five}" onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
-           					     	<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
-          					 	</div>
-          					  	<div class="form-group" style="margin-top: 5px">
-                                    <label class="form-label">分红货币类型:</label>&nbsp;&nbsp;
-                                	<select  class="input-large m-wrap" tabindex="1" id="level_type">
-										<c:forEach items="${coins.data}" var="coins">
-											<option value="${coins.coin_no}" ${level.dto.level_type==coins.coin_no ? "selected" : ""}>${coins.coin_name}</option>
+                                    <label class="form-label">交易类型:</label>&nbsp;&nbsp;
+                                    <select  class="input-large m-wrap" tabindex="1" id="tran_coin_no" name="tran_coin_no" >
+										<c:forEach items="${coins.data}" var="tranCoin" >
+											<option value="${tranCoin.coin_no}" ${coin.data.tran_coin_no==tranCoin.coin_no ? "selected" : ""}>${tranCoin.coin_name}</option>
 										</c:forEach>
 									</select>
-                              	</div>
-          					  	<div class="form-group" style="margin-top: 5px">
-             					   <label class="form-label">分红状态:</label>&nbsp;&nbsp;
-             					   <select  class="input-large m-wrap" tabindex="1" id="state">
-                                    	<c:if test="${level.dto.state==0}">
+                                </div>
+                                <div class="form-group" style="margin-top: 5px">
+                                    <label class="form-label">状态:</label>&nbsp;&nbsp;
+                                    <select  class="input-large m-wrap" tabindex="1" id="state" name="state" >
+                                    	<c:if test="${coin.data.state==0}">
 											<option value="0" selected="selected">禁止</option>
                                     		<option value="1">启用</option>
 										</c:if>
-										<c:if test="${level.dto.state==1}">
+										<c:if test="${coin.data.state==1}">
 											<option value="0">禁止</option>
                                     		<option value="1" selected="selected">启用</option>
 										</c:if>
-             					   </select>
-           					 	</div>
+                                    </select>
+                                </div>
                             <div class="form-group" style="margin-top: 5px">
-                                <button id="editLevel"  class="btn">修改</button>
+                                <button id="editTradeType"  class="btn">修改</button>
                                 <!-- <input id="submits" type="submit" class="btn" name="files" id="files" class="form-control" style="border-radius: 5px; value="上传图片"> -->
                                 <%--<button type="button" class="btn blue" id="add_Role" onclick="add()"><i class="icon-ok"></i>新增</button>--%>
                                 <button type="reset" class="btn"><i class=" icon-remove"></i>重置</button>
@@ -165,19 +142,9 @@ Website: http://thevectorlab.net/
 <!-- Load javascripts at bottom, this will reduce page load time -->
 <script src="/app/js/footer.js"></script>
 <script src="/app/js/echarts.min.js"></script>
-<script src="/app/js/ajax/userCoinLevel.js"></script>
+<script src="/app/js/ajax/tradeType_edit.js"></script>
 <script src="/app/assets/bootstrap-table/bootstrap-table.js"></script>
 <script src="/app/assets/bootstrap-table/bootstrap-table-zh-CN.js"></script>
-<script type="text/javascript">
-//判断是否数字
-function isNumber(v) {
-	var r = /^[0-9]+.?[0-9]*$/;
-	if (!r.test(v.value)) { //isNaN也行的,正则可以随意扩展
-		alert('只能输入数字');
-		v.value = "0";
-	}
-}
-</script>
 <!-- <script type="text/javascript">
 $("#command_prize_type").change(function() {
     if($("#command_prize_type").val()=="0") {

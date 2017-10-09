@@ -19,8 +19,8 @@ public class EntrustManageAggregate extends AbstractAnnotatedAggregateRoot {
 
     @CommandHandler
     public EntrustManageAggregate(EntrustCommand command){
-        apply(new EntrustEvent(command.getId(),command.getUser_no(),command.getEntrust_coin(),command.getEntrust_type(),command.getEntrust_price(),
-                command.getEntrust_num(),command.getDeal_num(),command.getPiundatge(),command.getState(),command.getDate(),command.getOperation(),command.getAttr1()));
+        apply(new EntrustEvent(command.getId(),command.getUser_no(),command.getEntrust_coin(),command.getConvert_coin(),command.getConvert_price(),command.getEntrust_type(),
+        		command.getEntrust_price(),command.getEntrust_num(),command.getDeal_num(),command.getPiundatge(),command.getState(),command.getDate(),command.getOperation()));
     }
 
     @EventHandler

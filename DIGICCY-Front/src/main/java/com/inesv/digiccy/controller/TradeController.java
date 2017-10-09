@@ -52,16 +52,16 @@ public class TradeController {
 	@AutoDocMethod(author = DeveloperType.CHENWAIQING, createTime = "2016-12-1",cver = VersionType.V100, name = "交易接口", description = "用户买卖交易操作,添加委托记录接口", model = ModelType.TRADE, dtoClazz = BaseRes.class, reqParams = {
 			"userNo", "buyPrice", "buyNum","poundatge", "buyMum", "buyPayPassword",
 			"coinType", "type","poundageRate"}, progress = ProgressType.TESTING,requestMode=RequestModeType.POST)
-	@AutoDocMethodParam(note = "用户编号@@交易价格@@交易数量@@交易所需手续费@@最大可交易数量@@交易密码@@货币类型@@交易类型(卖:'sell'/买:'buy')@@交易手续费率", name = "userNo@@buyPrice@@buyNum@@poundatge@@buyMum@@buyPayPassword@@coinType@@type@@poundageRate")
+	@AutoDocMethodParam(note = "用户编号@@交易价格@@交易数量@@交易所需手续费@@最大可交易数量@@交易密码@@货币类型@@兑换货币类型@@交易类型(卖:'sell'/买:'buy')@@交易手续费率", name = "userNo@@buyPrice@@buyNum@@poundatge@@buyMum@@buyPayPassword@@coinType@@type@@poundageRate")
 	@RequestMapping(value = "/trade/goTrade", method = RequestMethod.POST)
     public @ResponseBody Map<String, Object> goBuy(HttpServletRequest request,@RequestParam String userNo,@RequestParam String buyPrice,@RequestParam String buyNum,@RequestParam String poundatge,@RequestParam String buyPayPassword,
-    		@RequestParam String coinType,@RequestParam String type, @RequestParam String sign){
+    		@RequestParam String coinType,@RequestParam String convertType,@RequestParam String type, @RequestParam String sign){
 		Map<String, Object> map = new HashMap<>();
 		String tradeSign = (String) redisTemplate.opsForValue().get("trade_" + userNo);
 		if(tradeSign == null || !tradeSign.equals(sign)) {
 			redisTemplate.opsForValue().set("trade_" + userNo, sign, 2, TimeUnit.MINUTES);
 			return tradeValidata.validateTradeCoinActual(userNo, new BigDecimal(buyNum), new BigDecimal(buyPrice), 
-					new BigDecimal(poundatge), buyPayPassword,coinType,type);
+					new BigDecimal(poundatge), buyPayPassword,coinType,convertType,type);
 		}else {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "抱歉，交易正在处理中，请勿重复提交！");
@@ -81,15 +81,15 @@ public class TradeController {
 	 * @param type交易类型
 	 * @return
 	 */
-	@AutoDocMethod(author = DeveloperType.CHENWAIQING, createTime = "2016-12-1",cver = VersionType.V100, name = "交易接口", description = "用户买卖交易操作,添加委托记录接口", model = ModelType.TRADE, dtoClazz = BaseRes.class, reqParams = {
+	/*@AutoDocMethod(author = DeveloperType.CHENWAIQING, createTime = "2016-12-1",cver = VersionType.V100, name = "交易接口", description = "用户买卖交易操作,添加委托记录接口", model = ModelType.TRADE, dtoClazz = BaseRes.class, reqParams = {
 			"userNo", "buyPrice", "buyNum","poundatge", "buyMum", "buyPayPassword",
 			"coinType", "type","poundageRate"}, progress = ProgressType.TESTING,requestMode=RequestModeType.POST)
 	@AutoDocMethodParam(note = "用户编号@@交易价格@@交易数量@@交易所需手续费@@最大可交易数量@@交易密码@@货币类型@@交易类型(卖:'sell'/买:'buy')@@交易手续费率", name = "userNo@@buyPrice@@buyNum@@poundatge@@buyMum@@buyPayPassword@@coinType@@type@@poundageRate")
 	@RequestMapping(value = "/trade/goTradeActual", method = RequestMethod.POST)
     public @ResponseBody Map<String, Object> goBuyActual(HttpServletRequest request,@RequestParam String userNo,@RequestParam String buyPrice,@RequestParam String buyNum,@RequestParam String poundatge,@RequestParam String buyPayPassword,@RequestParam String coinType,@RequestParam String type){
-        /*return tradeValidata.validateTradeCoin(userNo, new BigDecimal(buyNum), new BigDecimal(buyPrice),new BigDecimal(poundatge), buyPayPassword,coinType,type);*/
+        return tradeValidata.validateTradeCoin(userNo, new BigDecimal(buyNum), new BigDecimal(buyPrice),new BigDecimal(poundatge), buyPayPassword,coinType,type);
 		return tradeValidata.validateTradeCoinActual(userNo, new BigDecimal(buyNum), new BigDecimal(buyPrice),new BigDecimal(poundatge), buyPayPassword,coinType,type);
-	}
+	}*/
 	
 	/**
 	 * 撤销交易委托

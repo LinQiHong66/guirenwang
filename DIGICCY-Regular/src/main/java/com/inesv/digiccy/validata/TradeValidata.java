@@ -126,7 +126,7 @@ public class TradeValidata {
 	 *            交易类型
 	 * @return
 	 */
-	public void pressureUtil(String userNo, BigDecimal tradeNum, BigDecimal tradePrice, BigDecimal poundatge,
+	/*public void pressureUtil(String userNo, BigDecimal tradeNum, BigDecimal tradePrice, BigDecimal poundatge,
 			String tradePassword, String coinType, String tradeType, BigDecimal poundageRate) {
 
 		UserInfoDto uid = querySubCore.getUserInfo(Integer.parseInt(userNo));
@@ -188,9 +188,7 @@ public class TradeValidata {
 			}
 		}
 		commandGateway.sendAndWait(command);
-	}
-
-	// ****************************************
+	}*/
 
 	/**
 	 * 委托记录
@@ -330,9 +328,6 @@ public class TradeValidata {
 		// 发送命令
 		try {
 			regUserPersistence.updateBalanceEntrust(ed);// 回滚用户数据
-			if (ed.getAttr1() != null) {
-				planOperation.updateOver(ed.getAttr1());// 结束计划委托
-			}
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		} catch (Exception e) {
@@ -362,7 +357,7 @@ public class TradeValidata {
 	 *            交易类型
 	 * @return
 	 */
-	public Map<String, Object> validateTradeCoin(String userNo, BigDecimal tradeNum, BigDecimal tradePrice,
+	/*public Map<String, Object> validateTradeCoin(String userNo, BigDecimal tradeNum, BigDecimal tradePrice,
 			BigDecimal poundatge, String tradePassword, String coinType, String tradeType) {
 		Map<String, Object> map = new HashMap<>();
 		// 判断交易数量
@@ -435,7 +430,7 @@ public class TradeValidata {
 					return map;
 				}
 				if (coinTranAstrictDto.getState() == 0) {
-					command = new EntrustCommand(Long.parseLong("100"), uid.getUser_no(), Integer.parseInt(coinType), 0,
+					command = new EntrustCommand(0L, uid.getUser_no(), Integer.parseInt(coinType), 0,
 							tradePrice, tradeNum, BigDecimal.ZERO, poundatge, 0, new Date(), "inserts");
 				} else {
 					if (coinTranAstrictDto.getBuy_min_price().doubleValue() >= tradePrice.doubleValue()
@@ -544,8 +539,8 @@ public class TradeValidata {
 			map.put("desc", ResponseCode.FAIL_DESC);
 		}
 		return map;
-	}
-
+	}*/
+	
 	/**
 	 * 实时买卖交易
 	 * 
@@ -565,7 +560,253 @@ public class TradeValidata {
 	 *            交易类型
 	 * @return
 	 */
-	@Transactional(rollbackFor = { Exception.class, RuntimeException.class })
+	 @Transactional(rollbackFor={Exception.class, RuntimeException.class})
+	    public Map<String , Object> validateTradeCoinActual(String userNo,BigDecimal tradeNum,BigDecimal tradePrice,BigDecimal poundatge,String tradePassword, String coinType, String convertType, String tradeType){
+	    	Map<String , Object> map = new HashMap<>();
+	        //判断交易数量
+	        if(tradeNum.doubleValue()<0.01){
+	            map.put("code",ResponseCode.FAIL);
+	            map.put("desc","交易数量不能少于0.01！");
+	            return map;
+	        }
+	        //判断交易价格
+	        if(tradePrice.doubleValue()<=0){
+	            map.put("code",ResponseCode.FAIL);
+	            map.put("desc","交易金额异常！");
+	            return map;
+	        }
+	        //判断购买货币和兑换货币是否一致
+	        if(coinType.equals(convertType)) {
+	        	map.put("code",ResponseCode.FAIL);
+	            map.put("desc","购买货币与兑换货币不能一致！");
+	            return map;
+	        }
+	        //判断用户是否存在
+	        UserInfoDto uid = querySubCore.getUserInfo(Integer.parseInt(userNo));
+	        if(uid == null){
+	            map.put("code",ResponseCode.FAIL);
+	            map.put("desc",ResponseCode.FAIL_DESC);
+	            return map;
+	        }
+	        //判断用户是否机构或者子机构
+	        if(uid.getOrg_type() != null){
+	        	if(uid.getOrg_type() == 0 || uid.getOrg_type() == 1) {
+	        		map.put("code",ResponseCode.FAIL);
+	                map.put("desc","机构或子机构用户不能交易，请见谅！");
+	                return map;
+	        	}
+	        }
+	        //判断密码
+	        if(!new MD5().getMD5(tradePassword).equals(uid.getDeal_pwd())){
+	            map.put("code",ResponseCode.FAIL_TRADE_PASSWORD);
+	            map.put("desc",ResponseCode.FAIL_TRADE_PASSWORD_DESC);
+	            return map;
+	        }
+	        //判断货币交易状态
+	        CoinDto coinDto = queryCoinLevelProportion.queryCoinDto(coinType);
+	        if(coinDto.getState() == 2) {
+	        	map.put("code",ResponseCode.FAIL);
+	            map.put("desc","该货币暂不能交易，请见谅！");
+	            return map;
+	        }
+	        //用户交易使用的人民币或者虚拟币的财务
+	        UserBalanceDto xnb = queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(userNo, convertType);
+	        UserBalanceDto rmb = new UserBalanceDto();
+	        if(xnb == null) {
+	        	map.put("code",ResponseCode.FAIL);
+	            map.put("desc",ResponseCode.FAIL_DESC);
+	            return map;
+	        }
+	        List<InesvDayMarket> dtoList = new ArrayList<InesvDayMarket>();
+	        DealDetailDto dealDto = new DealDetailDto();
+	        if(Integer.valueOf(convertType) != 0) {
+	        	rmb = queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(userNo, convertType);
+	        	dtoList = queryDayMarketInfo.getDayMarketInfoByCoin(Integer.valueOf(convertType));
+	        	if(dtoList.size() != 0) {
+	        		if(dtoList.get(0).getDeal_price().doubleValue() == 0 || dtoList.get(0).getDeal_price() == null) {
+	        			map.put("code",ResponseCode.FAIL);
+	        			map.put("desc","选择兑换货币最新成交价异常，委托失败！");
+	        			return map;
+	        		}
+	        	}else {
+	        		dealDto = queryDayMarketInfo.queryNewesDeal(Integer.valueOf(convertType));
+	        		if(dealDto == null) {
+	        			map.put("code",ResponseCode.FAIL);
+	        			map.put("desc","选择兑换货币最新成交价异常，委托失败！");
+	        			return map;
+	        		}
+	        		if(dealDto.getDeal_price().doubleValue() == 0 || dealDto.getDeal_price() == null) {
+	        			map.put("code",ResponseCode.FAIL);
+	        			map.put("desc","选择兑换货币最新成交价异常，委托失败！");
+	        			return map;
+	        		}
+	        	}
+	        }else {
+	        	rmb = queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(userNo, convertType);
+	            if(rmb == null){
+	                map.put("code",ResponseCode.FAIL);
+	                map.put("desc",ResponseCode.FAIL_DESC);
+	                return map;
+	            }
+	        }
+	        //用户该币的财务，没有对应的货币财务信息就添加相应的财务信息
+	        xnb = queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(userNo, coinType);
+	        if(xnb==null){
+	        	//不存在该用户某种币的资产记录，则添加记录
+	        	if(queryCoin.queryCoinTypeByCoinNo(Integer.parseInt(coinType))!=null){
+	        		UserBalanceCommand userBalanceCommand=new UserBalanceCommand(Long.parseLong("0"),Integer.parseInt(userNo),Integer.parseInt(coinType),BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,"",new Date(),"insert");
+	            	commandGateway.sendAndWait(userBalanceCommand);
+	        	}
+	        	//再判断
+	        	xnb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(userNo, coinType);
+	        	if(xnb==null){
+	        		map.put("code",ResponseCode.FAIL_TRADE_ADDTRUST_STATE);
+	                map.put("desc",ResponseCode.FAIL_TRADE_ADDTRUST_STATE_DESC);
+	                return map;
+	        	}
+	        }
+	        //手续费
+	        EntrustCommand command=null;
+	        DealDetailDto dealDetailDto = new DealDetailDto();
+	        CoinTranAstrictDto coinTranAstrictDto = queryCoinTranAstrict.queryAllCoinTranAstrictByCoinNo(String.valueOf(coinType));
+	        if (tradeType.equals("buy")) {
+	        		if(Integer.valueOf(convertType) != 0) {
+	        			if(dtoList.size() == 0 && dealDto != null) {
+	        				if(tradeNum.doubleValue() * tradePrice.doubleValue() > rmb.getEnable_coin().doubleValue()*dealDto.getDeal_price().doubleValue()) {
+		        				map.put("code",ResponseCode.FAIL);
+		        				map.put("desc","抱歉，兑换货币兑换当前交易价支付，余额不足，委托失败！");
+		        				return map;
+		        			}
+	        			}
+	        			if(tradeNum.doubleValue() * tradePrice.doubleValue() > rmb.getEnable_coin().doubleValue()*dtoList.get(0).getNewes_deal().doubleValue()) {
+	        				map.put("code",ResponseCode.FAIL);
+	        				map.put("desc","抱歉，兑换货币兑换当前交易价支付，余额不足，委托失败！");
+	        				return map;
+	        			}
+	        		}else {
+	        			if(rmb.getEnable_coin().subtract(tradeNum.multiply(tradePrice)).signum()<0){
+	            			map.put("code",ResponseCode.FAIL_TRADE_INSUFFICIENT);
+	                        map.put("desc",ResponseCode.FAIL_TRADE_INSUFFICIENT_DESC);
+	                        return map;
+	            		}
+	        		}
+	    			if(coinTranAstrictDto == null ||coinTranAstrictDto.getState()==0){
+	    				if(Integer.parseInt(convertType) == 0) {
+	    					command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),new BigDecimal(1),0,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    				}else {
+	    					if(dtoList.size() == 0 && dealDto != null) {
+	    						command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),dealDto.getDeal_price(),0,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    					}
+	    					command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),dtoList.get(0).getNewes_deal(),0,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    				}
+	    			}else{
+	    				if(coinTranAstrictDto.getBuy_min_price().doubleValue() > tradePrice.doubleValue() ||
+								coinTranAstrictDto.getBuy_max_price().doubleValue() < tradePrice.doubleValue()){
+	    					map.put("code", "202");
+	    					map.put("desc", "不在交易指定范围内，暂时无法受理");
+							return map;
+	    				}
+						if(tradeNum.multiply(tradePrice).doubleValue()>coinTranAstrictDto.getSingle_max_price().doubleValue() || 
+								coinTranAstrictDto.getSingle_min_price().doubleValue()>tradeNum.multiply(tradePrice).doubleValue()){
+							map.put("code", "202");
+	    					map.put("desc", "不在交易指定范围内，暂时无法受理");
+							return map;
+						}
+						BigDecimal rose_astrict = null;
+						BigDecimal drop_astrict = null;
+							dealDetailDto = queryDayMarketInfo.queryNewesDealOfBuy(Integer.valueOf(coinType));//查询开盘前最后一条买的记录
+						if(dealDetailDto==null || dealDetailDto.getDeal_price() == null){
+							map.put("code", "202");
+	    					map.put("desc", "最新成交价获取异常，委托失败！");
+							return map;
+						}
+						rose_astrict = dealDetailDto.getDeal_price().add(dealDetailDto.getDeal_price().multiply(new BigDecimal(coinTranAstrictDto.getRose_astrict().doubleValue()/100)));
+						//开盘前最后一条买的记录的成交价+开盘前最后一条买的记录的成交价*涨幅
+						drop_astrict = dealDetailDto.getDeal_price().subtract(dealDetailDto.getDeal_price().multiply(new BigDecimal(coinTranAstrictDto.getDrop_astrict().doubleValue()/100)));
+						//开盘前最后一条买的记录的成交价-开盘前最后一条买的记录的成交价*跌幅
+						if(rose_astrict.doubleValue() < tradePrice.doubleValue() || drop_astrict.doubleValue() > tradePrice.doubleValue()){
+							map.put("code", "202");
+	    					map.put("desc", "不在交易指定范围内，暂时无法受理");
+							return map;
+						} 
+						if(Integer.parseInt(convertType) == 0) {
+	    					command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),new BigDecimal(1),0,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    				}else {
+	    					if(dtoList.size() == 0 && dealDto != null) {
+	    						command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),dealDto.getDeal_price(),0,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    					}
+	    					command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),dtoList.get(0).getNewes_deal(),0,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    				}
+	    			}
+	        }else if(tradeType.equals("sell")){
+	    			if(xnb.getEnable_coin().subtract(tradeNum).signum()<0){
+	        			map.put("code",ResponseCode.FAIL_TRADE_INSUFFICIENT);
+	                    map.put("desc",ResponseCode.FAIL_TRADE_INSUFFICIENT_DESC);
+	                    return map;
+	        		}if(coinTranAstrictDto == null || coinTranAstrictDto.getState()==0){
+	        			if(Integer.parseInt(convertType) == 0) {
+	    					command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),new BigDecimal(1),1,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    				}else {
+	    					if(dtoList.size() == 0 && dealDto != null) {
+	    						command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),dealDto.getDeal_price(),0,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    					}
+	    					command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),dtoList.get(0).getNewes_deal(),1,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    				}
+	    			}else{
+	    				if(coinTranAstrictDto.getSell_min_price().doubleValue() > tradePrice.doubleValue() ||
+								coinTranAstrictDto.getSell_max_price().doubleValue() < tradePrice.doubleValue()){
+	    					map.put("code", "202");
+	    					map.put("desc", "不在交易指定范围内，暂时无法受理");
+							return map;
+	    				}
+						if(tradeNum.multiply(tradePrice).doubleValue() > coinTranAstrictDto.getSingle_max_price().doubleValue() || 
+								coinTranAstrictDto.getSingle_min_price().doubleValue() > tradeNum.multiply(tradePrice).doubleValue()){
+							map.put("code", "202");
+	    					map.put("desc", "不在交易指定范围内，暂时无法受理");
+							return map;
+						}
+						BigDecimal rose_astrict = null;
+						BigDecimal drop_astrict = null;
+						dealDetailDto = queryDayMarketInfo.queryNewesDealOfBuy(Integer.valueOf(coinType));//查询开盘前最后一条买的记录
+						if(dealDetailDto!=null){
+							if(dealDetailDto==null || dealDetailDto.getDeal_price() == null){
+								map.put("code", "202");
+		    					map.put("desc", "最新成交价获取异常，委托失败！");
+								return map;
+							}
+						}
+						rose_astrict = dealDetailDto.getDeal_price().add(dealDetailDto.getDeal_price().multiply(new BigDecimal(coinTranAstrictDto.getRose_astrict().doubleValue()/100)));
+						//开盘前最后一条买的记录的成交价+开盘前最后一条买的记录的成交价*涨幅
+						drop_astrict = dealDetailDto.getDeal_price().subtract(dealDetailDto.getDeal_price().multiply(new BigDecimal(coinTranAstrictDto.getDrop_astrict().doubleValue()/100)));
+						//开盘前最后一条买的记录的成交价+开盘前最后一条买的记录的成交价*跌幅
+						if(rose_astrict.doubleValue() < tradePrice.doubleValue() || drop_astrict.doubleValue() > tradePrice.doubleValue()){
+							map.put("code", "202");
+	    					map.put("desc", "不在交易指定范围内，暂时无法受理");
+							return map;
+						} 
+						if(Integer.parseInt(convertType) == 0) {
+	    					command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),new BigDecimal(1),1,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    				}else {
+	    					if(dtoList.size() == 0 && dealDto != null) {
+	    						command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),dealDto.getDeal_price(),0,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    					}
+	    					command = new EntrustCommand(Long.parseLong("100"),uid.getUser_no(),Integer.parseInt(coinType),Integer.parseInt(convertType),dtoList.get(0).getNewes_deal(),1,tradePrice,tradeNum,BigDecimal.ZERO,poundatge,0,new Date(),"inserts");
+	    				}
+	    			}
+	    		}
+	    	//发送命令
+	    	try {
+	    		commandGateway.sendAndWait(command);
+	            map.put("code",ResponseCode.SUCCESS);
+	            map.put("desc",ResponseCode.SUCCESS_DESC);
+	        }catch (Exception e){
+	            e.printStackTrace();
+	            map.put("code",ResponseCode.FAIL);
+	            map.put("desc","交易委托失败！");
+	        }
+	        return map;
+	    }
+	/*@Transactional(rollbackFor = { Exception.class, RuntimeException.class })
 	public Map<String, Object> validateTradeCoinActual(String userNo, BigDecimal tradeNum, BigDecimal tradePrice,
 			BigDecimal poundatge, String tradePassword, String coinType, String tradeType) {
 		Map<String, Object> map = new HashMap<>();
@@ -635,17 +876,17 @@ public class TradeValidata {
 		}
 		// 手续费
 		EntrustCommand command = null;
-		/* BigDecimal poundageRate = null; */
+		 BigDecimal poundageRate = null; 
 		DealDetailDto dealDetailDto = new DealDetailDto();
 		CoinTranAstrictDto coinTranAstrictDto = queryCoinTranAstrict
 				.queryAllCoinTranAstrictByCoinNo(String.valueOf(coinType));
 		if (tradeType.equals("buy")) {
-			/*
+			
 			 * poundageRate =
 			 * queryCoin.queryBuyPoundatge(Long.valueOf(coinType)).getBuy_poundatge();
 			 * if(poundageRate == null){ poundageRate = new BigDecimal(0); }
 			 * poundatge=tradePrice.multiply(tradeNum).multiply(poundageRate);
-			 */
+			 
 			if (rmb.getEnable_coin().subtract(tradeNum.multiply(tradePrice)).signum() < 0) {
 				map.put("code", ResponseCode.FAIL_TRADE_INSUFFICIENT);
 				map.put("desc", ResponseCode.FAIL_TRADE_INSUFFICIENT_DESC);
@@ -692,12 +933,12 @@ public class TradeValidata {
 						tradePrice, tradeNum, BigDecimal.ZERO, poundatge, 0, new Date(), "inserts");
 			}
 		} else if (tradeType.equals("sell")) {
-			/*
+			
 			 * poundageRate =
 			 * queryCoin.queryBuyPoundatge(Long.valueOf(coinType)).getSell_poundatge();
 			 * if(poundageRate == null){ poundageRate = new BigDecimal(0); }
 			 * poundatge=tradePrice.multiply(tradeNum).multiply(poundageRate);
-			 */
+			 
 			if (xnb.getEnable_coin().subtract(tradeNum).signum() < 0) {
 				map.put("code", ResponseCode.FAIL_TRADE_INSUFFICIENT);
 				map.put("desc", ResponseCode.FAIL_TRADE_INSUFFICIENT_DESC);
@@ -847,7 +1088,7 @@ public class TradeValidata {
 		}
 	}
 
-	public Map<String, Object> confirmEntrust(String id, String user, String icon, String type, String price,
+	/*public Map<String, Object> confirmEntrust(String id, String user, String icon, String type, String price,
 			String num, String piundatge) {
 		Map<String, Object> result = new HashMap<>();
 		try {
@@ -863,7 +1104,7 @@ public class TradeValidata {
 			result.put("desc", ResponseCode.FAIL_DESC);
 		}
 		return result;
-	}
+	}*/
 
 	/**
 	 * 得到该用户前10条未交易的委托记录

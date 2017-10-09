@@ -41,6 +41,7 @@ public class QueryDayMarketInfo {
         }
         return inesvDayMarketList;
     }
+    
     /**
      * 通过交易记录得到每一天的相关信息
      * @return
@@ -200,6 +201,24 @@ public class QueryDayMarketInfo {
         }
         return inesvDayMarketList;
 	}
+	
+	/**
+	 * 判断是否有对应货币的今日行情
+	 * @return
+	 */
+	public List<InesvDayMarket> getDayMarketInfoByCoinAndDate(Integer coin_no) {
+		List<InesvDayMarket> inesvDayMarketList = new ArrayList<>();
+        String sql = "select * from t_inesv_day_market where coin_type = ? ORDER BY id DESC LIMIT 1";
+        Object params[] = {coin_no};
+        try {
+            inesvDayMarketList = queryRunner.query(sql,new BeanListHandler<InesvDayMarket>(InesvDayMarket.class),params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            log.error("获取货币的今日行情是失败！！！");
+        }
+        return inesvDayMarketList;
+	}
+	
     /**
      * 查询最新成交价
      * */

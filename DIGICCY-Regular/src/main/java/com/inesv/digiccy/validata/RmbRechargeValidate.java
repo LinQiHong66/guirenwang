@@ -39,7 +39,7 @@ import com.inesv.digiccy.validata.util.ExcelUtils;
 public class RmbRechargeValidate {
 
     @Autowired
-    QueryRunner            queryRunner;
+    QueryRunner   queryRunner;
 
     @Autowired
     QueryRmbRechargeInfo   queryRmbRechargeInfo;
@@ -58,6 +58,7 @@ public class RmbRechargeValidate {
 
     @Autowired
     QueryRmbWithdrawInfo   queryRmbWithdrawInfo;
+    
     private static Logger logger = LoggerFactory.getLogger(RmbRechargeValidate.class);
 
 

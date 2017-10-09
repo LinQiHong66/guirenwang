@@ -54,7 +54,7 @@ public class TradeAutualPersistence {
 			//4-1.虚拟币
 			buyXnb.setEnable_coin(buyXnb.getEnable_coin().add(tradeNum.subtract(tradeNum.multiply(buy_poundatge))));
 			if(buyXnb.getEnable_coin().doubleValue()<0){
-				System.out.println("================buy，买家虚拟币负数，手动抛出异常================");
+				LOGGER.debug("================buy，买家虚拟币负数，手动抛出异常================");
 				int exception=1/0;
 			}
 			String updateUserBalanceXnb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where id=?";
@@ -63,7 +63,7 @@ public class TradeAutualPersistence {
 			//4-2.人民币
 			buyRmb.setUnable_coin(buyRmb.getUnable_coin().subtract(tradeNum.multiply(buyPrice)));
 			if(buyRmb.getUnable_coin().doubleValue()<0){
-				System.out.println("================buy，买家人民币负数，手动抛出异常================");
+				LOGGER.debug("================buy，买家人民币负数，手动抛出异常================");
 				int exception=1/0;
 			}
 			String updateUserBalanceRmb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where id=?";
@@ -76,7 +76,7 @@ public class TradeAutualPersistence {
 			//5-1.虚拟币
 			sellXnb.setUnable_coin(sellXnb.getUnable_coin().subtract(tradeNum));
 			if(sellXnb.getUnable_coin().doubleValue()<0){
-				System.out.println("================sell，卖家虚拟币负数，手动抛出异常================");
+				LOGGER.debug("================sell，卖家虚拟币负数，手动抛出异常================");
 				int exception=1/0;
 			}
 			String updateUnSellUserBalanceXnb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where id=?";
@@ -85,7 +85,7 @@ public class TradeAutualPersistence {
 			//5-2.人民币
 			sellRmb.setEnable_coin(sellRmb.getEnable_coin().add(tradeNum.multiply(sellPrice).subtract(tradeNum.multiply(sellPrice).multiply(sell_poundatge))));
 			if(sellRmb.getEnable_coin().doubleValue()<0){
-				System.out.println("================sell，卖家人民币负数，手动抛出异常================");
+				LOGGER.debug("================sell，卖家人民币负数，手动抛出异常================");
 				int exception=1/0;
 			}
 			String updateUnSellUserBalanceRmb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where id=?";
@@ -95,10 +95,6 @@ public class TradeAutualPersistence {
 				buyEntrust.setDeal_num(buyEntrust.getDeal_num().add(tradeNum));// 修改交易数量
 				if (buyEntrust.getDeal_num().compareTo(buyEntrust.getEntrust_num()) == 0) {
 					buyEntrust.setState(1);// 已交易
-					if (buyEntrust.getAttr1() != null
-							&& !"".equals(buyEntrust.getAttr1().toString())) {
-						operation.updateStatus(buyEntrust.getAttr1());
-					}
 				}
 					String updateBuyEntrust = "update t_inesv_entrust set deal_num=?,state=? where id=?";
 					Object updateBuyEntrustParams[] = { buyEntrust.getDeal_num(),
@@ -109,10 +105,6 @@ public class TradeAutualPersistence {
 				if (sellEntrust.getEntrust_num().compareTo(
 						sellEntrust.getDeal_num()) == 0) {
 					sellEntrust.setState(1);
-					if (sellEntrust.getAttr1() != null
-							&& !"".equals(sellEntrust.getAttr1().toString())) {
-						operation.updateStatus(sellEntrust.getAttr1());
-					}
 				}
 					String opObjEntrust = "update t_inesv_entrust set deal_num=?,state=? where id=?";
 					Object opObjEntrustParams[] = { sellEntrust.getDeal_num(),
@@ -139,13 +131,11 @@ public class TradeAutualPersistence {
 					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			Object tradeDetailParam[] = {buyEntrust.getEntrust_coin(),buyEntrust.getUser_no(),buyEntrust.getEntrust_price(),tradeNum,tradeNum.multiply(buy_poundatge),
 					sellEntrust.getUser_no(),sellEntrust.getEntrust_price(),tradeNum,tradeNum.multiply(sellPrice).multiply(sell_poundatge),buyEntrust.getId(),sellEntrust.getId(),
-					new Date(),buyRmb.getTotal_price().subtract(tradeNum.multiply(buyPrice)),buyXnb.getTotal_price().add(tradeNum.subtract(tradeNum.multiply(buy_poundatge))),
-					sellRmb.getTotal_price().add(tradeNum.multiply(sellPrice).subtract(tradeNum.multiply(sellPrice).multiply(sell_poundatge))),sellXnb.getTotal_price().subtract(tradeNum)};
+					new Date(),buyRmb.getTotal_price(),buyXnb.getTotal_price(),sellRmb.getTotal_price(),sellXnb.getTotal_price()};
 			queryRunner.update(insertTradeDetail,tradeDetailParam);
 			//4-1.查詢貨幣最新數據
 			DayMarketDto inesvDayMarketDto=queryDealDetailInfoByDayAndCoin(buyEntrust.getEntrust_coin());
 			//4-2.修改货币最新市场行情表
-			System.out.println("//4-2.修改货币最新市场行情表");
 			if(dayMarketDtoList.size()!=0){
 				String updateDayMarket = "UPDATE t_inesv_day_market SET "
 						+ " newes_deal = ? , buy_price = ? , sell_price = ? , deal_num = ? ,"
@@ -259,9 +249,9 @@ public class TradeAutualPersistence {
 				}
 			}
 			//1：判断委托记录是买还是卖
-	        System.out.println("-------我们来操作一下mysql交易--buy--sell");
+			LOGGER.debug("-------" + entrustDto.getUser_no() + "-的-" + entrustDto.getId() + "-交易开始--------");
 			TradeSql("buySellTradeSQL","sql",entrustDto,entrustList,buy_poundatge,sell_poundatge);
-	        System.out.println("结束买-卖的记录进行交易");
+			LOGGER.debug("-------交易结束--------");
 	    }
 		
 		/**

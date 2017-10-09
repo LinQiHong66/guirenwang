@@ -19,21 +19,18 @@ public class UserLevelController {
 	
 	@RequestMapping(value = "gotoAll",method = RequestMethod.GET)
 	public String gotoAll(){
-		System.out.println("+++++++++++++++++++");
 		return "/userlevel/userlevel";
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="queryAll",method = RequestMethod.POST)
 	public Map<String,Object> queryAll(){
-		//Map<String, Object> map = new HashMap<String, Object>();
 		return userLevelValidata.queryAll();
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "queryByLevelId",method = RequestMethod.POST)
 	public Map<String,Object> queryByLevelId(Long level_id){
-		//Map<String,Object> map = new HashMap<String, Object>();
 		return userLevelValidata.queryByLevelId(level_id);
 	}
 	
@@ -58,8 +55,6 @@ public class UserLevelController {
 	@ResponseBody
 	@RequestMapping(value="queryByStatus",method = RequestMethod.GET)
 	public Map<String,Object> queryByStatus(){
-		System.out.println("+++++++++++++++++1111111111111111");
-		//Map<String, Object> map = new HashMap<String, Object>();
 		return userLevelValidata.queryByStatus();
 	}
 }

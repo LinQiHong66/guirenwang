@@ -453,4 +453,21 @@ public class QueryCoin {
 		}
 		return null;
 	}
+	
+	/**
+	 * 查询所有货币信息
+	 * 
+	 * @return
+	 */
+	public List<CoinDto> queryAllCoinByNoRMB() {
+		List<CoinDto> coinList = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM t_inesv_coin_type WHERE coin_no != 0";
+			coinList = queryRunner.query(sql, new BeanListHandler<>(CoinDto.class));
+		} catch (SQLException e) {
+			logger.error("查询虚拟货币失败");
+			e.printStackTrace();
+		}
+		return coinList;
+	}
 }

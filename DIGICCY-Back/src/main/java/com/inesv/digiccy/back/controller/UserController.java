@@ -249,13 +249,13 @@ public class UserController {
 		return map;
 	}
 
-	@RequestMapping(value = "confirmEntrust", method = RequestMethod.POST)
+	/*@RequestMapping(value = "confirmEntrust", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> confirmEntrust(String id, String user, String icon, String type, String price,
 			String num, String piundatge) {
 		Map<String, Object> map = tradeValidata.confirmEntrust(id, user, icon, type, price, num, piundatge);
 		return map;
-	}
+	}*/
 
 	@RequestMapping(value = "editAddress", method = RequestMethod.POST)
 	@ResponseBody

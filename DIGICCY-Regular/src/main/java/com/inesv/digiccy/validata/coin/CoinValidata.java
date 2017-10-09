@@ -322,6 +322,25 @@ public class CoinValidata {
         return map;
 	}
 	
+	/**
+     * 校验虚拟货币列表
+     * @return
+     */
+    public Map<String,Object> getAllCrowdCoinByNoRMB(){
+        Map<String,Object> map = new HashMap();
+        List<CoinDto> coins = queryCoin.queryAllCoinByNoRMB();
+        if(coins == null){
+            map.put("code", ResponseCode.FAIL);
+            map.put("desc", ResponseCode.FAIL_DESC);
+        }else{
+            map.put("total",coins.size());
+            map.put("data",coins.subList(0,coins.size()));
+            map.put("code", ResponseCode.SUCCESS);
+            map.put("desc",ResponseCode.SUCCESS_DESC);
+        }
+        return map;
+    }
+	
 	public Map<String, Object> querySellPoundatge1(Long coin_no) {
 		Map<String,Object> map = new HashMap<>();
         BigDecimal sell_poundatge = queryCoin.querySellPoundatge1(coin_no);
