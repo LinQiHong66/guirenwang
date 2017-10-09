@@ -27,7 +27,7 @@ $.ajax({
 				var str1 = b.id+','+b.user_no+','+b.price;
               if (sta == 0){
                   sta = '<button class="btn btn-info" ' +
-                      'onclick0-="confirmWithdraw(\''+ str1 + '\')">' +
+                      'onclick="confirmWithdraw(\''+ str1 + '\')">' +
                       '<i class="icon-money icon-white"></i>&nbsp;确认到账</button>';
               }
               if (sta == 1){
