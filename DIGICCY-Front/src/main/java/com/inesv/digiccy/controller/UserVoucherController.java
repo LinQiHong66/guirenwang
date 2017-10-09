@@ -17,6 +17,7 @@ import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.util.QiniuUploadUtil;
 import com.inesv.digiccy.validata.UserVoucherValidate;
 import com.inesv.digiccy.validata.user.OpUserValidata;
+import com.inesv.digiccy.validata.user.UserBasicInfoValidata;
 
 /**
  * 实名认证接口
@@ -30,7 +31,10 @@ public class UserVoucherController {
 
 	@Autowired
 	UserVoucherValidate userVoucherValidate;
-
+	
+	@Autowired
+	UserBasicInfoValidata userBasicInfoValidata;
+	
 	@Autowired
 	OpUserValidata opUserValidata;
 
@@ -52,6 +56,9 @@ public class UserVoucherController {
 			if ("100".equals(map1.get("code"))) {
 				// 确认通过审核
 				opUserValidata.modifyVoucher(userNo, 4);
+				//更改用户基本信息的真实名称
+				userBasicInfoValidata.modifyRealName(userNo, Name);
+				
 				map.put("code", ResponseCode.SUCCESS);
 				map.put("desc", ResponseCode.SUCCESS_DESC);
 				map.put("msg", "验证成功");

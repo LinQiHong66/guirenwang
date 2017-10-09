@@ -80,6 +80,7 @@
               <mvc:exclude-mapping path="/userbasic/**"/> 
              <mvc:exclude-mapping path="/rmbRecharge/**"/>
              <mvc:exclude-mapping path="/rmbWithdraw/**"/>
+            <mvc:exclude-mapping path="/city/**"/>
              <mvc:exclude-mapping path="/virtual/**"/>
              <mvc:exclude-mapping path="/entrustDeal/**"/>
              <mvc:exclude-mapping path="/entrustDeal/**"/>

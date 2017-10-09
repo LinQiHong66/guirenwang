@@ -25,7 +25,7 @@ public class RechargeMission implements Runnable {
 	@Scheduled(cron="0 0/2 * * * ?")  //1分钟             
 	public void run() {
 		try {
-			LOGGER.info("**********************定时器处理充值单发起成功**********************************:" + new Date());
+			LOGGER.info("**********************定时器处理充值单号发起成功**********************************:" + new Date());
 			rmbRechargeValidate.validateRechargeInfo();
 			LOGGER.info("**********************定时器处理充值单号成功**********************************:" + new Date());
 		} catch (Exception e) {

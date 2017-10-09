@@ -226,4 +226,8 @@
      <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.UserBasicInfoAggregate" id="userbasicinfopository"/>
     <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.UserBasicInfoAggregate" repository="userbasicinfopository" command-bus="disruptorCommandBus"/>
     <bean class="com.inesv.digiccy.event.handler.UserBasicEventHandler"/>
+    
+     <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.PowerInfoAggregate" id="powerInfopository"/>
+    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.PowerInfoAggregate" repository="powerInfopository" command-bus="disruptorCommandBus"/>
+    <bean class="com.inesv.digiccy.event.handler.PowerInfoHandler"/>
 </beans>

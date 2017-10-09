@@ -12,11 +12,19 @@ import com.inesv.digiccy.dto.UserBasicInfoDto;
 public class UserBasicInfoOperation {
 	@Autowired
 	QueryRunner queryRunner;
-	
+	//添加基本信息
 	public void addBasicInfo(UserBasicInfoDto dto) throws SQLException {
 		String sql = "insert into t_inesv_user_basicinfo (user_no, nationality, job, sex, birthday, userName) values (?,?,?,?,?,?)";
 		Object[] params = {
 				dto.getUserNo(),dto.getNationality(),dto.getJob(),dto.getSex(),dto.getBirthday(),dto.getUserName()
+		};
+		queryRunner.update(sql, params);
+	}
+	//修改真实姓名
+	public void updateRealName(UserBasicInfoDto dto) throws SQLException {
+		String sql = "update t_inesv_user_basicinfo set userName=? where user_no=?";
+		Object[] params = {
+				dto.getUserName(),dto.getUserNo()
 		};
 		queryRunner.update(sql, params);
 	}

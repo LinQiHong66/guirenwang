@@ -123,7 +123,6 @@ public class RmbRechargeValidate {
             map.put("desc", ResponseCode.SUCCESS_DESC);
         } else {
             map.put("code", ResponseCode.FAIL);
-
         }
         return map;
     }
@@ -310,7 +309,8 @@ public class RmbRechargeValidate {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         List<RmbRechargeDto> dtos = queryRmbRechargeInfo.qureyRechargeInfoByNo();
         for (int i = 0; i < dtos.size(); i++) {
-            map = EasyPayUtil.query(dtos.get(i).getRecharge_order(), sdf.format(dtos.get(i).getDate()));
+        	logger.debug("开始处理第" + i + "张订单！");
+        	map = EasyPayUtil.query(dtos.get(i).getRecharge_order(), sdf.format(dtos.get(i).getDate()));
             if (map == null) {
                 continue;
             } else {
