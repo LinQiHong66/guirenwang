@@ -768,12 +768,10 @@ public class TradeValidata {
 						BigDecimal rose_astrict = null;
 						BigDecimal drop_astrict = null;
 						dealDetailDto = queryDayMarketInfo.queryNewesDealOfBuy(Integer.valueOf(coinType));//查询开盘前最后一条买的记录
-						if(dealDetailDto!=null){
-							if(dealDetailDto==null || dealDetailDto.getDeal_price() == null){
-								map.put("code", "202");
-		    					map.put("desc", "最新成交价获取异常，委托失败！");
-								return map;
-							}
+						if(dealDetailDto==null || dealDetailDto.getDeal_price() == null){
+							map.put("code", "202");
+		    				map.put("desc", "最新成交价获取异常，委托失败！");
+							return map;
 						}
 						rose_astrict = dealDetailDto.getDeal_price().add(dealDetailDto.getDeal_price().multiply(new BigDecimal(coinTranAstrictDto.getRose_astrict().doubleValue()/100)));
 						//开盘前最后一条买的记录的成交价+开盘前最后一条买的记录的成交价*涨幅
