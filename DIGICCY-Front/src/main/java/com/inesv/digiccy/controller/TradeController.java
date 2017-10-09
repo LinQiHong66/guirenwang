@@ -57,16 +57,16 @@ public class TradeController {
     public @ResponseBody Map<String, Object> goBuy(HttpServletRequest request,@RequestParam String userNo,@RequestParam String buyPrice,@RequestParam String buyNum,@RequestParam String poundatge,@RequestParam String buyPayPassword,
     		@RequestParam String coinType,@RequestParam String convertType,@RequestParam String type, @RequestParam String sign){
 		Map<String, Object> map = new HashMap<>();
-		String tradeSign = (String) redisTemplate.opsForValue().get("trade_" + userNo);
+		/*String tradeSign = (String) redisTemplate.opsForValue().get("trade_" + userNo);
 		if(tradeSign == null || !tradeSign.equals(sign)) {
-			redisTemplate.opsForValue().set("trade_" + userNo, sign, 2, TimeUnit.MINUTES);
+			redisTemplate.opsForValue().set("trade_" + userNo, sign, 2, TimeUnit.MINUTES);*/
 			return tradeValidata.validateTradeCoinActual(userNo, new BigDecimal(buyNum), new BigDecimal(buyPrice), 
 					new BigDecimal(poundatge), buyPayPassword,coinType,convertType,type);
-		}else {
+		/*}else {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "抱歉，交易正在处理中，请勿重复提交！");
 			return map;
-		}
+		}*/
         
     }
 	

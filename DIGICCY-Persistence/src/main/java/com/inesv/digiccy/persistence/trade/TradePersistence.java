@@ -51,7 +51,8 @@ public class TradePersistence {
 	
 	@Autowired
 	TradeAutualPersistence tradeAutualPersistence;
-	
+
+	private Lock lock = new ReentrantLock();// 锁对象 
 	/**
 	 * 新增 委托记录
 	 * 
@@ -94,6 +95,32 @@ public class TradePersistence {
 	 */
 	@Transactional(rollbackFor={Exception.class, RuntimeException.class})
 	public void addEntrustActual(EntrustDto entrust, UserBalanceDto xnb,UserBalanceDto rmb) throws Exception{
+		//添加委托记录
+		String insertEntrust = "insert into t_inesv_entrust(user_no,entrust_coin,convert_coin,convert_price,entrust_type,entrust_price,entrust_num,deal_num,piundatge,state,date) values(?,?,?,?,?,?,?,?,?,?,?)";
+		Object insertParams[] = {entrust.getUser_no(),entrust.getEntrust_coin(),entrust.getConvert_coin(),entrust.getConvert_price(),entrust.getEntrust_type(),
+				entrust.getEntrust_price(),entrust.getEntrust_num(),entrust.getDeal_num(),entrust.getPiundatge(),entrust.getState(),entrust.getDate()};
+		queryRunner.update(insertEntrust, insertParams);
+		//修改该用户的虚拟币资产
+		String updateUserBalance = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where user_no=? and coin_type=?";
+		Object updateParams[] = {xnb.getEnable_coin(),xnb.getUnable_coin(),xnb.getTotal_price(),xnb.getUser_no(),xnb.getCoin_type()};
+		queryRunner.update(updateUserBalance, updateParams);
+		//修改该用户的人民币资产
+		String updateUserBalanceRmb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where user_no=? and coin_type=?";
+		Object updateRmbParams[] = {rmb.getEnable_coin(),rmb.getUnable_coin(),rmb.getTotal_price(),rmb.getUser_no(),rmb.getCoin_type()};
+		queryRunner.update(updateUserBalanceRmb, updateRmbParams);
+		lock.lock();// 得到锁  
+		try {
+			String querySql = "select * from t_inesv_entrust where user_no = ? order by id desc limit 1";
+			EntrustDto entrusts = queryRunner.query(querySql,new BeanHandler<EntrustDto>(EntrustDto.class),entrust.getUser_no());
+			tradeAutualPersistence.validateTradeCoinActualBySQL(entrusts);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			lock.unlock();// 释放锁
+		}
+	}
+	/*@Transactional(rollbackFor={Exception.class, RuntimeException.class})
+	public void addEntrustActual(final EntrustDto entrust, UserBalanceDto xnb,UserBalanceDto rmb) throws Exception{
 		//--------------------------创建委托单号，修改用户资产
 		//添加委托记录
 		String insertEntrust = "insert into t_inesv_entrust(user_no,entrust_coin,entrust_type,entrust_price,entrust_num,deal_num,piundatge,state,date,attr1) values(?,?,?,?,?,?,?,?,?,?)";
@@ -108,19 +135,22 @@ public class TradePersistence {
 		String updateUserBalanceRmb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where user_no=? and coin_type=?";
 		Object updateRmbParams[] = {rmb.getEnable_coin(),rmb.getUnable_coin(),rmb.getTotal_price(),rmb.getUser_no(),rmb.getCoin_type()};
 		queryRunner.update(updateUserBalanceRmb, updateRmbParams);
-		//--------------------------进入实时交易
-		Lock lock = new ReentrantLock();// 锁对象  
-		lock.lock();// 得到锁  
-		try {
-			String querySql = "select * from t_inesv_entrust where user_no = ? order by id desc limit 1 for update";
-			EntrustDto entrusts = queryRunner.query(querySql,new BeanHandler<EntrustDto>(EntrustDto.class),entrust.getUser_no());
-			tradeAutualPersistence.validateTradeCoinActualBySQL(entrusts);//进入实时买卖
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			lock.unlock();// 释放锁
-		}
-	}
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				lock.lock();// 得到锁  
+				try {
+					String querySql = "select * from t_inesv_entrust where user_no = ? order by id desc limit 1 for update";
+					EntrustDto entrusts = queryRunner.query(querySql,new BeanHandler<EntrustDto>(EntrustDto.class),entrust.getUser_no());
+					tradeAutualPersistence.validateTradeCoinActualBySQL(entrusts);//进入实时买卖
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally {
+					lock.unlock();// 释放锁
+				}
+			}
+		}).start();
+	}*/
 	
 	/**
 	 * 删除（撤销）委托记录并修改用户资产

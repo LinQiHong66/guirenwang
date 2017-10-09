@@ -128,7 +128,7 @@ public class TradeEventHandler {
 		UserBalanceDto xnb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), entrust.getEntrust_coin().toString());
 		//人民币
 		UserBalanceDto rmb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), entrust.getConvert_coin().toString());
-		if(String.valueOf(entrust.getEntrust_type()).equals("0")){//买 
+		if(entrust.getEntrust_type() == 0){//买 
 			if(entrust.getConvert_coin() == 0) {
 				if(rmb.getEnable_coin().doubleValue() < (entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue()) { //人民币余额不足
 					int numException = 1/0;
@@ -147,7 +147,7 @@ public class TradeEventHandler {
 				rmb.setUnable_coin(new BigDecimal(un_bg.setScale(6,BigDecimal.ROUND_DOWN).toString()));
 			}
 		}
-		if(String.valueOf(entrust.getEntrust_type()).equals("1")){//卖
+		if(entrust.getEntrust_type() == 1){//卖
 			if(xnb.getEnable_coin().doubleValue() - entrust.getEntrust_num().doubleValue() < 0){//虚拟币余额不足
 				int numException = 1/0;
 			}
