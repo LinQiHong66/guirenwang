@@ -201,6 +201,33 @@ public class OpUserValidata {
 	}
 
 	/**
+	 * 是否存在相同手机号 身份证号码 用户编码的记录
+	 * 
+	 * @param userNo
+	 * @param phone
+	 * @param idcard
+	 * @return
+	 */
+	public boolean isRecordExsit(int userNo, String phone, String idcard) {
+		if (phone == null) {
+			phone = "";
+		}
+		if (idcard == null) {
+			idcard = "";
+		}
+		List<InesvUserDto> info = queryUser.getUserInfo(userNo, phone, idcard);
+		if (info != null) {
+			if (info.size() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+
+	/**
 	 * 新增用户
 	 */
 	public synchronized Map<String, Object> validataRegUser(String phone, String password, String invite_num) {
@@ -479,14 +506,16 @@ public class OpUserValidata {
 			if (messageSetDto != null) {
 				int limitNumber = messageSetDto.getLimit_number();// 限制次数
 				int limitDate = messageSetDto.getLimit_date();// 限制时间
-				List<MessageLogDto> messageLogs = queryUser.getMessageLogLimitTime(inesvUserDto.getUser_no(),
-						limitDate);
-				if (messageLogs != null && messageLogs.size() >= limitNumber) {// 超过次数
-					map.put("code", ResponseCode.FAIL);
-					map.put("desc", ResponseCode.FAIL_DESC);
-					return map;
-				} else {
-					ok = SmsUtil.sendMySms(mobile, mCode + "");
+				if (inesvUserDto != null) {
+					List<MessageLogDto> messageLogs = queryUser.getMessageLogLimitTime(inesvUserDto.getUser_no(),
+							limitDate);
+					if (messageLogs != null && messageLogs.size() >= limitNumber) {// 超过次数
+						map.put("code", ResponseCode.FAIL);
+						map.put("desc", ResponseCode.FAIL_DESC);
+						return map;
+					} else {
+						ok = SmsUtil.sendMySms(mobile, mCode + "");
+					}
 				}
 			} else {// 没有设置限制信息
 				ok = SmsUtil.sendMySms(mobile, mCode + "");
