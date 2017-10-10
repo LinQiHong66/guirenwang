@@ -24,6 +24,15 @@ public class CrowdFundingDetailsDto {
     private String attr1;
 
     private String attr2;
+    
+    /** 快递公司名称 */
+    private String logistics_company;
+    /** 单号 */
+    private String logistics_number;
+    /** 当前状态 */
+    private String logistics_status;
+    /** 当前快递公司编号 */
+    private String logistics_code;
 
 	public Long getId() {
 		return id;
@@ -87,6 +96,47 @@ public class CrowdFundingDetailsDto {
 
 	public void setAttr2(String attr2) {
 		this.attr2 = attr2;
+	}
+
+	public String getLogistics_company() {
+		return logistics_company;
+	}
+
+	public void setLogistics_company(String logistics_company) {
+		this.logistics_company = logistics_company;
+	}
+
+	public String getLogistics_number() {
+		return logistics_number;
+	}
+
+	public void setLogistics_number(String logistics_number) {
+		this.logistics_number = logistics_number;
+	}
+
+	public String getLogistics_status() {
+		return logistics_status;
+	}
+
+	public void setLogistics_status(String logistics_status) {
+		this.logistics_status = logistics_status;
+	}
+
+	public String getLogistics_code() {
+		return logistics_code;
+	}
+
+	public void setLogistics_code(String logistics_code) {
+		this.logistics_code = logistics_code;
+	}
+
+	@Override
+	public String toString() {
+		return "CrowdFundingDetailsDto [id=" + id + ", user_id=" + user_id + ", ico_id=" + ico_id + ", ico_user_number="
+				+ ico_user_number + ", ico_user_sumprice=" + ico_user_sumprice + ", date=" + date + ", attr1=" + attr1
+				+ ", attr2=" + attr2 + ", logistics_company=" + logistics_company + ", logistics_number="
+				+ logistics_number + ", logistics_status=" + logistics_status + ", logistics_code=" + logistics_code
+				+ "]";
 	}
     
 }
