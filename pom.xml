@@ -43,14 +43,14 @@
 		<repository>
 			<id>nexus</id>
 			<name>nexus</name>
-			<url>http://172.16.2.213:8081/nexus/content/groups/public/</url>
+			<url>http://192.168.10.5:8081/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>nexus plugin</id>
 			<name>nexus plugin</name>
-			<url>http://172.16.2.213:8081/nexus/content/groups/public/</url>
+			<url>http://192.168.10.5:8081/nexus/content/groups/public/</url>
 		</pluginRepository>
 	</pluginRepositories>
 

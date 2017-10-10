@@ -117,7 +117,15 @@ Website: http://thevectorlab.net/
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="tab_1_1">
-                                                <table id="crowdDetail_table"></table>
+                                            	
+                                                <table id="crowdDetail_table">
+                                                <div style="float:left;margin-top:10px">输入需要更新的订单ID：<input type="text" id="a_id" style="height:17px;margin-bottom:0;" /> <button type="button"   style="height: 27px;
+											    line-height: 27px;
+											    padding: 0 10px;
+											    background-color: #25c3cf;
+											    color: #fff;
+											    box-shadow: 1px 1px 2px #000;" class="btn btn-default" onclick="updateLogistics();">更新</button></div>
+                                                </table>
                                             </div>
                                             <div class="tab-pane" id="tab_1_2">
                                                 <table id="crowdDetail_table_jigou"></table>

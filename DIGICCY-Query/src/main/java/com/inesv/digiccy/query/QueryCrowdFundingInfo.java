@@ -119,7 +119,7 @@ public class QueryCrowdFundingInfo {
 	 */
 	public List<CrowdFundingDetailsDto> queryAllCrowdFundingDetailBack() {
 		List<CrowdFundingDetailsDto> crowdfundingList = new ArrayList<>();
-		String sql = "SELECT a.id AS id,b.username AS attr1,c.ico_name AS ico_id,a.ico_user_number AS ico_user_number,ROUND(a.ico_user_number/333) AS attr2,a.ico_user_sumprice AS ico_user_sumprice,a.date AS date "
+		String sql = "SELECT a.id AS id,b.username AS attr1, a.logistics_company,a.logistics_number,a.logistics_status,c.ico_name AS ico_id,a.ico_user_number AS ico_user_number,ROUND(a.ico_user_number/333) AS attr2,a.ico_user_sumprice AS ico_user_sumprice,a.date AS date "
 				+ " FROM t_crowdfunding_details a,t_inesv_user b,t_crowdfunding c "
 				+ " WHERE a.user_id = b.user_no AND a.ico_id = c.ico_no ORDER BY a.date DESC";
 		// String sql = "SELECT * FROM t_crowdfunding_details";
@@ -266,5 +266,36 @@ public class QueryCrowdFundingInfo {
 		}
 		return crowdfunding;
 	}
+	
+	
+	   /**
+     * 查询所有需要更新物流信息的
+     * @return
+     */
+    public List<CrowdFundingDetailsDto> query_wl(List<String> list) {
+        List<CrowdFundingDetailsDto> crowdfundingList = new ArrayList<>();
+//        Map<String, Object> map = new HashMap<>();
+        
+        String sql = "select * from t_crowdfunding_details as tc where tc.id in (";
+        for(int i=list.size()-1;i>=0;i--){
+        	if(i==list.size()-1){
+        		sql+=list.get(i);
+        	}else{
+        		sql+=","+list.get(i);
+        	}
+        }
+        sql+=")";
+
+        
+//        Object params[] = { list.get(0),list.get(1) };
+        
+        try {
+            crowdfundingList = queryRunner.query(sql, new BeanListHandler<>(CrowdFundingDetailsDto.class));
+        } catch (SQLException e) {
+            logger.error("查询众筹项目失败");
+            e.printStackTrace();
+        }
+        return crowdfundingList;
+    }
 
 }
