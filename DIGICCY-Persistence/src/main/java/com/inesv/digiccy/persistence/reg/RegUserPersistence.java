@@ -1,11 +1,10 @@
 package com.inesv.digiccy.persistence.reg;
 
-import com.inesv.digiccy.dto.CoinDto;
-import com.inesv.digiccy.dto.EntrustDto;
-import com.inesv.digiccy.dto.InesvPhoneDto;
-import com.inesv.digiccy.dto.InesvUserDto;
-import com.inesv.digiccy.dto.UserBalanceDto;
-import com.inesv.digiccy.dto.UserInfoDto;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -16,12 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.inesv.digiccy.dto.CoinDto;
+import com.inesv.digiccy.dto.EntrustDto;
+import com.inesv.digiccy.dto.InesvPhoneDto;
+import com.inesv.digiccy.dto.InesvUserDto;
+import com.inesv.digiccy.dto.UserBalanceDto;
+import com.inesv.digiccy.dto.UserInfoDto;
 
 /**
  * Created by Administrator on 2016/11/14 0014.
@@ -53,9 +52,9 @@ public class RegUserPersistence {
 		Iterator<Long> keyIt = key.keySet().iterator();
 		long user_No = 0;
 		if (keyIt.hasNext()) {
-			keyIt.next();
+			user_No = keyIt.next();
 		}
-
+		System.out.println("user_No:" + user_No);
 		Object paramsss[] = { user_No };
 		queryRunner.update(sqlss, paramsss);
 
