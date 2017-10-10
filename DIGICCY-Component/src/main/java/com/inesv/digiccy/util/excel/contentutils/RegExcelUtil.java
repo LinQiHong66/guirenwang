@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import com.inesv.digiccy.bean.CertificationResultBean;
 import com.inesv.digiccy.bean.RegisterResultBean;
 import com.inesv.digiccy.dto.AddressDto;
 import com.inesv.digiccy.dto.InesvUserDto;
@@ -229,7 +230,17 @@ public class RegExcelUtil implements ExcelUtil {
 										String cerparam = "Name=" + name + "&cardId=" + idcard + "&userNo="
 												+ registerResultBean.getUserNo() + "&startDate=" + "&endDate";
 										String cerResult = HttpUtil.postData(cerUrl, cerparam);
-										System.out.println("cerResult:" + cerResult);
+										if (!StringUtil.isEmpty(cerResult)) {
+											CertificationResultBean certificationResultBean = JsonUtil
+													.jsonParseToBean(cerResult, CertificationResultBean.class);
+											String cerCode = certificationResultBean.getCode();
+											if ("100".equals(cerCode)) {
+												System.out.println(name + ":实名认证成功!");
+											} else {
+												System.out.println(name + ":实名认证失败!");
+											}
+											System.out.println("cerResult:" + cerResult);
+										}
 									}
 								}
 								if (!hasAddress(mphone) && canExecuteAddress && addAddress instanceof Boolean
