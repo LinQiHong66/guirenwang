@@ -213,6 +213,11 @@ public class UserController {
 		Map<String, Object> usermap = userValidata.validataGetUserInfoByNo(Integer.parseInt(no));
 		InesvUserDto info = (InesvUserDto) usermap.get("data");
 		Map<String, Object> map = new HashMap<>();
+		if (userValidata.isRecordExsit(Integer.valueOf(no), phone, certificate)) {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "您要修改的手机号或者身份证号已经存在");
+			return map;
+		}
 		if (real != null && certificate != null) {
 			if (!real.equals(info.getReal_name()) || !certificate.equals(info.getCertificate_num())) {// 输入的姓名或者身份证与数据库不一致才调用认证接口
 				System.out.println("调用认证接口");
@@ -227,12 +232,10 @@ public class UserController {
 					map.put("desc", "用戶名和证件号不一致");
 				}
 			} else {
-				System.out.println("不调用接口");
 				map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no), real, mail, phone, certificate,
 						alipay);
 			}
 		} else {// 如果输入的名字或者身份证为空则不调用身份验证接口
-			System.out.println("名字或者身份证为空不调用接口");
 			map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no), real, mail, phone, certificate, alipay);
 		}
 
@@ -287,6 +290,7 @@ public class UserController {
 		Map<String, Object> map = inesvAddressValidata.getAddressByUser(userNo);
 		return map;
 	}
+
 	/*
 	 * @RequestMapping(value = "confirmEntrust", method = RequestMethod.POST)
 	 * 

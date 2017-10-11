@@ -321,6 +321,18 @@ public class QueryUserInfo implements UserDetailsService {
 		return userInfo;
 	}
 
+	public List<InesvUserDto> getUserInfo(int userNo, String phone, String idcard) {
+		String sql = "select * from t_inesv_user where user_no != ? or phone=? or certificate_num=?";
+		Object param[] = { userNo, phone, idcard };
+		List<InesvUserDto> userInfo = null;
+		try {
+			userInfo = queryRunner.query(sql, new BeanListHandler<InesvUserDto>(InesvUserDto.class), param);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userInfo;
+	}
+
 	/**
 	 * 鏌ヨ鐢ㄦ埛ip
 	 * 

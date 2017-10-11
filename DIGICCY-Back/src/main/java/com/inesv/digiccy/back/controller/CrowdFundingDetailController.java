@@ -60,6 +60,19 @@ public class CrowdFundingDetailController {
 		return map;
 	}
 
+	
+	/**
+     * 更新指定id的物流信息
+     * @param ids
+     * @return
+     */
+    @RequestMapping(value = "updateLogistics" ,method = RequestMethod.POST)
+    @ResponseBody
+    public String updateLogistics(String ids){
+    	return crowdFundingValidata.updateLogistics(ids);
+    }
+    
+	
 	/**
 	 * 得到所有众筹项目的信息
 	 * 
@@ -107,7 +120,10 @@ public class CrowdFundingDetailController {
 		Map<String, Object> map = crowdFundingValidata.validataAllCrowdFundingDetailBack_Jigou_user(orgCode);
 		return map;
 	}
-
+	
+	
+	
+	
 	/*
 	 * 导出excel
 	 */
