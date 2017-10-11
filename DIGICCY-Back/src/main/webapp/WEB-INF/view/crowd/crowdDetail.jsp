@@ -29,6 +29,7 @@ Website: http://thevectorlab.net/
     <script src="/app/js/jquery-1.8.3.min.js"></script>
     <script src="/app/js/header.js"></script>
     <link href="/app/assets/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+    <link href="/app/css/chosen.css" rel="stylesheet" />
     <link href="/app/css/tab.css" rel="stylesheet" />
     <%--<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />--%>
     <%--<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />--%>
@@ -124,7 +125,8 @@ Website: http://thevectorlab.net/
 											    padding: 0 10px;
 											    background-color: #25c3cf;
 											    color: #fff;
-											    box-shadow: 1px 1px 2px #000;" class="btn btn-default" onclick="updateLogistics();">更新</button></div>
+											    box-shadow: 1px 1px 2px #000;" class="btn btn-default" onclick="updateLogistics();">更新</button>
+											    </div>
                                                 </table>
                                             </div>
                                             <div class="tab-pane" id="tab_1_2">
@@ -154,6 +156,53 @@ Website: http://thevectorlab.net/
     <!-- END PAGE -->
 
 </div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1"   role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" >
+		<div class="modal-content" style="height:250px;">
+			<div class="modal-header">
+				添加任务
+				<button type="button" class="close" data-dismiss="modal" 
+						aria-hidden="true">×
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+				</h4>
+			</div>
+			<div class="modal-body" style="height:150px;">
+			<form action="" id="submitForm">
+			    <div class="form-group" align="center">
+					
+					<div class="col-sm-10">
+						<label for="firstname" class="col-sm-2 control-label">快递公司名称</label>
+						   <select name="dept" data-placeholder="" id="selectId"  class="form-control" > 
+						        <option  value='1'>请选择或者搜索</option>
+							</select>
+					</div>
+				</div>
+				<div class="form-group" align="center">
+					<label for="lastname" class="col-sm-2 control-label">快递单号</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="numValue" 
+						   placeholder="请输入快递单号"> 
+						   <input type="hidden" class="form-control" id="numId" 
+						   placeholder="请输入快递单号">
+					</div>
+				</div>
+	 </form>
+	 		<div align="center" id="errInput" style="color: red;"></div>
+			</div>
+			<div class="modal-footer">
+				<button id="closeW" type="button" class="btn btn-default" 
+						data-dismiss="modal">关闭
+				</button>
+				<button type="button" id="submit"  onclick="submitWl();" class="btn btn-primary">
+					提交
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- END CONTAINER -->
 <!-- BEGIN FOOTER -->
 <%@include file="../footer.jsp" %>
@@ -166,6 +215,9 @@ Website: http://thevectorlab.net/
 <script src="/app/assets/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 <script src="/app/js/bootstrap-table/crowdDetail-tab.js"></script>
 <script src="/app/js/ajax/crowd.js"></script>
+<script src="/app/js/ajax/choosen.js"></script>
+
+
 <%--<script src="js/jquery-1.8.3.min.js"></script>--%>
 <%--<script src="assets/jquery-slimscroll/jquery-ui-1.9.2.custom.min.js"></script>--%>
 <%--<script src="assets/jquery-slimscroll/jquery.slimscroll.min.js"></script>--%>

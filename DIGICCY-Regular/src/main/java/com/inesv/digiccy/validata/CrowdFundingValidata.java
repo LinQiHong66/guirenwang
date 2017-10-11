@@ -410,7 +410,7 @@ public class CrowdFundingValidata {
 					 
 					 if(crows.get(i).getLogistics_code()==null || crows.get(i).getLogistics_code().equals("")
 							 || crows.get(i).getLogistics_number()==null || crows.get(i).getLogistics_number().equals("") ){
-						 return "当前id为"+crows.get(i).getId()+"存在数据异常，更新物流失败";
+						 return "当前id为"+crows.get(i).getId()+"存在物流数据异常，更新物流失败";
 					 }
 					 
 					String	result =kdnApi.getOrderTracesByJson(crows.get(i).getLogistics_code(), crows.get(i).getLogistics_number());
@@ -421,7 +421,7 @@ public class CrowdFundingValidata {
 			e.printStackTrace();
 		} 
 		 
-		 return null;
+		 return "操作成功";
 	}
 	
 	/**
@@ -432,6 +432,9 @@ public class CrowdFundingValidata {
 		try {
 			JSONObject object=JSONObject.parseObject(result);
 			JSONArray array=(JSONArray) object.get("Traces");
+			if(array.size()<=0){
+				return "物流信息为空";
+			}
 			JSONObject obje=(JSONObject) array.get(array.size()-1);
 			String status=obje.getString("AcceptTime")+":"+obje.getString("AcceptStation");
 			return status;
@@ -459,5 +462,28 @@ public class CrowdFundingValidata {
 		}
 		return false;
 		
+	}
+	
+	
+	/**
+	 * 添加物流单号
+	 * @return
+	 */
+	public String update_number(String id , String number , String name,String code){
+		
+		try {
+			if(id==null || "".equals(id) || number==null || "".equals(number) || name==null || "".equals(name)){
+				return "参数错误";
+			}
+			if( co.update_number(id, number,name,code)){
+				return "添加成功";
+			}else{
+				return "添加失败";
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "添加失败";
+		}
 	}
 }

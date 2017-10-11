@@ -31,8 +31,16 @@ $("#crowdDetail_table").bootstrapTable({
   	        {title:'物流公司',field:'logistics_company',width:120,align:'center'},
   	        {title:'物流单号',field:'logistics_number',width:120,align:'center'},
   	        {title:'物流状态',field:'logistics_status',width:120,align:'center'},
+  	        {title:'操作',field:'Button',events:'',formatter:'AddFunctionAlty',width:120,align:'center'},
     ]]
 });
+
+
+function AddFunctionAlty(value,row,index){
+	return [
+	        '<a onclick="read(this)"><button class="btn btn-success" id="btn_add" data-toggle="modal" style="margin-bottom: 8px;" data-target="#myModal"><i class="icon-plus icon-white"></i>&nbsp;更新单号</button></a>'
+	        ].join("");
+}
 
 
 /**
@@ -75,7 +83,7 @@ var opt = {
 	    ]]
 	}
 
-
+//更新数据
 function updateLogistics(){
 	var a_id=$("#a_id").val();
 	if(a_id==null || a_id==""){
@@ -87,9 +95,164 @@ function updateLogistics(){
 	    url:'/crowFundingDetail/updateLogistics.do',  
 	    data:data,  
 	    cache:false,  
-	    dataType:'json',  
+	    dataType:'text',  
 	    success:function(data){ 
+	    	alert(data);
+	    	$("#crowdDetail_table").bootstrapTable('refresh', opt);
+	    }
+	  });
+	
+}
+
+//下拉框
+$(function () { 
+	
+	$("#selectId").append("<option value='AJ'>安捷快递</option>"); 
+	$("#selectId").append("<option value='ANE'>安能物流</option>"); 
+	$("#selectId").append("<option value='AXD'>安信达快递</option>"); 
+	$("#selectId").append("<option value='BQXHM'>北青小红帽</option>"); 
+	$("#selectId").append("<option value='BFDF'>百福东方</option>"); 
+	$("#selectId").append("<option value='BTWL'>百世快运</option>"); 
+	$("#selectId").append("<option value='CCES'>CCES快递</option>"); 
+	$("#selectId").append("<option value='CITY100'>城市100</option>"); 
+	$("#selectId").append("<option value='COE'>COE东方快递</option>"); 
+	$("#selectId").append("<option value='CSCY'>长沙创一</option>"); 
+	$("#selectId").append("<option value='CDSTKY'>成都善途速运</option>"); 
+	$("#selectId").append("<option value='DBL'>德邦</option>"); 
+	$("#selectId").append("<option value='DSWL'>D速物流</option>"); 
+	$("#selectId").append("<option value='DTWL'>大田物流</option>"); 
+	$("#selectId").append("<option value='EMS'>EMS</option>"); 
+	$("#selectId").append("<option value='FAST'>快捷速递</option>"); 
+	$("#selectId").append("<option value='FEDEX'>FEDEX联邦(国内件）</option>"); 
+	$("#selectId").append("<option value='FEDEX_GJ'>FEDEX联邦(国际件）</option>"); 
+	$("#selectId").append("<option value='FKD'>飞康达</option>"); 
+	$("#selectId").append("<option value='GDEMS'>广东邮政</option>"); 
+	$("#selectId").append("<option value='GSD'>共速达</option>"); 
+	$("#selectId").append("<option value='GTO'>国通快递</option>"); 
+	$("#selectId").append("<option value='GTSD'>高铁速递</option>"); 
+	$("#selectId").append("<option value='HFWL'>汇丰物流</option>"); 
+	$("#selectId").append("<option value='HHTT'>天天快递</option>"); 
+	$("#selectId").append("<option value='HLWL'>恒路物流</option>"); 
+	$("#selectId").append("<option value='HOAU'>天地华宇</option>"); 
+	$("#selectId").append("<option value='hq568'>华强物流</option>"); 
+	$("#selectId").append("<option value='HTKY'>百世快递</option>"); 
+	$("#selectId").append("<option value='HXLWL'>华夏龙物流</option>"); 
+	$("#selectId").append("<option value='HYLSD'>好来运快递</option>"); 
+	$("#selectId").append("<option value='JGSD'>京广速递</option>"); 
+	$("#selectId").append("<option value='JIUYE'>九曳供应链</option>"); 
+	$("#selectId").append("<option value='JJKY'>佳吉快运</option>"); 
+	$("#selectId").append("<option value='JLDT'>嘉里物流</option>"); 
+	$("#selectId").append("<option value='JTKD'>捷特快递</option>");
+	$("#selectId").append("<option value='JXD'>急先达</option>"); 
+	$("#selectId").append("<option value='JYKD'>晋越快递</option>"); 
+	$("#selectId").append("<option value='JYM'>加运美</option>"); 
+	$("#selectId").append("<option value='JYWL'>佳怡物流</option>"); 
+	$("#selectId").append("<option value='KYWL'>跨越物流</option>"); 
+	$("#selectId").append("<option value='LB'>龙邦快递</option>"); 
+	$("#selectId").append("<option value='LHT'>联昊通速递</option>"); 
+	$("#selectId").append("<option value='MHKD'>民航快递</option>"); 
+	$("#selectId").append("<option value='MLWL'>明亮物流</option>"); 
+	$("#selectId").append("<option value='NEDA'>能达速递</option>"); 
+	$("#selectId").append("<option value='PADTF'>平安达腾飞快递</option>"); 
+	$("#selectId").append("<option value='QCKD'>全晨快递</option>"); 
+	$("#selectId").append("<option value='QFKD'>全峰快递</option>"); 
+	$("#selectId").append("<option value='QRT'>全日通快递</option>"); 
+	$("#selectId").append("<option value='RFD'>如风达</option>"); 
+	$("#selectId").append("<option value='SAD'>赛澳递</option>"); 
+	$("#selectId").append("<option value='SAWL'>圣安物流</option>"); 
+	$("#selectId").append("<option value='SBWL'>盛邦物流</option>"); 
+	$("#selectId").append("<option value='SDWL'>上大物流</option>"); 
+	$("#selectId").append("<option value='SF'>顺丰快递</option>"); 
+	$("#selectId").append("<option value='SFWL'>盛丰物流</option>"); 
+	$("#selectId").append("<option value='SHWL'>盛辉物流</option>"); 
+	$("#selectId").append("<option value='ST'>速通物流</option>"); 
+	$("#selectId").append("<option value='STO'>申通快递</option>"); 
+	$("#selectId").append("<option value='STWL'>速腾快递</option>"); 
+	$("#selectId").append("<option value='SURE'>速尔快递</option>"); 
+	$("#selectId").append("<option value='TSSTO'>唐山申通</option>"); 
+	$("#selectId").append("<option value='UAPEX'>全一快递</option>"); 
+	$("#selectId").append("<option value='UC'>优速快递</option>"); 
+	$("#selectId").append("<option value='WJWL'>万家物流</option>"); 
+	$("#selectId").append("<option value='WXWL'>万象物流</option>"); 
+	$("#selectId").append("<option value='XBWL'>新邦物流</option>"); 
+	$("#selectId").append("<option value='XYT'>希优特</option>"); 
+	$("#selectId").append("<option value='YADEX'>新杰物流</option>"); 
+	$("#selectId").append("<option value='YCWL'>远成物流</option>"); 
+	$("#selectId").append("<option value='YD'>韵达快递</option>"); 
+	$("#selectId").append("<option value='YDH'>义达国际物流</option>"); 
+	$("#selectId").append("<option value='YFEX'>越丰物流</option>"); 
+	$("#selectId").append("<option value='YFHEX'>原飞航物流</option>"); 
+	$("#selectId").append("<option value='YFSD'>亚风快递</option>"); 
+	$("#selectId").append("<option value='YTKD'>运通快递</option>"); 
+	$("#selectId").append("<option value='YTO'>圆通速递</option>"); 
+	$("#selectId").append("<option value='YXKD'>亿翔快递</option>"); 
+	$("#selectId").append("<option value='YZPY'>邮政平邮/小包</option>"); 
+	$("#selectId").append("<option value='ZENY'>增益快递</option>"); 
+	$("#selectId").append("<option value='ZHQKD'>汇强快递</option>"); 
+	$("#selectId").append("<option value='ZJS'>宅急送</option>"); 
+	$("#selectId").append("<option value='ZTE'>众通快递</option>"); 
+	$("#selectId").append("<option value='ZTKY'>中铁快运</option>"); 
+	$("#selectId").append("<option value='ZTO'>中通速递</option>"); 
+	$("#selectId").append("<option value='ZTWL'>中铁物流</option>"); 
+	$("#selectId").append("<option value='ZYWL'>中邮物流</option>"); 
+	$("#selectId").append("<option value='AMAZON'>亚马逊物流</option>"); 
+	$("#selectId").append("<option value='SUBIDA'>速必达物流</option>"); 
+	$("#selectId").append("<option value='RFEX'>瑞丰速递</option>"); 
+	$("#selectId").append("<option value='QUICK'>快客快递</option>"); 
+	$("#selectId").append("<option value='CJKD'>城际快递</option>"); 
+	$("#selectId").append("<option value='CNPEX'>CNPEX中邮快递</option>"); 
+	$("#selectId").append("<option value='HOTSCM'>鸿桥供应链</option>"); 
+	$("#selectId").append("<option value='HPTEX'>海派通物流公司</option>"); 
+	$("#selectId").append("<option value='AYCA'>澳邮专线</option>"); 
+	$("#selectId").append("<option value='PANEX'>泛捷快递</option>"); 
+	$("#selectId").append("<option value='PCA'>PCA Express</option>"); 
+	$("#selectId").append("<option value='UEQ'>UEQ Express</option>"); 
+	
+    $('#selectId').chosen();  
+    $('#selectId').chosen({allow_single_deselect: true});  
+});  
+
+
+function submitWl(){
+	
+	var text=$("#selectId").find("option:selected").text();
+	var value= $("#selectId ").val();
+	if(text=="请选择或者搜索" || value===1){
+		$("#errInput").html("快递公司参数不能为空");
+		return;
+	}
+	
+	var numValue=$("#numValue").val();
+	if(numValue===""){
+		$("#errInput").html("订单号不能为空");
+		return;
+	}
+	
+	var id=$("#numId").val();
+	
+	$("#errInput").html("");
+	
+	data={'id':id,'number':numValue,'company':text,'code':value};
+	$.ajax({  
+	    type:'post',    
+	    url:'/crowFundingDetail/addLogistics.do',  
+	    data:data,  
+	    cache:false,  
+	    dataType:'text',  
+	    success:function(data){ 
+	    	alert(data);
+	    	$("#closeW").click();
 	    	$("#crowdDetail_table").bootstrapTable('refresh', opt);
 	    }  
 	  });
+}
+
+//拼接id
+function read(data){
+	 var obj = $(data).parent().siblings();
+	 console.log(obj);
+	 var id=obj[0].innerText;
+	 $("#numValue").val("");
+	 $("#numId").val("");
+	 $("#numId").val(id);
 }

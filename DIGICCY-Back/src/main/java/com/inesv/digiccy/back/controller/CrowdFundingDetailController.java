@@ -69,9 +69,23 @@ public class CrowdFundingDetailController {
     @RequestMapping(value = "updateLogistics" ,method = RequestMethod.POST)
     @ResponseBody
     public String updateLogistics(String ids){
-    	return crowdFundingValidata.updateLogistics(ids);
+    	String result=crowdFundingValidata.updateLogistics(ids);
+    	return result;
     }
     
+    /**
+     * 增加一个快递单号
+     * @param company
+     * @param number
+     * @param code
+     * @return
+     */
+    @RequestMapping(value = "addLogistics" ,method = RequestMethod.POST)
+    @ResponseBody
+    public String addLogistics(String company,String number,String id,String code){
+    	String result=crowdFundingValidata.update_number(id,number,company,code);
+    	return result;
+    }
 	
 	/**
 	 * 得到所有众筹项目的信息

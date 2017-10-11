@@ -98,4 +98,25 @@ public class CrowdFundingDetailsOperation {
     	return false;
     }
     
+    /**
+     * 修改所属的物流状态信息
+     * @param id
+     * @param statue
+     * @return
+     */
+    public Boolean update_number(String id,String number,String name,String code){
+    	
+    	try {
+    		String sql="update t_crowdfunding_details as tc  SET tc.logistics_company=? ,logistics_number=? , logistics_code=? where id=?";
+    		 Object params[] = {name,number,code, id};
+    		 int i=queryRunner.update(sql,params);
+    		 if(i==1){
+    			 return true;
+    		 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	return false;
+    }
 }
