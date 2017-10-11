@@ -512,11 +512,11 @@ public class OpUserValidata {
 					if (messageLogs != null && messageLogs.size() >= limitNumber) {// 超过次数
 						map.put("code", ResponseCode.FAIL);
 						map.put("desc", ResponseCode.FAIL_DESC);
+						map.put("message", "限制发送短信");
 						return map;
-					} else {
-						ok = SmsUtil.sendMySms(mobile, mCode + "");
 					}
 				}
+				ok = SmsUtil.sendMySms(mobile, mCode + "");
 			} else {// 没有设置限制信息
 				ok = SmsUtil.sendMySms(mobile, mCode + "");
 			}
@@ -529,13 +529,16 @@ public class OpUserValidata {
 		commandGateway.sendAndWait(command);
 		if (ok) {
 			// 如果验证码发送成功则将发送短信日志写到表里面
-			modifyMessageLog(inesvUserDto, mCode + "");
+			if (inesvUserDto != null) {
+				modifyMessageLog(inesvUserDto, mCode + "");
+			}
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 			map.put("validataCode", mCode);
 		} else {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);
+			map.put("message", "发送失败");
 		}
 		return map;
 	}

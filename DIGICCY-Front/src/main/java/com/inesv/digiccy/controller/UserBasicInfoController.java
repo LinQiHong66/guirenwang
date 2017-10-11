@@ -32,6 +32,19 @@ public class UserBasicInfoController {
 	@Autowired
 	QueryUserBasicInfo queryUserBasicInfo;
 
+	//获取基本信息
+	@RequestMapping(value="getInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getBasicInfo(int userNo){
+		Map<String, Object> map = new HashMap<String, Object>();
+		UserBasicInfoDto dto = queryUserBasicInfo.getUserBasicInfo(userNo);
+		map.put("code", ResponseCode.SUCCESS);
+		map.put("desc", ResponseCode.SUCCESS_DESC);
+		map.put("basicState", !(dto == null));
+		map.put("basicInfo", dto);
+		return map;
+	}
+	
 	// 添加基本信息
 	@RequestMapping(value = "addinfo", method = RequestMethod.POST)
 	@ResponseBody

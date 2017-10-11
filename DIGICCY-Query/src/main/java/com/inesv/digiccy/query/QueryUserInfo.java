@@ -471,7 +471,7 @@ public class QueryUserInfo implements UserDetailsService {
 	 * @return list
 	 */
 	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo, String startTime, String endTime) {
-		String sql = "select * from t_inesv_message_log where user_id = ? and update_time between ? and ? order by date desc";
+		String sql = "select * from t_inesv_message_log where user_id = ? and update_time between ? and ? order by update_time desc";
 		Object params[] = { userNo, startTime, endTime };
 		List<MessageLogDto> list = null;
 		try {
