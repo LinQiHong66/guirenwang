@@ -28,9 +28,10 @@ public class ExcelUtilFactory {
 	ExcelBatch batchAddBalance;
 	@Autowired
 	RedisTemplate<String, Object> redisTemplate;
-	public ExcelUtil getExcelUtil(String excelType,MultipartFile excelFile, String userName) throws Exception {
+
+	public ExcelUtil getExcelUtil(String excelType, MultipartFile excelFile, String userName) throws Exception {
 		ExcelUtil util = null;
-		switch(excelType) {
+		switch (excelType) {
 		case ExcelTypes.regExcelType:
 			util = new RegExcelUtil(ExcelUtils.getExcelContent(excelFile), queryRunner, redisTemplate, userName);
 			break;
@@ -38,27 +39,31 @@ public class ExcelUtilFactory {
 			StaticParamsDto dto = batchAddBalance.getParam("batchgold");
 			BigDecimal maxGload = new BigDecimal(0);
 			String goldCode = "has no code";
-			if(dto != null) {
+			if (dto != null) {
 				maxGload = dto.getValue();
 				goldCode = dto.getCode();
 			}
-			util = new BalanceExcelUtil(ExcelUtils.getExcelContent(excelFile), redisTemplate, userName, batchAddBalance, maxGload.intValue(), goldCode);
+
+			maxGload = maxGload.multiply(new BigDecimal(10000));
+			util = new BalanceExcelUtil(ExcelUtils.getExcelContent(excelFile), redisTemplate, userName, batchAddBalance,
+					maxGload.intValue(), goldCode);
 			break;
 		}
 		return util;
 	}
-	public ResultUtil getResultExcelUtil(String excelType,String userName) throws JSONException {
-		String key = userName+"_"+excelType;
-		
-		System.out.println("key--------------"+key);
-		//从redis获取结果json数据
-		String val = (String)redisTemplate.opsForValue().get(key);
+
+	public ResultUtil getResultExcelUtil(String excelType, String userName) throws JSONException {
+		String key = userName + "_" + excelType;
+
+		System.out.println("getkey--------------");
+		System.out.println(key);
+		// 从redis获取结果json数据
+		String val = (String) redisTemplate.opsForValue().get(key);
+		System.out.println("getvalue-----------");
+		System.out.println(val);
 		switch (excelType) {
 		case ExcelTypes.regExcelType:
-			if(val != null) {
-				return new RegResultUtil(val, batchAddBalance);
-			}
-			return null;
+			return new RegResultUtil(val, batchAddBalance);
 		case ExcelTypes.balanceType:
 			return new BalanceResultUtil(val);
 		default:

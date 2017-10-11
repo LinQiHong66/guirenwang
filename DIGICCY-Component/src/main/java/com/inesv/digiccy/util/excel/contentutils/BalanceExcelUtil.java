@@ -27,6 +27,10 @@ public class BalanceExcelUtil implements ExcelUtil {
 				JSONArray arr = value == null ? new JSONArray() : new JSONArray(value);
 				JSONObject job = new JSONObject(result);
 				arr.put(job);
+				System.out.println("putkey--------------");
+				System.out.println(key);
+				System.out.println("putvalue-------------");
+				System.out.println(arr.toString());
 				redisTemplate.opsForValue().set(key, arr.toString(), 1, TimeUnit.DAYS);
 				Boolean ok = job.getBoolean("executeOk");
 				if((ok != null) && ok) {
@@ -152,6 +156,7 @@ public class BalanceExcelUtil implements ExcelUtil {
 				};
 				task.setListner(listner);
 				if (task != null) {
+					System.out.println("executeTask-----------");
 					ThreadUtil.execute(task, 500, TimeUnit.MILLISECONDS);
 					executeCount++;
 				}

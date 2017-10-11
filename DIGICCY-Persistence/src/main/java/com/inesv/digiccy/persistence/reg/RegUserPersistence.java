@@ -53,7 +53,7 @@ public class RegUserPersistence {
 		Iterator<Long> keyIt = key.keySet().iterator();
 		long user_No = 0;
 		if (keyIt.hasNext()) {
-			keyIt.next();
+			user_No = keyIt.next();
 		}
 
 		Object paramsss[] = { user_No };
