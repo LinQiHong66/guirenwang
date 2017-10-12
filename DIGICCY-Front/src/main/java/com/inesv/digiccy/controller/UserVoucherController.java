@@ -31,12 +31,19 @@ public class UserVoucherController {
 
 	@Autowired
 	UserVoucherValidate userVoucherValidate;
-	
+
 	@Autowired
 	UserBasicInfoValidata userBasicInfoValidata;
-	
+
 	@Autowired
 	OpUserValidata opUserValidata;
+
+	// 获取用户实名认证的信息
+	@RequestMapping(value = "/getCardValidateInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getValidateCardInfo(int userNo) {
+		return userVoucherValidate.getValidateInfo(userNo);
+	}
 
 	@RequestMapping(value = "validateCardId", method = RequestMethod.POST)
 	@ResponseBody
@@ -48,17 +55,17 @@ public class UserVoucherController {
 
 			System.out.println(Name);
 			// 添加审核记录
-			userVoucherValidate.startVoucher(cardId, 1, "", "", "", userNo, Name, "",startDate,endDate);
+			userVoucherValidate.startVoucher(cardId, 1, "", "", "", userNo, Name, "", startDate, endDate);
 			// 判断身份证与名字是否一致
 			Map<String, Object> map1 = new HashMap<String, Object>();
 			map1.put("code", "100");
-//					userVoucherValidate.validateCardId(Name, cardId);
+			// userVoucherValidate.validateCardId(Name, cardId);
 			if ("100".equals(map1.get("code"))) {
 				// 确认通过审核
 				opUserValidata.modifyVoucher(userNo, 4);
-				//更改用户基本信息的真实名称
+				// 更改用户基本信息的真实名称
 				userBasicInfoValidata.modifyRealName(userNo, Name);
-				
+
 				map.put("code", ResponseCode.SUCCESS);
 				map.put("desc", ResponseCode.SUCCESS_DESC);
 				map.put("msg", "验证成功");

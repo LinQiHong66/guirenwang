@@ -20,7 +20,7 @@ public class QueryUserBasicInfo {
 	private QueryRunner queryRunner;
 
 	public UserBasicInfoDto getUserBasicInfo(int userNo) {
-		String sql = "select user_no as userNo, nationality, job, sex, birthday,userName from t_inesv_user_basicinfo where user_no=?";
+		String sql = "select user_no as userNo, nationality, job, sex, birthday,userName,province,districts,cities,addressInfo from t_inesv_user_basicinfo where user_no=?";
 		try {
 			List<UserBasicInfoDto> dtos = queryRunner.query(sql,
 					new BeanListHandler<UserBasicInfoDto>(UserBasicInfoDto.class), new Object[] { userNo });

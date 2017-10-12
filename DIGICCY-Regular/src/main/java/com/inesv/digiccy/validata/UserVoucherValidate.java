@@ -45,30 +45,38 @@ public class UserVoucherValidate {
 	// 开始认证身份
 	/**
 	 * 
-	 * @param cardId  证件号码
-	 * @param type    证件类型
-	 * @param imgUrl1  图片1
-	 * @param imgUrl2  图片2
-	 * @param imgUrl3  图片3
-	 * @param userNo  用户编号
-	 * @param realName  真实姓名
-	 * @param myvoucherType  自定义证件
+	 * @param cardId
+	 *            证件号码
+	 * @param type
+	 *            证件类型
+	 * @param imgUrl1
+	 *            图片1
+	 * @param imgUrl2
+	 *            图片2
+	 * @param imgUrl3
+	 *            图片3
+	 * @param userNo
+	 *            用户编号
+	 * @param realName
+	 *            真实姓名
+	 * @param myvoucherType
+	 *            自定义证件
 	 * @return
 	 */
 	public Map<String, Object> startVoucher(String cardId, int type, String imgUrl1, String imgUrl2, String imgUrl3,
 			int userNo, String realName, String myvoucherType, String startDate, String endDate) {
 		HashMap<String, Object> map = new HashMap<>();
-		
-		//验证用户名和身份证号是否一致
-//		if(type == 1){
-//			Map<String, Object> m = validateCardId(realName, cardId);
-//			if(!m.get("code").equals(ResponseCode.SUCCESS)){
-//				map.put("msg", "姓名和证件号不符");
-//				map.put("code", ResponseCode.FAIL);
-//				map.put("desc", ResponseCode.FAIL_DESC);
-//				return map;
-//			}
-//		}
+
+		// 验证用户名和身份证号是否一致
+		// if(type == 1){
+		// Map<String, Object> m = validateCardId(realName, cardId);
+		// if(!m.get("code").equals(ResponseCode.SUCCESS)){
+		// map.put("msg", "姓名和证件号不符");
+		// map.put("code", ResponseCode.FAIL);
+		// map.put("desc", ResponseCode.FAIL_DESC);
+		// return map;
+		// }
+		// }
 		UserVoucherCommand command = new UserVoucherCommand();
 		command.setCardId(cardId);
 		command.setCardType(type);
@@ -122,13 +130,29 @@ public class UserVoucherValidate {
 				map.put("code", ResponseCode.FAIL);
 				map.put("desc", ResponseCode.FAIL_DESC);
 			}
-		}else{
+		} else {
 			map.put("msg", operation);
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);
 		}
 		return map;
 	}
+
+	// 获取用户实名认证信息
+	public Map<String, Object> getValidateInfo(int userNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		UserVoucherDto dto = queryUserVoucher.findByUserNo(userNo);
+
+		int state = dto == null ? 0 : dto.getState();
+
+		map.put("validateState", (state == 4));
+		map.put("validateInfo", dto);
+		map.put("code", ResponseCode.SUCCESS);
+		map.put("desc", ResponseCode.SUCCESS_DESC);
+		return map;
+	}
+
+	// 校验用户名和身份证号是否一致
 	public Map<String, Object> validateCardId(String name, String idcard) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -136,33 +160,34 @@ public class UserVoucherValidate {
 			Map<String, Object> r = UserCardIdUtil.validateCardId(name, idcard);
 			Object code = r.get("code");
 			Object data = r.get("data");
-	        Map<String, Object> dataM = JSON.parseObject((data==null||"null".equals(data))?"{}":data.toString(), Map.class);
-	        Object result = dataM==null?"0":dataM.get("result");
-	        if("10000".equals(code)){
-	        	if("1".equals(result)){
+			Map<String, Object> dataM = JSON.parseObject((data == null || "null".equals(data)) ? "{}" : data.toString(),
+					Map.class);
+			Object result = dataM == null ? "0" : dataM.get("result");
+			if ("10000".equals(code)) {
+				if ("1".equals(result)) {
 					map.put("code", ResponseCode.SUCCESS);
 					map.put("desc", ResponseCode.SUCCESS_DESC);
-	    			map.put("msg", "验证成功");
-	        	}else{
-	    			map.put("code", ResponseCode.FAIL);
-	    			map.put("desc", ResponseCode.FAIL_DESC);
-	    			map.put("msg", "用户名和证件号不符");
-	    			
-	        	}
-	        }else{
+					map.put("msg", "验证成功");
+				} else {
+					map.put("code", ResponseCode.FAIL);
+					map.put("desc", ResponseCode.FAIL_DESC);
+					map.put("msg", "用户名和证件号不符");
+
+				}
+			} else {
 				map.put("code", ResponseCode.FAIL);
 				map.put("desc", ResponseCode.FAIL_DESC);
 				map.put("msg", "请求失败");
-				
-	        }
-	        return map;
-		}catch(Exception e){
+
+			}
+			return map;
+		} catch (Exception e) {
 			logger.debug(e.getMessage());
 			map.put("code", "300");
 			map.put("desc", ResponseCode.FAIL_DESC);
 			map.put("msg", "请求超时，请重试");
 			return map;
 		}
-		
-    }
+
+	}
 }

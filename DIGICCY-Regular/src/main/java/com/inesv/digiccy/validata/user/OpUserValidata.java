@@ -1,5 +1,6 @@
 package com.inesv.digiccy.validata.user;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -114,6 +115,20 @@ public class OpUserValidata {
 			map.put("desc", ResponseCode.FAIL_DESC);
 		}
 		return map;
+	}
+
+	// 更改登陆密码
+	public boolean modifyLoginPwd(String phone, String password) {
+		boolean ok = false;
+		password = new MD5().getMD5(password);
+		try {
+			int size = regUserPersistence.modifyPassword(phone, password);
+			ok = size > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ok;
 	}
 
 	// 根据条件查询

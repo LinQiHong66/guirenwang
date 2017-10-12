@@ -16,9 +16,10 @@ public class UserBasicInfoValidata extends AbstractAnnotatedAggregateRoot {
 
 	@Autowired
 	private CommandGateway commandGateway;
-	//添加用户基本信息
-	public void addUserInfo(int userNo, String nationality, String sex, String job, String birthday, String userName)
-			throws ParseException {
+
+	// 添加用户基本信息
+	public void addUserInfo(int userNo, String nationality, String sex, String job, String birthday, String userName,
+			String province, String districts, String cities, String addressInfo) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = dateFormat.parse(birthday);
 		UserBasicCommand command = new UserBasicCommand();
@@ -28,10 +29,15 @@ public class UserBasicInfoValidata extends AbstractAnnotatedAggregateRoot {
 		command.setSex(sex);
 		command.setUserNo(userNo);
 		command.setUserName(userName);
+		command.setAddressInfo(addressInfo);
+		command.setDistricts(districts);
+		command.setProvince(province);
+		command.setCities(cities);
 		command.setOpration("insert");
 		commandGateway.sendAndWait(command);
 	}
-	//修改用户真实名称
+
+	// 修改用户真实名称
 	public void modifyRealName(int userNo, String realName) {
 		UserBasicCommand command = new UserBasicCommand();
 

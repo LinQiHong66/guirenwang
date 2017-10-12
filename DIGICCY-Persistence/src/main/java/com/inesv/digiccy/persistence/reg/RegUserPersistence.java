@@ -32,6 +32,17 @@ public class RegUserPersistence {
 	@Autowired
 	QueryRunner queryRunner;
 
+	
+	//修改用户登陆密码
+	public int modifyPassword(String phone, String password) throws SQLException {
+		String sql = "update t_inesv_user set password=? where username=?";
+		Object[] params = new Object[] {
+				password, phone
+		};
+		int k = queryRunner.update(sql,params);
+		return k;
+	}
+	
 	/**
 	 * 新增 用户记录
 	 *

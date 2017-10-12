@@ -14,9 +14,9 @@ public class UserBasicInfoOperation {
 	QueryRunner queryRunner;
 	//添加基本信息
 	public void addBasicInfo(UserBasicInfoDto dto) throws SQLException {
-		String sql = "insert into t_inesv_user_basicinfo (user_no, nationality, job, sex, birthday, userName) values (?,?,?,?,?,?)";
+		String sql = "insert into t_inesv_user_basicinfo (user_no, nationality, job, sex, birthday, userName, province, districts, cities, addressInfo) values (?,?,?,?,?,?,?,?,?,?)";
 		Object[] params = {
-				dto.getUserNo(),dto.getNationality(),dto.getJob(),dto.getSex(),dto.getBirthday(),dto.getUserName()
+				dto.getUserNo(),dto.getNationality(),dto.getJob(),dto.getSex(),dto.getBirthday(),dto.getUserName(),dto.getProvince(),dto.getDistricts(),dto.getCities(),dto.getAddressInfo()
 		};
 		queryRunner.update(sql, params);
 	}
