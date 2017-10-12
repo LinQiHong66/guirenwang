@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.InesvUserDto;
+import com.inesv.digiccy.util.StringUtil;
 import com.inesv.digiccy.validata.EntrustDealValidate;
 import com.inesv.digiccy.validata.InesvAddressValidata;
 import com.inesv.digiccy.validata.TradeValidata;
@@ -74,7 +75,8 @@ public class UserController {
 	@RequestMapping(value = "editUsers")
 	@ResponseBody
 	public Map<String, Object> editUsers(InesvUserDto userDto) {
-		Map<String, Object> map = inesvUserValidata.updateUsers(userDto.getUser_no(), userDto.getReal_name());
+		Map<String, Object> map = inesvUserValidata.updateUsers(
+				userDto.getUser_no(), userDto.getReal_name());
 		return map;
 	}
 
@@ -113,31 +115,36 @@ public class UserController {
 
 	@RequestMapping(value = "gotoUserInfo", method = RequestMethod.GET)
 	public ModelAndView gotoUserInfo(String id) {
-		Map<String, Object> map = userValidata.validataGetUserInfoById(Long.valueOf(id));
+		Map<String, Object> map = userValidata.validataGetUserInfoById(Long
+				.valueOf(id));
 		return new ModelAndView("/user/userInfo", map);
 	}
 
 	@RequestMapping(value = "getUserInfoById", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getUserInfoById(String id) {
-		Map<String, Object> map = userValidata.validataGetUserInfoById(Long.valueOf(id));
+		Map<String, Object> map = userValidata.validataGetUserInfoById(Long
+				.valueOf(id));
 		return map;
 	}
+
 	/**
 	 * 获取用户权限访问详情
 	 */
-	@RequestMapping(value="getPowerLogInfo", method=RequestMethod.POST)
+	@RequestMapping(value = "getPowerLogInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getPowerBasicInfo(int powerInfoId){
+	public Map<String, Object> getPowerBasicInfo(int powerInfoId) {
 		return userPowerInfoValidata.getPowerBasicInfo(powerInfoId);
 	}
+
 	/**
 	 * 获取用户权限访问记录
 	 */
 	@RequestMapping(value = "getPowerLog", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getPowerLogInfo(String url, String info, String userName, String startDate,
-			String endDate, float curPage, int pageItem, String orderName, String orderType) {
+	public Map<String, Object> getPowerLogInfo(String url, String info,
+			String userName, String startDate, String endDate, float curPage,
+			int pageItem, String orderName, String orderType) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String s_curPage = curPage + "";
 		if (s_curPage.contains(".")) {
@@ -149,7 +156,8 @@ public class UserController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		map = userPowerInfoValidata.getUserPowerInfo(url, info, userName, startDate, endDate, curPager, pageItem, orderName, orderType);
+		map = userPowerInfoValidata.getUserPowerInfo(url, info, userName,
+				startDate, endDate, curPager, pageItem, orderName, orderType);
 		return map;
 	}
 
@@ -161,7 +169,8 @@ public class UserController {
 	 */
 	@RequestMapping(value = "gotoSensitiveinformation", method = RequestMethod.GET)
 	public ModelAndView gotoSensitiveinformation(String id) {
-		Map<String, Object> map = userValidata.validataGetUserInfoById(Long.valueOf(id));
+		Map<String, Object> map = userValidata.validataGetUserInfoById(Long
+				.valueOf(id));
 		return new ModelAndView("/user/sensitiveinformationmotify", map);
 	}
 
@@ -191,11 +200,14 @@ public class UserController {
 
 	@RequestMapping(value = "getAllUser", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getAllUser(String username, String phone, int state, float curpage, int pageItem) {
-		int curPage_a = (curpage + "").contains(".")
-				? Integer.parseInt((curpage + "").substring(0, (curpage + "").indexOf(".")))
-				: Integer.parseInt(curpage + "");
-		Map<String, Object> map = userValidata.validataGetAllUser(username, phone, state, curPage_a, pageItem);
+	public Map<String, Object> getAllUser(String username, String phone,
+			int state, float curpage, int pageItem) {
+		int curPage_a = (curpage + "").contains(".") ? Integer
+				.parseInt((curpage + "").substring(0,
+						(curpage + "").indexOf("."))) : Integer
+				.parseInt(curpage + "");
+		Map<String, Object> map = userValidata.validataGetAllUser(username,
+				phone, state, curPage_a, pageItem);
 		return map;
 	}
 
@@ -208,35 +220,45 @@ public class UserController {
 
 	@RequestMapping(value = "updateUserInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> updateUserInfo(String no, String name, String real, String mail, String phone,
-			String certificate, String alipay) {
-		Map<String, Object> usermap = userValidata.validataGetUserInfoByNo(Integer.parseInt(no));
+	public Map<String, Object> updateUserInfo(String no, String name,
+			String real, String mail, String phone, String certificate,
+			String alipay) {
+		Map<String, Object> usermap = userValidata
+				.validataGetUserInfoByNo(Integer.parseInt(no));
 		InesvUserDto info = (InesvUserDto) usermap.get("data");
 		Map<String, Object> map = new HashMap<>();
-		if (userValidata.isRecordExsit(Integer.valueOf(no), phone, certificate)) {
+		System.out.println("userValidata.isRecordExsit(Integer.valueOf(no), phone,certificate):"+userValidata.isRecordExsit(Integer.valueOf(no), phone,
+				certificate));
+		if (userValidata.isRecordExsit(Integer.valueOf(no), name,
+				certificate)) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "您要修改的手机号或者身份证号已经存在");
 			return map;
 		}
-		if (real != null && certificate != null) {
-			if (!real.equals(info.getReal_name()) || !certificate.equals(info.getCertificate_num())) {// 输入的姓名或者身份证与数据库不一致才调用认证接口
+		if (!StringUtil.isEmpty(real) && !StringUtil.isEmpty(certificate)) {
+			if (!real.equals(info.getReal_name())
+					|| !certificate.equals(info.getCertificate_num())) {// 输入的姓名或者身份证与数据库不一致才调用认证接口
 				System.out.println("调用认证接口");
 				// 判断身份证与名字是否一致
-				Map<String, Object> map1 = userVoucherValidate.validateCardId(real, certificate);
+				Map<String, Object> map1 = userVoucherValidate.validateCardId(
+						real, certificate);
 				if ("100".equals(map1.get("code"))) {
 					// 确认通过审核
-					map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no), real, mail, phone, certificate,
-							alipay);
+					map = inesvUserValidata.updateUserInfo(name,
+							Integer.valueOf(no), real, mail, phone,
+							certificate, alipay);
 				} else {
 					map.put("code", ResponseCode.FAIL);
 					map.put("desc", "用戶名和证件号不一致");
 				}
 			} else {
-				map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no), real, mail, phone, certificate,
+				map = inesvUserValidata.updateUserInfo(name,
+						Integer.valueOf(no), real, mail, phone, certificate,
 						alipay);
 			}
 		} else {// 如果输入的名字或者身份证为空则不调用身份验证接口
-			map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no), real, mail, phone, certificate, alipay);
+			map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no),
+					real, mail, phone, certificate, alipay);
 		}
 
 		return map;
@@ -245,14 +267,17 @@ public class UserController {
 	@RequestMapping(value = "updateUserState", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> updateUserState(String no, String state) {
-		Map<String, Object> map = inesvUserValidata.updateUserState(Integer.valueOf(no), Integer.valueOf(state));
+		Map<String, Object> map = inesvUserValidata.updateUserState(
+				Integer.valueOf(no), Integer.valueOf(state));
 		return map;
 	}
 
 	@RequestMapping(value = "updateUserPass", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> updateUserPass(String no, String pass, String deal) {
-		Map<String, Object> map = inesvUserValidata.updateUserPass(Integer.valueOf(no), pass, deal);
+	public Map<String, Object> updateUserPass(String no, String pass,
+			String deal) {
+		Map<String, Object> map = inesvUserValidata.updateUserPass(
+				Integer.valueOf(no), pass, deal);
 		return map;
 	}
 
@@ -265,22 +290,27 @@ public class UserController {
 
 	@RequestMapping(value = "getWallet", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getWallet(@RequestParam String condition, @RequestParam String value) {
-		Map<String, Object> map = userBalanceValidate.validataQueryUserBalanceInfoByUserNoOrCoinType(condition, value);
+	public Map<String, Object> getWallet(@RequestParam String condition,
+			@RequestParam String value) {
+		Map<String, Object> map = userBalanceValidate
+				.validataQueryUserBalanceInfoByUserNoOrCoinType(condition,
+						value);
 		return map;
 	}
 
 	@RequestMapping(value = "getUserEntrust", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getUserEntrust(String userNo) {
-		Map<String, Object> map = entrustDealValidate.validataEntrustRecordByUserNo(userNo);
+		Map<String, Object> map = entrustDealValidate
+				.validataEntrustRecordByUserNo(userNo);
 		return map;
 	}
 
 	@RequestMapping(value = "getUserDeal", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<Object, Object> getUserDeal(String userNo) {
-		Map<Object, Object> map = tradeValidata.validataDealDetailListByUserNo(userNo);
+		Map<Object, Object> map = tradeValidata
+				.validataDealDetailListByUserNo(userNo);
 		return map;
 	}
 
@@ -295,17 +325,17 @@ public class UserController {
 	 * @RequestMapping(value = "confirmEntrust", method = RequestMethod.POST)
 	 * 
 	 * @ResponseBody public Map<String, Object> confirmEntrust(String id, String
-	 * user, String icon, String type, String price, String num, String piundatge) {
-	 * Map<String, Object> map = tradeValidata.confirmEntrust(id, user, icon, type,
-	 * price, num, piundatge); return map; }
+	 * user, String icon, String type, String price, String num, String
+	 * piundatge) { Map<String, Object> map = tradeValidata.confirmEntrust(id,
+	 * user, icon, type, price, num, piundatge); return map; }
 	 */
 
 	@RequestMapping(value = "editAddress", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> editAddress(String userNo, String name, String phone, String remarkAddress,
-			String address, String card) {
-		Map<String, Object> map = inesvAddressValidata.updateAddressByUser(userNo, name, phone, remarkAddress, address,
-				card);
+	public Map<String, Object> editAddress(String userNo, String name,
+			String phone, String remarkAddress, String address, String card) {
+		Map<String, Object> map = inesvAddressValidata.updateAddressByUser(
+				userNo, name, phone, remarkAddress, address, card);
 		return map;
 	}
 
