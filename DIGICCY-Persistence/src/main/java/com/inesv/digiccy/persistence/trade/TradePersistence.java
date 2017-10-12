@@ -94,21 +94,57 @@ public class TradePersistence {
 	 * @throws SQLException
 	 */
 	@Transactional(rollbackFor={Exception.class, RuntimeException.class})
-	public void addEntrustActual(EntrustDto entrust, UserBalanceDto xnb,UserBalanceDto rmb) throws Exception{
+	public void addEntrustActual(EntrustDto entrust) throws Exception{
+		//虚拟币	
+        String queryXnbSql = "select * from t_inesv_user_balance where user_no=? and coin_type=? for update";
+        Object xnbParams[] = {entrust.getUser_no().toString(), entrust.getEntrust_coin().toString()};
+        UserBalanceDto xnbBalanceInfo=queryRunner.query(queryXnbSql,new BeanHandler<UserBalanceDto>(UserBalanceDto.class),xnbParams);
+		//人民币
+        String queryRmbSql = "select * from t_inesv_user_balance where user_no=? and coin_type=? for update";
+        Object rmbParams[] = {entrust.getUser_no().toString(), entrust.getConvert_coin().toString()};
+        UserBalanceDto rmbBalanceInfo=queryRunner.query(queryRmbSql,new BeanHandler<UserBalanceDto>(UserBalanceDto.class),rmbParams);
+		if(entrust.getEntrust_type() == 0){//买 
+			if(entrust.getConvert_coin() == 0) {
+				if(rmbBalanceInfo.getEnable_coin().doubleValue() < (entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue()) { //人民币余额不足
+					int numException = 1/0;
+				}
+				rmbBalanceInfo.setEnable_coin(rmbBalanceInfo.getEnable_coin().subtract((entrust.getEntrust_price().multiply(entrust.getEntrust_num()))));
+				rmbBalanceInfo.setUnable_coin(rmbBalanceInfo.getUnable_coin().add(entrust.getEntrust_price().multiply(entrust.getEntrust_num())));
+			}else {
+				if(entrust.getConvert_price().doubleValue() * rmbBalanceInfo.getEnable_coin().doubleValue() < (entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue()) {
+					int numException = 1/0;
+				}
+				double enable_coin = rmbBalanceInfo.getEnable_coin().doubleValue()-(entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue() / entrust.getConvert_price().doubleValue();
+				double unable_coin = rmbBalanceInfo.getUnable_coin().doubleValue()+(entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue() / entrust.getConvert_price().doubleValue();
+				BigDecimal en_bg = new BigDecimal(enable_coin);  
+				BigDecimal un_bg = new BigDecimal(unable_coin);  
+				rmbBalanceInfo.setEnable_coin(new BigDecimal(en_bg.setScale(6,BigDecimal.ROUND_DOWN).toString()));
+				rmbBalanceInfo.setUnable_coin(new BigDecimal(un_bg.setScale(6,BigDecimal.ROUND_DOWN).toString()));
+			}
+		}
+		if(entrust.getEntrust_type() == 1){//卖
+			if(xnbBalanceInfo.getEnable_coin().doubleValue() - entrust.getEntrust_num().doubleValue() < 0){//虚拟币余额不足
+				int numException = 1/0;
+			}
+			xnbBalanceInfo.setUnable_coin(xnbBalanceInfo.getUnable_coin().add(entrust.getEntrust_num()));
+			xnbBalanceInfo.setEnable_coin(xnbBalanceInfo.getEnable_coin().subtract(entrust.getEntrust_num()));
+		}
 		//添加委托记录
-		String insertEntrust = "insert into t_inesv_entrust(user_no,entrust_coin,convert_coin,convert_price,entrust_type,entrust_price,entrust_num,deal_num,piundatge,state,date) values(?,?,?,?,?,?,?,?,?,?,?)";
-		Object insertParams[] = {entrust.getUser_no(),entrust.getEntrust_coin(),entrust.getConvert_coin(),entrust.getConvert_price(),entrust.getEntrust_type(),
-				entrust.getEntrust_price(),entrust.getEntrust_num(),entrust.getDeal_num(),entrust.getPiundatge(),entrust.getState(),entrust.getDate()};
+		String insertEntrust = "insert into t_inesv_entrust(user_no,entrust_coin,convert_coin,convert_price,convert_sum_price,convert_deal_price,entrust_type,entrust_price,entrust_num,deal_num,piundatge,state,date) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		Object insertParams[] = {entrust.getUser_no(),entrust.getEntrust_coin(),entrust.getConvert_coin(),entrust.getConvert_price(),entrust.getConvert_sum_price(),
+				entrust.getConvert_deal_price(),entrust.getEntrust_type(),entrust.getEntrust_price(),entrust.getEntrust_num(),entrust.getDeal_num(),entrust.getPiundatge(),
+				entrust.getState(),entrust.getDate()};
 		queryRunner.update(insertEntrust, insertParams);
 		//修改该用户的虚拟币资产
 		String updateUserBalance = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where user_no=? and coin_type=?";
-		Object updateParams[] = {xnb.getEnable_coin(),xnb.getUnable_coin(),xnb.getTotal_price(),xnb.getUser_no(),xnb.getCoin_type()};
+		Object updateParams[] = {xnbBalanceInfo.getEnable_coin(),xnbBalanceInfo.getUnable_coin(),xnbBalanceInfo.getTotal_price(),xnbBalanceInfo.getUser_no(),xnbBalanceInfo.getCoin_type()};
 		queryRunner.update(updateUserBalance, updateParams);
 		//修改该用户的人民币资产
 		String updateUserBalanceRmb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where user_no=? and coin_type=?";
-		Object updateRmbParams[] = {rmb.getEnable_coin(),rmb.getUnable_coin(),rmb.getTotal_price(),rmb.getUser_no(),rmb.getCoin_type()};
+		Object updateRmbParams[] = {rmbBalanceInfo.getEnable_coin(),rmbBalanceInfo.getUnable_coin(),rmbBalanceInfo.getTotal_price(),rmbBalanceInfo.getUser_no(),rmbBalanceInfo.getCoin_type()};
 		queryRunner.update(updateUserBalanceRmb, updateRmbParams);
-		lock.lock();// 得到锁  
+		//暂时注释调，交易用的代码
+		/*lock.lock();// 得到锁  
 		try {
 			String querySql = "select * from t_inesv_entrust where user_no = ? order by id desc limit 1";
 			EntrustDto entrusts = queryRunner.query(querySql,new BeanHandler<EntrustDto>(EntrustDto.class),entrust.getUser_no());
@@ -117,7 +153,7 @@ public class TradePersistence {
 			e.printStackTrace();
 		}finally {
 			lock.unlock();// 释放锁
-		}
+		}*/
 	}
 	/*@Transactional(rollbackFor={Exception.class, RuntimeException.class})
 	public void addEntrustActual(final EntrustDto entrust, UserBalanceDto xnb,UserBalanceDto rmb) throws Exception{

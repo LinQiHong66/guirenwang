@@ -1,5 +1,6 @@
 package com.inesv.digiccy.persistence.reg;
 
+import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.CoinDto;
 import com.inesv.digiccy.dto.EntrustDto;
 import com.inesv.digiccy.dto.InesvPhoneDto;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -276,7 +278,10 @@ public class RegUserPersistence {
 	}
 
 	@Transactional(rollbackFor = { Exception.class, RuntimeException.class })
-	public void updateBalanceEntrust(EntrustDto entrustDto) throws Exception {
+	public void updateBalanceEntrust(Long entrustId,Integer userNo) throws Exception {
+		String entrustSql =  "select * FROM t_inesv_entrust  WHERE id=? and user_no=? for update";
+		Object entrustParams[] = { entrustId,userNo };
+		EntrustDto entrustDto = queryRunner.query(entrustSql, new BeanHandler<EntrustDto>(EntrustDto.class),entrustParams);
 		// 修改委托状态
 		String updateEntrustSql = "UPDATE t_inesv_entrust SET state = 2 WHERE id = ?";
 		Object updateEntrustParams[] = { entrustDto.getId() };
@@ -284,35 +289,44 @@ public class RegUserPersistence {
 		// 回滚用户资产
 		String sql = null;
 		if (entrustDto.getEntrust_type() == 0) {
-			sql = "select * from t_inesv_user_balance where user_no = ? and coin_type = 0 for update";
-			Object params[] = { entrustDto.getUser_no() };
-			UserBalanceDto userBalanceDto = queryRunner.query(sql,
-					new BeanHandler<UserBalanceDto>(UserBalanceDto.class), params);
-			if (userBalanceDto.getUnable_coin().doubleValue()
-					- (entrustDto.getEntrust_num().doubleValue() - entrustDto.getDeal_num().doubleValue())
-							* entrustDto.getEntrust_price().doubleValue() < 0) {
-				int exception = 1 / 0;
-			}
-			sql = "UPDATE t_inesv_user_balance SET unable_coin=?,enable_coin=?" + " WHERE user_no=? AND coin_type = 0";
-			Object params1[] = {
-					userBalanceDto.getUnable_coin().doubleValue()
-							- (entrustDto.getEntrust_num().doubleValue() - entrustDto.getDeal_num().doubleValue())
-									* entrustDto.getEntrust_price().doubleValue(),
-					userBalanceDto.getEnable_coin().doubleValue() + (entrustDto.getEntrust_num().doubleValue()
-							* entrustDto.getEntrust_price().doubleValue()
-							- entrustDto.getDeal_num().doubleValue() * entrustDto.getEntrust_price().doubleValue()),
-					entrustDto.getUser_no() };
-			queryRunner.update(sql, params1);
+			sql = "select * from t_inesv_user_balance where user_no = ? and coin_type = ? for update";
+            Object params[] = {entrustDto.getUser_no(),entrustDto.getConvert_coin()};
+            UserBalanceDto userBalanceDto=queryRunner.query(sql, new BeanHandler<UserBalanceDto>(UserBalanceDto.class), params);
+            if(entrustDto.getConvert_coin() == 0) {
+            	if(userBalanceDto.getUnable_coin().doubleValue()-((entrustDto.getEntrust_num().doubleValue()-entrustDto.getDeal_num().doubleValue())*entrustDto.getEntrust_price().doubleValue())<0){
+        			int exception=1/0;
+        		}
+        		sql = "UPDATE t_inesv_user_balance SET unable_coin=?,enable_coin=?"
+            		+ " WHERE user_no=? AND coin_type = 0";
+        			Object params1[] = {userBalanceDto.getUnable_coin().doubleValue()-((entrustDto.getEntrust_num().doubleValue()-entrustDto.getDeal_num().doubleValue())*entrustDto.getEntrust_price().doubleValue()),
+        					userBalanceDto.getEnable_coin().doubleValue()+((entrustDto.getEntrust_num().doubleValue()*entrustDto.getEntrust_price().doubleValue()-entrustDto.getDeal_num().doubleValue()*entrustDto.getEntrust_price().doubleValue())),
+        					entrustDto.getUser_no()};
+        			queryRunner.update(sql, params1);
+            }else {
+            	if(entrustDto.getConvert_sum_price().doubleValue() < entrustDto.getConvert_deal_price().doubleValue()) {
+            		int exception=1/0;
+        		}
+        		BigDecimal returnrmb = entrustDto.getConvert_sum_price().subtract(entrustDto.getConvert_deal_price());
+            	if(userBalanceDto.getUnable_coin().compareTo(returnrmb) == -1){ // 小于
+            		int exception=1/0;
+        		}
+            	sql = "UPDATE t_inesv_user_balance SET unable_coin=?,enable_coin=?"
+                		+ " WHERE user_no=? AND coin_type = ?";
+            		Object params1[] = {userBalanceDto.getUnable_coin().subtract(returnrmb),
+            				userBalanceDto.getEnable_coin().add(returnrmb),
+                    		entrustDto.getUser_no(),entrustDto.getConvert_coin() };
+            		queryRunner.update(sql, params1);
+            }
+			
 		} else if (entrustDto.getEntrust_type() == 1) {
 			sql = "select * from t_inesv_user_balance where user_no = ? and coin_type = ? for update";
 			Object params[] = { entrustDto.getUser_no(), entrustDto.getEntrust_coin() };
-			UserBalanceDto userBalanceDto = queryRunner.query(sql,
-					new BeanHandler<UserBalanceDto>(UserBalanceDto.class), params);
+				UserBalanceDto userBalanceDto = queryRunner.query(sql,new BeanHandler<UserBalanceDto>(UserBalanceDto.class), params);//查询用户资产
 			if ((userBalanceDto.getUnable_coin().doubleValue()
 					- (entrustDto.getEntrust_num().doubleValue() - entrustDto.getDeal_num().doubleValue())) < 0) {
 				int exception = 1 / 0;
 			}
-			sql = "UPDATE t_inesv_user_balance SET unable_coin=?,enable_coin=?" + " WHERE user_no=? AND coin_type = ?";
+			sql = "UPDATE t_inesv_user_balance SET unable_coin=?,enable_coin=? WHERE user_no=? AND coin_type = ?";
 			Object params2[] = {
 					userBalanceDto.getUnable_coin().doubleValue()
 							- (entrustDto.getEntrust_num().doubleValue() - entrustDto.getDeal_num().doubleValue()),
@@ -322,6 +336,59 @@ public class RegUserPersistence {
 			queryRunner.update(sql, params2);
 		}
 	}
+	/*@Transactional(rollbackFor={Exception.class, RuntimeException.class})
+    public void updateBalanceEntrust(EntrustDto entrustDto) throws Exception {
+    	//修改委托状态
+    	String updateEntrustSql = "UPDATE t_inesv_entrust SET state = 2 WHERE id = ?";
+        Object updateEntrustParams[] = {entrustDto.getId()};
+        queryRunner.update(updateEntrustSql, updateEntrustParams);
+        //回滚用户资产
+    	String sql = null;
+    	if(entrustDto.getEntrust_type()==0){
+    		sql = "select * from t_inesv_user_balance where user_no = ? and coin_type = ? for update";
+            Object params[] = {entrustDto.getUser_no(),entrustDto.getConvert_coin()};
+            UserBalanceDto userBalanceDto=queryRunner.query(sql, new BeanHandler<UserBalanceDto>(UserBalanceDto.class), params);
+            if(entrustDto.getConvert_coin() == 0) {
+            	if(userBalanceDto.getUnable_coin().doubleValue()-(entrustDto.getEntrust_num().doubleValue()-entrustDto.getDeal_num().doubleValue())*entrustDto.getEntrust_price().doubleValue()<0){
+        			int exception=1/0;
+        		}
+        		sql = "UPDATE t_inesv_user_balance SET unable_coin=?,enable_coin=?"
+            		+ " WHERE user_no=? AND coin_type = 0";
+        			Object params1[] = {userBalanceDto.getUnable_coin().doubleValue()-(entrustDto.getEntrust_num().doubleValue()-entrustDto.getDeal_num().doubleValue())*entrustDto.getEntrust_price().doubleValue(),
+        					userBalanceDto.getEnable_coin().doubleValue()+(entrustDto.getEntrust_num().doubleValue()*entrustDto.getEntrust_price().doubleValue()-entrustDto.getDeal_num().doubleValue()*entrustDto.getEntrust_price().doubleValue()),
+        					entrustDto.getUser_no()};
+        			queryRunner.update(sql, params1);
+            }else {
+            	double entrustPrice = ((entrustDto.getEntrust_num().doubleValue()-entrustDto.getDeal_num().doubleValue()) * entrustDto.getEntrust_price().doubleValue())
+            			/ entrustDto.getConvert_price().doubleValue();
+				BigDecimal bg = new BigDecimal(entrustPrice);
+        		BigDecimal returnrmb=new BigDecimal(bg.setScale(6,BigDecimal.ROUND_DOWN).toString());
+            	if(userBalanceDto.getUnable_coin().compareTo(returnrmb) == -1){ // 小于
+            			int exception=1/0;
+        		}
+            	sql = "UPDATE t_inesv_user_balance SET unable_coin=?,enable_coin=?"
+                		+ " WHERE user_no=? AND coin_type = ?";
+            		Object params1[] = {userBalanceDto.getUnable_coin().subtract(returnrmb),
+            				userBalanceDto.getEnable_coin().add(returnrmb),
+                    		entrustDto.getUser_no(),entrustDto.getConvert_coin() };
+            		queryRunner.update(sql, params1);
+            }
+    	}else if(entrustDto.getEntrust_type()==1){
+    		sql = "select * from t_inesv_user_balance where user_no = ? and coin_type = ? for update";
+            Object params[] = {entrustDto.getUser_no(),entrustDto.getEntrust_coin()};
+            UserBalanceDto userBalanceDto=queryRunner.query(sql, new BeanHandler<UserBalanceDto>(UserBalanceDto.class), params);
+            if((userBalanceDto.getUnable_coin().doubleValue()-(entrustDto.getEntrust_num().doubleValue()-entrustDto.getDeal_num().doubleValue()))<0){
+            	int exception=1/0;
+            }
+    		sql = "UPDATE t_inesv_user_balance SET unable_coin=?,enable_coin=?"
+            		+ " WHERE user_no=? AND coin_type = ?";
+    		Object params2[] = {userBalanceDto.getUnable_coin().doubleValue()-(entrustDto.getEntrust_num().doubleValue()-entrustDto.getDeal_num().doubleValue()),
+    				userBalanceDto.getEnable_coin().doubleValue()+(entrustDto.getEntrust_num().doubleValue()-entrustDto.getDeal_num().doubleValue()),
+            		entrustDto.getUser_no(),
+            		entrustDto.getEntrust_coin()};
+    		queryRunner.update(sql, params2);
+    	}
+    }*/
 
 	public void updateEntrustStateByAttr1(long attr1) throws Exception {
 		String updateEntrust = "UPDATE t_inesv_entrust SET state = ? WHERE attr1 = ?";

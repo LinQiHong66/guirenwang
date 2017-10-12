@@ -19,7 +19,8 @@ public class PoundageAggregate extends AbstractAnnotatedAggregateRoot {
 
     @CommandHandler
     public PoundageAggregate(PoundageCommand command){
-        apply(new PoundageEvent(command.getId(),command.getUser_no(),command.getOptype(),command.getType(),command.getMoney(),command.getDate(),command.getOperation()));
+        apply(new PoundageEvent(command.getId(),command.getUser_no(),command.getUser_name(),command.getUser_code(),command.getOptype(),command.getType(),
+        		command.getMoney(),command.getSum_money(),command.getDate(),command.getOperation()));
     }
 
     @EventHandler

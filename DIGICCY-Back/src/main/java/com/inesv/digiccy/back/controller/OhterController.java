@@ -82,7 +82,7 @@ public class OhterController {
 	// 修改联系方式
 	@RequestMapping(value = "modifyContact", method = RequestMethod.POST)
 	public ModelAndView modifyContact(int id, String email, String weixin, MultipartFile wxFile, MultipartFile qqFile,
-			String qq, String address, String remark, String telphone, String modifyFile) {
+			String qq, String address, String remark, String telphone, String modifyFile, String authority_account) {
 		String wxurl = "";
 		String qqurl = "";
 		if (modifyFile != null && qqFile != null) {
@@ -92,7 +92,6 @@ public class OhterController {
 				qqurl = QiniuUploadUtil.getStartStaff()
 						+ QiniuUploadUtil.upLoadImage(qqFile.getInputStream(), originalName);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -103,12 +102,11 @@ public class OhterController {
 				wxurl = QiniuUploadUtil.getStartStaff()
 						+ QiniuUploadUtil.upLoadImage(wxFile.getInputStream(), originalName);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		return new ModelAndView("/other/contact", contactValidata.modifyContact(id, email, weixin, wxurl, qqurl, qq,
-				address, remark, modifyFile != null, telphone));
+				address, remark, modifyFile != null, telphone, authority_account));
 	}
 
 	// 删除联系方式
@@ -121,7 +119,7 @@ public class OhterController {
 	// 添加联系方式
 	@RequestMapping(value = "addContact", method = RequestMethod.POST)
 	public ModelAndView addContact(String email, String weixin, MultipartFile wxFile, MultipartFile qqFile, String qq,
-			String address, String remark, String telphone) {
+			String address, String remark, String telphone, String authority_account) {
 		String wxurl = "";
 		String qqurl = "";
 		if (qqFile != null) {
@@ -131,7 +129,6 @@ public class OhterController {
 				qqurl = QiniuUploadUtil.getStartStaff()
 						+ QiniuUploadUtil.upLoadImage(qqFile.getInputStream(), originalName);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -142,12 +139,11 @@ public class OhterController {
 				wxurl = QiniuUploadUtil.getStartStaff()
 						+ QiniuUploadUtil.upLoadImage(wxFile.getInputStream(), originalName);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		return new ModelAndView("/other/contact",
-				contactValidata.addContact(email, weixin, wxurl, qqurl, qq, address, remark, telphone));
+				contactValidata.addContact(email, weixin, wxurl, qqurl, qq, address, remark, telphone, authority_account));
 	}
 
 	// 获取首页视频

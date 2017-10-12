@@ -34,7 +34,8 @@ public class TradeEventHandler {
 	public void handle(EntrustEvent event) throws Exception {
 		EntrustDto entrust = new EntrustDto(event.getId(),event.getUser_no(),
 				event.getEntrust_coin(), event.getConvert_coin(),
-				event.getConvert_price(),event.getEntrust_type(),
+				event.getConvert_price(),event.getConvert_sum_price(),
+				event.getConvert_deal_price(),event.getEntrust_type(),
 				event.getEntrust_price(), event.getEntrust_num(),
 				event.getDeal_num(), event.getPiundatge(), event.getState(),
 				event.getDate());
@@ -62,61 +63,6 @@ public class TradeEventHandler {
 	}
 	
 	/**
-	 * 添加操作：买卖操作
-	 * @param event
-	 * @param Entrust
-	 * @throws SQLException 
-	 * @throws Exception
-	 */
-	/*private void insertOp(EntrustDto entrust) throws Exception{
-		//虚拟币	
-		UserBalanceDto xnb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), entrust.getEntrust_coin().toString());
-		//人民币
-		UserBalanceDto rmb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), "0");
-		if(entrust.getEntrust_type().equals(0)){//买    
-			//xnb.setUnable_coin(xnb.getUnable_coin().add(entrust.getEntrust_num()));
-			rmb.setEnable_coin(rmb.getEnable_coin().subtract((entrust.getEntrust_price().multiply(entrust.getEntrust_num())).add(entrust.getPiundatge())));
-			rmb.setUnable_coin(rmb.getUnable_coin().add(entrust.getEntrust_price().multiply(entrust.getEntrust_num())).add(entrust.getPiundatge()));
-		}
-		if(entrust.getEntrust_type().equals(1)){//卖
-			xnb.setUnable_coin(xnb.getUnable_coin().add(entrust.getEntrust_num()));
-			xnb.setEnable_coin(xnb.getEnable_coin().subtract(entrust.getEntrust_num()));
-			rmb.setEnable_coin(rmb.getEnable_coin().subtract(entrust.getPiundatge()));
-			rmb.setUnable_coin(rmb.getUnable_coin().add(entrust.getPiundatge()));
-		}
-		EntrustPersistence.addEntrust(entrust,xnb,rmb);
-	}*/
-	
-	/**
-	 * 人民币-买卖操作
-	 * @param event
-	 * @param Entrust
-	 * @throws SQLException 
-	 * @throws Exception
-	 */
-	private void insertOps(EntrustDto entrust) throws Exception{
-		//虚拟币	
-		UserBalanceDto xnb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), entrust.getEntrust_coin().toString());
-		//人民币
-		UserBalanceDto rmb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), "0");
-		if(String.valueOf(entrust.getEntrust_type()).equals("0")){//买   
-			if(rmb.getEnable_coin().doubleValue() - (entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue() < 0) { //人民币余额不足
-				int numException = 1/0;
-			}
-			rmb.setEnable_coin(rmb.getEnable_coin().subtract((entrust.getEntrust_price().multiply(entrust.getEntrust_num()))));
-			rmb.setUnable_coin(rmb.getUnable_coin().add(entrust.getEntrust_price().multiply(entrust.getEntrust_num())));
-		}
-		if(String.valueOf(entrust.getEntrust_type()).equals("1")){//卖
-			if(xnb.getEnable_coin().doubleValue() - entrust.getEntrust_num().doubleValue() < 0){//虚拟币余额不足
-				int numException = 1/0;
-			}
-			xnb.setUnable_coin(xnb.getUnable_coin().add(entrust.getEntrust_num()));
-			xnb.setEnable_coin(xnb.getEnable_coin().subtract(entrust.getEntrust_num()));
-		}
-		EntrustPersistence.addEntrustActual(entrust,xnb,rmb);
-	}
-	
-	/**
 	 * 虚拟币-买卖操作
 	 * @param event
 	 * @param Entrust
@@ -124,7 +70,7 @@ public class TradeEventHandler {
 	 * @throws Exception
 	 */
 	private void insertOps_convert(EntrustDto entrust) throws Exception{
-		//虚拟币	
+		/*//虚拟币	
 		UserBalanceDto xnb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), entrust.getEntrust_coin().toString());
 		//人民币
 		UserBalanceDto rmb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), entrust.getConvert_coin().toString());
@@ -153,8 +99,8 @@ public class TradeEventHandler {
 			}
 			xnb.setUnable_coin(xnb.getUnable_coin().add(entrust.getEntrust_num()));
 			xnb.setEnable_coin(xnb.getEnable_coin().subtract(entrust.getEntrust_num()));
-		}
-		EntrustPersistence.addEntrustActual(entrust,xnb,rmb);
+		}*/
+		EntrustPersistence.addEntrustActual(entrust);
 	}
 	
 	/**
@@ -231,4 +177,60 @@ public class TradeEventHandler {
 		entrust.setState(2);
 		EntrustPersistence.updateEntrust(entrust,xnb,rmb);
 	}
+	
+	/**
+	 * 添加操作：买卖操作
+	 * @param event
+	 * @param Entrust
+	 * @throws SQLException 
+	 * @throws Exception
+	 */
+	/*private void insertOp(EntrustDto entrust) throws Exception{
+		//虚拟币	
+		UserBalanceDto xnb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), entrust.getEntrust_coin().toString());
+		//人民币
+		UserBalanceDto rmb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), "0");
+		if(entrust.getEntrust_type().equals(0)){//买    
+			//xnb.setUnable_coin(xnb.getUnable_coin().add(entrust.getEntrust_num()));
+			rmb.setEnable_coin(rmb.getEnable_coin().subtract((entrust.getEntrust_price().multiply(entrust.getEntrust_num())).add(entrust.getPiundatge())));
+			rmb.setUnable_coin(rmb.getUnable_coin().add(entrust.getEntrust_price().multiply(entrust.getEntrust_num())).add(entrust.getPiundatge()));
+		}
+		if(entrust.getEntrust_type().equals(1)){//卖
+			xnb.setUnable_coin(xnb.getUnable_coin().add(entrust.getEntrust_num()));
+			xnb.setEnable_coin(xnb.getEnable_coin().subtract(entrust.getEntrust_num()));
+			rmb.setEnable_coin(rmb.getEnable_coin().subtract(entrust.getPiundatge()));
+			rmb.setUnable_coin(rmb.getUnable_coin().add(entrust.getPiundatge()));
+		}
+		EntrustPersistence.addEntrust(entrust,xnb,rmb);
+	}*/
+	
+	/**
+	 * 人民币-买卖操作
+	 * @param event
+	 * @param Entrust
+	 * @throws SQLException 
+	 * @throws Exception
+	 */
+	/*private void insertOps(EntrustDto entrust) throws Exception{
+		//虚拟币	
+		UserBalanceDto xnb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), entrust.getEntrust_coin().toString());
+		//人民币
+		UserBalanceDto rmb=queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(entrust.getUser_no().toString(), "0");
+		if(String.valueOf(entrust.getEntrust_type()).equals("0")){//买   
+			if(rmb.getEnable_coin().doubleValue() - (entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue() < 0) { //人民币余额不足
+				int numException = 1/0;
+			}
+			rmb.setEnable_coin(rmb.getEnable_coin().subtract((entrust.getEntrust_price().multiply(entrust.getEntrust_num()))));
+			rmb.setUnable_coin(rmb.getUnable_coin().add(entrust.getEntrust_price().multiply(entrust.getEntrust_num())));
+		}
+		if(String.valueOf(entrust.getEntrust_type()).equals("1")){//卖
+			if(xnb.getEnable_coin().doubleValue() - entrust.getEntrust_num().doubleValue() < 0){//虚拟币余额不足
+				int numException = 1/0;
+			}
+			xnb.setUnable_coin(xnb.getUnable_coin().add(entrust.getEntrust_num()));
+			xnb.setEnable_coin(xnb.getEnable_coin().subtract(entrust.getEntrust_num()));
+		}
+		EntrustPersistence.addEntrustActual(entrust,xnb,rmb);
+	}*/
+	
 }

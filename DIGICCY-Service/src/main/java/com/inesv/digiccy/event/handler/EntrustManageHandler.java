@@ -19,8 +19,9 @@ public class EntrustManageHandler {
 
     @EventHandler
     public void handler (EntrustEvent event) throws Exception{
-        EntrustDto entrustDto = new EntrustDto(event.getId(),event.getUser_no(),event.getEntrust_coin(),event.getConvert_coin(),event.getConvert_price(),event.getEntrust_type(),
-                event.getEntrust_price(),event.getEntrust_num(),event.getDeal_num(),event.getPiundatge(),event.getState(),event.getDate());
+        EntrustDto entrustDto = new EntrustDto(event.getId(),event.getUser_no(),event.getEntrust_coin(),event.getConvert_coin(),event.getConvert_price(),
+        		event.getConvert_deal_price(),event.getConvert_sum_price(),event.getEntrust_type(),event.getEntrust_price(),event.getEntrust_num(),
+        		event.getDeal_num(),event.getPiundatge(),event.getState(),event.getDate());
         String opration = event.getOperation();
         switch(opration){
             case "updateState":

@@ -14,6 +14,7 @@ public class ContactDto {
 	private String telphone;
 	private String qq;
 	private String address;
+	private String authority_account;//官方账号
 	private String remark;
 	public int getId() {
 		return id;
@@ -70,6 +71,11 @@ public class ContactDto {
 	public void setTelphone(String telphone) {
 		this.telphone = telphone;
 	}
-	
+	public String getAuthority_account() {
+		return authority_account;
+	}
+	public void setAuthority_account(String authority_account) {
+		this.authority_account = authority_account;
+	}
 	
 }

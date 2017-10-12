@@ -107,11 +107,11 @@ Website: http://thevectorlab.net/
 										<h3>添加联系我们</h3>
 									</div>
 									<div class="modal-body">
-										
 										邮箱 <input type="text" name="email" /><br />
 										微信<input type="text" name="weixin" /><br />
 										qq<input type="text" name="qq" /><br />
 										电话<input type="text" name="telphone" /><br />
+										官方账号<input type="text" name="authority_account" /><br />
 										地址<input type="text" name="address" /><br />
 										信息<input type="text" name="remark" /><br />
 										微信二维码<input type="file" name="wxFile" /><br />
@@ -122,7 +122,6 @@ Website: http://thevectorlab.net/
 										<input type="submit" value="添加" class="btn btn-success" /> <a
 											href="#" class="btn" data-dismiss="modal">取消</a>
 									</div>
-
 								</form>
 							</div>
 							<div id="modifymodal" class="modal hide fade in"
@@ -132,20 +131,21 @@ Website: http://thevectorlab.net/
 									enctype="multipart/form-data" method="POST">
 									<div class="modal-header">
 										<a class="close" data-dismiss="modal">×</a>
-										<h3>修改轮播图</h3>
+										<h3>修改联系我们</h3>
 									</div>
 									<div class="modal-body">
 										<div id='success'>
 											<input type="hidden" name="id" />
 											修改二维码<input type="checkbox" name="modifyFile" /><br />
-										微信二维码<input type="file" name="wxFile" /><br />
-										qq二维码<input type="file" name="qqFile" /><br />v
+											微信二维码<input type="file" name="wxFile" /><br />
+											qq二维码<input type="file" name="qqFile" /><br />
 											邮箱 <input type="text" name="email" /><br />
-										微信<input type="text" name="weixin" /><br />
-										qq<input type="text" name="qq" /><br />
-										电话<input type="text" name="telphone" /><br />
-										地址<input type="text" name="address" /><br />
-										信息<input type="text" name="remark" /><br />
+											微信<input type="text" name="weixin" /><br />
+											qq<input type="text" name="qq" /><br />
+											电话<input type="text" name="telphone" /><br />
+											官方账号<input type="text" name="authority_account" /><br />
+											地址<input type="text" name="address" /><br />
+											信息<input type="text" name="remark" /><br />
 										</div>
 									</div>
 									<div class="modal-footer">

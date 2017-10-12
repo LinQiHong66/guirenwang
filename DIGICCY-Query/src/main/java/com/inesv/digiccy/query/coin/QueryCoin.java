@@ -470,4 +470,21 @@ public class QueryCoin {
 		}
 		return coinList;
 	}
+	
+	/**
+	 * 查询所有货币信息
+	 * 
+	 * @return
+	 */
+	public CoinDto queryCoinByCoinNo(Integer coinNo) {
+		CoinDto dto = new CoinDto();
+		try {
+			String sql = "select buy_poundatge,sell_poundatge from t_inesv_coin_type where coin_no = ?";
+			dto = queryRunner.query(sql, new BeanHandler<>(CoinDto.class),coinNo);
+		} catch (SQLException e) {
+			logger.error("查询虚拟货币失败");
+			e.printStackTrace();
+		}
+		return dto;
+	}
 }

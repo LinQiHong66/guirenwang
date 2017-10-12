@@ -23,8 +23,8 @@ public class PoundagePersistence {
      */
     @Transactional
     public void insertPoundageInfo(PoundageDto dto){
-        String insertBuyPoundage = "INSERT INTO t_inesv_poundage(user_no,optype,type,money,date) VALUES(?,?,?,?,?)";
-        Object parmas[] = {dto.getUser_no(),dto.getOptype(),dto.getType(),dto.getMoney(),dto.getDate()};
+        String insertBuyPoundage = "INSERT INTO t_inesv_poundage(user_no,user_name,user_code,optype,type,money,sum_money,date) VALUES(?,?,?,?,?,?,?,?)";
+        Object parmas[] = {dto.getUser_no(),dto.getUser_name(),dto.getUser_code(),dto.getOptype(),dto.getType(),dto.getMoney(),dto.getSum_money(),dto.getDate()};
         try {
             queryRunner.update(insertBuyPoundage,parmas);
         } catch (SQLException e) {

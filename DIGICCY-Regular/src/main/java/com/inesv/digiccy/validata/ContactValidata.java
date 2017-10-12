@@ -43,7 +43,7 @@ public class ContactValidata {
 
 	// 修改
 	public Map<String, Object> modifyContact(int id, String email, String weixin, String wxqrurl, String qqqrurl,
-			String qq, String address, String remark, boolean modifyFile, String telphone) {
+			String qq, String address, String remark, boolean modifyFile, String telphone, String authority_account) {
 		HashMap<String, Object> map = new HashMap<>();
 		ContactCommand command = new ContactCommand();
 		command.setAddress(address);
@@ -56,6 +56,7 @@ public class ContactValidata {
 		command.setQqqrcord(modifyFile ? qqqrurl : "none");
 		command.setRemark(remark);
 		command.setTelphone(telphone);
+		command.setAuthority_account(authority_account);
 		try {
 			commandGateway.send(command);
 			map.put("code", ResponseCode.SUCCESS);
@@ -69,7 +70,7 @@ public class ContactValidata {
 	}
 	// 添加
 	public Map<String, Object> addContact(String email, String weixin, String wxqrurl, String qqqrurl, String qq,
-			String address, String remark, String telphone) {
+			String address, String remark, String telphone, String authority_account) {
 		HashMap<String, Object> map = new HashMap<>();
 		ContactCommand command = new ContactCommand();
 		command.setAddress(address);
@@ -81,6 +82,7 @@ public class ContactValidata {
 		command.setWeixin(weixin);
 		command.setRemark(remark);
 		command.setTelphone(telphone);
+		command.setAuthority_account(authority_account);
 		try {
 			commandGateway.send(command);
 			map.put("code", ResponseCode.SUCCESS);

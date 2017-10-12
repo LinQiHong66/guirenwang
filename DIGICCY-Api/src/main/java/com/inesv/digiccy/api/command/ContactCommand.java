@@ -9,6 +9,7 @@ public class ContactCommand {
 	private String qq;//qq
 	private String telphone;
 	private String address;//地址
+	private String authority_account;//官方账号
 	private String remark;//详情
 	private String operation;//命令 
 	public int getId() {
@@ -72,5 +73,12 @@ public class ContactCommand {
 	public void setTelphone(String telphone) {
 		this.telphone = telphone;
 	}
+	public String getAuthority_account() {
+		return authority_account;
+	}
+	public void setAuthority_account(String authority_account) {
+		this.authority_account = authority_account;
+	}
+	
 	
 }

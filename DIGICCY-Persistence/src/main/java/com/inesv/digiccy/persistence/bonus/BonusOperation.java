@@ -101,7 +101,7 @@ public class BonusOperation {
      * @param num
      */
     @Transactional(rollbackFor={Exception.class, RuntimeException.class})
-    public void doLevelBonus(Long entrustNo,BigDecimal level_price,Integer coin_type,Integer rel_user_no,Integer user_no,Integer entrustType) throws Exception{
+    public void doLevelBonus(Long entrustNo,BigDecimal level_price,BigDecimal sum_price, Integer coin_type,Integer rel_user_no, String rel_code, Integer user_no, String user_code, Integer entrustType) throws Exception{
     	/*
     	 * 插入分红记录
     	 */

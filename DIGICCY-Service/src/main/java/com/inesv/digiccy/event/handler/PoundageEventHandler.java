@@ -19,9 +19,12 @@ public class PoundageEventHandler {
         PoundageDto dto = new PoundageDto();
         dto.setId(event.getId());
         dto.setUser_no(event.getUser_no());
+        dto.setUser_name(event.getUser_name());
+        dto.setUser_code(event.getUser_code());
         dto.setOptype(event.getOptype());
         dto.setType(event.getType());
         dto.setMoney(event.getMoney());
+        dto.setSum_money(event.getSum_money());
         dto.setDate(event.getDate());
         String operation = event.getOperation();
         switch (operation){

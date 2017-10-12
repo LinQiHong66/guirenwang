@@ -67,7 +67,6 @@ public class TradeController {
 			map.put("desc", "抱歉，交易正在处理中，请勿重复提交！");
 			return map;
 		}*/
-        
     }
 	
 	/**

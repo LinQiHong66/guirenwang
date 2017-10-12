@@ -25,7 +25,7 @@ public class ContactAggregate extends AbstractAnnotatedAggregateRoot {
 	@CommandHandler
 	public ContactAggregate(ContactCommand command) {
 		apply(new ContactEvent(command.getId(), command.getEmail(), command.getWeixin(), command.getWxqrcord(),command.getQqqrcord(),
-				command.getQq(), command.getAddress(), command.getRemark(),command.getTelphone(), command.getOperation()));
+				command.getQq(), command.getAddress(), command.getRemark(), command.getTelphone(), command.getAuthority_account(), command.getOperation()));
 	}
 
 	@EventHandler
