@@ -31,6 +31,8 @@ import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
+import com.inesv.digiccy.validata.UserVoucherValidate;
+import com.inesv.digiccy.validata.user.InesvUserValidata;
 import com.inesv.digiccy.validata.user.OpUserValidata;
 
 @Controller
@@ -38,7 +40,10 @@ import com.inesv.digiccy.validata.user.OpUserValidata;
 public class UserController {
 	@Autowired
 	private CommandGateway commandGateway;
-
+	
+	@Autowired
+	UserVoucherValidate	userVoucherValidate;
+	
 	@Autowired
 	private QueryUserInfo queryUserInfo;
 
@@ -47,6 +52,9 @@ public class UserController {
 
 	@Autowired
 	QueryUserBasicInfo queryUserBasicInfo;
+
+	@Autowired
+	InesvUserValidata inesvUserValidata;
 
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
@@ -154,6 +162,7 @@ public class UserController {
 			String token = new MD5().getMD5(String.valueOf(tokenStr));
 			UserBasicInfoDto basicUserInfo = queryUserBasicInfo.getUserBasicInfo(user.getUser_no());
 			redisTemplate.opsForValue().set(username, token, 7, TimeUnit.DAYS);
+			redisTemplate.opsForValue().set(token + "getuserNo", user.getId(), 7, TimeUnit.DAYS);
 			redisTemplate.opsForValue().set(token, token, 7, TimeUnit.DAYS);
 			redisTemplate.opsForValue().set(token + ":lastTime", new Date(System.currentTimeMillis()));
 			session.setAttribute("userName", username);
@@ -161,14 +170,19 @@ public class UserController {
 			map.put("msg", ResponseCode.SUCCESS_DESC);
 			user.setPassword("******");
 			user.setDeal_pwd("******");
+			Map<String, Object> isValidata = inesvUserValidata.isPealPwd(user.getUser_no());
+			if ("100".equals(isValidata.get("code"))) {
+				user.setDeal_pwdstate(1);
+			} else {
+				user.setDeal_pwdstate(0);
+			}
 			map.put("loginUserInfo", user);
 			map.put("token", token);
-			if (user.getCertificate_num() == null || "".equals(user.getCertificate_num())) {
-				map.put("isvoucher", false);
-			} else {
-				map.put("isvoucher", true);
-			}
-			map.put("basicUserInfo", basicUserInfo);
+			Map<String, Object> voucherMap = userVoucherValidate.getValidateInfo(user.getUser_no());
+			map.put("validateState", voucherMap.get("validateState"));
+			map.put("validateInfo", voucherMap.get("validateInfo"));
+			
+			map.put("basicinfo", basicUserInfo);
 			map.put("basicUserInfoState", !(basicUserInfo == null));
 			LoginLogCommand loginLogCommand = new LoginLogCommand(user.getUser_no(), 1, "通过用户名登录", ip, "", 1,
 					new Date());
@@ -182,6 +196,29 @@ public class UserController {
 		return map;
 	}
 
+	@RequestMapping(value = "getLoginInfo", method = RequestMethod.POST)
+	public Map<String, Object> getLoginInfoByToken(String token) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Long id = (Long) redisTemplate.opsForValue().get(token + "getuserNo");
+		InesvUserDto dto = queryUserInfo.getUserInfoById(id);
+		if(dto != null) {
+			UserBasicInfoDto basicUserInfo = queryUserBasicInfo.getUserBasicInfo(dto.getUser_no());
+			Map<String, Object> voucherMap = userVoucherValidate.getValidateInfo(dto.getUser_no());
+			
+			map.put("validateState", voucherMap.get("validateState"));
+			map.put("validateInfo", voucherMap.get("validateInfo"));
+			map.put("basicinfo", basicUserInfo);
+			map.put("basicUserInfoState", !(basicUserInfo == null));
+			map.put("loginUserInfo", dto);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", "获取用户信息失败!");
+		}else {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "获取用户信息失败!");
+		}
+		return map;
+	}
+
 	@RequestMapping(value = "logout")
 	public @ResponseBody Map<String, Object> logout(HttpSession session, HttpServletRequest request,
 			HttpServletResponse resp, String token) {
@@ -189,6 +226,7 @@ public class UserController {
 		try {
 			String userName = (String) session.getAttribute("userName");
 			redisTemplate.delete(userName);
+			redisTemplate.delete(token + "getuserNo");
 			redisTemplate.delete(token);
 			redisTemplate.delete(token + ":lastTime");
 			map.put("code", ResponseCode.SUCCESS);
@@ -272,10 +310,6 @@ public class UserController {
 		commandGateway.send(userCommand);
 		resultMap.put("data", userCommand);
 		return resultMap;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(new Date().getTime());
 	}
 
 }

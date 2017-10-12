@@ -120,7 +120,7 @@ public class OpUserValidata {
 	// 更改登陆密码
 	public boolean modifyLoginPwd(String phone, String password) {
 		boolean ok = false;
-		password = new MD5().getMD5(password);
+		password = new MD5().getMD5(password==null?"":password);
 		try {
 			int size = regUserPersistence.modifyPassword(phone, password);
 			ok = size > 0;
