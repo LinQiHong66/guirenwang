@@ -30,7 +30,8 @@ public class QueryContact {
      * @return
      */
     public List<ContactDto> getAllContact(String field, String value){
-    	String sql = "select id as id, email as email, wx as weixin, wx_qrcord as wxqrcord, address as address, remark as remark, qq as qq,qq_qrcord as qqqrcord, telphone as telphone from t_inesv_contact";
+    	String sql = "select id as id, email as email, wx as weixin, wx_qrcord as wxqrcord, address as address, remark as remark, "
+    			+ " qq as qq,qq_qrcord as qqqrcord, telphone as telphone, authority_account as authority_account from t_inesv_contact";
     	ArrayList<ContactDto> list = null;
     	try {
     		Object params[];

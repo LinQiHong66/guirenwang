@@ -9,6 +9,8 @@ public class TradeDetailDto {
 
     private Integer coin_type;
     
+    private Integer convert_type;
+    
     private Long buy_user;
     
     private String buy_price;
@@ -45,6 +47,14 @@ public class TradeDetailDto {
 
 	public void setCoin_type(Integer coin_type) {
 		this.coin_type = coin_type;
+	}
+
+	public Integer getConvert_type() {
+		return convert_type;
+	}
+
+	public void setConvert_type(Integer convert_type) {
+		this.convert_type = convert_type;
 	}
 
 	public Long getBuy_user() {

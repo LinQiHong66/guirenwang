@@ -24,13 +24,12 @@ public class ContactOperation {
 	QueryRunner queryRunner;
 
 	public void insertContact(ContactDto dto) {
-		String sql = "insert into t_inesv_contact (email, wx, wx_qrcord, qq_qrcord, qq, address, remark,telphone) values (?,?,?,?,?,?,?,?)";
+		String sql = "insert into t_inesv_contact (email, wx, wx_qrcord, qq_qrcord, qq, address, remark, telphone, authority_account) values (?,?,?,?,?,?,?,?,?)";
 		Object[] params = { dto.getEmail(), dto.getWeixin(), dto.getWxqrcord(), dto.getQqqrcord(), dto.getQq(),
-				dto.getAddress(), dto.getRemark(), dto.getTelphone() };
+				dto.getAddress(), dto.getRemark(), dto.getTelphone(), dto.getAuthority_account() };
 		try {
 			queryRunner.update(sql, params);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			logger.error("插入一条联系数据失败");
 		}
@@ -42,7 +41,6 @@ public class ContactOperation {
 		try {
 			queryRunner.update(sql, params);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			logger.error("插入一条联系数据失败");
 		}
@@ -51,7 +49,7 @@ public class ContactOperation {
 	public void updateContact(ContactDto dto) {
 		String sql = "update t_inesv_contact set email=?, wx=?, "
 				+ ("none".equals(dto.getWxqrcord()) ? "" : "wx_qrcord=?,")
-				+ ("none".equals(dto.getQqqrcord()) ? "" : " qq_qrcord=?,") + " qq=?, address=?, remark=?,telphone=?  where id=?";
+				+ ("none".equals(dto.getQqqrcord()) ? "" : " qq_qrcord=?,") + " qq=?, address=?, remark=?, telphone=?, authority_account=?  where id=?";
 		// Object[] params;
 		// if (!"none".equals(dto.getQrcord())) {
 		// params = new Object[] { dto.getEmail(), dto.getWeixin(),
@@ -76,11 +74,11 @@ public class ContactOperation {
 		A_params.add(dto.getAddress());
 		A_params.add(dto.getRemark());
 		A_params.add(dto.getTelphone());
+		A_params.add(dto.getAuthority_account());
 		A_params.add(dto.getId());
 		try {
 			queryRunner.update(sql, A_params.toArray());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			logger.error("更新一条联系数据失败");
 		}

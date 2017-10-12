@@ -20,6 +20,10 @@ public class EntrustCommand {
     private Integer convert_coin;
     /** 兑换价格 */
     private BigDecimal convert_price;
+    /** 兑换总金额*/
+    private BigDecimal convert_sum_price;
+    /** 兑换当前总金额*/
+    private BigDecimal convert_deal_price;
     /** 委托类型 0：买 1：卖 */
     private Integer entrust_type;
     /** 委托价格 */
@@ -37,19 +41,20 @@ public class EntrustCommand {
     /** 操作类型*/
     private String operation;
     
-    private Long attr1;
-    
 	public EntrustCommand() {
 	}
 
 	public EntrustCommand(Long id, Integer user_no, Integer entrust_coin, Integer convert_coin,
-			BigDecimal convert_price, Integer entrust_type, BigDecimal entrust_price, BigDecimal entrust_num,
-			BigDecimal deal_num, BigDecimal piundatge, Integer state, Date date, String operation) {
+			BigDecimal convert_price, BigDecimal convert_sum_price, BigDecimal convert_deal_price, Integer entrust_type,
+			BigDecimal entrust_price, BigDecimal entrust_num, BigDecimal deal_num, BigDecimal piundatge, Integer state,
+			Date date, String operation) {
 		this.id = id;
 		this.user_no = user_no;
 		this.entrust_coin = entrust_coin;
 		this.convert_coin = convert_coin;
 		this.convert_price = convert_price;
+		this.convert_sum_price = convert_sum_price;
+		this.convert_deal_price = convert_deal_price;
 		this.entrust_type = entrust_type;
 		this.entrust_price = entrust_price;
 		this.entrust_num = entrust_num;
@@ -98,6 +103,22 @@ public class EntrustCommand {
 
 	public void setConvert_price(BigDecimal convert_price) {
 		this.convert_price = convert_price;
+	}
+
+	public BigDecimal getConvert_sum_price() {
+		return convert_sum_price;
+	}
+
+	public void setConvert_sum_price(BigDecimal convert_sum_price) {
+		this.convert_sum_price = convert_sum_price;
+	}
+
+	public BigDecimal getConvert_deal_price() {
+		return convert_deal_price;
+	}
+
+	public void setConvert_deal_price(BigDecimal convert_deal_price) {
+		this.convert_deal_price = convert_deal_price;
 	}
 
 	public Integer getEntrust_type() {
@@ -164,12 +185,4 @@ public class EntrustCommand {
 		this.operation = operation;
 	}
 
-	public Long getAttr1() {
-		return attr1;
-	}
-
-	public void setAttr1(Long attr1) {
-		this.attr1 = attr1;
-	}
-	
 }

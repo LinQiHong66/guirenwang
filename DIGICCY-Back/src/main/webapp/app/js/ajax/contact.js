@@ -10,7 +10,7 @@ $
 							"<thead>" + "<th>id</th>" + "<th>联系信息</th>"
 									+ "<th>邮箱</th>" + "<th>微信</th>"
 									+ "<th>微信二维码</th>" + "<th>qq</th>" + "<th>电话</th>"
-									+ "<th>qq二维码</th>" + "<th>地址</th>"
+									+ "<th>官方账号</th>" + "<th>qq二维码</th>" + "<th>地址</th>"
 									+ "<th>操作</th>" + "</thead><tbody>");
 					var str = "";
 					$
@@ -42,6 +42,9 @@ $
 												+ "</td>"
 												+ "<td style='text-align: center; min-width: 80px;'>"
 												+ b.telphone
+												+ "</td>"
+												+ "<td style='text-align: center; min-width: 80px;'>"
+												+ b.authority_account
 												+ "</td>"
 												+ "<td style='text-align: center; min-width: 80px;'>"
 												+ qqerweima
@@ -88,7 +91,8 @@ function updatecontact(id) {
 				$('#modifymodal input[name=qq]').attr("value", k.qq);
 				$('#modifymodal input[name=address]').attr("value", k.address);
 				$('#modifymodal input[name=remark]').attr("value", k.remark);
-
+				$('#modifymodal input[name=telphone]').attr("value", k.telphone);
+				$('#modifymodal input[name=authority_account]').attr("value", k.authority_account);
 			}
 		}
 	});

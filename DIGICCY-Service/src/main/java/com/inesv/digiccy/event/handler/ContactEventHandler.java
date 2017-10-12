@@ -37,7 +37,7 @@ public class ContactEventHandler {
 	        dto.setRemark(event.getRemark());
 	        dto.setWeixin(event.getWeixin());
 	        dto.setTelphone(event.getTelphone());
-	        
+	        dto.setAuthority_account(event.getAuthority_account());
 	        switch (operation){
 	            case "insert":
 	            	contactOperation.insertContact(dto);

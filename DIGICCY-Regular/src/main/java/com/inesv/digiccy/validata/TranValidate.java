@@ -129,8 +129,14 @@ public class TranValidate {
 						UserBalanceCommand command1 = new UserBalanceCommand(5535L, userNo, coinType, nowEnble,
 								nowTotalprice, new Date(), "updateEnble");// 更新用户可用金额及用户总额
 						commandGateway.send(command1);
-						PoundageCommand poundageCommand = new PoundageCommand(23231L, userNo, 4, coinType,
-								BigDecimal.valueOf(procesCoin), new Date(), "insert");
+						if(userInfoDto.getUsername() == null) {
+							userInfoDto.setUsername("");
+						}
+						if(userInfoDto.getOrg_code() == null) {
+							userInfoDto.setOrg_code("");
+						}
+						PoundageCommand poundageCommand = new PoundageCommand(23231L, userNo,userInfoDto.getUsername(), userInfoDto.getOrg_code(), 4, coinType,
+								BigDecimal.valueOf(procesCoin), BigDecimal.valueOf(coin), new Date(), "insert");
 						commandGateway.send(poundageCommand);// 新增手续费记录
 						UserBalanceDto userBalanceDto1 = queryUserBalanceInfo.queryEnableCoin(tranuser, coinType); // 转账对象
 						BigDecimal tranUserEnble = userBalanceDto1.getEnable_coin();// 获取转账对象可用币种余额
