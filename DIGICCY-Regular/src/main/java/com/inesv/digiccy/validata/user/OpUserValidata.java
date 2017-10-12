@@ -300,6 +300,8 @@ public class OpUserValidata {
 			map.put("userNo", userNo);
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("code", ResponseCode.FAIL);

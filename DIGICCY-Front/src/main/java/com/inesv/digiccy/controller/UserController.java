@@ -361,4 +361,67 @@ public class UserController {
 		}
 
 	}
+	
+	
+	/**
+	 *添加积分和积分记录
+	 * 
+	 * @param userId
+	 */
+	@Transactional
+	public void addIntegral(Long userId,String instruction,double recharge_price) {
+
+		try {
+			List<IntegralRuleDto> dtos = new ArrayList<>();
+			IntegralRuleDto ruleDto = new IntegralRuleDto();
+			ruleDto.setInstruction(instruction);
+			PaginationDto paginationDto = new PaginationDto();
+
+			// 拿到完成任务获取积分状态实体
+			dtos = integral.queryIntegralRule(ruleDto, paginationDto);
+			double rechargeCoin = Double.parseDouble(dtos.get(0).getConditions()); 
+			
+			//拿到整数倍数
+			int iso=(int) (recharge_price/rechargeCoin);
+			if(iso<1){
+				System.out.println("==========充值金额少于规定金额,无法获取积分===========");
+				return;
+			}
+            
+			// 拿到当天的积分总数
+			int number = integral.queryCount(userId.toString(), dtos.get(0).getIdentifier());
+			
+			//拿到差分
+			int prices=Integer.parseInt(dtos.get(0).getNumber())-number;
+			
+			//判断当天剩余的金额
+			if(prices<=0){
+				System.out.println("==========当前积分数已满===========");
+				return;
+			}
+			
+			//拿到充值总积分
+			int count=iso*Integer.parseInt(dtos.get(0).getReward());
+
+			int countNumber=0;
+			
+			//判断获得的积分和所能充值的积分额度
+			if(count>prices){
+				countNumber=prices;
+			}else{
+				countNumber=count;
+			}
+			
+
+			// 增加积分
+			if (dtos.size() > 0) {
+				// 增加积分则失败则直接返回
+				queryUserInfo.addIntegral(userId.toString(), countNumber,
+						dtos.get(0).getType(), dtos.get(0).getIdentifier());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }
