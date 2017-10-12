@@ -26,6 +26,7 @@
 		<module>DIGICCY-Regular</module>
 		<!-- 定时任务层 -->
 		<module>DIGICCY-Mission</module>
+		<!-- 外部接口 暂时关闭 -->
 		<module>DIGICCY-Interfaces</module>
 	</modules>
 
@@ -207,13 +208,13 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>3.0.5.RELEASE</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.inesv</groupId>
 			<artifactId>util</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 
 
 		<dependency>
