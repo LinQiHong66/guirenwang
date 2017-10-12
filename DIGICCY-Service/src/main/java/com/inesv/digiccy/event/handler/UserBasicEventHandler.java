@@ -10,11 +10,12 @@ import com.inesv.digiccy.event.UserBasicInfoEvent;
 import com.inesv.digiccy.persistence.user.UserBasicInfoOperation;
 
 public class UserBasicEventHandler {
-	
+
 	@Autowired
 	UserBasicInfoOperation userBasicInfoOptation;
 
-    private static Logger logger = LoggerFactory.getLogger(UserBasicEventHandler.class);
+	private static Logger logger = LoggerFactory.getLogger(UserBasicEventHandler.class);
+
 	@EventHandler
 	public void handle(UserBasicInfoEvent event) throws Exception {
 		UserBasicInfoDto dto = new UserBasicInfoDto();
@@ -24,12 +25,16 @@ public class UserBasicEventHandler {
 		dto.setSex(event.getSex());
 		dto.setUserNo(event.getUserNo());
 		dto.setUserName(event.getUserName());
+		dto.setProvince(event.getProvince());
+		dto.setDistricts(event.getDistricts());
+		dto.setCities(event.getCities());
+		dto.setAddressInfo(event.getAddressInfo());
 		String opration = event.getOpration();
 		switch (opration) {
 		case "insert":
 			try {
 				userBasicInfoOptation.addBasicInfo(dto);
-			}catch(Exception e) {
+			} catch (Exception e) {
 				logger.debug(e.getMessage());
 				e.printStackTrace();
 			}
@@ -37,7 +42,7 @@ public class UserBasicEventHandler {
 		case "updateRealName":
 			try {
 				userBasicInfoOptation.updateRealName(dto);
-			}catch(Exception e) {
+			} catch (Exception e) {
 				logger.debug(e.getMessage());
 				e.printStackTrace();
 			}

@@ -1,5 +1,6 @@
 package com.inesv.digiccy.validata.user;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -116,6 +117,20 @@ public class OpUserValidata {
 		return map;
 	}
 
+	// 更改登陆密码
+	public boolean modifyLoginPwd(String phone, String password) {
+		boolean ok = false;
+		password = new MD5().getMD5(password);
+		try {
+			int size = regUserPersistence.modifyPassword(phone, password);
+			ok = size > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ok;
+	}
+
 	// 根据条件查询
 	public Map<String, Object> getAllVoucher(String filed, String value) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -198,6 +213,33 @@ public class OpUserValidata {
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		}
 		return map;
+	}
+
+	/**
+	 * 是否存在相同手机号 身份证号码 用户编码的记录
+	 * 
+	 * @param userNo
+	 * @param phone
+	 * @param idcard
+	 * @return
+	 */
+	public boolean isRecordExsit(int userNo, String phone, String idcard) {
+		if (phone == null) {
+			phone = "";
+		}
+		if (idcard == null) {
+			idcard = "";
+		}
+		List<InesvUserDto> info = queryUser.getUserInfo(userNo, phone, idcard);
+		if (info != null) {
+			if (info.size() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
 	}
 
 	/**
@@ -479,15 +521,17 @@ public class OpUserValidata {
 			if (messageSetDto != null) {
 				int limitNumber = messageSetDto.getLimit_number();// 限制次数
 				int limitDate = messageSetDto.getLimit_date();// 限制时间
-				List<MessageLogDto> messageLogs = queryUser.getMessageLogLimitTime(inesvUserDto.getUser_no(),
-						limitDate);
-				if (messageLogs != null && messageLogs.size() >= limitNumber) {// 超过次数
-					map.put("code", ResponseCode.FAIL);
-					map.put("desc", ResponseCode.FAIL_DESC);
-					return map;
-				} else {
-					ok = SmsUtil.sendMySms(mobile, mCode + "");
+				if (inesvUserDto != null) {
+					List<MessageLogDto> messageLogs = queryUser.getMessageLogLimitTime(inesvUserDto.getUser_no(),
+							limitDate);
+					if (messageLogs != null && messageLogs.size() >= limitNumber) {// 超过次数
+						map.put("code", ResponseCode.FAIL);
+						map.put("desc", ResponseCode.FAIL_DESC);
+						map.put("message", "限制发送短信");
+						return map;
+					}
 				}
+				ok = SmsUtil.sendMySms(mobile, mCode + "");
 			} else {// 没有设置限制信息
 				ok = SmsUtil.sendMySms(mobile, mCode + "");
 			}
@@ -500,13 +544,16 @@ public class OpUserValidata {
 		commandGateway.sendAndWait(command);
 		if (ok) {
 			// 如果验证码发送成功则将发送短信日志写到表里面
-			modifyMessageLog(inesvUserDto, mCode + "");
+			if (inesvUserDto != null) {
+				modifyMessageLog(inesvUserDto, mCode + "");
+			}
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 			map.put("validataCode", mCode);
 		} else {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);
+			map.put("message", "发送失败");
 		}
 		return map;
 	}

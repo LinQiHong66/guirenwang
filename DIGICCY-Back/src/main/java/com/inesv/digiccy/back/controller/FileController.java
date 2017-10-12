@@ -3,6 +3,7 @@ package com.inesv.digiccy.back.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -60,9 +62,10 @@ public class FileController {
     }
 
     //执行excel
+
     @RequestMapping(value = "/executeExcel", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> executeExcel(HttpSession session, MultipartFile excelFile, String fileType, boolean addAddress) throws Exception {
+    public Map<String, Object> executeExcel(HttpSession session, @RequestParam MultipartFile excelFile, String fileType, boolean addAddress) throws Exception {
         SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
         String userName = "null";
         try {

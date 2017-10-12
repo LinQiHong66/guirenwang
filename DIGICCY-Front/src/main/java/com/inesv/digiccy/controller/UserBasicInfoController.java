@@ -32,21 +32,38 @@ public class UserBasicInfoController {
 	@Autowired
 	QueryUserBasicInfo queryUserBasicInfo;
 
+	// 获取基本信息
+	@RequestMapping(value = "getInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getBasicInfo(int userNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		UserBasicInfoDto dto = queryUserBasicInfo.getUserBasicInfo(userNo);
+		map.put("code", ResponseCode.SUCCESS);
+		map.put("desc", ResponseCode.SUCCESS_DESC);
+		map.put("basicState", !(dto == null));
+		map.put("basicInfo", dto);
+		return map;
+	}
+
 	// 添加基本信息
 	@RequestMapping(value = "addinfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> addInfo(int userNo, String nationality, String sex, String job, String birthday,
-			String realName) {
+			String realName, String province, String districts, String cities, String addressInfo) {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			job = new String(job.getBytes("iso-8859-1"), "utf-8");
 			nationality = new String(nationality.getBytes("iso-8859-1"), "utf-8");
 			sex = new String(sex.getBytes("iso-8859-1"), "utf-8");
 			realName = new String(realName.getBytes("iso-8859-1"), "utf-8");
+			province = new String(province.getBytes("iso-8859-1"), "utf-8");
+			districts = new String(districts.getBytes("iso-8859-1"), "utf-8");
+			cities = new String(cities.getBytes("iso-8859-1"), "utf-8");
+			addressInfo = new String(addressInfo.getBytes("iso-8859-1"), "utf-8");
 			// 添加基本信息
-			userBasicInfoValidate.addUserInfo(userNo, nationality, sex, job, birthday, realName);
+			userBasicInfoValidate.addUserInfo(userNo, nationality, sex, job, birthday, realName, province, districts, cities, addressInfo);
 			UserBasicInfoDto dto = queryUserBasicInfo.getUserBasicInfo(userNo);
-			
+
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 			map.put("basicinfo", dto);

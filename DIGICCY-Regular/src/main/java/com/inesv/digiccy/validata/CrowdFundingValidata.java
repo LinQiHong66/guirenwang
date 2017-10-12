@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,14 +17,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.inesv.digiccy.api.command.CrowdFundingCommand;
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.CrowdFundingDetailsDto;
 import com.inesv.digiccy.dto.CrowdFundingDto;
 import com.inesv.digiccy.dto.InesvUserDto;
+import com.inesv.digiccy.persistence.crowd.CrowdFundingDetailsOperation;
 import com.inesv.digiccy.query.QueryCrowdFundingInfo;
 import com.inesv.digiccy.query.QuerySubCore;
 import com.inesv.digiccy.util.excel.ExcelUtils;
+import com.inesv.digiccy.validata.util.logistics.KdniaoTrackQueryAPI;
 
 /**
  * Created by Administrator on 2016/11/9 0009.
@@ -40,6 +45,13 @@ public class CrowdFundingValidata {
 	@Autowired
 	private CommandGateway commandGateway;
 
+	@Autowired
+	private KdniaoTrackQueryAPI kdnApi;
+	
+	@Autowired
+	private  CrowdFundingDetailsOperation co;
+	
+	
 	/**
 	 * 增加众筹项目
 	 * 
@@ -372,5 +384,106 @@ public class CrowdFundingValidata {
 		contact.put(title5, value5);
 		contact.put(title6, value6);
 		ExcelUtils.export(response, contact);
+	}
+	
+	
+	/**
+	 * 更新物流信息
+	 * @return
+	 */
+	public String updateLogistics(String ids){
+		
+		if(ids==null || ids.equals("")){
+			return "数据不能为空";
+		}
+		
+		try {
+				 String[] strArray = ids.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+				 List list = Arrays.asList(strArray);
+				 List<CrowdFundingDetailsDto> crows=new ArrayList<>();
+				 crows=queryCrowdFundingInfo.query_wl(list);
+				 if(crows.size()<=0){
+					 return "查找的数据不存在";
+				 }
+				 
+				 for(int i=crows.size()-1;i>=0;i--){
+					 
+					 if(crows.get(i).getLogistics_code()==null || crows.get(i).getLogistics_code().equals("")
+							 || crows.get(i).getLogistics_number()==null || crows.get(i).getLogistics_number().equals("") ){
+						 return "当前id为"+crows.get(i).getId()+"存在物流数据异常，更新物流失败";
+					 }
+					 
+					String	result =kdnApi.getOrderTracesByJson(crows.get(i).getLogistics_code(), crows.get(i).getLogistics_number());
+					this.update_status(crows.get(i).getId().toString(), analysis_status(result));
+				 }
+				 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		 
+		 return "操作成功";
+	}
+	
+	/**
+	 * 解析返回的物流信息
+	 * @return
+	 */
+	public String analysis_status(String result){
+		try {
+			JSONObject object=JSONObject.parseObject(result);
+			JSONArray array=(JSONArray) object.get("Traces");
+			if(array.size()<=0){
+				return "物流信息为空";
+			}
+			JSONObject obje=(JSONObject) array.get(array.size()-1);
+			String status=obje.getString("AcceptTime")+":"+obje.getString("AcceptStation");
+			return status;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		return  null;
+	}
+	
+	/**
+	 * 更新物流状态
+	 * @param id
+	 * @param status
+	 * @return
+	 */
+	public Boolean update_status(String id,String status){
+		
+		try {
+			return co.update_wl(id, status);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
+	
+	
+	/**
+	 * 添加物流单号
+	 * @return
+	 */
+	public String update_number(String id , String number , String name,String code){
+		
+		try {
+			if(id==null || "".equals(id) || number==null || "".equals(number) || name==null || "".equals(name)){
+				return "参数错误";
+			}
+			if( co.update_number(id, number,name,code)){
+				return "添加成功";
+			}else{
+				return "添加失败";
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "添加失败";
+		}
 	}
 }

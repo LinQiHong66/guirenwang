@@ -20,6 +20,8 @@ import org.springframework.security.access.intercept.AbstractSecurityInterceptor
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.inesv.digiccy.dto.PowerInfoDto;
 import com.inesv.digiccy.dto.ProwerParamDto;
@@ -27,11 +29,11 @@ import com.inesv.digiccy.validata.PowerRecordValidata;
 
 @Component
 public class MonitorPowerFilter implements Filter {
-
+	private CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
 	// 用来储存要记录的权限url
 	private final static String[] powerUrls = { "user/updateUserPass.do", "user/updateUserInfo.do",
 			"userOrganization/updateOrganization.do", "user/updateUserState.do", "rmb/doRecharge.do",
-			"rmb/doWithdraw.do", "param/addStaticParam.do", "param/updateStaticParam.do" };
+			"rmb/doWithdraw.do", "param/addStaticParam.do", "param/updateStaticParam.do", "file/executeExcel.do" };
 	// 权限url参数的说明
 	private final static HashMap<String, String> paramInfo = new HashMap<>();
 	// 权限url的说明
@@ -98,6 +100,15 @@ public class MonitorPowerFilter implements Filter {
 		paramInfo.put(key17, "后台参数id");
 		paramInfo.put(key18, "后台参名称");
 		paramInfo.put(key19, "后台参数值");
+
+		// 存储file/executeExcel.do 权限地址的说明和参数说明
+		String key20 = "file/executeExcel.do" + "/" + "excelFile";
+		String key21 = "file/executeExcel.do" + "/" + "fileType";
+		String key22 = "file/executeExcel.do" + "/" + "addAddress";
+		urlInfo.put("file/executeExcel.do", "批量处理");
+		paramInfo.put(key20, "处理的文件");
+		paramInfo.put(key21, "文件类型(regTemplate是批量注册，balanceTemplate是批量入金)");
+		paramInfo.put(key22, "是否添加地址（批量注册用的）");
 	}
 	@Autowired
 	PowerRecordValidata powerRecordValidata;
@@ -130,31 +141,56 @@ public class MonitorPowerFilter implements Filter {
 		}
 		// 监控特定权限，并记录
 
-		// 重置某个用户密码
 		if (hasAdd(url)) {
-			Enumeration<String> enumParam = req.getParameterNames();
-			;
 
-			ArrayList<ProwerParamDto> params = new ArrayList<>();
 			PowerInfoDto infoDto = new PowerInfoDto();
+			// 判断是不是文件上传的类型
+			String type = req.getContentType();
+			if (type.contains("multipart/form-data")) {
+				MultipartHttpServletRequest multipartReq = multipartResolver.resolveMultipart(req);
+				Enumeration<String> enumParam = multipartReq.getParameterNames();
+				ArrayList<ProwerParamDto> params = new ArrayList<>();
+				
+				while (enumParam.hasMoreElements()) {
+					String paramName = enumParam.nextElement();
+					String paramInfo = getParamInfo(url, paramName);
+					String paramValue = multipartReq.getParameter(paramName);
+
+					ProwerParamDto paramDto = new ProwerParamDto();
+					paramDto.setParamInfo(paramInfo);
+					paramDto.setParamName(paramName);
+					paramDto.setParamValue(paramValue);
+					params.add(paramDto);
+				}
+				infoDto.setParams(params);
+				//重新给request赋值
+				request = multipartReq;
+			} else {
+
+				Enumeration<String> enumParam = req.getParameterNames();
+				ArrayList<ProwerParamDto> params = new ArrayList<>();
+				while (enumParam.hasMoreElements()) {
+					String paramName = enumParam.nextElement();
+					String paramInfo = getParamInfo(url, paramName);
+					ProwerParamDto paramDto = new ProwerParamDto();
+					String paramValue = req.getParameter(paramName);
+					paramDto.setParamInfo(paramInfo);
+					paramDto.setParamName(paramName);
+					paramDto.setParamValue(paramValue);
+					params.add(paramDto);
+				}
+				infoDto.setParams(params);
+			}
+
 			infoDto.setUrl(url);
 			infoDto.setInfo(getUrlInfo(url));
 			infoDto.setTime(new Date(System.currentTimeMillis()));
 			infoDto.setUserName(userName);
-			while (enumParam.hasMoreElements()) {
-				String paramName = enumParam.nextElement();
-				String paramInfo = getParamInfo(url, paramName);
-				ProwerParamDto paramDto = new ProwerParamDto();
-				paramDto.setParamInfo(paramInfo);
-				paramDto.setParamName(paramName);
-				paramDto.setParamValue(req.getParameter(paramName));
-				params.add(paramDto);
-			}
-			infoDto.setParams(params);
+
 			// 添加记录
 			powerRecordValidata.addPowerInfo(infoDto);
 		}
-
+		
 		// 让请求通过
 		chain.doFilter(request, response);
 	}
@@ -209,7 +245,6 @@ public class MonitorPowerFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 
 	}
 }

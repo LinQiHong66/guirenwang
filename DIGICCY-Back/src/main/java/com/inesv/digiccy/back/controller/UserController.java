@@ -21,6 +21,7 @@ import com.inesv.digiccy.validata.UserVoucherValidate;
 import com.inesv.digiccy.validata.bank.InesvBankInfoValidata;
 import com.inesv.digiccy.validata.user.InesvUserValidata;
 import com.inesv.digiccy.validata.user.OpUserValidata;
+import com.inesv.digiccy.validata.user.UserPowerInfoValidata;
 
 /**
  * Created by JimJim on 2016/12/5 0005.
@@ -29,6 +30,9 @@ import com.inesv.digiccy.validata.user.OpUserValidata;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+	@Autowired
+	UserPowerInfoValidata userPowerInfoValidata;
 
 	@Autowired
 	OpUserValidata userValidata;
@@ -86,6 +90,12 @@ public class UserController {
 		return "/user/sensitiveinformation";
 	}
 
+	// 到用户权限访问记录
+	@RequestMapping(value = "gotopowerlog", method = RequestMethod.GET)
+	public String gotoPowerLog() {
+		return "/user/powerLogInfo";
+	}
+
 	@RequestMapping(value = "gotoUser", method = RequestMethod.GET)
 	public ModelAndView gotoUser() {
 		Map<String, Object> map = new HashMap<>();
@@ -111,6 +121,35 @@ public class UserController {
 	@ResponseBody
 	public Map<String, Object> getUserInfoById(String id) {
 		Map<String, Object> map = userValidata.validataGetUserInfoById(Long.valueOf(id));
+		return map;
+	}
+	/**
+	 * 获取用户权限访问详情
+	 */
+	@RequestMapping(value="getPowerLogInfo", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getPowerBasicInfo(int powerInfoId){
+		return userPowerInfoValidata.getPowerBasicInfo(powerInfoId);
+	}
+	/**
+	 * 获取用户权限访问记录
+	 */
+	@RequestMapping(value = "getPowerLog", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getPowerLogInfo(String url, String info, String userName, String startDate,
+			String endDate, float curPage, int pageItem, String orderName, String orderType) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String s_curPage = curPage + "";
+		if (s_curPage.contains(".")) {
+			s_curPage = s_curPage.substring(0, s_curPage.indexOf("."));
+		}
+		int curPager = 1;
+		try {
+			curPager = Integer.parseInt(s_curPage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map = userPowerInfoValidata.getUserPowerInfo(url, info, userName, startDate, endDate, curPager, pageItem, orderName, orderType);
 		return map;
 	}
 
@@ -174,8 +213,13 @@ public class UserController {
 		Map<String, Object> usermap = userValidata.validataGetUserInfoByNo(Integer.parseInt(no));
 		InesvUserDto info = (InesvUserDto) usermap.get("data");
 		Map<String, Object> map = new HashMap<>();
+		if (userValidata.isRecordExsit(Integer.valueOf(no), phone, certificate)) {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "您要修改的手机号或者身份证号已经存在");
+			return map;
+		}
 		if (real != null && certificate != null) {
-			if (!real.equals(info.getReal_name()) || !certificate.equals(info.getCertificate_num())) {//输入的姓名或者身份证与数据库不一致才调用认证接口
+			if (!real.equals(info.getReal_name()) || !certificate.equals(info.getCertificate_num())) {// 输入的姓名或者身份证与数据库不一致才调用认证接口
 				System.out.println("调用认证接口");
 				// 判断身份证与名字是否一致
 				Map<String, Object> map1 = userVoucherValidate.validateCardId(real, certificate);
@@ -188,12 +232,10 @@ public class UserController {
 					map.put("desc", "用戶名和证件号不一致");
 				}
 			} else {
-				System.out.println("不调用接口");
 				map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no), real, mail, phone, certificate,
 						alipay);
 			}
 		} else {// 如果输入的名字或者身份证为空则不调用身份验证接口
-			System.out.println("名字或者身份证为空不调用接口");
 			map = inesvUserValidata.updateUserInfo(name, Integer.valueOf(no), real, mail, phone, certificate, alipay);
 		}
 
@@ -249,13 +291,14 @@ public class UserController {
 		return map;
 	}
 
-	/*@RequestMapping(value = "confirmEntrust", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> confirmEntrust(String id, String user, String icon, String type, String price,
-			String num, String piundatge) {
-		Map<String, Object> map = tradeValidata.confirmEntrust(id, user, icon, type, price, num, piundatge);
-		return map;
-	}*/
+	/*
+	 * @RequestMapping(value = "confirmEntrust", method = RequestMethod.POST)
+	 * 
+	 * @ResponseBody public Map<String, Object> confirmEntrust(String id, String
+	 * user, String icon, String type, String price, String num, String piundatge) {
+	 * Map<String, Object> map = tradeValidata.confirmEntrust(id, user, icon, type,
+	 * price, num, piundatge); return map; }
+	 */
 
 	@RequestMapping(value = "editAddress", method = RequestMethod.POST)
 	@ResponseBody

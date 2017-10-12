@@ -12,6 +12,7 @@ import org.json.JSONObject;
 public class BalanceResultUtil implements ResultUtil{
 	private JSONArray redisResult;
 	public BalanceResultUtil(String redisResult) throws JSONException{
+		redisResult = redisResult==null?"[]":redisResult;
 		this.redisResult = new JSONArray(redisResult);
 	}
 	@Override

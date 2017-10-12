@@ -31,6 +31,7 @@ import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
+import com.inesv.digiccy.validata.user.OpUserValidata;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -40,10 +41,13 @@ public class UserController {
 
 	@Autowired
 	private QueryUserInfo queryUserInfo;
-	
+
+	@Autowired
+	OpUserValidata regUserValidata;
+
 	@Autowired
 	QueryUserBasicInfo queryUserBasicInfo;
-	
+
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
@@ -78,6 +82,33 @@ public class UserController {
 		// System.out.println(test);
 		// System.out.println(SecurityContextHolder.getContext().getAuthentication().getCredentials());
 		return new ModelAndView("/index");
+	}
+
+	// 忘记密码
+	@RequestMapping(value = "forgetPassword", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> forgetPassword(String phoneCode, String phone, String newPassword) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> phoneCodeMap = regUserValidata.validataCompare(phone, phoneCode);
+		Object code = phoneCodeMap.get("code");
+		if ("100".equals(code)) {
+			// 短信验证成功
+			boolean ok = regUserValidata.modifyLoginPwd(phone, newPassword);
+			if (ok) {
+				map.put("msg", "修改成功");
+				map.put("code", ResponseCode.SUCCESS);
+				map.put("desc", ResponseCode.SUCCESS_DESC);
+			} else {
+				map.put("code", ResponseCode.FAIL);
+				map.put("desc", ResponseCode.FAIL_DESC);
+				map.put("msg", "修改失败，请稍后重试");
+			}
+		} else {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", ResponseCode.FAIL_DESC);
+			map.put("msg", "短信验证失败");
+		}
+		return map;
 	}
 
 	@RequestMapping(value = "login")
@@ -138,7 +169,7 @@ public class UserController {
 				map.put("isvoucher", true);
 			}
 			map.put("basicUserInfo", basicUserInfo);
-			map.put("basicUserInfoState", !(basicUserInfo==null));
+			map.put("basicUserInfoState", !(basicUserInfo == null));
 			LoginLogCommand loginLogCommand = new LoginLogCommand(user.getUser_no(), 1, "通过用户名登录", ip, "", 1,
 					new Date());
 			commandGateway.send(loginLogCommand);
