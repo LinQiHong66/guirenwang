@@ -57,6 +57,10 @@ public class InesvUserDto {
     private String org_code;
     /**父机构编码*/
     private String org_parent_code;
+    /**
+     * 积分数
+     */
+    private String integral;
 
     public long getId() {
         return id;
@@ -268,5 +272,13 @@ public class InesvUserDto {
 				+ alipay_state + ", state=" + state + ", invite_num=" + invite_num + ", date=" + date + ", photo="
 				+ photo + ", photo_state=" + photo_state + ", org_type=" + org_type + ", org_code=" + org_code
 				+ ", org_parent_code=" + org_parent_code + "]";
+	}
+
+	public String getIntegral() {
+		return integral;
+	}
+
+	public void setIntegral(String integral) {
+		this.integral = integral;
 	}
 }
