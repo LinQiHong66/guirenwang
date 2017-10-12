@@ -1,5 +1,6 @@
 package com.inesv.digiccy.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,9 +31,14 @@ import com.inesv.digiccy.dto.LoginLogDto;
 import com.inesv.digiccy.dto.UserBasicInfoDto;
 import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
+import com.inesv.digiccy.query.integral.QueryIntegral;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
+import com.inesv.digiccy.validata.UserVoucherValidate;
+import com.inesv.digiccy.validata.user.InesvUserValidata;
 import com.inesv.digiccy.validata.user.OpUserValidata;
+import com.integral.dto.IntegralRuleDto;
+import com.pagination.PaginationDto;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -40,13 +47,22 @@ public class UserController {
 	private CommandGateway commandGateway;
 
 	@Autowired
+	UserVoucherValidate userVoucherValidate;
+
+	@Autowired
 	private QueryUserInfo queryUserInfo;
+
+	@Autowired
+	private QueryIntegral integral;
 
 	@Autowired
 	OpUserValidata regUserValidata;
 
 	@Autowired
 	QueryUserBasicInfo queryUserBasicInfo;
+
+	@Autowired
+	InesvUserValidata inesvUserValidata;
 
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
@@ -132,7 +148,7 @@ public class UserController {
 			map.put("desc", "IP地址不能为空");
 			return map;
 		}
-		String valtoken = (String) redisTemplate.opsForValue().get(username);
+		String valtoken = (String) redisTemplate.opsForValue().get(username);// (String) redisTemplate.opsForValue().get(username);
 		if (valtoken != null) {
 			Date lastDate = (Date) redisTemplate.opsForValue().get(valtoken + ":lastTime");
 			Date curDate = new Date(System.currentTimeMillis());
@@ -146,38 +162,73 @@ public class UserController {
 		if (user != null) {
 			String tokens = request.getParameter("token");
 			try {
-				redisTemplate.delete(tokens);
+				// redisTemplate.delete(tokens);
 			} catch (Exception e) {
 
 			}
 			Long tokenStr = user.getId() + new Date().getTime();
 			String token = new MD5().getMD5(String.valueOf(tokenStr));
 			UserBasicInfoDto basicUserInfo = queryUserBasicInfo.getUserBasicInfo(user.getUser_no());
+
 			redisTemplate.opsForValue().set(username, token, 7, TimeUnit.DAYS);
+			redisTemplate.opsForValue().set(token + "getuserNo", user.getId(), 7, TimeUnit.DAYS);
 			redisTemplate.opsForValue().set(token, token, 7, TimeUnit.DAYS);
 			redisTemplate.opsForValue().set(token + ":lastTime", new Date(System.currentTimeMillis()));
+
 			session.setAttribute("userName", username);
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("msg", ResponseCode.SUCCESS_DESC);
 			user.setPassword("******");
 			user.setDeal_pwd("******");
+			Map<String, Object> isValidata = inesvUserValidata.isPealPwd(user.getUser_no());
+			if ("100".equals(isValidata.get("code"))) {
+				user.setDeal_pwdstate(1);
+			} else {
+				user.setDeal_pwdstate(0);
+			}
 			map.put("loginUserInfo", user);
 			map.put("token", token);
-			if (user.getCertificate_num() == null || "".equals(user.getCertificate_num())) {
-				map.put("isvoucher", false);
-			} else {
-				map.put("isvoucher", true);
-			}
-			map.put("basicUserInfo", basicUserInfo);
+			Map<String, Object> voucherMap = userVoucherValidate.getValidateInfo(user.getUser_no());
+			map.put("validateState", voucherMap.get("validateState"));
+			map.put("validateInfo", voucherMap.get("validateInfo"));
+
+			map.put("basicinfo", basicUserInfo);
 			map.put("basicUserInfoState", !(basicUserInfo == null));
 			LoginLogCommand loginLogCommand = new LoginLogCommand(user.getUser_no(), 1, "通过用户名登录", ip, "", 1,
 					new Date());
+
+			// 增加积分
+			this.addIntegral(user.getId());
+
 			commandGateway.send(loginLogCommand);
 		} else {
 			map.put("code", ResponseCode.FAIL);
 			// map.put("msg", ResponseCode.FAIL_DESC);
 			map.put("msg", "用户账号密码不正确！！！");
 
+		}
+		return map;
+	}
+
+	@RequestMapping(value = "getLoginInfo", method = RequestMethod.POST)
+	public Map<String, Object> getLoginInfoByToken(String token) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Long id = (Long) redisTemplate.opsForValue().get(token + "getuserNo");
+		InesvUserDto dto = queryUserInfo.getUserInfoById(id);
+		if (dto != null) {
+			UserBasicInfoDto basicUserInfo = queryUserBasicInfo.getUserBasicInfo(dto.getUser_no());
+			Map<String, Object> voucherMap = userVoucherValidate.getValidateInfo(dto.getUser_no());
+
+			map.put("validateState", voucherMap.get("validateState"));
+			map.put("validateInfo", voucherMap.get("validateInfo"));
+			map.put("basicinfo", basicUserInfo);
+			map.put("basicUserInfoState", !(basicUserInfo == null));
+			map.put("loginUserInfo", dto);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", "获取用户信息失败!");
+		} else {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "获取用户信息失败!");
 		}
 		return map;
 	}
@@ -189,6 +240,7 @@ public class UserController {
 		try {
 			String userName = (String) session.getAttribute("userName");
 			redisTemplate.delete(userName);
+			redisTemplate.delete(token + "getuserNo");
 			redisTemplate.delete(token);
 			redisTemplate.delete(token + ":lastTime");
 			map.put("code", ResponseCode.SUCCESS);
@@ -274,8 +326,39 @@ public class UserController {
 		return resultMap;
 	}
 
-	public static void main(String[] args) {
-		System.out.println(new Date().getTime());
-	}
+	/**
+	 * 设置登录积分
+	 * 
+	 * @param userId
+	 */
+	@Transactional
+	public void addIntegral(Long userId) {
 
+		try {
+			List<IntegralRuleDto> dtos = new ArrayList<>();
+			IntegralRuleDto ruleDto = new IntegralRuleDto();
+			PaginationDto paginationDto = new PaginationDto();
+
+			// 拿到完成任务获取积分状态实体
+			dtos = integral.queryIntegralRule(ruleDto, paginationDto);
+
+			// 拿到当天的积分总数
+			int number = integral.queryCount(userId.toString(), dtos.get(0).getIdentifier());
+
+			// 判断积分是否超过当天的数量
+			if (number >= Integer.parseInt(dtos.get(0).getNumber())) {
+				return;
+			}
+
+			// 增加积分
+			if (dtos.size() > 0) {
+				// 增加积分则失败则直接返回
+				queryUserInfo.addIntegral(userId.toString(), Integer.parseInt(dtos.get(0).getReward()),
+						dtos.get(0).getType(), dtos.get(0).getIdentifier());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }

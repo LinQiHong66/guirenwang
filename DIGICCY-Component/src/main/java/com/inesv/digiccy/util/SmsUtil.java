@@ -94,8 +94,8 @@ public class SmsUtil {
 		return querySendDetailsResponse;
 	}
 
-	public static boolean sendMySms(String phone, String contant) throws ClientException, InterruptedException {
-		
+	public static String sendMySms(String phone, String contant) throws ClientException, InterruptedException {
+		 String msgContent="";//发送的短信内容
 		// 发短信
 		SendSmsResponse response = sendSms(phone, contant);
 		System.out.println("短信接口返回的数据----------------");
@@ -117,6 +117,7 @@ public class SmsUtil {
 			int i = 0;
 			for (QuerySendDetailsResponse.SmsSendDetailDTO smsSendDetailDTO : querySendDetailsResponse
 					.getSmsSendDetailDTOs()) {
+				String content=smsSendDetailDTO.getContent();
 				System.out.println("SmsSendDetailDTO[" + i + "]:");
 				System.out.println("Content=" + smsSendDetailDTO.getContent());
 				System.out.println("ErrCode=" + smsSendDetailDTO.getErrCode());
@@ -126,12 +127,13 @@ public class SmsUtil {
 				System.out.println("SendDate=" + smsSendDetailDTO.getSendDate());
 				System.out.println("SendStatus=" + smsSendDetailDTO.getSendStatus());
 				System.out.println("Template=" + smsSendDetailDTO.getTemplateCode());
+				msgContent+=content;
 			}
 			System.out.println("TotalCount=" + querySendDetailsResponse.getTotalCount());
 			System.out.println("RequestId=" + querySendDetailsResponse.getRequestId());
-			return true;
+			return msgContent;
 		}
-		return false;
+		return null;
 
 	}
 

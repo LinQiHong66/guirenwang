@@ -161,8 +161,8 @@ public class InesvUserValidata {
 	/**
 	 * 修改登录密码
 	 * 
-	 * @param password1
-	 * @param password
+	 * @param password1 原登陆密码
+	 * @param password 新登陆密码
 	 * @return
 	 */
 	public Map<String, Object> updateInesvUser(String password1, String password, Integer userNo) {

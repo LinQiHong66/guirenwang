@@ -31,7 +31,7 @@ public class InesvUserDto {
     private String certificate_num;
     /**交易密码*/
     private String deal_pwd;
-    /**交易密码状态*/
+    /**交易密码状态0未启用   1已启用*/
     private Integer deal_pwdstate;
     /**验证密码*/
     private String validate_pwd;
@@ -57,6 +57,10 @@ public class InesvUserDto {
     private String org_code;
     /**父机构编码*/
     private String org_parent_code;
+    /**
+     * 积分数
+     */
+    private String integral;
 
     public long getId() {
         return id;
@@ -268,5 +272,13 @@ public class InesvUserDto {
 				+ alipay_state + ", state=" + state + ", invite_num=" + invite_num + ", date=" + date + ", photo="
 				+ photo + ", photo_state=" + photo_state + ", org_type=" + org_type + ", org_code=" + org_code
 				+ ", org_parent_code=" + org_parent_code + "]";
+	}
+
+	public String getIntegral() {
+		return integral;
+	}
+
+	public void setIntegral(String integral) {
+		this.integral = integral;
 	}
 }

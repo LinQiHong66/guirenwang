@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -30,8 +32,13 @@ import com.inesv.digiccy.dto.MessageLogDto;
 import com.inesv.digiccy.dto.UserVoucherDto;
 import com.inesv.digiccy.dto.auth.AuthRoleDto;
 import com.inesv.digiccy.dto.auth.ResourceDto;
+import com.inesv.digiccy.persistence.integral.IntegralDetailOperation;
 import com.inesv.digiccy.query.util.TimeUtil;
 import com.inesv.digiccy.util.MD5;
+import com.integral.dto.IntegralDetailDto;
+import com.integral.dto.IntegralGradeDto;
+import com.respon.R;
+import com.respon.ResultEncoding;
 
 @Component
 public class QueryUserInfo implements UserDetailsService {
@@ -40,7 +47,13 @@ public class QueryUserInfo implements UserDetailsService {
 
 	@Autowired
 	private QueryRunner queryRunner;
-
+	
+    //防止并发导致的数据错误
+    static ConcurrentHashMap<String, String> userMap=new ConcurrentHashMap<>();
+    
+    @Autowired
+	private IntegralDetailOperation detailOperation;
+    
 	// public UserDetails loginByUsernamePassWord(String username,String
 	// password){
 	// String sql = "select * from user where name = ? and password = ?";
@@ -495,4 +508,156 @@ public class QueryUserInfo implements UserDetailsService {
 		String endTime = TimeUtil.getCurrentTime();
 		return getMessageLogLimitTime(userNo, startTime, endTime);
 	}
+	
+	   /**
+     * 添加积分数据
+     * @param userId
+     * @param number
+     * @return
+     */
+    public boolean addIntegralUserI(Long userId,int number){
+    	
+    	//防止并发的数据错误
+    	while(userMap.putIfAbsent(userId.toString(), userId.toString())!=null){
+
+    		try {
+    			 InesvUserDto inesvUserDto=this.getUserInfoById(userId);
+    			 int num=number+Integer.parseInt(inesvUserDto.getIntegral());
+    			 Object[] objects={num,userId};
+    			 String sql="update t_inesv_user set integral=? where id=?";
+    			 int i=queryRunner.update(sql, objects);
+    			 if(i>0){
+    				 return true;
+    			 }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				userMap.remove(userId);
+			}
+    		
+    	}
+    	
+    	return false;
+    }
+    
+    
+    /**
+     * 添加积分数据
+     * @param userId
+     * @param number
+     * @return
+     */
+    public boolean addIntegral(String userId,int number,String type,String typrCode){
+    	
+    	try {
+			
+    		while(userMap.putIfAbsent(userId.toString(), userId.toString())==null){
+    				String is=userMap.get(userId);
+        		try {
+        			 InesvUserDto inesvUserDto=this.getUserById(userId);
+        			 int num=number+Integer.parseInt(inesvUserDto.getIntegral());
+        			 Object[] objects={num,userId};
+        			 String sql="update t_inesv_user set integral=? where id=?";
+        			 int i=queryRunner.update(sql, objects);
+        			 if(i>0){
+        				 	IntegralDetailDto detailDto=new IntegralDetailDto();
+        	        		detailDto.setId(UUID.randomUUID().toString());
+        	        		detailDto.setIdentifier(typrCode);
+        	        		detailDto.setUserId(userId.toString());
+        	        		detailDto.setNumber(String.valueOf(number));
+        	        		detailDto.setType(type);
+        	        		detailOperation.insert(detailDto);
+        				return true;
+        			 }
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    			}finally {
+    				userMap.remove(userId);
+    			}
+        		
+        	}
+        	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return false;
+    }
+    
+    
+    
+    
+    /**
+     * 获取vip等级
+     * @param userId
+     * @return
+     */
+    public R queryDegree(Long userId){
+    	R r=new R();
+    	HashMap<String, Object> hashMap=new HashMap<>();
+    	try {
+			Integer  number=Integer.parseInt(getUserInfoById(userId).getIntegral());
+			hashMap.put("numbers", number);
+			String sql="SELECT grade.* from t_integral_grade as grade ORDER BY (grade.conditions+0)  ASC";
+			List<IntegralGradeDto> dtos=new ArrayList<>();
+			dtos=queryRunner.query(sql, new BeanListHandler(IntegralGradeDto.class));
+			for(int i=dtos.size()-1;i>=0;i--){
+				
+				if(dtos.get(i).getAdditional().equals("0")){
+					if(number==Integer.parseInt(dtos.get(i).getConditions())){
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+				
+				if(dtos.get(i).getAdditional().equals("1")){
+					if(number>Integer.parseInt(dtos.get(i).getConditions())){
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+				
+				if(dtos.get(i).getAdditional().equals("2")){
+					if(number<Integer.parseInt(dtos.get(i).getConditions())){
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+				
+				if(dtos.get(i).getAdditional().equals("10")){
+					if(number>=Integer.parseInt(dtos.get(i).getConditions())){
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+				
+				if(dtos.get(i).getAdditional().equals("20")){
+					if(number<=Integer.parseInt(dtos.get(i).getConditions())){
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+				
+			}
+			hashMap.put("grade", dtos);
+			r.setData(hashMap);
+		} catch (Exception e) {
+			r.setCode(ResultEncoding.R_ERR);
+			r.setMsg("获取个人积分信息失败");
+			e.printStackTrace();
+		}
+    	return r;
+    }
+    
+    
+    public InesvUserDto getUserById(String id) {
+        String sql = "select * from t_inesv_user where id = ?";
+        Object param[] = { id };
+        InesvUserDto userInfo = null;
+        try {
+            userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), param);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userInfo;
+    }
 }
