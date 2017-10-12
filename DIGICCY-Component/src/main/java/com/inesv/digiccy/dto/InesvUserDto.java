@@ -31,7 +31,7 @@ public class InesvUserDto {
     private String certificate_num;
     /**交易密码*/
     private String deal_pwd;
-    /**交易密码状态*/
+    /**交易密码状态0未启用   1已启用*/
     private Integer deal_pwdstate;
     /**验证密码*/
     private String validate_pwd;

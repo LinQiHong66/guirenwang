@@ -86,7 +86,11 @@ public class QueryPowerInfo {
 			paramArr.add(startDate);
 			paramArr.add(endDate);
 		}
-		sql += " order by " + orderName + " " + ("up".equals(orderType) ? "desc" : "asc");
+		if("id".equals(orderName) || orderName == null || "".equals(orderName)) {
+			sql += " order by time desc";
+		}else {
+			sql += " order by " + orderName + " " + ("up".equals(orderType) ? "desc" : "asc");
+		}
 		sql += " limit ?,?";
 		paramArr.add(startItem);
 		paramArr.add(pageItem);
