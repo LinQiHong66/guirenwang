@@ -9,6 +9,10 @@ public class UserBasicInfoDto {
 	private String sex;
 	private Date birthday;
 	private String userName;
+	private String province;
+	private String districts;
+	private String cities;
+	private String addressInfo;
 
 	public int getUserNo() {
 		return userNo;
@@ -56,5 +60,37 @@ public class UserBasicInfoDto {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getAddressInfo() {
+		return addressInfo;
+	}
+
+	public String getCities() {
+		return cities;
+	}
+
+	public String getDistricts() {
+		return districts;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setAddressInfo(String addressInfo) {
+		this.addressInfo = addressInfo;
+	}
+
+	public void setCities(String cities) {
+		this.cities = cities;
+	}
+
+	public void setDistricts(String districts) {
+		this.districts = districts;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
 	}
 }

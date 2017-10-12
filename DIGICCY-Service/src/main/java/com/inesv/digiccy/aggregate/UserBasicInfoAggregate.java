@@ -21,7 +21,8 @@ public class UserBasicInfoAggregate extends AbstractAnnotatedAggregateRoot {
 	public UserBasicInfoAggregate(UserBasicCommand userBasicCommand) {
 		apply(new UserBasicInfoEvent(userBasicCommand.getUserNo(), userBasicCommand.getNationality(),
 				userBasicCommand.getJob(), userBasicCommand.getSex(), userBasicCommand.getBirthday(),
-				userBasicCommand.getUserName(), userBasicCommand.getOpration()));
+				userBasicCommand.getUserName(), userBasicCommand.getOpration(), userBasicCommand.getProvince(),
+				userBasicCommand.getDistricts(), userBasicCommand.getCities(), userBasicCommand.getAddressInfo()));
 	}
 
 	@EventHandler

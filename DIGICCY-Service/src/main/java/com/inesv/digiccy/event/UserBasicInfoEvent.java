@@ -10,18 +10,25 @@ public class UserBasicInfoEvent {
 	private Date birthday;
 	private String userName;
 	private String opration;
-
+	private String province;
+	private String districts;
+	private String cities;
+	private String addressInfo;
 	public UserBasicInfoEvent() {
 
 	}
 
 	public UserBasicInfoEvent(int userNo, String nationality, String job, String sex, Date birthday, String userName,
-			String opration) {
+			String opration, String province, String districts, String cities, String addressInfo) {
 		this.userNo = userNo;
 		this.nationality = nationality;
 		this.job = job;
 		this.sex = sex;
 		this.birthday = birthday;
+		this.province = province;
+		this.districts = districts;
+		this.cities = cities;
+		this.addressInfo = addressInfo;
 		this.opration = opration;
 		this.userName = userName;
 	}
@@ -80,6 +87,38 @@ public class UserBasicInfoEvent {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getDistricts() {
+		return districts;
+	}
+
+	public void setDistricts(String districts) {
+		this.districts = districts;
+	}
+
+	public String getCities() {
+		return cities;
+	}
+
+	public void setCities(String cities) {
+		this.cities = cities;
+	}
+
+	public String getAddressInfo() {
+		return addressInfo;
+	}
+
+	public void setAddressInfo(String addressInfo) {
+		this.addressInfo = addressInfo;
 	}
 
 }

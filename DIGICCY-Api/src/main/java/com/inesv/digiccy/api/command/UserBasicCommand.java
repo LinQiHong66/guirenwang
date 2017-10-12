@@ -10,6 +10,10 @@ public class UserBasicCommand {
 	private Date birthday;
 	private String userName;
 	private String opration;
+	private String province;
+	private String districts;
+	private String cities;
+	private String addressInfo;
 
 	public int getUserNo() {
 		return userNo;
@@ -65,5 +69,37 @@ public class UserBasicCommand {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getDistricts() {
+		return districts;
+	}
+
+	public void setDistricts(String districts) {
+		this.districts = districts;
+	}
+
+	public String getCities() {
+		return cities;
+	}
+
+	public void setCities(String cities) {
+		this.cities = cities;
+	}
+
+	public String getAddressInfo() {
+		return addressInfo;
+	}
+
+	public void setAddressInfo(String addressInfo) {
+		this.addressInfo = addressInfo;
 	}
 }
