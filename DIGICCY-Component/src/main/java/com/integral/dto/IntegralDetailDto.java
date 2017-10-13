@@ -1,3 +1,4 @@
+
 package com.integral.dto;
 
 
@@ -36,13 +37,14 @@ public class IntegralDetailDto {
 	/**
 	 * 用户名称
 	 */
-	private String userName;
+	private String real_name;
 	
 	/**
 	 * 唯一标识
 	 */
 	private String identifier;
 	
+	private String userName;
 
 	public String getId() {
 		return id;
@@ -85,13 +87,6 @@ public class IntegralDetailDto {
 	}
 
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 
 	public String getIdentifier() {
@@ -105,7 +100,23 @@ public class IntegralDetailDto {
 	@Override
 	public String toString() {
 		return "IntegralDetailDto [id=" + id + ", createTime=" + createTime + ", type=" + type + ", number=" + number
-				+ ", userId=" + userId + ", userName=" + userName + ", identifier=" + identifier + "]";
+				+ ", userId=" + userId + ", real_name=" + real_name + ", identifier=" + identifier + "]";
+	}
+
+	public String getReal_name() {
+		return real_name;
+	}
+
+	public void setReal_name(String real_name) {
+		this.real_name = real_name;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 	

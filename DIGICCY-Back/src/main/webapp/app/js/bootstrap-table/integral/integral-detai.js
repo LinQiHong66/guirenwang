@@ -1,3 +1,4 @@
+
 //初始化气泡位置
 toastr.options.positionClass = 'toast-center-center';
 
@@ -42,7 +43,7 @@ function Data_assembly(data){
 		  html+='<td>'+tbody[i].createTime+'</td>';
 		  html+='<td>'+tbody[i].type+'</td>';
 		  html+='<td>+'+tbody[i].number+'</td>';
-		  html+='<td>'+tbody[i].userName+'</td>';
+		  html+='<td>'+tbody[i].real_name+'</td>';
 //		  html+='<td><button type="button" onclick="updateSelect('+"'"+tbody[i].id+"'"+');" class="btn btn-warning">修改</button>&nbsp;&nbsp;'
 //			  +'<button type="button" onclick="delcfm('+"'"+tbody[i].id+"'"+');" class="btn btn-danger">删除</button></td>';
 		  html+='</tr>';

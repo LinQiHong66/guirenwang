@@ -1,6 +1,5 @@
 package com.inesv.digiccy.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +14,6 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,29 +29,28 @@ import com.inesv.digiccy.dto.LoginLogDto;
 import com.inesv.digiccy.dto.UserBasicInfoDto;
 import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
-import com.inesv.digiccy.query.integral.QueryIntegral;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
 import com.inesv.digiccy.validata.UserVoucherValidate;
+import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
 import com.inesv.digiccy.validata.user.InesvUserValidata;
 import com.inesv.digiccy.validata.user.OpUserValidata;
-import com.integral.dto.IntegralRuleDto;
-import com.pagination.PaginationDto;
 
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
 	@Autowired
 	private CommandGateway commandGateway;
-
+	
+	@Autowired
+	private IntegralRuleValidata ruleData;
+	
 	@Autowired
 	UserVoucherValidate userVoucherValidate;
 
 	@Autowired
 	private QueryUserInfo queryUserInfo;
 
-	@Autowired
-	private QueryIntegral integral;
 
 	@Autowired
 	OpUserValidata regUserValidata;
@@ -198,7 +195,7 @@ public class UserController {
 					new Date());
 
 			// 增加积分
-			this.addIntegral(user.getId());
+			ruleData.addIntegral(user.getId(),"denglu");
 
 			commandGateway.send(loginLogCommand);
 		} else {
@@ -327,39 +324,5 @@ public class UserController {
 		return resultMap;
 	}
 
-	/**
-	 * 设置登录积分
-	 * 
-	 * @param userId
-	 */
-	@Transactional
-	public void addIntegral(Long userId) {
-
-		try {
-			List<IntegralRuleDto> dtos = new ArrayList<>();
-			IntegralRuleDto ruleDto = new IntegralRuleDto();
-			PaginationDto paginationDto = new PaginationDto();
-
-			// 拿到完成任务获取积分状态实体
-			dtos = integral.queryIntegralRule(ruleDto, paginationDto);
-
-			// 拿到当天的积分总数
-			int number = integral.queryCount(userId.toString(), dtos.get(0).getIdentifier());
-
-			// 判断积分是否超过当天的数量
-			if (number >= Integer.parseInt(dtos.get(0).getNumber())) {
-				return;
-			}
-
-			// 增加积分
-			if (dtos.size() > 0) {
-				// 增加积分则失败则直接返回
-				queryUserInfo.addIntegral(userId.toString(), Integer.parseInt(dtos.get(0).getReward()),
-						dtos.get(0).getType(), dtos.get(0).getIdentifier());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
+	
 }

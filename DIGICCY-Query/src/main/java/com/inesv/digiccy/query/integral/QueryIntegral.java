@@ -83,7 +83,7 @@ public class QueryIntegral {
 		List<IntegralDetailDto> detailDtos=new ArrayList<>();	
 		ArrayList<Object> paramArr = new ArrayList<>();
 		try {
-			 String sql="select de.id,de.createTime,de.type,de.number,de.user_id as userId,us.username as userName from";
+			 String sql="select de.id,de.createTime,de.type,de.number,de.user_id as userId,us.real_name  from";
                     sql+=" t_integral_detail as de LEFT JOIN t_inesv_user as us on de.user_id=us.id where 1=1";
 			 if(R.isNull(detailDto.getId())){
 				sql+=" and de.id=?"; 
@@ -105,7 +105,7 @@ public class QueryIntegral {
 				 paramArr.add(detailDto.getType());
 			 }
 			 if(R.isNull(detailDto.getUserName())){
-				 sql+=" and us.username like ?";
+				 sql+=" and us.real_name like ?";
 				 paramArr.add("%"+detailDto.getUserName()+"%");
 			 }
 			 if(R.isNull(detailDto.getIdentifier())){
