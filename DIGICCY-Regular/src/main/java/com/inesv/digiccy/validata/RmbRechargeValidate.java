@@ -29,6 +29,7 @@ import com.inesv.digiccy.query.QueryRmbWithdrawInfo;
 import com.inesv.digiccy.query.QueryUserBalanceInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
 import com.inesv.digiccy.util.MD5;
+import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
 import com.inesv.digiccy.validata.util.EasyPayUtil;
 import com.inesv.digiccy.validata.util.ExcelUtils;
 
@@ -58,6 +59,9 @@ public class RmbRechargeValidate {
 
     @Autowired
     QueryRmbWithdrawInfo   queryRmbWithdrawInfo;
+    
+	@Autowired
+	private IntegralRuleValidata ruleData;
     
     private static Logger logger = LoggerFactory.getLogger(RmbRechargeValidate.class);
 
@@ -99,6 +103,9 @@ public class RmbRechargeValidate {
             url = EasyPayUtil.pay(order, recharge.multiply(new BigDecimal(100)).longValue());
             map.put("url", url);
             map.put("desc", ResponseCode.SUCCESS_DESC);
+            
+            // 增加积分
+         	ruleData.addIntegral(userinfo.getId(),"chongzhi",rechargeCoin);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("code", "200");

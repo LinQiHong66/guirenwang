@@ -1,6 +1,5 @@
 package com.inesv.digiccy.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +14,6 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,15 +29,12 @@ import com.inesv.digiccy.dto.LoginLogDto;
 import com.inesv.digiccy.dto.UserBasicInfoDto;
 import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
-import com.inesv.digiccy.query.integral.QueryIntegral;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
 import com.inesv.digiccy.validata.UserVoucherValidate;
 import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
 import com.inesv.digiccy.validata.user.InesvUserValidata;
 import com.inesv.digiccy.validata.user.OpUserValidata;
-import com.integral.dto.IntegralRuleDto;
-import com.pagination.PaginationDto;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -47,6 +42,7 @@ public class UserController {
 	@Autowired
 	private CommandGateway commandGateway;
 	
+	@Autowired
 	private IntegralRuleValidata ruleData;
 	
 	@Autowired
@@ -55,8 +51,6 @@ public class UserController {
 	@Autowired
 	private QueryUserInfo queryUserInfo;
 
-	@Autowired
-	private QueryIntegral integral;
 
 	@Autowired
 	OpUserValidata regUserValidata;

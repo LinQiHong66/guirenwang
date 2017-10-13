@@ -34,6 +34,7 @@ import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
 import com.inesv.digiccy.util.SmsUtil;
 import com.inesv.digiccy.util.StringUtil;
+import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureResult;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureUtil;
 
@@ -48,6 +49,9 @@ public class OpUserValidata {
 	@Autowired
 	RedisCodeImpl redisCode;
 
+	@Autowired
+	private IntegralRuleValidata ruleData;
+	
 	@Autowired
 	SendMsgUtil sendMsgUtil;
 
@@ -300,7 +304,8 @@ public class OpUserValidata {
 			map.put("userNo", userNo);
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
-			
+			// 增加积分
+		    ruleData.addIntegral(parentUserInfoDto.getId(),"yaoqingyonghu");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
