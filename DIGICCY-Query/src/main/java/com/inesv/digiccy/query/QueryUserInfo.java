@@ -599,7 +599,7 @@ public class QueryUserInfo implements UserDetailsService {
 			hashMap.put("numbers", number);
 			String sql="SELECT grade.* from t_integral_grade as grade ORDER BY (grade.conditions+0)  ASC";
 			List<IntegralGradeDto> dtos=new ArrayList<>();
-			dtos=queryRunner.query(sql, new BeanListHandler(IntegralGradeDto.class));
+			dtos=queryRunner.query(sql, new BeanListHandler<IntegralGradeDto>(IntegralGradeDto.class));
 			for(int i=dtos.size()-1;i>=0;i--){
 				
 				if(dtos.get(i).getAdditional().equals("0")){

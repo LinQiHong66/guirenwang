@@ -155,7 +155,7 @@ public class UserController {
 			Long secend = curDate.getTime() - lastDate.getTime();
 			if (secend <= 10 * 1000) {
 				map.put("code", ResponseCode.FAIL);
-				map.put("msg", "在别处已登录！！！");
+				map.put("desc", "在别处已登录！！！");
 				return map;
 			}
 		}
@@ -177,7 +177,7 @@ public class UserController {
 
 			session.setAttribute("userName", username);
 			map.put("code", ResponseCode.SUCCESS);
-			map.put("msg", ResponseCode.SUCCESS_DESC);
+			map.put("desc", ResponseCode.SUCCESS_DESC);
 			user.setPassword("******");
 			user.setDeal_pwd("******");
 			Map<String, Object> isValidata = inesvUserValidata.isPealPwd(user.getUser_no());
@@ -204,13 +204,14 @@ public class UserController {
 		} else {
 			map.put("code", ResponseCode.FAIL);
 			// map.put("msg", ResponseCode.FAIL_DESC);
-			map.put("msg", "用户账号密码不正确！！！");
+			map.put("desc", "用户账号密码不正确！！！");
 
 		}
 		return map;
 	}
 
 	@RequestMapping(value = "getLoginInfo", method = RequestMethod.POST)
+	@ResponseBody
 	public Map<String, Object> getLoginInfoByToken(String token) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Long id = (Long) redisTemplate.opsForValue().get(token + "getuserNo");
