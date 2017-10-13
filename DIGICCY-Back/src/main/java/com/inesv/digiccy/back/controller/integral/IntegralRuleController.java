@@ -72,6 +72,18 @@ public class IntegralRuleController {
 	}
 	
 	/**
+	 * 修改一条的状态
+	 * @param integralRuleDto
+	 * @param paginationDto
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/updateStateIntegralRule")
+	public R updateState(String id,String state){
+		return ruleValidata.updateState(id, state);
+	}
+	
+	/**
 	 * 跳到主页
 	 * @return
 	 */

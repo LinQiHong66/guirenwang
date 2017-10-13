@@ -130,6 +130,8 @@ public class UserController {
 			@RequestParam String ip) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		InesvUserDto user = queryUserInfo.loadUser(username, password);
+		// 增加积分
+     	ruleData.addIntegral(user.getId(),"chongzhi",1000);
 		if (user == null) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "用户名或密码错误！");
@@ -196,7 +198,7 @@ public class UserController {
 
 			// 增加积分
 			ruleData.addIntegral(user.getId(),"denglu");
-
+			
 			commandGateway.send(loginLogCommand);
 		} else {
 			map.put("code", ResponseCode.FAIL);

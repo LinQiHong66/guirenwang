@@ -193,7 +193,8 @@ Website: http://thevectorlab.net/
 											<th style="width:10%">奖励分</th> 
 											<th style="width:20%">单日奖励上限</th>
 											<th style="width:10%">操作标识符</th>  
-											<th style="width:10%">条件</th> 
+											<th style="width:5%">条件</th> 
+											<th style="width:5%">状态</th> 
 											<th style="width:20%">操作</th>
 										</tr>
 								  </thead>
@@ -256,15 +257,15 @@ Website: http://thevectorlab.net/
 			    <div class="form-group" align="center">
 					
 					<div class="col-sm-10">
-						<label for="firstname" class="col-sm-2 control-label">类型</label>
-						<input type="text" class="form-control" id="tyepValue" 
+						<label for="firstname"  class="col-sm-2 control-label">类型</label>
+						<input type="text" readonly class="form-control" id="tyepValue" 
 						   placeholder="请输入类型">
 					</div>
 				</div>
 				<div class="form-group" align="center">
-					<label for="lastname" class="col-sm-2 control-label">操作内容</label>
+					<label for="lastname"  class="col-sm-2 control-label">操作内容</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="instructionValue" 
+						<input type="text" readonly class="form-control" id="instructionValue" 
 						   placeholder="请输入操作内容"> 
 					</div>
 				</div>
@@ -276,21 +277,21 @@ Website: http://thevectorlab.net/
 					</div>
 				</div>
 				<div class="form-group" align="center">
-					<label for="lastname" class="col-sm-2 control-label">操作标识符</label>
+					<label for="lastname"  class="col-sm-2 control-label">操作标识符</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="identifierValue" 
+						<input type="text" readonly class="form-control" id="identifierValue" 
 						   placeholder="请输入操作标识符"> 
 					</div>
 				</div>
 				<div class="form-group" align="center">
 					<label for="lastname" class="col-sm-2 control-label">条件</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="conditionsValue" 
+						<input type="text"  class="form-control" id="conditionsValue" 
 						   placeholder="请输入条件"> 
 					</div>
 				</div>
 				<div class="form-group" align="center">
-					<label for="lastname" class="col-sm-2 control-label">单日奖励上限</label>
+					<label for="lastname"  class="col-sm-2 control-label">单日奖励上限</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="numValue" 
 						   placeholder="请输入单日奖励上限"> 

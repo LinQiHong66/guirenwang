@@ -191,7 +191,7 @@ public class IntegralRuleValidata {
 		try {
 			List<IntegralRuleDto> dtos = new ArrayList<>();
 			IntegralRuleDto ruleDto = new IntegralRuleDto();
-			ruleDto.setInstruction(instruction);
+			ruleDto.setIdentifier(instruction);
 			PaginationDto paginationDto = new PaginationDto();
 
 			// 拿到完成任务获取积分状态实体
@@ -240,5 +240,33 @@ public class IntegralRuleValidata {
 			e.printStackTrace();
 		}
 
+	}
+	
+	/**
+	 * 修改状态
+	 * @return
+	 */
+	public R updateState(String id,String state){
+		R r=new R();
+		
+		try {
+			
+			if(!(R.isNull(id) && R.isNull(state))){
+				r.setCode(ResultEncoding.R_PARAMETER);
+				r.setMsg("关键字缺失");
+			}
+			
+			if(operation.updateState(state, id)){
+				r.setMsg("装填更新成功");
+				return r;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		r.setCode(ResultEncoding.R_ERR);
+		r.setMsg("更新状态异常");
+		return r;
+		
 	}
 }

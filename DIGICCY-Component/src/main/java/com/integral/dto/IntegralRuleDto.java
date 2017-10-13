@@ -49,6 +49,12 @@ public class IntegralRuleDto {
 	 */
 	private String reward;
 	
+	/**
+	 * 当前规则状态
+	 */
+	private String state;
+	
+	
 
 	public String getId() {
 		return id;
@@ -114,12 +120,21 @@ public class IntegralRuleDto {
 		this.reward = reward;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Override
 	public String toString() {
 		return "IntegralRuleDto [id=" + id + ", type=" + type + ", number=" + number + ", instruction=" + instruction
 				+ ", userId=" + userId + ", identifier=" + identifier + ", conditions=" + conditions + ", reward="
-				+ reward + "]";
+				+ reward + ", state=" + state + "]";
 	}
-
+	
+	
 	
 }
