@@ -51,15 +51,16 @@ public class UserVoucherController {
 	public Map<String, Object> cardIdIsTrue(String Name, String cardId, int userNo, String startDate, String endDate) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			Name = new String(Name.getBytes("iso-8859-1"), "utf-8");
-
+			if (Name.equals(new String(Name.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				Name = new String(Name.getBytes("iso-8859-1"), "utf-8");
+			}
 			System.out.println(Name);
 			// 添加审核记录
 			userVoucherValidate.startVoucher(cardId, 1, "", "", "", userNo, Name, "", startDate, endDate);
 			// 判断身份证与名字是否一致
 			Map<String, Object> map1 = new HashMap<String, Object>();
-			map1.put("code", "100");
-			// userVoucherValidate.validateCardId(Name, cardId);
+			// map1.put("code", "100");
+			map1 = userVoucherValidate.validateCardId(Name, cardId);
 			if ("100".equals(map1.get("code"))) {
 				// 确认通过审核
 				opUserValidata.modifyVoucher(userNo, 4);

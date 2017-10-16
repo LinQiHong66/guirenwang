@@ -68,7 +68,7 @@ public class InesvUserValidata {
 	public Map<String, Object> isPealPwd( Integer userNo) {
 		Map<String, Object> mac = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid == null) {
 			mac.put("code", "404");
 			mac.put("desc", "不存在该用户");
@@ -95,7 +95,7 @@ public class InesvUserValidata {
 	public Map<String, Object> setPealPwd(String pealpwd, Integer userNo) {
 		Map<String, Object> mac = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid == null) {
 			mac.put("code", "404");
 			mac.put("desc", "不存在该用户");
@@ -116,7 +116,7 @@ public class InesvUserValidata {
 	public Map<String, Object> updateUsers(@RequestParam Integer user_no, @RequestParam String real_name) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(user_no);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(user_no,false);
 		if (uid == null) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);
@@ -168,12 +168,15 @@ public class InesvUserValidata {
 	public Map<String, Object> updateInesvUser(String password1, String password, Integer userNo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, true);
 		if (uid == null) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);
 			return map;
 		}
+		System.out.println(new MD5().getMD5(password1)+"\r\n"+uid.getPassword());
+		System.out.println(new MD5().getMD5("654321")+"\r\n"+uid.getPassword());
+		System.out.println(new MD5().getMD5("123456")+"\r\n"+uid.getPassword());
 		// 判断登陆密码
 		if (new MD5().getMD5(password1).equals(uid.getPassword())) {
 			CreateInesvUserCommand ciuc = new CreateInesvUserCommand(userNo, new MD5().getMD5(password), null, null,
@@ -227,7 +230,7 @@ public class InesvUserValidata {
 	public Map<String, Object> updatePhone(String phone, Integer userNo) {
 		Map<String, Object> mapPhone = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid == null) {
 			mapPhone.put("code", ResponseCode.FAIL);
 			mapPhone.put("desc", ResponseCode.FAIL_DESC);
@@ -251,7 +254,7 @@ public class InesvUserValidata {
 	public Map<String, Object> updateAlipay(String alipay, Integer userNo) {
 		Map<String, Object> mapAlipay = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid == null) {
 			mapAlipay.put("code", ResponseCode.FAIL);
 			mapAlipay.put("desc", ResponseCode.FAIL_DESC);
@@ -284,7 +287,7 @@ public class InesvUserValidata {
 	public Map<String, Object> upPwdState(Integer pwdState, String dealPwd1, Integer userNo) {
 		Map<String, Object> mapPwdState = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid == null) {
 			mapPwdState.put("code", ResponseCode.FAIL);
 			mapPwdState.put("desc", ResponseCode.FAIL_DESC);
@@ -312,7 +315,7 @@ public class InesvUserValidata {
 	public Map<String, Object> upValidatePwd(String validate_pwd, Integer validatePwdState, Integer userNo) {
 		Map<String, Object> mapPwdState = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid == null) {
 			mapPwdState.put("code", ResponseCode.FAIL);
 			mapPwdState.put("desc", ResponseCode.FAIL_DESC);
@@ -393,7 +396,7 @@ public class InesvUserValidata {
 	public Map<String, Object> phoneAndAlipayState(Integer userNo, String desc) {
 		Map<String, Object> mapState = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid == null) {
 			mapState.put("code", ResponseCode.FAIL);
 			mapState.put("desc", ResponseCode.FAIL_DESC);
@@ -450,7 +453,7 @@ public class InesvUserValidata {
 	public Map<String, Object> getUserInfoByUserNo(Integer userNo) {
 		Map<String, Object> mapUserInfo = new HashMap<>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		UserVoucherDto voucherDto = queryUserVoucher.findByUserNo(userNo);
 		if (uid == null) {
 			mapUserInfo.put("code", ResponseCode.FAIL);
@@ -528,7 +531,7 @@ public class InesvUserValidata {
 	 */
 	public Map<String, Object> addUserInfoByOrgCode(Integer userNo,String parentCode) {
 		Map<String, Object> map = new HashMap<>();
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if(StringUtils.isBlank(parentCode)) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "邀请码不能为空，请见谅！");

@@ -41,16 +41,15 @@ import com.inesv.digiccy.validata.user.OpUserValidata;
 public class UserController {
 	@Autowired
 	private CommandGateway commandGateway;
-	
+
 	@Autowired
 	private IntegralRuleValidata ruleData;
-	
+
 	@Autowired
 	UserVoucherValidate userVoucherValidate;
 
 	@Autowired
 	private QueryUserInfo queryUserInfo;
-
 
 	@Autowired
 	OpUserValidata regUserValidata;
@@ -145,15 +144,18 @@ public class UserController {
 			map.put("desc", "IP地址不能为空");
 			return map;
 		}
-		String valtoken = (String) redisTemplate.opsForValue().get(username);// (String) redisTemplate.opsForValue().get(username);
+		String valtoken = (String) redisTemplate.opsForValue().get(username);// (String)
+																				// redisTemplate.opsForValue().get(username);
 		if (valtoken != null) {
 			Date lastDate = (Date) redisTemplate.opsForValue().get(valtoken + ":lastTime");
 			Date curDate = new Date(System.currentTimeMillis());
-			Long secend = curDate.getTime() - lastDate.getTime();
-			if (secend <= 10 * 1000) {
-				map.put("code", ResponseCode.FAIL);
-				map.put("desc", "在别处已登录！！！");
-				return map;
+			if (lastDate != null) {
+				Long secend = curDate.getTime() - lastDate.getTime();
+				if (secend <= 10 * 1000) {
+					map.put("code", ResponseCode.FAIL);
+					map.put("desc", "在别处已登录！！！");
+					return map;
+				}
 			}
 		}
 		if (user != null) {
@@ -195,7 +197,7 @@ public class UserController {
 					new Date());
 
 			// 增加积分
-			ruleData.addIntegral(user.getId(),"denglu");
+			ruleData.addIntegral(user.getId(), "denglu");
 
 			commandGateway.send(loginLogCommand);
 		} else {
@@ -237,7 +239,9 @@ public class UserController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			String userName = (String) session.getAttribute("userName");
-			redisTemplate.delete(userName);
+			if (userName != null && !"".equals(userName)) {
+				redisTemplate.delete(userName);
+			}
 			redisTemplate.delete(token + "getuserNo");
 			redisTemplate.delete(token);
 			redisTemplate.delete(token + ":lastTime");
@@ -324,5 +328,4 @@ public class UserController {
 		return resultMap;
 	}
 
-	
 }

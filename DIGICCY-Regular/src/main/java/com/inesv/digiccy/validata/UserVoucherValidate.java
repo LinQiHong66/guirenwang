@@ -3,6 +3,7 @@ package com.inesv.digiccy.validata;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,9 +87,21 @@ public class UserVoucherValidate {
 		command.setUserNo(userNo);
 		command.setRealName(realName);
 		try {
-			SimpleDateFormat forMat = new SimpleDateFormat("yyyy-MM-dd");
-			command.setEndDate(forMat.parse(endDate));
-			command.setStartDate(forMat.parse(startDate));
+			if (endDate != null && startDate != null && !"".equals(startDate) && !"".equals(endDate)) {
+				SimpleDateFormat forMat = new SimpleDateFormat("yyyy-MM-dd");
+				Date endD = forMat.parse(endDate);
+				Date startD = forMat.parse(startDate);
+				if (endD.getTime() > startD.getTime()) {
+					command.setEndDate(endD);
+					command.setStartDate(startD);
+				} else {
+					Map<String, Object> m = new HashMap<String, Object>();
+					m.put("msg", "颁发日期与有效日期不正确");
+					m.put("code", ResponseCode.FAIL);
+					m.put("desc", ResponseCode.FAIL_DESC);
+					return m;
+				}
+			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

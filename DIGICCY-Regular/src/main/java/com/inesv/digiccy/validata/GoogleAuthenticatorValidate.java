@@ -63,7 +63,7 @@ public class GoogleAuthenticatorValidate {
 				String mkey = result[0];
 				String url = result[1];
 				// 判断用户是否存在
-				InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+				InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 				if (uid == null) {
 					map.put("result", "用户不存在");
 					map.put("code", ResponseCode.FAIL);
@@ -95,7 +95,7 @@ public class GoogleAuthenticatorValidate {
 		Map<String, Object> map = new HashMap<>();
 		boolean ok = false;
 		try {
-			InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+			InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 			if (uid.getValidate_pwdstate() != 1) {
 				map.put("msg", "未开启双重验证");
 				map.put("code", ResponseCode.FAIL);
@@ -130,7 +130,7 @@ public class GoogleAuthenticatorValidate {
 	public Map<String, Object> selectIsStart(int userNo) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		try {
-			InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+			InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 			int state = uid == null ? 0 : uid.getValidate_pwdstate();
 			map.put("state", state);
 			map.put("code", ResponseCode.SUCCESS);
@@ -147,7 +147,7 @@ public class GoogleAuthenticatorValidate {
 	/**根据双重验证码重置双重验证*/
 	public Map<String, Object> resetProingByCode(String key, int userNo){
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid.getValidate_pwdstate() != 1) {
 			map.put("msg", "未开启双重验证");
 			map.put("code", ResponseCode.FAIL);
@@ -176,7 +176,7 @@ public class GoogleAuthenticatorValidate {
 	/**根据双重验证码确定开启*/
 	public Map<String, Object> startProving(String key, int userNo){
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid.getValidate_pwdstate() != 0) {
 			map.put("msg", "双重验证无须开启");
 			map.put("code", ResponseCode.FAIL);

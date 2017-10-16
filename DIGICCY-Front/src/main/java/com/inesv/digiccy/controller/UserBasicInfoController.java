@@ -52,16 +52,38 @@ public class UserBasicInfoController {
 			String realName, String province, String districts, String cities, String addressInfo) {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			job = new String(job.getBytes("iso-8859-1"), "utf-8");
-			nationality = new String(nationality.getBytes("iso-8859-1"), "utf-8");
-			sex = new String(sex.getBytes("iso-8859-1"), "utf-8");
-			realName = new String(realName.getBytes("iso-8859-1"), "utf-8");
-			province = new String(province.getBytes("iso-8859-1"), "utf-8");
-			districts = new String(districts.getBytes("iso-8859-1"), "utf-8");
-			cities = new String(cities.getBytes("iso-8859-1"), "utf-8");
-			addressInfo = new String(addressInfo.getBytes("iso-8859-1"), "utf-8");
+			if (job.equals(new String(job.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				job = new String(job.getBytes("iso-8859-1"), "utf-8");
+			}
+
+			if (nationality.equals(new String(nationality.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				nationality = new String(nationality.getBytes("iso-8859-1"), "utf-8");
+			}
+
+			if (sex.equals(new String(sex.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				sex = new String(sex.getBytes("iso-8859-1"), "utf-8");
+			}
+
+			if (realName.equals(new String(realName.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				realName = new String(realName.getBytes("iso-8859-1"), "utf-8");
+			}
+			if (province.equals(new String(province.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				province = new String(province.getBytes("iso-8859-1"), "utf-8");
+			}
+
+			if (districts.equals(new String(districts.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				districts = new String(districts.getBytes("iso-8859-1"), "utf-8");
+			}
+
+			if (cities.equals(new String(cities.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				cities = new String(cities.getBytes("iso-8859-1"), "utf-8");
+			}
+			if (addressInfo.equals(new String(addressInfo.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				addressInfo = new String(addressInfo.getBytes("iso-8859-1"), "utf-8");
+			}
 			// 添加基本信息
-			userBasicInfoValidate.addUserInfo(userNo, nationality, sex, job, birthday, realName, province, districts, cities, addressInfo);
+			userBasicInfoValidate.addUserInfo(userNo, nationality, sex, job, birthday, realName, province, districts,
+					cities, addressInfo);
 			UserBasicInfoDto dto = queryUserBasicInfo.getUserBasicInfo(userNo);
 
 			map.put("code", ResponseCode.SUCCESS);

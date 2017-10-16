@@ -27,7 +27,7 @@ public class QueryUserVoucher {
 	
 	//查询认证记录
 	public UserVoucherDto findByUserNo(int userNo) {
-		String sql = "select voucher_id as id, voucher_cardid as cardId, voucher_type as cardType,voucher_state as state, realName as trueName from t_inesv_user_voucher where userNo=?";
+		String sql = "select voucher_id as id, voucher_cardid as cardId, voucher_type as cardType,voucher_state as state, realName as trueName, id_startdate as startDate, id_enddate as enDateDate from t_inesv_user_voucher where userNo=?";
 		Object[] params = { userNo };
 		UserVoucherDto dto = null;
 		try {
