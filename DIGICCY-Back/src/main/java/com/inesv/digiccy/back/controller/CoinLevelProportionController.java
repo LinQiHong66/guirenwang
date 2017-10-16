@@ -69,6 +69,13 @@ public class CoinLevelProportionController {
 	@ResponseBody
 	@RequestMapping(value="update",method = RequestMethod.POST)
 	public Map<String,Object> updateById(CoinLevelProportionDto levelDto){
+		Map<String,Object> map = new HashMap<String,Object>();
+		if((levelDto.getLevel_one().doubleValue() + levelDto.getLevel_two().doubleValue() + levelDto.getLevel_three().doubleValue() 
+				+ levelDto.getLevel_four().doubleValue() + levelDto.getLevel_five().doubleValue()) > 1) {
+			map.put("code","200");
+			map.put("desc","比例相加不能大于1，抱歉！");
+			return map;
+		}
 		return validata.updateLevelById(levelDto);
 	}
 	
@@ -76,6 +83,12 @@ public class CoinLevelProportionController {
 	@RequestMapping(value="insert",method = RequestMethod.POST)
 	public Map<String,Object> insert(CoinLevelProportionDto levelDto){
 		Map<String,Object> map = new HashMap<String,Object>();
+		if((levelDto.getLevel_one().doubleValue() + levelDto.getLevel_two().doubleValue() + levelDto.getLevel_three().doubleValue() 
+				+ levelDto.getLevel_four().doubleValue() + levelDto.getLevel_five().doubleValue()) > 1) {
+			map.put("code","200");
+			map.put("desc","比例相加不能大于1，抱歉！");
+			return map;
+		}
 		CoinLevelProportionDto dto=validata.getByCoin_no(levelDto.getCoin_no());
 		if(dto == null) {
 			map = validata.insert(levelDto);

@@ -108,7 +108,6 @@ public class QueryEntrustDealInfo {
     public List<EntrustDto> queryEntrustByEntrustPriceEntrustCoinAndEntrustTypeAndState(EntrustDto buy_sell_EntrustDto,Long noSelectId) throws SQLException{
     	String sql = null;
 		List<EntrustDto> list = null;
-		try {
 			if(buy_sell_EntrustDto.getEntrust_type() == 0) {
 				sql = "SELECT * FROM t_inesv_entrust WHERE entrust_price <= ? AND entrust_coin = ? AND convert_coin = ? AND entrust_type = ? AND state = ? AND user_no != ? AND id != ? AND entrust_num!=deal_num ORDER BY DATE ASC LIMIT 1 ";
 				Object params[] = {buy_sell_EntrustDto.getEntrust_price(),buy_sell_EntrustDto.getEntrust_coin(),buy_sell_EntrustDto.getConvert_coin(),1,0,buy_sell_EntrustDto.getUser_no(),noSelectId};
@@ -118,10 +117,6 @@ public class QueryEntrustDealInfo {
 				Object params[] = {buy_sell_EntrustDto.getEntrust_price(),buy_sell_EntrustDto.getEntrust_coin(),buy_sell_EntrustDto.getConvert_coin(),0,0,buy_sell_EntrustDto.getUser_no(),noSelectId};
 				list = queryRunner.query(sql,new BeanListHandler<EntrustDto>(EntrustDto.class),params);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			log.error("根据委托id和用户编号查询委托记录失败");
-		}
 		return list;
     }
 }

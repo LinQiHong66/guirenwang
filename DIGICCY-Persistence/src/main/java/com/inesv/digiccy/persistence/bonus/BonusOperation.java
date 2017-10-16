@@ -101,19 +101,14 @@ public class BonusOperation {
      * @param num
      */
     @Transactional(rollbackFor={Exception.class, RuntimeException.class})
-    public void doLevelBonus(Long entrustNo,BigDecimal level_price,BigDecimal sum_price, Integer coin_type,Integer rel_user_no, String rel_code, Integer user_no, String user_code, Integer entrustType) throws Exception{
+    public void doLevelBonus(Long entrustNo,BigDecimal level_price,BigDecimal sum_price, Integer coin_type,Integer rel_user_no, String rel_user_name, String rel_code, Integer user_no, String user_code, Integer entrustType, BigDecimal level_scale, String remark) throws Exception{
     	/*
     	 * 插入分红记录
     	 */
-    	String insertBonus = "INSERT INTO t_inesv_bonus_level(bonus_source,bonus_coin,bonus_rel,bonus_user,bonus_type,bonus,remark) " +
-                "VALUES (?,?,?,?,?,?,?)";
-    	if(entrustType == 0 || entrustType == 1) {
-    		Object bonusParam[] = {entrustNo,coin_type,rel_user_no,user_no,entrustType,level_price,"交易-产生分红"};
+    	String insertBonus = "INSERT INTO t_inesv_bonus_level(bonus_source,bonus_coin,bonus_rel,bonus_user_name,bonus_rel_code,bonus_user,bonus_user_code,level_scale,bonus_type,bonus,sum_bonus,remark) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+    		Object bonusParam[] = {entrustNo,coin_type,rel_user_no,rel_user_name,rel_code,user_no,user_code,level_scale,entrustType,level_price,sum_price,remark};
             queryRunner.update(insertBonus,bonusParam);
-    	}else {
-    		Object bonusParam[] = {entrustNo,coin_type,rel_user_no,user_no,entrustType,level_price,"其他-产生分红"};
-            queryRunner.update(insertBonus,bonusParam);
-    	}
     	/*
     	 * 修改货币金额
     	 */

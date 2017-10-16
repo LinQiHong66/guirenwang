@@ -97,38 +97,44 @@ Website: http://thevectorlab.net/
 									</select>
                                	</div>
            						<div class="form-group" style="margin-top: 5px">
-                					<label class="form-label">推荐人比例:</label>&nbsp;&nbsp;
+                					<label class="form-label">经纪人1比例:</label>&nbsp;&nbsp;
                 					<input type="text"  id="level_one"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
-                					<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
+                					<span style="color:red">注意：请填小数并且比例相加不能大于1</span>
             					</div>
             					<div class="form-group" style="margin-top: 5px">
-                					<label class="form-label">推荐人一代比例:</label>&nbsp;&nbsp;
+                					<label class="form-label">经纪人2比例:</label>&nbsp;&nbsp;
                 					<input type="text"  id="level_two"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
-                					<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
+                					<span style="color:red">注意：请填小数并且比例相加不能大于1</span>
             					</div>
             					<div class="form-group" style="margin-top: 5px">
-                					<label class="form-label">推荐人二代比例:</label>&nbsp;&nbsp;
+                					<label class="form-label">子机构比例:</label>&nbsp;&nbsp;
                 					<input type="text"  id="level_three"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
-                					<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
+                					<span style="color:red">注意：请填小数并且比例相加不能大于1</span>
             					</div>
            					 	<div class="form-group" style="margin-top: 5px">
-            					    <label class="form-label">推荐人三代比例:</label>&nbsp;&nbsp;
+            					    <label class="form-label">机构比例:</label>&nbsp;&nbsp;
            					     	<input type="text"  id="level_four"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
-           					     	<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
+           					     	<span style="color:red">注意：请填小数并且比例相加不能大于1</span>
        					    	 </div>
-        					    <div class="form-group" style="margin-top: 5px">
+        					    <!-- <div class="form-group" style="margin-top: 5px">
           					      	<label class="form-label">推荐人四代比例:</label>&nbsp;&nbsp;
            					     	<input type="text"  id="level_five"  onblur="isNumber(this)" class="form-control" style="border-radius: 5px">
            					     	<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
-          					 	</div>
+          					 	</div> -->
           					  	<div class="form-group" style="margin-top: 5px">
+                                    <label class="form-label">分红货币类型:</label>&nbsp;&nbsp;
+                                	<select  class="input-large m-wrap" tabindex="1" id="level_type">
+               					        <option value="0" selected="selected">买：交易数量*手续费*分润比例；卖：交易数量*兑换货币金额*手续费*分润比例</option>
+             					   </select>
+                              	</div>
+                              	<%-- <div class="form-group" style="margin-top: 5px">
                                     <label class="form-label">分红货币类型:</label>&nbsp;&nbsp;
                                 	<select  class="input-large m-wrap" tabindex="1" id="level_type">
 										<c:forEach items="${coin.data}" var="coin">
 											<option value="${coin.coin_no}">${coin.coin_name}</option>
 										</c:forEach>
 									</select>
-                              	</div>
+                              	</div> --%>
           					  	<div class="form-group" style="margin-top: 5px">
              					   <label class="form-label">分红状态:</label>&nbsp;&nbsp;
              					   <select  class="input-large m-wrap" tabindex="1" id="state">

@@ -12,11 +12,15 @@ public class BonusLevelDto {
 	
 	private Long bonus_user;
 	
+	private String bonus_user_name;
+	
 	private String bonus_user_code;
 	
 	private Long bonus_rel;
 	
 	private String bonus_rel_code;
+	
+	private BigDecimal level_scale;
 	
 	private int bonus_type;
 	
@@ -58,6 +62,14 @@ public class BonusLevelDto {
 		this.bonus_user = bonus_user;
 	}
 
+	public String getBonus_user_name() {
+		return bonus_user_name;
+	}
+
+	public void setBonus_user_name(String bonus_user_name) {
+		this.bonus_user_name = bonus_user_name;
+	}
+
 	public String getBonus_user_code() {
 		return bonus_user_code;
 	}
@@ -80,6 +92,14 @@ public class BonusLevelDto {
 
 	public void setBonus_rel_code(String bonus_rel_code) {
 		this.bonus_rel_code = bonus_rel_code;
+	}
+
+	public BigDecimal getLevel_scale() {
+		return level_scale;
+	}
+
+	public void setLevel_scale(BigDecimal level_scale) {
+		this.level_scale = level_scale;
 	}
 
 	public int getBonus_type() {

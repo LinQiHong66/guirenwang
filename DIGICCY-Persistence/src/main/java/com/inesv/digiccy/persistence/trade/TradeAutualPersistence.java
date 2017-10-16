@@ -6,6 +6,7 @@ import com.inesv.digiccy.dto.ContactDto;
 import com.inesv.digiccy.dto.DayMarketDto;
 import com.inesv.digiccy.dto.EntrustDto;
 import com.inesv.digiccy.dto.InesvUserDto;
+import com.inesv.digiccy.dto.ResultFunctionDto;
 import com.inesv.digiccy.dto.UserBalanceDto;
 import com.inesv.digiccy.persistence.bonus.BonusOperation;
 import com.inesv.digiccy.persistence.plan.PlanOperation;
@@ -49,15 +50,13 @@ public class TradeAutualPersistence {
 	 */
 	@Transactional(rollbackFor={Exception.class, RuntimeException.class})
 	public EntrustDto buy_sell_TradeAutual(String buyTradeType,EntrustDto buyEntrust,EntrustDto sellEntrust,BigDecimal buy_poundatge,BigDecimal sell_poundatge,BigDecimal tradeNum,BigDecimal buyPrice,BigDecimal sellPrice) throws Exception{
-		//委托记录排他锁
+		//委托记录排他锁,防止交易的同事，用户撤销委托
 		EntrustDto buyEntrustDto = queryEntrustByID(buyEntrust.getId(),buyEntrust.getUser_no());
 		if(buyEntrustDto.getDeal_num().doubleValue() != buyEntrust.getDeal_num().doubleValue() || buyEntrustDto.getState() != buyEntrust.getState()) {
-			LOGGER.debug("================buy，买家委托异常================");
 			throw new Exception("异常，买委托记录异常");
 		}
 		EntrustDto sellEntrustDto = queryEntrustByID(sellEntrust.getId(),sellEntrust.getUser_no());
 		if(sellEntrustDto.getDeal_num().doubleValue() != sellEntrust.getDeal_num().doubleValue() || sellEntrustDto.getState() != sellEntrust.getState()) {
-			LOGGER.debug("================sell，卖家委托异常================");
 			throw new Exception("异常，卖委托记录异常");
 		}
 		//买的人的虚拟币
@@ -67,7 +66,6 @@ public class TradeAutualPersistence {
 		//买家资金-虚拟币
 		buyXnb.setEnable_coin(buyXnb.getEnable_coin().add(tradeNum.subtract(tradeNum.multiply(buy_poundatge))));
 		if(buyXnb.getEnable_coin().doubleValue() < 0){
-			LOGGER.debug("================buy，买家虚拟币负数，手动抛出异常================");
 			throw new Exception("异常，买家虚拟币负数");
 		}
 		String updateUserBalanceXnb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where id=?";
@@ -77,7 +75,6 @@ public class TradeAutualPersistence {
 		if(buyEntrust.getConvert_coin() == 0) {
 			buyRmb.setUnable_coin(buyRmb.getUnable_coin().subtract(tradeNum.multiply(buyPrice)));
 			if(buyRmb.getUnable_coin().doubleValue() < 0){
-				LOGGER.debug("================buy，买家人民币负数，手动抛出异常================");
 				throw new Exception("异常，买家人民币负数");
 			}
 		}else {
@@ -85,7 +82,6 @@ public class TradeAutualPersistence {
 			BigDecimal bg = new BigDecimal(trade_price);  
 			buyRmb.setUnable_coin(buyRmb.getUnable_coin().subtract(new BigDecimal(bg.setScale(6,BigDecimal.ROUND_DOWN).toString())));
 			if(buyRmb.getUnable_coin().doubleValue() < 0) {
-				LOGGER.debug("================buy，买家人民币负数，手动抛出异常================");
 				throw new Exception("异常，买家人民币负数");
 			}
 		}
@@ -99,23 +95,25 @@ public class TradeAutualPersistence {
 		//卖家资金-虚拟币
 		sellXnb.setUnable_coin(sellXnb.getUnable_coin().subtract(tradeNum));
 		if(sellXnb.getUnable_coin().doubleValue()<0){
-			LOGGER.debug("================sell，卖家虚拟币负数，手动抛出异常================");
 			throw new Exception("异常，卖家虚拟币负数");
 		}
 		String updateUnSellUserBalanceXnb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where id=?";
 		Object updateUnSellXnbParams[] = {sellXnb.getEnable_coin(),sellXnb.getUnable_coin(),sellXnb.getUnable_coin().add(sellXnb.getEnable_coin()),sellXnb.getId()};
 		queryRunner.update(updateUnSellUserBalanceXnb, updateUnSellXnbParams);
 		if(sellRmb.getEnable_coin().doubleValue()<0){
-			LOGGER.debug("================sell，卖家人民币负数，手动抛出异常================");
 			throw new Exception("异常，卖家人民币负数");
 		}
+		BigDecimal sellSumPrice = new BigDecimal("0");
+		BigDecimal sellPoundatgePrice = new BigDecimal("0");
 		if(sellEntrust.getConvert_coin() == 0) {
 			sellRmb.setEnable_coin(sellRmb.getEnable_coin().add(tradeNum.multiply(sellPrice).subtract(tradeNum.multiply(sellPrice).multiply(sell_poundatge))));
 		}else {
-			double price = (tradeNum.doubleValue()*(sellPrice.doubleValue())/(sellEntrust.getConvert_price().doubleValue()))
-					-((tradeNum.doubleValue()*(sellPrice.doubleValue())/(sellEntrust.getConvert_price().doubleValue()))*(sell_poundatge.doubleValue()));
-			BigDecimal bg = new BigDecimal(price);
-			sellRmb.setEnable_coin(sellRmb.getEnable_coin().add(new BigDecimal(bg.setScale(6,BigDecimal.ROUND_DOWN).toString())));
+			double sellSumPriceDouble = (tradeNum.doubleValue()*(sellPrice.doubleValue())/(sellEntrust.getConvert_price().doubleValue()));
+			sellSumPrice = new BigDecimal(sellSumPriceDouble).setScale(6,BigDecimal.ROUND_DOWN);//交易金额
+			double sellPoundatgePriceSouble = (sellSumPrice.doubleValue()*sell_poundatge.doubleValue());
+			sellPoundatgePrice = new BigDecimal(sellPoundatgePriceSouble).setScale(6,BigDecimal.ROUND_DOWN);//手续费
+			BigDecimal bg = (sellSumPrice.subtract(sellPoundatgePrice)).setScale(6,BigDecimal.ROUND_DOWN);//扣除手续费后的金额
+			sellRmb.setEnable_coin(sellRmb.getEnable_coin().add(bg));
 		}
 		String updateUnSellUserBalanceRmb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where id=?";
 		Object updateUnSellRmbParams[] = {sellRmb.getEnable_coin(),sellRmb.getUnable_coin(),sellRmb.getEnable_coin().add(sellRmb.getUnable_coin()),sellRmb.getId()};
@@ -137,7 +135,6 @@ public class TradeAutualPersistence {
 					BigDecimal remainder_bg =  buyEntrust.getConvert_sum_price().subtract(deal_bg).subtract(buyEntrust.getConvert_deal_price());//交易完成，产生的余数
 					buyRmb.setUnable_coin(buyRmb.getUnable_coin().subtract(remainder_bg));
 					if(buyRmb.getUnable_coin().doubleValue()<0){
-						LOGGER.debug("================buy，买家人民币负数，手动抛出异常================");
 						throw new Exception("异常，买家人民币负数");
 					}
 					updateUserBalanceRmb = "update t_inesv_user_balance set enable_coin = ?,unable_coin = ?,total_price = ? where id = ?";
@@ -176,19 +173,25 @@ public class TradeAutualPersistence {
 				queryRunner.update(opObjEntrust, opObjEntrustParams);
 		//交易货币最新行情
 		List<DayMarketDto> dayMarketDtoList=queryDayMarketInfoByCoinType(buyEntrust.getEntrust_coin());
-		if(tradeNum.doubleValue()!=0){
+		if(tradeNum.doubleValue()!=0){//(买的货币的数量-买的货币数量*手续费)(deal_num-poundage)((attr1的币种)attr2-poundage)
 			//3-1.生成一条新买的交易记录
 			String insertBuyDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,now(),?,?)";
 			Object buyDealParam[] = {buyEntrust.getUser_no(),buyEntrust.getEntrust_coin(),buyEntrust.getEntrust_type(),
-					buyPrice,tradeNum,tradeNum.multiply(buyPrice),
-				tradeNum.multiply(buyPrice).multiply(buy_poundatge),buyEntrust.getId(),sellEntrust.getId()};
+					buyPrice,tradeNum,tradeNum.multiply(buyPrice),tradeNum.multiply(buy_poundatge),buyEntrust.getEntrust_coin(),tradeNum};
 			queryRunner.update(insertBuyDeal,buyDealParam);
+			
 			//3-2.生成一条新的卖的交易记录
-			String insertSellDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date) VALUES(?,?,?,?,?,?,?,now())";
-			Object sellDealParam[] = {sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),sellEntrust.getEntrust_type(),
-				sellPrice,tradeNum,tradeNum.multiply(sellPrice),
-				tradeNum.multiply(sellPrice).multiply(sell_poundatge)};
-			queryRunner.update(insertSellDeal,sellDealParam);
+			if(sellEntrust.getConvert_coin() == 0) {//(卖的货币数量*卖的价格-卖的货币数量*卖的价格*手续费)(tradeNum.multiply(sellPrice)-tradeNum.multiply(sellPrice).multiply(sell_poundatge))((attr1币种)attr2-poundage)
+				String insertSellDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,now(),?,?)";
+				Object sellDealParam[] = {sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),sellEntrust.getEntrust_type(),
+					sellPrice,tradeNum,tradeNum.multiply(sellPrice),tradeNum.multiply(sellPrice).multiply(sell_poundatge),sellEntrust.getConvert_coin(),tradeNum.multiply(sellPrice)};
+				queryRunner.update(insertSellDeal,sellDealParam);
+			}else {//(卖的货币数量*卖的价格-卖的货币数量*卖的价格*手续费)(tradeNum.multiply(sellPrice)-tradeNum.multiply(sellPrice).multiply(sell_poundatge))((attr1币种)attr2-poundage)
+				String insertSellDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,now(),?,?)";
+				Object sellDealParam[] = {sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),sellEntrust.getEntrust_type(),
+					sellPrice,tradeNum,tradeNum.multiply(sellPrice),sellPoundatgePrice,sellEntrust.getConvert_coin(),sellSumPrice};
+				queryRunner.update(insertSellDeal,sellDealParam);
+			}
 		}
 		String insertTradeDetail = "INSERT INTO t_trade_detail (coin_type,convert_type,buy_user,buy_price,buy_number,buy_poundatge,sell_user,sell_price,sell_number,sell_poundatge,buy_entrust,sell_entrust,date,end_buy_rmb_price,end_buy_coin_price,end_sell_rmb_price,end_sell_coin_price)"
 				+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -213,6 +216,29 @@ public class TradeAutualPersistence {
 					inesvDayMarketDto.getDeal_price(),inesvDayMarketDto.getDay_percent(),inesvDayMarketDto.getMax_price(),inesvDayMarketDto.getMin_price(),0,new Date()};
 			queryRunner.update(insertDayMarket,dayMarketParam);
 		}
+		//差价记录
+		String insertDifference = "INSERT INTO t_trade_detail_difference(buy_user,sell_user,buy_entrust_no,sell_entrust_no,entrust_coin,convert_coin,trade_num,buy_price,buy_sum_price,"
+				+ "sell_price,sell_sum_price,rmb_difference_price,xnb_difference_price,date) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		if(buyEntrust.getConvert_coin() == 0) {
+			BigDecimal rmbDifferencePrice = (buyEntrust.getEntrust_price().multiply(tradeNum).subtract(sellEntrust.getEntrust_price().multiply(tradeNum)));
+			rmbDifferencePrice = rmbDifferencePrice.setScale(6,BigDecimal.ROUND_DOWN);
+			Object differenceParam[] = {buyEntrust.getUser_no(),sellEntrust.getUser_no(),buyEntrust.getId(),sellEntrust.getId(),buyEntrust.getEntrust_coin(),buyEntrust.getConvert_coin(),
+					tradeNum,buyEntrust.getEntrust_price(),buyEntrust.getEntrust_price().multiply(tradeNum),sellEntrust.getEntrust_price(),sellEntrust.getEntrust_price().multiply(tradeNum),
+					rmbDifferencePrice,"0",new Date()};
+			queryRunner.update(insertDifference,differenceParam);
+		}else {
+			BigDecimal rmbDifferencePrice = (buyEntrust.getEntrust_price().multiply(tradeNum)).subtract(sellEntrust.getEntrust_price().multiply(tradeNum));
+			rmbDifferencePrice = rmbDifferencePrice.setScale(6,BigDecimal.ROUND_DOWN);
+			double buyPrice0Double = (buyEntrust.getEntrust_price().doubleValue()*tradeNum.doubleValue())/(buyEntrust.getConvert_price().doubleValue());
+			BigDecimal buyPrice0 = new BigDecimal(buyPrice0Double).setScale(6,BigDecimal.ROUND_DOWN);
+			double sellPrice0Double = (sellEntrust.getEntrust_price().doubleValue()*tradeNum.doubleValue())/(sellEntrust.getConvert_price().doubleValue());
+			BigDecimal sellPrice0 = new BigDecimal(sellPrice0Double).setScale(6,BigDecimal.ROUND_DOWN);
+			BigDecimal xnbDifferencePrice = buyPrice0.subtract(sellPrice0);
+			Object differenceParam[] = {buyEntrust.getUser_no(),sellEntrust.getUser_no(),buyEntrust.getId(),sellEntrust.getId(),buyEntrust.getEntrust_coin(),buyEntrust.getConvert_coin(),
+					tradeNum,buyEntrust.getEntrust_price(),buyEntrust.getEntrust_price().multiply(tradeNum),sellEntrust.getEntrust_price(),sellEntrust.getEntrust_price().multiply(tradeNum),
+					rmbDifferencePrice,xnbDifferencePrice,new Date()};
+			queryRunner.update(insertDifference,differenceParam);
+		}
 		//添加手续费记录
 		InesvUserDto buyUserDto = queryUserInfoByUserNo(buyEntrust.getUser_no());
 		if(buyUserDto.getOrg_code() == null) {
@@ -223,17 +249,27 @@ public class TradeAutualPersistence {
 			sellUserDto.setOrg_code("");
 		}
 		//1.买产生的手续费
-		String insertBuyPoundage = "INSERT INTO t_inesv_poundage(user_no,user_name,user_code,optype,type,money,sum_money,date) VALUES(?,?,?,?,?,?,?,?)";
-		Object buyPoundageParam[] = {buyEntrust.getUser_no(),buyUserDto.getUsername(),buyUserDto.getOrg_code(),buyEntrust.getEntrust_type(),buyEntrust.getEntrust_coin(),tradeNum.multiply(buy_poundatge),tradeNum,new Date()};
+		String insertBuyPoundage = "INSERT INTO t_inesv_poundage(user_no,user_name,user_code,optype,type,money,sum_money,date,attr1) VALUES(?,?,?,?,?,?,?,?,?)";
+		Object buyPoundageParam[] = {buyEntrust.getUser_no(),buyUserDto.getUsername(),buyUserDto.getOrg_code(),buyEntrust.getEntrust_type(),buyEntrust.getEntrust_coin(),tradeNum.multiply(buy_poundatge),tradeNum,new Date(),buyEntrust.getEntrust_coin()};
 		queryRunner.update(insertBuyPoundage,buyPoundageParam);
 		//2.卖产生的手续费
-		String insertSellPoundage = "INSERT INTO t_inesv_poundage(user_no,user_name,user_code,optype,type,money,sum_money,date) VALUES(?,?,?,?,?,?,?,?)";
-		Object sellPoundageParam[] = {sellEntrust.getUser_no(),sellUserDto.getUsername(),sellUserDto.getOrg_code(),sellEntrust.getEntrust_type(),sellEntrust.getEntrust_coin(),tradeNum.multiply(sell_poundatge),tradeNum,new Date()};
-		queryRunner.update(insertSellPoundage,sellPoundageParam);
+		if(sellEntrust.getConvert_coin() == 0) {
+			String insertSellPoundage = "INSERT INTO t_inesv_poundage(user_no,user_name,user_code,optype,type,money,sum_money,date,attr1) VALUES(?,?,?,?,?,?,?,?,?)";
+			Object sellPoundageParam[] = {sellEntrust.getUser_no(),sellUserDto.getUsername(),sellUserDto.getOrg_code(),sellEntrust.getEntrust_type(),sellEntrust.getEntrust_coin(),tradeNum.multiply(sell_poundatge).multiply(sellPrice),tradeNum.multiply(sellPrice),new Date(),sellEntrust.getConvert_coin()};
+			queryRunner.update(insertSellPoundage,sellPoundageParam);
+		}else {
+			String insertSellPoundage = "INSERT INTO t_inesv_poundage(user_no,user_name,user_code,optype,type,money,sum_money,date,attr1) VALUES(?,?,?,?,?,?,?,?,?)";
+			Object sellPoundageParam[] = {sellEntrust.getUser_no(),sellUserDto.getUsername(),sellUserDto.getOrg_code(),sellEntrust.getEntrust_type(),sellEntrust.getEntrust_coin(),sellPoundatgePrice,sellSumPrice,new Date(),sellEntrust.getConvert_coin()};
+			queryRunner.update(insertSellPoundage,sellPoundageParam);
+		}
 		//买家分红
-		userLevelDetailed(buyEntrust.getUser_no(),buyEntrust.getEntrust_coin(),tradeNum.multiply(buy_poundatge),buyPrice.multiply(buy_poundatge),buyEntrust.getId(),buyEntrust.getEntrust_type());
+		userLevelDetailed(buyEntrust.getUser_no(),buyEntrust.getEntrust_coin(),tradeNum.multiply(buy_poundatge),buyPrice.multiply(buy_poundatge),tradeNum.multiply(buy_poundatge),buyEntrust.getId(),buyEntrust.getEntrust_type(),buyEntrust.getEntrust_coin());
 		//卖家分红
-		userLevelDetailed(sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),tradeNum.multiply(sell_poundatge),sellPrice.multiply(sell_poundatge),sellEntrust.getId(),sellEntrust.getEntrust_type());
+		if(sellEntrust.getConvert_coin() == 0) {
+			userLevelDetailed(sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),tradeNum.multiply(sell_poundatge),sellPrice.multiply(sell_poundatge),sellPrice.multiply(tradeNum).multiply(sell_poundatge),sellEntrust.getId(),sellEntrust.getEntrust_type(),0);
+		}else {
+			userLevelDetailed(sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),tradeNum.multiply(sell_poundatge),sellPrice.multiply(sell_poundatge),sellPoundatgePrice,sellEntrust.getId(),sellEntrust.getEntrust_type(),sellEntrust.getConvert_coin());
+		}
 				
 		if(buyTradeType.equals("0")) {
 			return buyEntrust;
@@ -244,16 +280,15 @@ public class TradeAutualPersistence {
 	/*
 	 * 交易分红
 	 */
-	public void userLevelDetailed(Integer user_no, Integer coin_no, BigDecimal tradeNum, BigDecimal entrustPrice, Long entrustNo, Integer entrustType) throws Exception{
+	public void userLevelDetailed(Integer user_no, Integer coin_no, BigDecimal tradeNum, BigDecimal entrustPrice, BigDecimal poundatgePrice, Long entrustNo, Integer entrustType, Integer levelCoinType) throws Exception{
 		//查询币种相应上级分红比例
-		InesvUserDto userDto = queryUserInfoByUserNo(user_no);
+		//InesvUserDto userDto = queryUserInfoByUserNo(user_no);
 		CoinLevelProportionDto coinLevelProportionDto = queryByCoinNo(Long.valueOf(coin_no)); //货币分红比例
 		ContactDto contactDto = queryByContact(); //官方账号
 		if(contactDto.getAuthority_account() == null) {
 			contactDto.setAuthority_account("*");
 		}
-		InesvUserDto authorityUserDto = queryUserInfoByPhone(contactDto.getAuthority_account());//官方账号的指定用户
-		//买家上级分红
+		//上级分红金额
 		BigDecimal level_one = null;
 		BigDecimal level_two = null;
 		BigDecimal level_three = null;
@@ -261,97 +296,111 @@ public class TradeAutualPersistence {
 		BigDecimal level_five = null;
 		BigDecimal authority_level = null;
 		if(coinLevelProportionDto != null && coinLevelProportionDto.getState() == 1){
-			if(coinLevelProportionDto.getLevel_type() == 0) {
-				level_one = coinLevelProportionDto.getLevel_one().multiply(entrustPrice);//经纪人1
-				level_one = level_one.setScale(6,BigDecimal.ROUND_DOWN);
-				level_two = coinLevelProportionDto.getLevel_two().multiply(entrustPrice);//经纪人2
-				level_two = level_two.setScale(6,BigDecimal.ROUND_DOWN);
-				level_three = coinLevelProportionDto.getLevel_three().multiply(entrustPrice);//子机构
-				level_three = level_three.setScale(6,BigDecimal.ROUND_DOWN);
-				level_four = coinLevelProportionDto.getLevel_four().multiply(entrustPrice);//机构
-				level_four = level_four.setScale(6,BigDecimal.ROUND_DOWN);
-				//level_five = coinLevelProportionDto.getLevel_five().multiply(entrustPrice);
-			}else {
-				level_one = coinLevelProportionDto.getLevel_one().multiply(tradeNum);//经纪人1
-				level_one = level_one.setScale(6,BigDecimal.ROUND_DOWN);
-				level_two = coinLevelProportionDto.getLevel_two().multiply(tradeNum);//经纪人2
-				level_two = level_two.setScale(6,BigDecimal.ROUND_DOWN);
-				level_three = coinLevelProportionDto.getLevel_three().multiply(tradeNum);//子机构
-				level_three = level_three.setScale(6,BigDecimal.ROUND_DOWN);
-				level_four = coinLevelProportionDto.getLevel_five().multiply(tradeNum);//机构
-				level_four = level_four.setScale(6,BigDecimal.ROUND_DOWN);
-				//level_five = coinLevelProportionDto.getLevel_five().multiply(tradeNum);
-			}
+			level_one = coinLevelProportionDto.getLevel_one().multiply(poundatgePrice);//经纪人1
+			level_one = level_one.setScale(6,BigDecimal.ROUND_DOWN);
+			level_two = coinLevelProportionDto.getLevel_two().multiply(poundatgePrice);//经纪人2
+			level_two = level_two.setScale(6,BigDecimal.ROUND_DOWN);
+			level_three = coinLevelProportionDto.getLevel_three().multiply(poundatgePrice);//子机构
+			level_three = level_three.setScale(6,BigDecimal.ROUND_DOWN);
+			level_four = coinLevelProportionDto.getLevel_four().multiply(poundatgePrice);//机构
+			level_four = level_four.setScale(6,BigDecimal.ROUND_DOWN);
 		}else {
 			return;
 		}
 		BigDecimal sum_level_price = level_one.divide(coinLevelProportionDto.getLevel_one());
-		sum_level_price = sum_level_price.setScale(6,BigDecimal.ROUND_DOWN);//总手续费
-		InesvUserDto buyUserDto1 = queryUserByID(user_no);//经纪人1
-		if(buyUserDto1 == null || buyUserDto1.getUser_no() == user_no) {
+		sum_level_price = sum_level_price.setScale(6,BigDecimal.ROUND_DOWN);//总分红金额
+		//分红逻辑
+		InesvUserDto levelUserDto = new InesvUserDto();
+		InesvUserDto userDto = new InesvUserDto();
+		ResultFunctionDto functionDto = new ResultFunctionDto();
+		Integer userNo = 0;
+		Double already_level_price = 0D;
+		for(int i=0 ; i < 4 ; i++) {//0：经纪人，1：经纪人，2：子机购，3：机构
+			if(i == 0) {
+				userNo = user_no;
+			}
+			userDto = queryUserInfoByUserNo(userNo);//产生分红用户
+			if(i != 2) {
+				levelUserDto = queryUserByID(userNo);//获得分红用户
+				if(levelUserDto == null || levelUserDto.getUser_no() == userNo || levelUserDto.getOrg_type() == 3) {
+					break;
+				}
+			}
+			if(i == 0) {//经纪人1分红
+				if(levelUserDto.getOrg_type() == 2) {//经纪人
+					already_level_price += level_one.doubleValue();
+					bonusOperation.doLevelBonus(entrustNo, level_one, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_one(),"经纪人1-交易分红");
+				}
+				if(levelUserDto.getOrg_type() == 1) {//子机构
+					i = 2;
+					already_level_price += level_three.doubleValue();
+					bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_three(),"子机构-交易分红");
+				}
+				if(levelUserDto.getOrg_type() == 0) {//机构
+					i = 4;
+					already_level_price += level_four.doubleValue();
+					bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分红");
+				}
+				userNo = levelUserDto.getUser_no();
+				continue;
+			} 
+			if(i == 1) {//经纪人2分红
+				if(levelUserDto.getOrg_type() == 2) {//经纪人
+					already_level_price += level_two.doubleValue();
+					bonusOperation.doLevelBonus(entrustNo, level_two, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_two(),"经纪人2-交易分红");
+				}
+				if(levelUserDto.getOrg_type() == 1) {//子机构
+					i = 2;
+					already_level_price += level_three.doubleValue();
+					bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_three(),"子机构-交易分红");
+				}
+				if(levelUserDto.getOrg_type() == 0) {//机构
+					i = 4;
+					already_level_price += level_three.doubleValue();
+					bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分红");
+				}
+				userNo = levelUserDto.getUser_no();
+				continue;
+			}
+			if(i == 2) {//子机构分红
+				//函数调用
+				functionDto = queryByFunction(userNo,2);
+				if(functionDto  == null || functionDto.getLevel_user_no() == null) {
+					break;
+				}
+				levelUserDto = queryUserInfoByUserNo(functionDto.getLevel_user_no());
+				if(levelUserDto.getOrg_type() == 3 || levelUserDto.getOrg_type() == 2) {
+					break;
+				}
+				if(levelUserDto.getOrg_type() == 1) {
+					already_level_price += level_three.doubleValue();
+					bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, levelCoinType, functionDto.getLevel_user_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_three(),"子机构-交易分红");
+				}if(levelUserDto.getOrg_type() == 0) {
+					i = 4;
+					already_level_price += level_four.doubleValue();
+					bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, functionDto.getLevel_user_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分红");
+				}
+				userNo = levelUserDto.getUser_no();
+				continue;
+			}
+			if(i == 3) {//机构分红
+				already_level_price += level_four.doubleValue();
+				bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分红");
+				userNo = levelUserDto.getUser_no();
+				continue;
+			}
+		}
+			//官方账号分红
+			InesvUserDto authorityUserDto = queryUserInfoByPhone(contactDto.getAuthority_account());//官方账号的指定用户
 			if(authorityUserDto == null) {
 				return;
+			}else {
+				if(authorityUserDto.getOrg_code() == null) {
+					authorityUserDto.setOrg_code("");
+				}
+				authority_level = sum_level_price.subtract(new BigDecimal(already_level_price.toString()));
+				bonusOperation.doLevelBonus(entrustNo, authority_level, sum_level_price, levelCoinType, authorityUserDto.getUser_no(),"",authorityUserDto.getOrg_code(), 0, "", entrustType,new BigDecimal("0"),"官方账号-交易分红");//剩余的给官方账号
 			}
-			if(authorityUserDto.getOrg_code() == null) {
-				authorityUserDto.setOrg_code("");
-			}
-			authority_level = sum_level_price;
-			bonusOperation.doLevelBonus(entrustNo, authority_level, sum_level_price, coinLevelProportionDto.getLevel_type(), authorityUserDto.getUser_no(),authorityUserDto.getOrg_code(), 0, "", entrustType);//剩余的给官方账号
-			return;
-		}else {
-			bonusOperation.doLevelBonus(entrustNo, level_one, sum_level_price, coinLevelProportionDto.getLevel_type(), buyUserDto1.getUser_no(), buyUserDto1.getOrg_code(), user_no, userDto.getOrg_code(), entrustType);
-		}
-		InesvUserDto buyUserDto2 = queryUserByID(buyUserDto1.getUser_no());//经纪人2
-		if(buyUserDto2 == null || buyUserDto2.getUser_no() == buyUserDto1.getUser_no()) {
-			if(authorityUserDto == null) {
-				return;
-			}
-			if(authorityUserDto.getOrg_code() == null) {
-				authorityUserDto.setOrg_code("");
-			}
-			authority_level = sum_level_price.multiply(level_one);
-			bonusOperation.doLevelBonus(entrustNo, authority_level, sum_level_price, coinLevelProportionDto.getLevel_type(), authorityUserDto.getUser_no(), authorityUserDto.getOrg_code(), 0, "", entrustType);//剩余的给官方账号
-			return;
-		}else {
-			bonusOperation.doLevelBonus(entrustNo, level_two, sum_level_price, coinLevelProportionDto.getLevel_type(), buyUserDto2.getUser_no(), buyUserDto2.getOrg_code(), buyUserDto1.getUser_no(), buyUserDto1.getOrg_code(), entrustType);
-		}
-		InesvUserDto buyUserDto3 = queryUserByID(buyUserDto2.getUser_no());//子机构
-		if(buyUserDto3 == null || buyUserDto3.getUser_no() == buyUserDto2.getUser_no()) {
-			if(authorityUserDto == null) {
-				return;
-			}
-			if(authorityUserDto.getOrg_code() == null) {
-				authorityUserDto.setOrg_code("");
-			}
-			authority_level = sum_level_price.multiply(level_one).multiply(level_two);
-			bonusOperation.doLevelBonus(entrustNo, authority_level, sum_level_price, coinLevelProportionDto.getLevel_type(), authorityUserDto.getUser_no(), authorityUserDto.getOrg_code(), 0, "",entrustType);//剩余的给官方账号
-			return;
-		}else {
-			bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, coinLevelProportionDto.getLevel_type(), buyUserDto3.getUser_no(), buyUserDto3.getOrg_code(), buyUserDto2.getUser_no(), buyUserDto2.getOrg_code(), entrustType);
-		}
-		InesvUserDto buyUserDto4 = queryUserByID(buyUserDto3.getUser_no());//机构
-		if(buyUserDto4 == null || buyUserDto4.getUser_no() == buyUserDto3.getUser_no()) {
-			if(authorityUserDto == null) {
-				return;
-			}
-			if(authorityUserDto.getOrg_code() == null) {
-				authorityUserDto.setOrg_code("");
-			}
-			authority_level = sum_level_price.multiply(level_one).multiply(level_two).multiply(level_three);
-			bonusOperation.doLevelBonus(entrustNo, authority_level, sum_level_price, coinLevelProportionDto.getLevel_type(), authorityUserDto.getUser_no(), authorityUserDto.getOrg_code(), 0, "", entrustType);//剩余的给官方账号
-			return;
-		}else {
-			bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, coinLevelProportionDto.getLevel_type(), buyUserDto4.getUser_no(), buyUserDto4.getOrg_code(), buyUserDto3.getUser_no(), buyUserDto3.getOrg_code(), entrustType);
-		}
-		if(authorityUserDto == null) {//官方账号
-			return;
-		}else {
-			if(authorityUserDto.getOrg_code() == null) {
-				authorityUserDto.setOrg_code("");
-			}
-			authority_level = sum_level_price.multiply(level_one).multiply(level_two).multiply(level_three).multiply(level_four);
-			bonusOperation.doLevelBonus(entrustNo, authority_level, sum_level_price, coinLevelProportionDto.getLevel_type(), authorityUserDto.getUser_no(), authorityUserDto.getOrg_code(), 0, "", entrustType);
-		}
 	}
 	
 	
@@ -477,7 +526,7 @@ public class TradeAutualPersistence {
 	 * @throws SQLException
 	 */
 	private InesvUserDto queryUserInfoByUserNo(Integer user_no) throws SQLException {
-        String querySql = "select username,org_code from t_inesv_user where user_no=?";
+        String querySql = "select user_no,username,org_type,org_code from t_inesv_user where user_no=?";
         Object params[] = {user_no};
         InesvUserDto userInfo=queryRunner.query(querySql,new BeanHandler<InesvUserDto>(InesvUserDto.class),params);
 		return userInfo;
@@ -490,7 +539,7 @@ public class TradeAutualPersistence {
 	 * @throws SQLException
 	 */
 	private InesvUserDto queryUserInfoByPhone(String phone) throws SQLException {
-        String querySql = "select user_no,org_code from t_inesv_user where phone=? limit 1";
+        String querySql = "select user_no,username,org_code from t_inesv_user where phone=? limit 1";
         Object params[] = {phone};
         InesvUserDto userInfo=queryRunner.query(querySql,new BeanHandler<InesvUserDto>(InesvUserDto.class),params);
 		return userInfo;
@@ -570,6 +619,16 @@ public class TradeAutualPersistence {
 		contactDto = queryRunner.query(sql, new BeanHandler<ContactDto>(ContactDto.class));
 		return contactDto;
 	}
+	
+	/*
+	 * 函数调用
+	 */
+	public ResultFunctionDto queryByFunction(Integer user_no,Integer level_grade) throws Exception{
+		String sql = "SELECT get_level_orgcode(?,?) AS level_user_no";
+		Object params[] = {user_no , level_grade};
+		ResultFunctionDto resultDunctionDto = queryRunner.query(sql, new BeanHandler<ResultFunctionDto>(ResultFunctionDto.class),params);
+		return resultDunctionDto;
+	}
 
 	/*
 	 * 根据货币ID 查询货币分红比例
@@ -585,7 +644,7 @@ public class TradeAutualPersistence {
 	 * 根据用户ID 查询用户上级
 	 */
 	public InesvUserDto queryUserByID(Integer user_no) throws Exception{
-		String sql = "SELECT user_no,org_code FROM t_inesv_user WHERE org_code = (SELECT org_parent_code FROM t_inesv_user WHERE user_no = ?)";
+		String sql = "SELECT user_no,username,org_type,org_code FROM t_inesv_user WHERE org_code = (SELECT org_parent_code FROM t_inesv_user WHERE user_no = ?)";
 		InesvUserDto relUser = new InesvUserDto();
 		relUser = queryRunner.query(sql, new BeanHandler<InesvUserDto>(InesvUserDto.class),user_no);
 		return relUser;
