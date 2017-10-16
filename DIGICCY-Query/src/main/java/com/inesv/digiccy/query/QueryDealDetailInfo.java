@@ -329,7 +329,7 @@ public class QueryDealDetailInfo {
     				" (SELECT * FROM (SELECT (deal_price) AS begin_price,date AS begin_date, UNIX_TIMESTAMP(DATE_FORMAT(DATE,'%Y-%m-%d %H:00:00')) AS begin_date_num ,ROUND(DATE/72000)*72000 AS gt FROM t_inesv_deal_detail WHERE coin_no=? ORDER BY begin_date ASC) a GROUP BY ROUND(begin_date/72000)*72000) AS b " + 
     				" ON a.gt=b.gt " + 
     				" INNER JOIN " +
-    				" (SELECT  MAX(sum_price/deal_num) AS max_price ,MIN(deal_price) AS min_price , SUM(deal_num) AS deal_num ," + 
+    				" (SELECT  MAX(deal_price) AS max_price ,MIN(deal_price) AS min_price , SUM(deal_num) AS deal_num ," + 
     				" (MAX(deal_price)-MIN(deal_price)) AS difference_price ,((MAX(deal_price)-MIN(deal_price))/MAX(deal_price)) AS difference_percentage ," + 
     				" deal_type AS price_type ,ROUND(DATE/72000)*72000 AS gt FROM t_inesv_deal_detail WHERE coin_no=? GROUP BY gt ORDER BY gt DESC LIMIT 0,1) AS c " + 
     				" ON b.gt=c.gt ";
@@ -341,7 +341,7 @@ public class QueryDealDetailInfo {
     				" (SELECT * FROM (SELECT (deal_price) AS begin_price,date AS begin_date, UNIX_TIMESTAMP(DATE_FORMAT(DATE,'%Y-%m-%d 00:00:00')) AS begin_date_num ,ROUND(DATE/144000)*144000 AS gt FROM t_inesv_deal_detail WHERE coin_no=? ORDER BY begin_date ASC) a GROUP BY ROUND(begin_date/144000)*144000) AS b " + 
     				" ON a.gt=b.gt " + 
     				" INNER JOIN " +
-    				" (SELECT  MAX(sum_price/deal_num) AS max_price ,MIN(deal_price) AS min_price , SUM(deal_num) AS deal_num ," + 
+    				" (SELECT  MAX(deal_price) AS max_price ,MIN(deal_price) AS min_price , SUM(deal_num) AS deal_num ," + 
     				" (MAX(deal_price)-MIN(deal_price)) AS difference_price ,((MAX(deal_price)-MIN(deal_price))/MAX(deal_price)) AS difference_percentage ," + 
     				" deal_type AS price_type ,ROUND(DATE/144000)*144000 AS gt FROM t_inesv_deal_detail WHERE coin_no=? GROUP BY gt ORDER BY gt DESC LIMIT 0,1) AS c " + 
     				" ON b.gt=c.gt ";

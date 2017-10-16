@@ -189,7 +189,7 @@ public class QueryIntegral {
 			
 		List<IntegralRuleDto> gradeDtos=new ArrayList<>();
 		try {
-			String sql="select ru.id,ru.instruction,ru.number,ru.type,ru.identifier,ru.conditions,ru.reward"
+			String sql="select ru.id,ru.instruction,ru.number,ru.type,ru.identifier,ru.conditions,ru.reward,ru.state"
 					+ " from t_integral_rule as ru where 1=1";
 			ArrayList<Object> paramArr = new ArrayList<>();
 			//通过id查询
@@ -211,6 +211,10 @@ public class QueryIntegral {
 			}
 			if(R.isNull(integralRuleDto.getIdentifier())){
 				sql+=" and ru.identifier = ?";
+				paramArr.add(integralRuleDto.getIdentifier());
+			}
+			if(R.isNull(integralRuleDto.getState())){
+				sql+=" and ru.state = ?";
 				paramArr.add(integralRuleDto.getIdentifier());
 			}
 			

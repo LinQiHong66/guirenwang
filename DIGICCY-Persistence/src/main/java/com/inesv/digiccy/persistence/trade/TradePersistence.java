@@ -114,11 +114,11 @@ public class TradePersistence {
 				if(entrust.getConvert_price().doubleValue() * rmbBalanceInfo.getEnable_coin().doubleValue() < (entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue()) {
 					int numException = 1/0;
 				}
-				double enable_coin = rmbBalanceInfo.getEnable_coin().doubleValue()-(entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue() / entrust.getConvert_price().doubleValue();
+				//double enable_coin = rmbBalanceInfo.getEnable_coin().doubleValue()-(entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue() / entrust.getConvert_price().doubleValue();
 				double unable_coin = rmbBalanceInfo.getUnable_coin().doubleValue()+(entrust.getEntrust_price().multiply(entrust.getEntrust_num())).doubleValue() / entrust.getConvert_price().doubleValue();
-				BigDecimal en_bg = new BigDecimal(enable_coin);  
+				//BigDecimal en_bg = new BigDecimal(enable_coin);  
 				BigDecimal un_bg = new BigDecimal(unable_coin);  
-				rmbBalanceInfo.setEnable_coin(new BigDecimal(en_bg.setScale(6,BigDecimal.ROUND_DOWN).toString()));
+				//rmbBalanceInfo.setEnable_coin(new BigDecimal(en_bg.setScale(6,BigDecimal.ROUND_DOWN).toString()));
 				rmbBalanceInfo.setUnable_coin(new BigDecimal(un_bg.setScale(6,BigDecimal.ROUND_DOWN).toString()));
 			}
 		}
@@ -141,7 +141,7 @@ public class TradePersistence {
 		queryRunner.update(updateUserBalance, updateParams);
 		//修改该用户的人民币资产
 		String updateUserBalanceRmb = "update t_inesv_user_balance set enable_coin=?,unable_coin=?,total_price=? where user_no=? and coin_type=?";
-		Object updateRmbParams[] = {rmbBalanceInfo.getEnable_coin(),rmbBalanceInfo.getUnable_coin(),rmbBalanceInfo.getTotal_price(),rmbBalanceInfo.getUser_no(),rmbBalanceInfo.getCoin_type()};
+		Object updateRmbParams[] = {rmbBalanceInfo.getTotal_price().subtract(rmbBalanceInfo.getUnable_coin()),rmbBalanceInfo.getUnable_coin(),rmbBalanceInfo.getTotal_price(),rmbBalanceInfo.getUser_no(),rmbBalanceInfo.getCoin_type()};
 		queryRunner.update(updateUserBalanceRmb, updateRmbParams);
 		//暂时注释调，交易用的代码
 		/*lock.lock();// 得到锁  

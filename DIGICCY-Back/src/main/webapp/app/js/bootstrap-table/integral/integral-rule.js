@@ -48,7 +48,18 @@ function Data_assembly(data){
 		  html+='<td>'+tbody[i].number+'</td>';
 		  html+='<td>'+tbody[i].identifier+'</td>';
 		  html+='<td>'+tbody[i].conditions+'</td>';
-		  html+='<td><button type="button" onclick="updateSelect('+"'"+tbody[i].id+"'"+');" class="btn btn-warning">修改</button>&nbsp;&nbsp;'
+		  if(tbody[i].state==1){
+			  html+='<td>启用</td>';
+		  }else{
+			  html+='<td>禁用</td>';
+		  }
+		  html+='<td><button type="button" onclick="updateSelect('+"'"+tbody[i].id+"'"+');" class="btn btn-warning">修改</button>&nbsp;&nbsp;';
+		       if(tbody[i].state==0){
+		    	   html+='<button type="button" onclick="updateState('+"'"+tbody[i].id+"','1'"+');" class="btn btn-danger">启用</button>';
+		  		}else{
+		  		   html+='<button type="button" onclick="updateState('+"'"+tbody[i].id+"','0'"+');" class="btn btn-danger">禁用</button>';
+		  		}
+		  		
 			 // +'<button type="button" onclick="delcfm('+"'"+tbody[i].id+"'"+');" class="btn btn-danger">删除</button>';
 		  html+='</td></tr>';
 	  }
@@ -265,6 +276,31 @@ function update(id){
 	  });
 }
 
+
+//修改方法
+function updateState(id,state){
+	
+	var data={'id':id,'state':state};
+	$("#fakeloader").show();//显示等待动画
+	$.ajax({  
+	    type:'post',    
+	    url:'/Integral/Rule/updateStateIntegralRule.do',  
+	    data:data,  
+	    cache:false,  
+	    dataType:'json',  
+	    success:function(data){
+	    	$("#fakeloader").hide();
+	    	if(data.code==0){
+	    		toastr.success('修改数据成功');
+	    		emptyingInput();
+	    		ready();
+	    	}else{
+	    		toastr.error(data.msg);
+	    	}
+	    }  
+		
+	  });
+}
 
 
 //分页页脚生成方法

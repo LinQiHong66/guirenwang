@@ -24,6 +24,7 @@ import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.AssessDto;
 import com.inesv.digiccy.dto.CoinDto;
 import com.inesv.digiccy.dto.CoinTranAstrictDto;
+import com.inesv.digiccy.dto.CoinTranTypeDto;
 import com.inesv.digiccy.dto.DayMarketDto;
 import com.inesv.digiccy.dto.DealDetailDto;
 import com.inesv.digiccy.dto.EntrustDto;
@@ -49,6 +50,7 @@ import com.inesv.digiccy.query.QueryUserBalanceInfo;
 import com.inesv.digiccy.query.QueryUserRelations;
 import com.inesv.digiccy.query.coin.QueryCoin;
 import com.inesv.digiccy.query.coin.QueryCoinTranAstrict;
+import com.inesv.digiccy.query.coin.QueryCoinTranType;
 import com.inesv.digiccy.util.MD5;
 
 /**
@@ -110,6 +112,9 @@ public class TradeValidata {
 
 	@Autowired
 	QueryCoinLevelProportion queryCoinLevelProportion;
+	
+	@Autowired
+	QueryCoinTranType queryCoinTranType;
 	
 	private Lock tradeLock = new ReentrantLock();// 锁对象
 	
@@ -401,6 +406,20 @@ public class TradeValidata {
 	            map.put("desc","该货币暂不能交易，请见谅！");
 	            return map;
 	        }
+	        //判断兑换货币是否匹配
+	        if(!convertType.equals("0")) {
+	        	CoinTranTypeDto coinTypeDto = queryCoinTranType.queryAllTradeTypeByTranCoin(coinType,convertType);
+	        	if(coinTypeDto == null || coinTypeDto.getState() == null) {
+	        		map.put("code",ResponseCode.FAIL);
+	        		map.put("desc","暂不支持该货币的兑换，抱歉！");
+	        		return map;
+	        	}
+	        	if(coinTypeDto.getState() != 1) {
+	        		map.put("code",ResponseCode.FAIL);
+	        		map.put("desc","该货币的兑换，暂未启动，抱歉！");
+	        		return map;
+	        	}
+	        }
 	        //用户交易使用的人民币或者虚拟币的财务
 	        UserBalanceDto xnb = queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(userNo, convertType);
 	        UserBalanceDto rmb = new UserBalanceDto();
@@ -604,7 +623,7 @@ public class TradeValidata {
 		    	//tradePersistence.insertEntrust(entrustDto);//插入委托记录，修改用户资产
 				validateAutualTrade(userNo);//进入交易
 				map.put("code",ResponseCode.SUCCESS);
-		        map.put("desc",ResponseCode.SUCCESS_DESC);
+		        map.put("desc","交易委托成功。");
 			} catch (Exception e) {
 				e.printStackTrace();
 				map.put("code",ResponseCode.FAIL);
