@@ -27,7 +27,7 @@ public class QueryUser implements UserDetailsService {
 
     @Autowired
     private QueryRunner queryRunner;
-
+                       
 //    public UserDetails loginByUsernamePassWord(String username,String password){
 //        String sql = "select * from user where name = ? and password = ?";
 //        queryResourceURL();

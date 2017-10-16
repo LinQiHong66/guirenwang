@@ -1,12 +1,19 @@
 package com.inesv.digiccy.persistence.auth;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.KeyedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inesv.digiccy.dto.AddressDto;
+import com.inesv.digiccy.dto.auth.UserDto;
+
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,7 +48,14 @@ public class AuthUserOperation {
      */
     @Transactional(rollbackFor={Exception.class, RuntimeException.class})
     public void updateAuthUser(Integer userId,String name,String pass,Integer roleId) throws SQLException {
-
+    	System.out.println("------------------------------pwd----->>>");
+       
+    	String sql = "SELECT * FROM t_user WHERE NAME =?"; 
+    	List<UserDto> users  = queryRunner.query(sql,new BeanListHandler<>(UserDto.class),name);
+    	if(!users.get(0).getPassword().equalsIgnoreCase(pass)) {
+    	    Md5PasswordEncoder md5 = new Md5PasswordEncoder();
+    		pass = md5.encodePassword(pass,name);
+    	}
         String updateUser = "UPDATE t_user SET name = ? , password = ? WHERE id = ?";
         Object userParams[] ={name,pass,userId};
         queryRunner.update(updateUser,userParams);
