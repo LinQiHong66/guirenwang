@@ -34,7 +34,7 @@ import com.inesv.digiccy.redis.RedisCodeImpl;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
 import com.inesv.digiccy.util.SmsUtil;
-import com.inesv.digiccy.validata.util.ExcelUtils;
+import com.inesv.digiccy.util.excel.ExcelUtils;
 
 /**
  * Created by yc on 2016/12/12 0012.
@@ -237,9 +237,9 @@ public class RmbWithdrawValidate {
 		// map = sendMsgUtil.sendMsg(mobile,type);
 		// int code= Integer.parseInt(String.valueOf(map.get("code")));
 		int code = sendMsgUtil.getCode(mobile, type);
-		boolean ok = false;
+		String msgContent = "";
 		try {
-			ok = SmsUtil.sendMySms(mobile, code + "");
+			msgContent = SmsUtil.sendMySms(mobile, code + "");
 		} catch (ClientException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {

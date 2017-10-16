@@ -33,6 +33,8 @@ import com.inesv.digiccy.redis.RedisCodeImpl;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
 import com.inesv.digiccy.util.SmsUtil;
+import com.inesv.digiccy.util.StringUtil;
+import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureResult;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureUtil;
 
@@ -47,6 +49,9 @@ public class OpUserValidata {
 	@Autowired
 	RedisCodeImpl redisCode;
 
+	@Autowired
+	private IntegralRuleValidata ruleData;
+	
 	@Autowired
 	SendMsgUtil sendMsgUtil;
 
@@ -120,7 +125,7 @@ public class OpUserValidata {
 	// 更改登陆密码
 	public boolean modifyLoginPwd(String phone, String password) {
 		boolean ok = false;
-		password = new MD5().getMD5(password);
+		password = new MD5().getMD5(password==null?"":password);
 		try {
 			int size = regUserPersistence.modifyPassword(phone, password);
 			ok = size > 0;
@@ -299,6 +304,9 @@ public class OpUserValidata {
 			map.put("userNo", userNo);
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
+			// 增加积分
+		    ruleData.addIntegral(parentUserInfoDto.getId(),"yaoqingyonghu");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("code", ResponseCode.FAIL);
@@ -516,7 +524,7 @@ public class OpUserValidata {
 		redisCode.setSms(mobile, type, mCode);
 		MessageSetDto messageSetDto = queryMessageSet.getMessageSet();
 		Map<String, Object> map = new HashMap<>();
-		boolean ok = false;
+		String  msgContent = null;
 		try {
 			if (messageSetDto != null) {
 				int limitNumber = messageSetDto.getLimit_number();// 限制次数
@@ -531,9 +539,9 @@ public class OpUserValidata {
 						return map;
 					}
 				}
-				ok = SmsUtil.sendMySms(mobile, mCode + "");
+				msgContent = SmsUtil.sendMySms(mobile, mCode + "");
 			} else {// 没有设置限制信息
-				ok = SmsUtil.sendMySms(mobile, mCode + "");
+				msgContent = SmsUtil.sendMySms(mobile, mCode + "");
 			}
 		} catch (ClientException e) {
 			e.printStackTrace();
@@ -542,10 +550,12 @@ public class OpUserValidata {
 		}
 		InesvPhoneCommand command = new InesvPhoneCommand(0, null, mobile, 1, mCode, "insert");
 		commandGateway.sendAndWait(command);
-		if (ok) {
+		System.out.println("!StringUtil.isEmpty(msgContent):"+!StringUtil.isEmpty(msgContent));
+		System.out.println("inesvUserDto != null:"+inesvUserDto != null);
+		if (!StringUtil.isEmpty(msgContent)) {
 			// 如果验证码发送成功则将发送短信日志写到表里面
 			if (inesvUserDto != null) {
-				modifyMessageLog(inesvUserDto, mCode + "");
+				modifyMessageLog(inesvUserDto, msgContent);
 			}
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);

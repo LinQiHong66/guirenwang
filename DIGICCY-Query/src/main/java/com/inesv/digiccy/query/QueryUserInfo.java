@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -30,8 +32,14 @@ import com.inesv.digiccy.dto.MessageLogDto;
 import com.inesv.digiccy.dto.UserVoucherDto;
 import com.inesv.digiccy.dto.auth.AuthRoleDto;
 import com.inesv.digiccy.dto.auth.ResourceDto;
+import com.inesv.digiccy.persistence.integral.IntegralDetailOperation;
 import com.inesv.digiccy.query.util.TimeUtil;
 import com.inesv.digiccy.util.MD5;
+import com.inesv.digiccy.util.StringUtil;
+import com.integral.dto.IntegralDetailDto;
+import com.integral.dto.IntegralGradeDto;
+import com.respon.R;
+import com.respon.ResultEncoding;
 
 @Component
 public class QueryUserInfo implements UserDetailsService {
@@ -40,6 +48,12 @@ public class QueryUserInfo implements UserDetailsService {
 
 	@Autowired
 	private QueryRunner queryRunner;
+
+	// 防止并发导致的数据错误
+	static ConcurrentHashMap<String, String> userMap = new ConcurrentHashMap<>();
+
+	@Autowired
+	private IntegralDetailOperation detailOperation;
 
 	// public UserDetails loginByUsernamePassWord(String username,String
 	// password){
@@ -81,8 +95,9 @@ public class QueryUserInfo implements UserDetailsService {
 			params.add(state);
 		}
 		try {
-			return (long) queryRunner.query(sql, new ColumnListHandler<>("count"), params.toArray(new Object[] {}))
-					.get(0);
+			return (long) queryRunner.query(sql,
+					new ColumnListHandler<>("count"),
+					params.toArray(new Object[] {})).get(0);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,7 +110,8 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "SELECT * FROM t_inesv_user";
 		List<InesvUserDto> user = null;
 		try {
-			user = (List<InesvUserDto>) queryRunner.query(sql, new BeanListHandler(InesvUserDto.class));
+			user = (List<InesvUserDto>) queryRunner.query(sql,
+					new BeanListHandler(InesvUserDto.class));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -108,7 +124,8 @@ public class QueryUserInfo implements UserDetailsService {
 
 		List<AuthRoleDto> role = null;
 		try {
-			role = (List<AuthRoleDto>) queryRunner.query(sql, new BeanListHandler(AuthRoleDto.class), params);
+			role = (List<AuthRoleDto>) queryRunner.query(sql,
+					new BeanListHandler(AuthRoleDto.class), params);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -126,39 +143,45 @@ public class QueryUserInfo implements UserDetailsService {
 		List<AuthRoleDto> roles = queryUserRole(user.getId());
 		if (roles != null) {
 			for (AuthRoleDto role : roles) {
-				grantedAuthorities.add(new GrantedAuthorityImpl(role.getName()));
+				grantedAuthorities
+						.add(new GrantedAuthorityImpl(role.getName()));
 			}
 		}
 		return grantedAuthorities;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String s)
+			throws UsernameNotFoundException {
 		String sql = "select * from t_inesv_user where username = ?";
 		queryResourceURL();
 		Object params[] = { s };
 		User user = null;
 		try {
-			InesvUserDto userdto = (InesvUserDto) queryRunner.query(sql, new BeanHandler(InesvUserDto.class), params);
+			InesvUserDto userdto = (InesvUserDto) queryRunner.query(sql,
+					new BeanHandler(InesvUserDto.class), params);
 
 			// Set<GrantedAuthority> grantedAuths =
 			// getGrantedAuthorities(userdto);
 			Set<GrantedAuthority> grantedAuths = getGrantedAuthorities(userdto);
 			// 灏佽鎴恠pring security鐨剈ser
-			return new User(userdto.getUsername(), userdto.getPassword(), true, true, true, true, grantedAuths);
+			return new User(userdto.getUsername(), userdto.getPassword(), true,
+					true, true, true, grantedAuths);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return user;
 	}
 
-	public InesvUserDto loadUserByPhoneNumber(String mobile) throws UsernameNotFoundException {
+	public InesvUserDto loadUserByPhoneNumber(String mobile)
+			throws UsernameNotFoundException {
 		String sql = "select * from t_inesv_user where username = ?";
 		queryResourceURL();
 		Object params[] = { mobile };
 		InesvUserDto userdto = null;
 		try {
-			userdto = (InesvUserDto) queryRunner.query(sql, new BeanHandler(InesvUserDto.class), params);
+			userdto = (InesvUserDto) queryRunner.query(sql, new BeanHandler(
+					InesvUserDto.class), params);
 			return userdto;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -166,13 +189,15 @@ public class QueryUserInfo implements UserDetailsService {
 		return userdto;
 	}
 
-	public InesvUserDto loadUser(String name, String pass) throws UsernameNotFoundException {
+	public InesvUserDto loadUser(String name, String pass)
+			throws UsernameNotFoundException {
 		pass = new MD5().getMD5(pass);
 		String sql = "select * from t_inesv_user where username = ? and password = ?";
 		queryResourceURL();
 		Object params[] = { name, pass };
 		try {
-			InesvUserDto userdto = (InesvUserDto) queryRunner.query(sql, new BeanHandler(InesvUserDto.class), params);
+			InesvUserDto userdto = (InesvUserDto) queryRunner.query(sql,
+					new BeanHandler(InesvUserDto.class), params);
 
 			return userdto;
 		} catch (SQLException e) {
@@ -181,7 +206,8 @@ public class QueryUserInfo implements UserDetailsService {
 		return null;
 	}
 
-	public List<InesvUserDto> getAllUser(String username, String phone, int state, int curpage, int pageItem) {
+	public List<InesvUserDto> getAllUser(String username, String phone,
+			int state, int curpage, int pageItem) {
 		String sql = "select * from t_inesv_user";
 		List<InesvUserDto> userlist = null;
 		ArrayList<Object> params = new ArrayList<>();
@@ -207,7 +233,8 @@ public class QueryUserInfo implements UserDetailsService {
 		params.add((curpage - 1) * pageItem);
 		params.add(pageItem);
 		try {
-			userlist = (List<InesvUserDto>) queryRunner.query(sql, new BeanListHandler(InesvUserDto.class),
+			userlist = (List<InesvUserDto>) queryRunner.query(sql,
+					new BeanListHandler(InesvUserDto.class),
 					params.toArray(new Object[] {}));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -225,7 +252,8 @@ public class QueryUserInfo implements UserDetailsService {
 		}
 		sql += " order by user_no desc";
 		try {
-			userlist = (List<InesvUserDto>) queryRunner.query(sql, new BeanListHandler(InesvUserDto.class),
+			userlist = (List<InesvUserDto>) queryRunner.query(sql,
+					new BeanListHandler(InesvUserDto.class),
 					params.toArray(new Object[] {}));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -241,7 +269,8 @@ public class QueryUserInfo implements UserDetailsService {
 
 		HashMap<String, Object> resource = null;
 		try {
-			resource = (HashMap<String, Object>) queryRunner.query(sql, new MapHandler());
+			resource = (HashMap<String, Object>) queryRunner.query(sql,
+					new MapHandler());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -256,7 +285,8 @@ public class QueryUserInfo implements UserDetailsService {
 
 		List<AuthRoleDto> roleList = null;
 		try {
-			roleList = (List<AuthRoleDto>) queryRunner.query(sql, new BeanListHandler(AuthRoleDto.class));
+			roleList = (List<AuthRoleDto>) queryRunner.query(sql,
+					new BeanListHandler(AuthRoleDto.class));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -271,7 +301,8 @@ public class QueryUserInfo implements UserDetailsService {
 		Object params[] = { roleid };
 		List<ResourceDto> roleList = null;
 		try {
-			roleList = (List<ResourceDto>) queryRunner.query(sql, new BeanListHandler(ResourceDto.class), params);
+			roleList = (List<ResourceDto>) queryRunner.query(sql,
+					new BeanListHandler(ResourceDto.class), params);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -284,13 +315,16 @@ public class QueryUserInfo implements UserDetailsService {
 				+ " voucher_type as cardType, voucher_imgurl1 as imgUrl1,"
 				+ " voucher_imgurl2 as imgUrl2, voucher_imgurl3 as imgUrl3,"
 				+ " voucher_state as state, userNo as userNo,"
-				+ " realName as trueName, voucher_mytype as myvoucherType" + " from t_inesv_user_voucher";
-		if (filed != null && !"".equals(filed) && value != null && !"".equals(value)) {
+				+ " realName as trueName, voucher_mytype as myvoucherType"
+				+ " from t_inesv_user_voucher";
+		if (filed != null && !"".equals(filed) && value != null
+				&& !"".equals(value)) {
 			sql += " where " + filed + "=" + value;
 		}
 		List<UserVoucherDto> vouchers = null;
 		try {
-			vouchers = queryRunner.query(sql, new BeanListHandler<UserVoucherDto>(UserVoucherDto.class));
+			vouchers = queryRunner.query(sql,
+					new BeanListHandler<UserVoucherDto>(UserVoucherDto.class));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -302,7 +336,8 @@ public class QueryUserInfo implements UserDetailsService {
 		Object param[] = { id };
 		InesvUserDto userInfo = null;
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), param);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(
+					InesvUserDto.class), param);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -314,19 +349,44 @@ public class QueryUserInfo implements UserDetailsService {
 		Object param[] = { userNo };
 		InesvUserDto userInfo = null;
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), param);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(
+					InesvUserDto.class), param);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return userInfo;
 	}
 
-	public List<InesvUserDto> getUserInfo(int userNo, String phone, String idcard) {
-		String sql = "select * from t_inesv_user where user_no != ? or phone=? or certificate_num=?";
-		Object param[] = { userNo, phone, idcard };
+	public List<InesvUserDto> getUserInfo(int userNo, String phone,
+			String idcard) {
+		Object param[] = null;
+		StringBuffer sb = new StringBuffer(
+				"select * from t_inesv_user where user_no != ?");
+		if (!StringUtil.isEmpty(phone)) {
+			if (!StringUtil.isEmpty(idcard)) {
+				sb.append(" and (phone=? or certificate_num=?)");
+				Object param2[] = { userNo, phone, idcard };
+				param = param2;
+			} else {
+				sb.append(" and phone=?");
+				Object param2[] = { userNo, phone };
+				param = param2;
+			}
+		} else {
+			if (!StringUtil.isEmpty(idcard)) {
+				sb.append(" and  certificate_num=?");
+				Object param2[] = { userNo, idcard };
+				param = param2;
+			}
+		}
+
 		List<InesvUserDto> userInfo = null;
 		try {
-			userInfo = queryRunner.query(sql, new BeanListHandler<InesvUserDto>(InesvUserDto.class), param);
+			System.out.println("userNo:" + userNo + ",phone：" + phone
+					+ ",idcard:" + idcard + ",sql:" + sb.toString());
+			userInfo = queryRunner.query(sb.toString(),
+					new BeanListHandler<InesvUserDto>(InesvUserDto.class),
+					param);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -344,7 +404,8 @@ public class QueryUserInfo implements UserDetailsService {
 		Object params[] = { userNo };
 		List<LoginLogDto> list = null;
 		try {
-			list = queryRunner.query(sql, new BeanListHandler<LoginLogDto>(LoginLogDto.class), params);
+			list = queryRunner.query(sql, new BeanListHandler<LoginLogDto>(
+					LoginLogDto.class), params);
 		} catch (SQLException e) {
 			log.error("鏌ヨ鐢ㄦ埛ip澶辫触");
 			e.printStackTrace();
@@ -358,7 +419,8 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user where user_no = ?";
 		Object parmas[] = { userNo };
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), parmas);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(
+					InesvUserDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -371,7 +433,8 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user_voucher where userNo = ?";
 		Object parmas[] = { userNo };
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(UserVoucherDto.class), parmas);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(
+					UserVoucherDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -384,7 +447,8 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user_address where user_no = ?";
 		Object parmas[] = { userNo };
 		try {
-			addressDto = queryRunner.query(sql, new BeanHandler<>(AddressDto.class), parmas);
+			addressDto = queryRunner.query(sql, new BeanHandler<>(
+					AddressDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -402,7 +466,8 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user where username = ?";
 		Object parmas[] = { phone };
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), parmas);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(
+					InesvUserDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -415,7 +480,8 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user where invite_num = ?";
 		Object parmas[] = { invite_num };
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), parmas);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(
+					InesvUserDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -433,7 +499,8 @@ public class QueryUserInfo implements UserDetailsService {
 
 		Object parmas[] = { userNo };
 		try {
-			List<InesvUserDto> list = queryRunner.query(sql, new BeanListHandler<InesvUserDto>(InesvUserDto.class),
+			List<InesvUserDto> list = queryRunner.query(sql,
+					new BeanListHandler<InesvUserDto>(InesvUserDto.class),
 					parmas);
 			return list;
 		} catch (SQLException e) {
@@ -457,7 +524,8 @@ public class QueryUserInfo implements UserDetailsService {
 				+ " (SELECT COUNT(username) FROM t_inesv_user WHERE org_type = 3 AND TO_DAYS(DATE) = TO_DAYS(NOW())) AS invite_num"
 				+ " FROM t_inesv_user LIMIT 1";
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class));
+			userInfo = queryRunner.query(sql, new BeanHandler<>(
+					InesvUserDto.class));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -470,12 +538,14 @@ public class QueryUserInfo implements UserDetailsService {
 	 * @param userNo
 	 * @return list
 	 */
-	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo, String startTime, String endTime) {
+	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo,
+			String startTime, String endTime) {
 		String sql = "select * from t_inesv_message_log where user_id = ? and update_time between ? and ? order by update_time desc";
 		Object params[] = { userNo, startTime, endTime };
 		List<MessageLogDto> list = null;
 		try {
-			list = queryRunner.query(sql, new BeanListHandler<MessageLogDto>(MessageLogDto.class), params);
+			list = queryRunner.query(sql, new BeanListHandler<MessageLogDto>(
+					MessageLogDto.class), params);
 		} catch (SQLException e) {
 			log.error("查询用户短信记录失败");
 			e.printStackTrace();
@@ -490,9 +560,166 @@ public class QueryUserInfo implements UserDetailsService {
 	 * @param limitTime
 	 * @return
 	 */
-	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo, int limitTime) {
+	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo,
+			int limitTime) {
 		String startTime = TimeUtil.getStartTime(limitTime);
 		String endTime = TimeUtil.getCurrentTime();
 		return getMessageLogLimitTime(userNo, startTime, endTime);
+	}
+
+	/**
+	 * 添加积分数据
+	 * 
+	 * @param userId
+	 * @param number
+	 * @return
+	 */
+	public boolean addIntegralUserI(Long userId, int number) {
+
+		// 防止并发的数据错误
+		while (userMap.putIfAbsent(userId.toString(), userId.toString()) != null) {
+
+			try {
+				InesvUserDto inesvUserDto = this.getUserInfoById(userId);
+				int num = number + Integer.parseInt(inesvUserDto.getIntegral());
+				Object[] objects = { num, userId };
+				String sql = "update t_inesv_user set integral=? where id=?";
+				int i = queryRunner.update(sql, objects);
+				if (i > 0) {
+					return true;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				userMap.remove(userId);
+			}
+
+		}
+
+		return false;
+	}
+
+	/**
+	 * 添加积分数据
+	 * 
+	 * @param userId
+	 * @param number
+	 * @return
+	 */
+	public boolean addIntegral(String userId, int number, String type,
+			String typrCode) {
+
+		try {
+
+			while (userMap.putIfAbsent(userId.toString(), userId.toString()) == null) {
+				String is = userMap.get(userId);
+				try {
+					InesvUserDto inesvUserDto = this.getUserById(userId);
+					int num = number
+							+ Integer.parseInt(inesvUserDto.getIntegral());
+					Object[] objects = { num, userId };
+					String sql = "update t_inesv_user set integral=? where id=?";
+					int i = queryRunner.update(sql, objects);
+					if (i > 0) {
+						IntegralDetailDto detailDto = new IntegralDetailDto();
+						detailDto.setId(UUID.randomUUID().toString());
+						detailDto.setIdentifier(typrCode);
+						detailDto.setUserId(userId.toString());
+						detailDto.setNumber(String.valueOf(number));
+						detailDto.setType(type);
+						detailOperation.insert(detailDto);
+						return true;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					userMap.remove(userId);
+				}
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * 获取vip等级
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public R queryDegree(Long userId) {
+		R r = new R();
+		HashMap<String, Object> hashMap = new HashMap<>();
+		try {
+			Integer number = Integer.parseInt(getUserInfoById(userId)
+					.getIntegral());
+			hashMap.put("numbers", number);
+			String sql = "SELECT grade.* from t_integral_grade as grade ORDER BY (grade.conditions+0)  ASC";
+			List<IntegralGradeDto> dtos = new ArrayList<>();
+			dtos = queryRunner.query(sql,
+					new BeanListHandler<IntegralGradeDto>(
+							IntegralGradeDto.class));
+			for (int i = dtos.size() - 1; i >= 0; i--) {
+
+				if (dtos.get(i).getAdditional().equals("0")) {
+					if (number == Integer.parseInt(dtos.get(i).getConditions())) {
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+
+				if (dtos.get(i).getAdditional().equals("1")) {
+					if (number > Integer.parseInt(dtos.get(i).getConditions())) {
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+
+				if (dtos.get(i).getAdditional().equals("2")) {
+					if (number < Integer.parseInt(dtos.get(i).getConditions())) {
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+
+				if (dtos.get(i).getAdditional().equals("10")) {
+					if (number >= Integer.parseInt(dtos.get(i).getConditions())) {
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+
+				if (dtos.get(i).getAdditional().equals("20")) {
+					if (number <= Integer.parseInt(dtos.get(i).getConditions())) {
+						hashMap.put("vip", dtos.get(i).getGrade());
+						break;
+					}
+				}
+
+			}
+			hashMap.put("grade", dtos);
+			r.setData(hashMap);
+		} catch (Exception e) {
+			r.setCode(ResultEncoding.R_ERR);
+			r.setMsg("获取个人积分信息失败");
+			e.printStackTrace();
+		}
+		return r;
+	}
+
+	public InesvUserDto getUserById(String id) {
+		String sql = "select * from t_inesv_user where id = ?";
+		Object param[] = { id };
+		InesvUserDto userInfo = null;
+		try {
+			userInfo = queryRunner.query(sql, new BeanHandler<>(
+					InesvUserDto.class), param);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userInfo;
 	}
 }

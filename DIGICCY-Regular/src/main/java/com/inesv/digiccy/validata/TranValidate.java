@@ -17,6 +17,7 @@ import com.inesv.digiccy.redis.RedisCodeImpl;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
 import com.inesv.digiccy.util.SmsUtil;
+import com.inesv.digiccy.util.StringUtil;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,9 +179,9 @@ public class TranValidate {
 		int mCode = sendMsgUtil.getCode(mobile, type);
 
 		redisCode.setSms(mobile, type, mCode);
-		boolean ok = false;
+		String msgContent = "";
 		try {
-			ok = SmsUtil.sendMySms(mobile, mCode + "");
+			msgContent = SmsUtil.sendMySms(mobile, mCode + "");
 		} catch (ClientException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -191,7 +192,7 @@ public class TranValidate {
 
 		Map<String, Object> map = new HashMap();
 		try {
-			ok = SmsUtil.sendMySms(mobile, mCode + "");
+			msgContent = SmsUtil.sendMySms(mobile, mCode + "");
 		} catch (ClientException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -201,7 +202,7 @@ public class TranValidate {
 		}
 		InesvPhoneCommand command = new InesvPhoneCommand(0, null, mobile, 1, mCode, "insert");
 		commandGateway.send(command);
-		if (ok) {
+		if (!StringUtil.isEmpty(msgContent)) {
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		} else {

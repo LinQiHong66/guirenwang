@@ -31,6 +31,9 @@ import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
+import com.inesv.digiccy.validata.UserVoucherValidate;
+import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
+import com.inesv.digiccy.validata.user.InesvUserValidata;
 import com.inesv.digiccy.validata.user.OpUserValidata;
 
 @Controller
@@ -38,15 +41,25 @@ import com.inesv.digiccy.validata.user.OpUserValidata;
 public class UserController {
 	@Autowired
 	private CommandGateway commandGateway;
+	
+	@Autowired
+	private IntegralRuleValidata ruleData;
+	
+	@Autowired
+	UserVoucherValidate userVoucherValidate;
 
 	@Autowired
 	private QueryUserInfo queryUserInfo;
+
 
 	@Autowired
 	OpUserValidata regUserValidata;
 
 	@Autowired
 	QueryUserBasicInfo queryUserBasicInfo;
+
+	@Autowired
+	InesvUserValidata inesvUserValidata;
 
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
@@ -117,6 +130,8 @@ public class UserController {
 			@RequestParam String ip) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		InesvUserDto user = queryUserInfo.loadUser(username, password);
+		// 增加积分
+     	ruleData.addIntegral(user.getId(),"chongzhi",1000);
 		if (user == null) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "用户名或密码错误！");
@@ -132,52 +147,88 @@ public class UserController {
 			map.put("desc", "IP地址不能为空");
 			return map;
 		}
-		String valtoken = (String) redisTemplate.opsForValue().get(username);
+		String valtoken = (String) redisTemplate.opsForValue().get(username);// (String) redisTemplate.opsForValue().get(username);
 		if (valtoken != null) {
 			Date lastDate = (Date) redisTemplate.opsForValue().get(valtoken + ":lastTime");
 			Date curDate = new Date(System.currentTimeMillis());
 			Long secend = curDate.getTime() - lastDate.getTime();
 			if (secend <= 10 * 1000) {
 				map.put("code", ResponseCode.FAIL);
-				map.put("msg", "在别处已登录！！！");
+				map.put("desc", "在别处已登录！！！");
 				return map;
 			}
 		}
 		if (user != null) {
 			String tokens = request.getParameter("token");
 			try {
-				redisTemplate.delete(tokens);
+				// redisTemplate.delete(tokens);
 			} catch (Exception e) {
 
 			}
 			Long tokenStr = user.getId() + new Date().getTime();
 			String token = new MD5().getMD5(String.valueOf(tokenStr));
 			UserBasicInfoDto basicUserInfo = queryUserBasicInfo.getUserBasicInfo(user.getUser_no());
+
 			redisTemplate.opsForValue().set(username, token, 7, TimeUnit.DAYS);
+			redisTemplate.opsForValue().set(token + "getuserNo", user.getId(), 7, TimeUnit.DAYS);
 			redisTemplate.opsForValue().set(token, token, 7, TimeUnit.DAYS);
 			redisTemplate.opsForValue().set(token + ":lastTime", new Date(System.currentTimeMillis()));
+
 			session.setAttribute("userName", username);
 			map.put("code", ResponseCode.SUCCESS);
-			map.put("msg", ResponseCode.SUCCESS_DESC);
+			map.put("desc", ResponseCode.SUCCESS_DESC);
 			user.setPassword("******");
 			user.setDeal_pwd("******");
+			Map<String, Object> isValidata = inesvUserValidata.isPealPwd(user.getUser_no());
+			if ("100".equals(isValidata.get("code"))) {
+				user.setDeal_pwdstate(1);
+			} else {
+				user.setDeal_pwdstate(0);
+			}
 			map.put("loginUserInfo", user);
 			map.put("token", token);
-			if (user.getCertificate_num() == null || "".equals(user.getCertificate_num())) {
-				map.put("isvoucher", false);
-			} else {
-				map.put("isvoucher", true);
-			}
-			map.put("basicUserInfo", basicUserInfo);
+			Map<String, Object> voucherMap = userVoucherValidate.getValidateInfo(user.getUser_no());
+			map.put("validateState", voucherMap.get("validateState"));
+			map.put("validateInfo", voucherMap.get("validateInfo"));
+
+			map.put("basicinfo", basicUserInfo);
 			map.put("basicUserInfoState", !(basicUserInfo == null));
 			LoginLogCommand loginLogCommand = new LoginLogCommand(user.getUser_no(), 1, "通过用户名登录", ip, "", 1,
 					new Date());
+
+			// 增加积分
+			ruleData.addIntegral(user.getId(),"denglu");
+			
 			commandGateway.send(loginLogCommand);
 		} else {
 			map.put("code", ResponseCode.FAIL);
 			// map.put("msg", ResponseCode.FAIL_DESC);
-			map.put("msg", "用户账号密码不正确！！！");
+			map.put("desc", "用户账号密码不正确！！！");
 
+		}
+		return map;
+	}
+
+	@RequestMapping(value = "getLoginInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getLoginInfoByToken(String token) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Long id = (Long) redisTemplate.opsForValue().get(token + "getuserNo");
+		InesvUserDto dto = queryUserInfo.getUserInfoById(id);
+		if (dto != null) {
+			UserBasicInfoDto basicUserInfo = queryUserBasicInfo.getUserBasicInfo(dto.getUser_no());
+			Map<String, Object> voucherMap = userVoucherValidate.getValidateInfo(dto.getUser_no());
+
+			map.put("validateState", voucherMap.get("validateState"));
+			map.put("validateInfo", voucherMap.get("validateInfo"));
+			map.put("basicinfo", basicUserInfo);
+			map.put("basicUserInfoState", !(basicUserInfo == null));
+			map.put("loginUserInfo", dto);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", "获取用户信息失败!");
+		} else {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "获取用户信息失败!");
 		}
 		return map;
 	}
@@ -189,6 +240,7 @@ public class UserController {
 		try {
 			String userName = (String) session.getAttribute("userName");
 			redisTemplate.delete(userName);
+			redisTemplate.delete(token + "getuserNo");
 			redisTemplate.delete(token);
 			redisTemplate.delete(token + ":lastTime");
 			map.put("code", ResponseCode.SUCCESS);
@@ -274,8 +326,5 @@ public class UserController {
 		return resultMap;
 	}
 
-	public static void main(String[] args) {
-		System.out.println(new Date().getTime());
-	}
-
+	
 }

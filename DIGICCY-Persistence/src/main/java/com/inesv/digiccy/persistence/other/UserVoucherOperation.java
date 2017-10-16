@@ -2,6 +2,7 @@ package com.inesv.digiccy.persistence.other;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.slf4j.Logger;
@@ -28,10 +29,7 @@ public class UserVoucherOperation {
 
 	// 开始审核
 	public void insert(UserVoucherDto dto) {
-		String sql = "insert into t_inesv_user_voucher (voucher_cardid, voucher_type, voucher_imgurl1, voucher_imgurl2, voucher_imgurl3, voucher_state, userNo, realName, voucher_mytype"
-				+ (dto.getStartDate() == null ? "" : ", id_startdate")
-				+ ((dto.getEnDateDate() == null ? "" : ", id_enddate")) + ") values (?,?,?,?,?,?,?,?,?"
-				+ (dto.getStartDate() == null ? "" : ", ?") + (dto.getEnDateDate() == null ? "" : ", ?") + ")";
+		String sql = "insert into t_inesv_user_voucher (voucher_cardid, voucher_type, voucher_imgurl1, voucher_imgurl2, voucher_imgurl3, voucher_state, userNo, realName, voucher_mytype, id_startdate, id_enddate) values (?,?,?,?,?,?,?,?,?, ?, ?)";
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(dto.getCardId());
 		params.add(dto.getCardType());
@@ -42,12 +40,8 @@ public class UserVoucherOperation {
 		params.add(dto.getUserNo());
 		params.add(dto.getTrueName());
 		params.add(dto.getCardType() == 0 ? dto.getMyvoucherType() : "");
-		if(dto.getStartDate() != null) {
-			params.add(dto.getStartDate());
-		}
-		if(dto.getEnDateDate() != null) {
-			params.add(dto.getEnDateDate());
-		}
+		params.add(dto.getStartDate() == null ? new Date() : dto.getStartDate());
+		params.add(dto.getEnDateDate() == null ? new Date() : dto.getEnDateDate());
 		try {
 			queryRunner.update(sql, params.toArray(new Object[] {}));
 		} catch (SQLException e) {
