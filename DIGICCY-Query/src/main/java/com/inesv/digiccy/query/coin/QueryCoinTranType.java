@@ -43,6 +43,23 @@ public class QueryCoinTranType {
         }
         return coinList;
     }
+    
+    /**
+     * 查询所有货币交易条件
+     * @return
+     */
+    public CoinTranTypeDto queryAllTradeTypeByTranCoin(String coinNo,String tranNo){
+        CoinTranTypeDto coinDto = new CoinTranTypeDto();
+        try {
+            String sql = "SELECT coin_no , tran_coin_no , state from t_coin_tran_type WHERE coin_no = ? AND tran_coin_no = ? AND state != 2";
+            Object params[] = {coinNo,tranNo};
+            coinDto = queryRunner.query(sql,new BeanHandler<>(CoinTranTypeDto.class),params);
+        } catch (SQLException e) {
+            logger.error("查询虚拟货币失败");
+            e.printStackTrace();
+        }
+        return coinDto;
+    }
 
     /**
      * 查询所有货币交易条件

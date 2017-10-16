@@ -22,12 +22,10 @@ $("#coin_user_level_table").bootstrapTable({
     cache:false,
     columns:[[// 列
         {title:'货币编号',field:'attr1',width:10,align:'center'},
-        {title:'推荐人比例',field:'level_one',width:10,align:'center'},
-        {title:'推荐人一代比例',field:'level_two',width:10,align:'center'},
-        {title:'推荐人二代比例',field:'level_three',width:10,align:'center'},
-        {title:'推荐人三代比例',field:'level_four',width:10,align:'center'},
-        {title:'推荐人四代比例',field:'level_five',width:10,align:'center'},
-        {title:'分红类型（货币编号）',field:'attr2',width:10,align:'center'},
+        {title:'经纪人1比例',field:'level_one',width:10,align:'center'},
+        {title:'经纪人2比例',field:'level_two',width:10,align:'center'},
+        {title:'子机构比例',field:'level_three',width:10,align:'center'},
+        {title:'机构比例',field:'level_four',width:10,align:'center'},
         {title:'分红状态',field:'state',width:10,align:'center',formatter:function (value) {
             if(value == 0)return "<span style='color: blue'>关闭</span>";
             if(value == 1)return "<span style='color: blue'>启用</span>";
