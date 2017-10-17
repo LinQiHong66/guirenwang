@@ -24,13 +24,18 @@ $("#bonus_level_tab").bootstrapTable({
         {title:'来源订单',field:'bonus_source',width:10,align:'center'},
         {title:'货币种类',field:'bonus_coin',width:10,align:'center'},
         {title:'获取分红用户',field:'bonus_rel',width:10,align:'center'},
+        {title:'获取分红用户编号',field:'bonus_rel_code',width:10,align:'center'},
         {title:'产生分红用户',field:'bonus_user',width:10,align:'center'},
+        {title:'产生分红用户账号',field:'bonus_user_name',width:10,align:'center'},
+        {title:'产生分红用户编号',field:'bonus_user_code',width:10,align:'center'},
         {title:'交易类型',field:'bonus_type',width:10,align:'center',formatter:function (value) {
             if(value == 0)return "<span style='color: blue'>买</span>";
             if(value == 1)return "<span style='color: blue'>卖</span>";
             if(value != 1 && value != 0)return "<span style='color: blue'>其他</span>";
         }},
+        {title:'分红比例',field:'level_scale',width:10,align:'center'},
         {title:'分红金额',field:'bonus',width:10,align:'center'},
-        {title:'备注',field:'remark',width:10,align:'center'},
+        {title:'订单总金额',field:'sum_bonus',width:10,align:'center'},
+        {title:'备注',field:'remark',width:30,align:'center'},
     ]]
 });

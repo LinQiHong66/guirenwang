@@ -434,7 +434,7 @@ public class TradeValidata {
 	        	rmb = queryUserBalanceInfo.queryUserBalanceInfoByUserNoAndCoinType(userNo, convertType);
 	        	dtoList = queryDayMarketInfo.getDayMarketInfoByCoin(Integer.valueOf(convertType));
 	        	if(dtoList.size() != 0) {
-	        		if(dtoList.get(0).getDeal_price().doubleValue() == 0 || dtoList.get(0).getDeal_price() == null) {
+	        		if(dtoList.get(0).getNewes_deal().doubleValue() == 0 || dtoList.get(0).getNewes_deal() == null) {
 	        			map.put("code",ResponseCode.FAIL);
 	        			map.put("desc","选择兑换货币最新成交价异常，委托失败！");
 	        			return map;

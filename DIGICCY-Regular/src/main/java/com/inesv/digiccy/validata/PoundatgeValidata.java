@@ -12,20 +12,22 @@ import org.springframework.stereotype.Component;
 
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.BonusLevelDto;
+import com.inesv.digiccy.dto.PoundatgeDto;
 import com.inesv.digiccy.query.QueryBonusLevel;
+import com.inesv.digiccy.query.QueryPoundatge;
 import com.inesv.digiccy.util.excel.ExcelUtils;
 
 
 @Component
-public class BonusLevelValidata {
+public class PoundatgeValidata {
 
 	@Autowired 
-	QueryBonusLevel queryBonusLevel;
+	QueryPoundatge queryPoundatge;
 	
 	public Map<String,Object> queryAll(){
 		Map<String,Object> map = new HashMap<String, Object>();
-		List<BonusLevelDto> list = new ArrayList<BonusLevelDto>();
-		list = queryBonusLevel.queryAll();
+		List<PoundatgeDto> list = new ArrayList<PoundatgeDto>();
+		list = queryPoundatge.queryAll();
 		if(list != null || list.size()>0){
 			map.put("data", list);
 			map.put("code", ResponseCode.SUCCESS);
@@ -39,19 +41,16 @@ public class BonusLevelValidata {
 	
 	public void getExcel(HttpServletResponse response){
 		Map<String, List<String>> contact = new HashMap<String, List<String>>();
-		List<BonusLevelDto> list =  queryBonusLevel.queryAll();
-		String title1 = "来源订单";
-		String title2 = "货币种类";
-		String title3 = "获取分红用户";
-		String title4 = "获取分红用户编号";
-		String title5 = "产生分红用户";
-		String title6 = "产生分红用户账号";
-		String title7 = "产生分红用户编号";
-		String title8 = "交易类型";
-		String title9 = "分红比例";
-		String title10 = "所得分红";
-		String title11 = "分红总金额";
-		String title12 = "详情";
+		List<PoundatgeDto> list =  queryPoundatge.queryAll();
+		String title1 = "用户ID";
+		String title2 = "用户账号";
+		String title3 = "用户机构编码";
+		String title4 = "手续费来源类型";
+		String title5 = "订单货币类型";
+		String title6 = "手续费货币类型";
+		String title7 = "手续费金额";
+		String title8 = "订单金额";
+		String title9 = "时间";
 		List<String> col1 = new ArrayList<String>();
 		List<String> col2 = new ArrayList<String>();
 		List<String> col3 = new ArrayList<String>();
@@ -61,28 +60,24 @@ public class BonusLevelValidata {
 		List<String> col7 = new ArrayList<String>();
 		List<String> col8 = new ArrayList<String>();
 		List<String> col9 = new ArrayList<String>();
-		List<String> col10 = new ArrayList<String>();
-		List<String> col11 = new ArrayList<String>();
-		List<String> col12 = new ArrayList<String>();
-		for(BonusLevelDto dto : list){
-			col1.add(dto.getBonus_source().toString());
-			col2.add(dto.getBonus_coin().toString());
-			col3.add(dto.getBonus_rel().toString());
-			col4.add(dto.getBonus_rel_code().toString());
-			col5.add(dto.getBonus_user().toString());
-			col6.add(dto.getBonus_user_name().toString());
-			col7.add(dto.getBonus_user_code().toString());
-			if(dto.getBonus_type() == 0) {
-				col8.add("买");
-			}else if(dto.getBonus_type() == 1) {
-				col8.add("卖");
-			}else {
-				col8.add("其他");
+		for(PoundatgeDto dto : list){
+			col1.add(dto.getUser_no().toString());
+			col2.add(dto.getUser_name().toString());
+			col3.add(dto.getUser_code().toString());
+			if(dto.getOptype() == 0) {
+				col4.add("买");
+			}else if(dto.getOptype() == 1) {
+				col4.add("卖");
+			}else if(dto.getOptype() == 2) {
+				col4.add("充值");
+			}else if(dto.getOptype() == 3) {
+				col4.add("提现");
 			}
-			col9.add(dto.getLevel_scale().toString());
-			col10.add(dto.getBonus().toString());
-			col11.add(dto.getSum_bonus().toString());
-			col12.add(dto.getRemark().toString());
+			col5.add(dto.getType().toString());
+			col6.add(dto.getAttr1().toString());
+			col7.add(dto.getMoney().toString());
+			col8.add(dto.getSum_money().toString());
+			col9.add(dto.getDate().toString());
 		}
 		contact.put(title1, col1);
 		contact.put(title2, col2);
@@ -93,9 +88,6 @@ public class BonusLevelValidata {
 		contact.put(title7, col7);
 		contact.put(title8, col8);
 		contact.put(title9, col9);
-		contact.put(title10, col10);
-		contact.put(title11, col11);
-		contact.put(title12, col12);
 		
 		ExcelUtils.export(response, contact);
 	}
