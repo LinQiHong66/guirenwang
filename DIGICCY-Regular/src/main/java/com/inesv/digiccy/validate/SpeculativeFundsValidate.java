@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inesv.digiccy.api.command.SpeculativeFundCommand;
-import com.inesv.digiccy.api.command.UserCommand;
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.SpeculativeFundsDto;
 import com.inesv.digiccy.query.QuerySpeculativeFunds;
@@ -78,7 +77,6 @@ public class SpeculativeFundsValidate {
 			SpeculativeFundCommand command = new SpeculativeFundCommand(0, user_no, coin_no, deal_type, deal_price, 0,
 					0, 0, 0, deal_price, 0, new Date(), "", "", "insertSpeculativeFund");
 			commandGateway.sendAndWait(command);
-			System.out.println("sendAndWait:===========================");
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		} catch (Exception e) {

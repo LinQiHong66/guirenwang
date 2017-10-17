@@ -17,7 +17,7 @@ public class SpeculativeFundAggregate extends AbstractAnnotatedAggregateRoot {
 
 	@CommandHandler
 	public SpeculativeFundAggregate(SpeculativeFundCommand speculativeFundCommand) {
-		apply(new SpeculativeFundCommand(speculativeFundCommand.getId(), speculativeFundCommand.getUser_no(),
+		apply(new SpeculativeFundEvent(speculativeFundCommand.getId(), speculativeFundCommand.getUser_no(),
 				speculativeFundCommand.getCoin_no(), speculativeFundCommand.getDeal_type(),
 				speculativeFundCommand.getDeal_price(), speculativeFundCommand.getOptimum_price(),
 				speculativeFundCommand.getMost_amount(), speculativeFundCommand.getPercent(),

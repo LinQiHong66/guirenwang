@@ -18,7 +18,7 @@ public class SpeculativeFundOperation {
 	 */
 	public void addSpeculativeFund(SpeculativeFundDto speculativeFundDto) throws Exception {
 
-		String insertRole = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,optimum_price,most_amount,"
+		String insertSpeculativeFund = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,optimum_price,most_amount,"
 				+ " percent,deal_num,sum_price,poundage,date,attr1,attr2) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Object params[] = { speculativeFundDto.getUser_no(), speculativeFundDto.getCoin_no(),
 				speculativeFundDto.getDeal_type(), speculativeFundDto.getDeal_price(),
@@ -26,6 +26,6 @@ public class SpeculativeFundOperation {
 				speculativeFundDto.getPercent(), speculativeFundDto.getDeal_num(), speculativeFundDto.getSum_price(),
 				speculativeFundDto.getPoundage(), speculativeFundDto.getDate(), speculativeFundDto.getAttr1(),
 				speculativeFundDto.getAttr2() };
-		queryRunner.update(insertRole, params);
+		queryRunner.update(insertSpeculativeFund, params);
 	}
 }

@@ -50,5 +50,4 @@ public class SpeculativeFundsDto {
 		this.outProperty = outProperty;
 		this.totalProperty = totalProperty;
 	}
-
 }

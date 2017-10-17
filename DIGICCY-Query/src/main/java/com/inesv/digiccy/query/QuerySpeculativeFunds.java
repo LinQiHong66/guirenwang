@@ -35,6 +35,7 @@ public class QuerySpeculativeFunds {
 		List<InesvUserDto> users = null;
 		List<SpeculativeFundsDto> speculativeFundsDtos = new ArrayList<>();
 		String querySql = "SELECT * FROM t_inesv_user where user_no=2162";
+		String insertSql = "INSERT INTO t_inesv_speculativefunds (inProperty,outProperty,totalProperty) values(?,?,?);";
 		try {
 			users = queryRunner.query(querySql, new BeanListHandler<InesvUserDto>(InesvUserDto.class));
 			for (InesvUserDto inesvUserDto : users) {
@@ -43,8 +44,9 @@ public class QuerySpeculativeFunds {
 				SpeculativeFundsDto speculativeFundsDto = new SpeculativeFundsDto(inesvUserDto.getUser_no(), in, out,
 						in - out);
 				speculativeFundsDtos.add(speculativeFundsDto);
+				Object[] params = { in, out, in - out };
+				queryRunner.update(insertSql, params);
 			}
-			System.out.println("querySql:"+querySql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("获取所有资金异常账户！");
@@ -82,7 +84,7 @@ public class QuerySpeculativeFunds {
 		String querySql = "SELECT * FROM t_inesv_user where user_no=?";
 		SpeculativeFundsDto speculativeFundsDto = null;
 		InesvUserDto inesvUserDto = null;
-		Object param[] = {id};
+		Object param[] = { id };
 		try {
 			inesvUserDto = queryRunner.query(querySql, new BeanHandler<InesvUserDto>(InesvUserDto.class), param);
 			double in = getPropertyById(inesvUserDto.getUser_no(), 0);
