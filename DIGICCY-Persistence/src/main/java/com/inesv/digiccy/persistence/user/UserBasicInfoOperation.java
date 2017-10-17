@@ -18,6 +18,7 @@ public class UserBasicInfoOperation {
 		Object[] params = {
 				dto.getUserNo(),dto.getNationality(),dto.getJob(),dto.getSex(),dto.getBirthday(),dto.getUserName(),dto.getProvince(),dto.getDistricts(),dto.getCities(),dto.getAddressInfo()
 		};
+		System.out.println(sql);
 		queryRunner.update(sql, params);
 	}
 	//修改真实姓名

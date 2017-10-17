@@ -64,8 +64,8 @@ public class BatchAddBalance implements ExcelBatch {
 		}
 
 		for (int k = 0; k < forCount; k++) {
-			String sql2 = "insert into t_crowdfunding_details (user_id,ico_id,ico_user_number,ico_user_sumprice,date) VALUES ("
-					+ userNo + ", " + ico_id + ", " + ico_user_number + "," + ico_user_sumprice + ", now())";
+			String sql2 = "insert into t_crowdfunding_details (user_id,ico_id,ico_user_number,ico_user_sumprice,date,attr1, attr2) VALUES ("
+					+ userNo + ", " + ico_id + ", " + ico_user_number + "," + ico_user_sumprice + ", now(),\"批量入金\", \"1\")";
 			c += queryRunner.update(sql2);
 		}
 		if (a >= 1 && b >= 1 && c >= forCount) {

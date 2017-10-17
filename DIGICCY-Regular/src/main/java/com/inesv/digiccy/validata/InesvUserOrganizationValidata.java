@@ -58,7 +58,7 @@ public class InesvUserOrganizationValidata {
 	public Map<String, Object> addOrganizationValidate(Integer userNo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid == null) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);
@@ -99,7 +99,7 @@ public class InesvUserOrganizationValidata {
 	public Map<String, Object> updateOrganizationValidate(Integer id,Integer userNo,Integer org_type) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 判断用户是否存在
-		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo);
+		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
 		if (uid == null) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);

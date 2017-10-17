@@ -34,6 +34,7 @@ public class UserBasicEventHandler {
 		case "insert":
 			try {
 				userBasicInfoOptation.addBasicInfo(dto);
+				System.out.println(dto.toString());
 			} catch (Exception e) {
 				logger.debug(e.getMessage());
 				e.printStackTrace();
