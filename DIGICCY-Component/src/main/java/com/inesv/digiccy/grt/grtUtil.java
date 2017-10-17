@@ -3,9 +3,12 @@ package com.inesv.digiccy.grt;
  
 import java.util.HashMap;
 import java.util.Map;
- 
+import java.util.concurrent.TimeUnit;
 
 import com.alibaba.fastjson.JSON;
+import com.inesv.digiccy.util.thread.MyTask;
+import com.inesv.digiccy.util.thread.TaskListner;
+import com.inesv.digiccy.util.thread.ThreadUtil;
  
 
 public class grtUtil {
@@ -15,16 +18,40 @@ public class grtUtil {
      //请求url
      public static String url = "";   
      
-  
+     
+    
+     /**
+      * 1.1创建钱包
+      * @param address ： 钱包地址
+      * @return  
+      */
+     public  static Map<String,Object> createWallet() {
+     	 Map<String,Object> resultMap = new HashMap<>();
+     	 url = host + "/v1/wallet/new";
+          String result = HttpUtil.sendGet(url, null);
+     	 resultMap = JSON.parseObject(result, Map.class);
+     	 return resultMap;
+     }
+ 
     /**
-     * 1.1获取账户余额
-     * @param address ： 钱包地址
-     * @return  
+     * 1.2获取账户余额
+     * @param address ：钱包地址
+     * @param currency ： 指定返回对应货币的余额（可选，不选时传null）
+     * @param counterparty : 指定返回对应银关发行的货币（可选，不选时传null）
+     * @return
      */
-    public  static Map<String,Object> getBalances(String address) {
+    public  static Map<String,Object> getBalances(String address,String currency,String counterparty) {
     	 Map<String,Object> resultMap = new HashMap<>();
     	 url = host + "/v1/accounts/" + address + "/balances";
-         String result = HttpUtil.sendGet(url, null);
+    	 Map<String,String> params = new HashMap<>();
+    	 if(currency!=null) {
+    		params.put("currency",currency); 
+    	 }
+    	 if(currency!=null) {
+     		params.put("counterparty",counterparty); 
+     	 }
+    	 
+         String result = HttpUtil.sendGet(url, params);
     	 resultMap = JSON.parseObject(result, Map.class);
     	 return resultMap;
     }
@@ -46,18 +73,25 @@ public class grtUtil {
     
     
  
+ 
     /**
      * 2.1支付请求
      * @param source_address : 支付方的钱包地址
-     * @param validated ： 是否等待系统的支付结果
+     * @param validated : 是否等待支付结果
+     * @param secret ： 支付方的钱包私钥
+     * @param client_resource_id ： 此次请求的交易单号
+     * @param payment ： 支付对象
      * @return
      */
-    public  static Map<String,Object> goPayRequest(String source_address,Boolean validated) {
+    public  static Map<String,Object> goPayRequest(String source_address,Boolean validated,String secret,String client_resource_id,Object payment) {
     	 Map<String,Object> resultMap = new HashMap<>();
     	 url = host + "/v1/accounts/"+source_address+"/payments";
     	 
     	 Map<String,Object> params = new HashMap<>();
     	 params.put("validated",validated);
+    	 params.put("secret",secret);
+    	 params.put("client_resource_id",client_resource_id);
+    	 params.put("payment",payment);
          String result = HttpUtil.sendPost(url, params);
          System.out.println(result);
     	 resultMap = JSON.parseObject(result, Map.class);
@@ -324,5 +358,45 @@ public class grtUtil {
     	//grtUtil.getUserOrders("aaa");
     	//grtUtil.getCurrencyOrders("aa","12", "ss");
     	 //System.out.println(grtUtil.getServerConnectState());
+    	
+    	//新建任务
+    	MyTask task = new MyTask<String>() {
+    		@Override
+    		public void run() {
+    			// TODO Auto-generated method stub
+    			for(int i=0;i<2;i++) {
+    				
+    				System.out.println(grtUtil.createWallet());
+    			}
+    		
+    			
+    			if(this.listner != null) {
+    				try {
+						listner.rusult("执行成功");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+    			}
+    		}
+		};
+		
+		
+		TaskListner<String> listner = new TaskListner<String>() {
+			
+			@Override
+			public void rusult(String result) throws Exception {
+				// TODO Auto-generated method stub
+				System.out.println("任务回执："+result);
+			}
+		};
+    	task.setListner(listner);
+    	//执行任务  
+    	//task ： 任务
+    	//i ： 延迟
+        //unit ：时间单位
+    	 
+    	ThreadUtil.execute(task,1, TimeUnit.MICROSECONDS);
+    	 
     }
 }
