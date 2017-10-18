@@ -3,6 +3,8 @@ package com.inesv.digiccy.query;
 import com.inesv.digiccy.dto.CoinDto;
 import com.inesv.digiccy.dto.FicRechargeDto;
 import com.inesv.digiccy.dto.FicWithdrawDto;
+import com.inesv.digiccy.dto.RmbRechargeDto;
+import com.inesv.digiccy.dto.RmbWithdrawDto;
 import com.inesv.digiccy.dto.UserInfoDto;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -64,6 +66,40 @@ public class QueryFicRechargeInfo {
     }
     
     /**
+     *根据时间查询提现记录 --人民币
+     *
+     */
+    public List<RmbWithdrawDto> getwithdrawInfoRMB(String start,String end,String date,Integer userId){
+    	
+    	List<RmbWithdrawDto> list=null;
+        String sql="";
+         if(!start.equals("")){
+        	 System.out.println("=======提现1====start========"+start+",end:"+end+",date:"+date);
+        	sql="SELECT *FROM t_inesv_rmb_withdraw WHERE DATE BETWEEN ? AND ? AND user_no = ?";
+        	 System.out.println("=======sql======="+sql);
+        	 Object parmas1[] = {start,end,userId};
+        	    try {
+        	    	list=(List<RmbWithdrawDto>)queryRunner.query(sql, new BeanListHandler(RmbWithdrawDto.class),parmas1);
+        	    	System.out.println("=======list===="+list.size());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        }else{
+        	System.out.println("=======提现2====start========"+start+",end:"+end+",date:"+date);
+        	sql="SELECT *FROM t_inesv_rmb_withdraw WHERE DATE_SUB(CURDATE(), INTERVAL ? DAY) <= DATE(DATE) AND user_no = ? ";
+        	Object parmas2[] = {date,userId};
+        	try {
+    	    	list= (List<RmbWithdrawDto>) queryRunner.query(sql, new BeanListHandler(RmbWithdrawDto.class),parmas2);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+         return list;
+    }
+    
+    /**
      *根据时间查询充值记录
      *
      */
@@ -86,6 +122,38 @@ public class QueryFicRechargeInfo {
         	Object parmas2[] = {date,userId};
         	try {
     	    	list=(List<FicRechargeDto>)queryRunner.query(sql, new BeanListHandler(FicRechargeDto.class),parmas2);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+         return list;
+    }
+    
+    
+    /**
+     *根据时间查询充值记录 -- 人民币
+     *
+     */
+    public List<RmbRechargeDto> getrechargeInfoRMB(String start,String end,String date,Integer userId){
+    	System.out.println("=======充值====start========"+start+",end:"+end+",date:"+date);
+    	List<RmbRechargeDto> list=null;
+        String sql="";
+         if(!start.equals("")){
+        	sql="SELECT *FROM t_inesv_rmb_recharge WHERE DATE BETWEEN ? AND ? and user_no=?";
+        	
+        	 Object parmas1[] = {start,end,userId};
+        	    try {
+        	    	list=(List<RmbRechargeDto>)queryRunner.query(sql, new BeanListHandler(RmbRechargeDto.class),parmas1);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        }else{
+        	sql="SELECT *FROM t_inesv_rmb_recharge WHERE DATE_SUB(CURDATE(), INTERVAL ? DAY) <= DATE(DATE) AND user_no=?";
+        	Object parmas2[] = {date,userId};
+        	try {
+    	    	list=(List<RmbRechargeDto>)queryRunner.query(sql, new BeanListHandler(RmbRechargeDto.class),parmas2);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

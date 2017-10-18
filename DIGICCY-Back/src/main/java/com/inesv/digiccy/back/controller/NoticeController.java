@@ -1,5 +1,7 @@
 package com.inesv.digiccy.back.controller;
 
+import com.inesv.digiccy.dto.NoticeDto;
+import com.inesv.digiccy.dto.NoticeTypeDto;
 import com.inesv.digiccy.validata.NoticeValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,8 +30,12 @@ public class NoticeController {
     }
 
     @RequestMapping(value = "gotoAdd",method = RequestMethod.GET)
-    public String gotoAdd(){
-        return "/notice/add";
+    @ResponseBody
+    public ModelAndView gotoAdd(){
+    	List<NoticeTypeDto> types = noticeValidate.queryNoticeType();
+    	Map<String,Object> map =new HashMap<String, Object>(); 
+    	map.put("types", types);
+        return new ModelAndView("/notice/add", map);
     }
     @RequestMapping(value="gotoNoticeType", method=RequestMethod.GET)
     public String gotoNoticeType(){

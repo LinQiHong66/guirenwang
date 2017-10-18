@@ -27,4 +27,9 @@ public class OrderIDGenerate {
         }
         return randomCode;
     }
+    
+    public static void main(String[] args) {
+    	OrderIDGenerate.getOrderId();
+    	
+	}
 }

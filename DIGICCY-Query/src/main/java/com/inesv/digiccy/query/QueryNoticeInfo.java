@@ -27,6 +27,20 @@ public class QueryNoticeInfo {
 	@Autowired
 	private QueryRunner queryRunner;
 
+	
+	/** 查询公告类型 */
+	public List<NoticeTypeDto> queryNoticeType() {
+		List<NoticeTypeDto> noticeTypes = new ArrayList<>();
+		String sql = "SELECT *FROM t_notice_type WHERE state =0";
+		try {
+			noticeTypes = (List<NoticeTypeDto>) queryRunner.query(sql, new BeanListHandler(NoticeTypeDto.class));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return noticeTypes;
+	}
+	
 	/*
 	 * 查询最新公告
 	 */
