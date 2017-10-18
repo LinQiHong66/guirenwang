@@ -194,8 +194,8 @@ public class InesvUserValidata {
 	/**
 	 * 修改交易密码
 	 * 
-	 * @param pealpwd1
-	 * @param pealpwd
+	 * @param pealpwd1 原交易密码
+	 * @param pealpwd	新交易密码 
 	 * @return
 	 */
 	public Map<String, Object> updateDealPwd(String pealpwd1, String pealpwd, Integer userNo) {

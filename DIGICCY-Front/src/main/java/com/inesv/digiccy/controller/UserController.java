@@ -129,8 +129,7 @@ public class UserController {
 			@RequestParam String ip) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		InesvUserDto user = queryUserInfo.loadUser(username, password);
-		// 增加积分
-		ruleData.addIntegral(user.getId(), "chongzhi", 1000);
+
 		if (user == null) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "用户名或密码错误！");
@@ -141,7 +140,7 @@ public class UserController {
 			map.put("desc", "该用户未启动，请联系管理人员！");
 			return map;
 		}
-		if (ip == null || ip.equals("")) {
+		if (ip == null || ip.equals("")) { 
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "IP地址不能为空");
 			return map;

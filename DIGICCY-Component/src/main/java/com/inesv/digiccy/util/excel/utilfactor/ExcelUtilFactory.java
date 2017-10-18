@@ -43,8 +43,6 @@ public class ExcelUtilFactory {
 				maxGload = dto.getValue();
 				goldCode = dto.getCode();
 			}
-
-			maxGload = maxGload.multiply(new BigDecimal(10000));
 			util = new BalanceExcelUtil(ExcelUtils.getExcelContent(excelFile), redisTemplate, userName, batchAddBalance,
 					maxGload.intValue(), goldCode);
 			break;
