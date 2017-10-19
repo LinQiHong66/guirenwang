@@ -201,7 +201,7 @@ public class UserController {
 	@RequestMapping(value = "getAllUser", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getAllUser(String username, String phone,
-			int state, float curpage, int pageItem) {
+			Integer state, float curpage, int pageItem) {
 		int curPage_a = (curpage + "").contains(".") ? Integer
 				.parseInt((curpage + "").substring(0,
 						(curpage + "").indexOf("."))) : Integer

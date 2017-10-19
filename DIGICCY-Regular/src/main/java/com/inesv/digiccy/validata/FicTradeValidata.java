@@ -3,6 +3,7 @@ package com.inesv.digiccy.validata;
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.FicRechargeDto;
 import com.inesv.digiccy.dto.FicWithdrawDto;
+import com.inesv.digiccy.dto.pageDto;
 import com.inesv.digiccy.query.QueryFicRechargeInfo;
 import com.inesv.digiccy.query.QueryFinWithdrawInfo;
 import com.inesv.digiccy.util.excel.ExcelUtils;
@@ -34,18 +35,12 @@ public class FicTradeValidata {
      * 查询所有虚拟币充值记录
      * @return
      */
-    public Map<String ,Object> queryAllFicRechargeInfo(String userName, String coinTypeSearch, String startData,String endData){
+    public Map<String ,Object> queryAllFicRechargeInfo(String userCode, String phone, String realName,String state,String coinType,String startData,String endData,pageDto page ){
         Map<String ,Object> map = new HashMap<>();
-        List<FicRechargeDto> list = queryFicRechargeInfo.queryAllFicRechargeInfo(userName, coinTypeSearch, startData, endData);
-        System.out.println("FicRechargeDto:"+list.get(0).toString());
-        if(list == null){
-            map.put("code", ResponseCode.FAIL_BILL_INFO);
-            map.put("desc",ResponseCode.FAIL_BILL_INFO_DESC);
-        }else {
-            map.put("data", list);
-            map.put("code", ResponseCode.SUCCESS);
-            map.put("desc", ResponseCode.SUCCESS_DESC);
-        }
+        List<FicRechargeDto> list = queryFicRechargeInfo.queryAllFicRechargeInfo(userCode, phone, realName, state, coinType, startData, endData, page);
+       
+        map.put("total", queryFicRechargeInfo.queryAllFicRechargeInfoSize(userCode, phone, realName, state, coinType, startData, endData));
+        map.put("rows", list);
         return map;
     }
 
@@ -67,28 +62,42 @@ public class FicTradeValidata {
         return map;
     }
     
-    public void getRechargeExcel(HttpServletResponse response, String userName, String coinTypeSearch, String startData,String endData){
-    	List<FicRechargeDto> list = queryFicRechargeInfo.queryAllFicRechargeInfo(userName, coinTypeSearch, startData, endData);
+    public void getRechargeExcel(HttpServletResponse response, String userCode, String phone, String realName,String state,String coinType,String startData,String endData){
+    	pageDto page =new pageDto();
+    	page.setPageNumber(1);
+    	page.setPageSize(queryFicRechargeInfo.queryAllFicRechargeInfoSize(userCode, phone, realName, state, coinType, startData, endData));
+    	System.out.println("PageSize:"+page.getPageSize());
+    	List<FicRechargeDto> list = queryFicRechargeInfo.queryAllFicRechargeInfo(userCode, phone, realName, state, coinType, startData, endData, page);
     	Map<String, List<String>> contact = new HashMap<String, List<String>>();
-    	String title1 = "用户名称";
-    	String title2 = "货币种类";
-    	String title3 = "充值金额";
-    	String title4 = "实际金额";
-    	String title5 = "赠送金额";
-    	String title6 = "状态";
+ 
+    	String title1 = "用户账号";
+    	String title2 = "真实姓名";
+    	String title3 = "用户编号";
+    	String title4 = "转入币种";
+    	String title5 = "转入地址";
+    	String title6 = "转入数量";
+    	String title7 = "到账数量";
+    	String title8 = "转入时间";
+    	String title9 = "转入状态";
 		List<String> value1 = new ArrayList<>();
 		List<String> value2 = new ArrayList<>();
 		List<String> value3 = new ArrayList<>();
 		List<String> value4 = new ArrayList<>();
 		List<String> value5 = new ArrayList<>();
 		List<String> value6 = new ArrayList<>();
+		List<String> value7 = new ArrayList<>();
+		List<String> value8 = new ArrayList<>();
+		List<String> value9 = new ArrayList<>();
     	for(FicRechargeDto dto : list){
-    		value1.add(dto.getAttr1());
-    		value2.add(dto.getAttr2());
-    		value3.add(dto.getSum_price().toString());
-    		value4.add(dto.getActual_price().toString());
-    		value5.add(dto.getGive_price().toString());
-    		value6.add(dto.getState()==1?"未到账":"已到账");
+    		value1.add(dto.getUserName());
+    		value2.add(dto.getRealName());
+    		value3.add(dto.getUserCode());
+    		value4.add(dto.getCoinName());
+    		value5.add(dto.getAddressFrom());
+    		value6.add(dto.getNumber());
+    		value7.add(dto.getRealNumber());
+    		value8.add(dto.getDate());
+    		value9.add(dto.getState()==1?"未到账":"已到账");
     	}
 		contact.put(title1, value1);
 		contact.put(title2, value2);
@@ -96,8 +105,11 @@ public class FicTradeValidata {
 		contact.put(title4, value4);
 		contact.put(title5, value5);
 		contact.put(title6, value6);
+		contact.put(title7, value7);
+		contact.put(title8, value8);
+		contact.put(title9, value9);
 		ExcelUtils.export(response, contact);
-    }
+    } 
     public void getWithdrawExcel(HttpServletResponse response, String userName, String coinTypeSearch, String startData,String endData){
     	ArrayList<FicWithdrawDto> withdraws = (ArrayList<FicWithdrawDto>) queryFinWithdrawInfo.queryAllFicWithdrawInfo(userName, coinTypeSearch, startData, endData);
     	Map<String, List<String>> contact = new HashMap<String, List<String>>();

@@ -1,5 +1,6 @@
 package com.inesv.digiccy.query;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -74,15 +75,47 @@ public class QueryRmbRechargeInfo {
     }
 
     /* 查询人民币充值总条数 **/
-    public long getRechargeSize(String userName, String state, String startDate, String endDate, String orderNumber) throws SQLException {
+    public long getRechargeSize(String userCode, String orderNumber,String phone,String realName,String state, String startDate, String endDate) throws SQLException {
         String sql = "select count(*) as cun from t_inesv_rmb_recharge r join t_inesv_user u on r.user_no = u.user_no";
         ArrayList<Object> paramArr = new ArrayList<>();
-        if (userName != null && !"".equals(userName) && !"-1".equals(userName)) {
+        if (userCode != null && !"".equals(userCode) && !"-1".equals(userCode)) {
+        	try {
+    			userCode = new String(userCode.getBytes("iso-8859-1"), "UTF-8");
+    			 
+    		} catch (UnsupportedEncodingException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} 
+            String str = sql.contains("where") ? " and u.org_code like ? " : " where u.org_code like ? ";
+            sql += str;
+            paramArr.add("%" + userCode + "%");
+        }
+
+        if(orderNumber != null && !"".equals(orderNumber)) {
+        	String str = sql.contains("where")?" and r.recharge_order like ?":" where r.recharge_order like ?";
+        	sql += str;
+        	paramArr.add("%"+orderNumber+"%");
+        }
+        if (phone != null && !"".equals(phone) && !"-1".equals(phone)) {
             String str = sql.contains("where") ? " and r.user_no like ? or u.username like ?" : " where r.user_no like ? or u.username like ?";
             sql += str;
-            paramArr.add("%" + userName + "%");
-            paramArr.add("%" + userName + "%");
+            paramArr.add("%" + phone + "%");
+            paramArr.add("%" + phone + "%");
         }
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@realName:"+realName);
+        if (realName != null && !"".equals(realName) && !"-1".equals(realName)) {
+        	try {
+    			 
+    			realName = new String(realName.getBytes("iso-8859-1"), "UTF-8");
+    		} catch (UnsupportedEncodingException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} 
+            String str = sql.contains("where") ? " and u.real_name like ? " : " where u.real_name like ? ";
+            sql += str;
+            paramArr.add("%" + realName + "%");
+        }
+        
         if (state != null && !"".equals(state) && !"-1".equals(state)) {
             String str = sql.contains("where") ? " and r.state=?" : " where r.state=?";
             sql += str;
@@ -94,13 +127,7 @@ public class QueryRmbRechargeInfo {
             paramArr.add(Date.valueOf(startDate));
             paramArr.add(Date.valueOf(endDate));
         }
-        
 
-        if(orderNumber != null && !"".equals(orderNumber)) {
-        	String str = sql.contains("where")?" and r.recharge_order like ?":" where r.recharge_order like ?";
-        	sql += str;
-        	paramArr.add("%"+orderNumber+"%");
-        }
         
         return (Long) queryRunner.query(sql, new ColumnListHandler<>("cun"), paramArr.toArray(new Object[] {})).get(0);
     }
@@ -109,17 +136,54 @@ public class QueryRmbRechargeInfo {
      * 根据用户查询出用户的rmb充值信息
      *
      */
-    public List<RmbRechargeDto> qureyRechargeInfo(String userName, String state, String startDate, String endDate, int curPage, int pageItem, String orderNumber) {
-        List<RmbRechargeDto> list = new ArrayList();
-        String sql = "select r.*,u.username AS attr1 from t_inesv_rmb_recharge r join t_inesv_user u " + "on r.user_no = u.user_no";
+    public List<RmbRechargeDto> qureyRechargeInfo(String userCode, String orderNumber,String phone,String realName,String state, String startDate, String endDate,int curPage, int pageItem) {
+    	 
+    
+    	
+    	
+    	
+    	List<RmbRechargeDto> list = new ArrayList();
+        String sql = "select r.*,u.username AS attr1,u.org_code AS userCode,u.real_name AS realName from t_inesv_rmb_recharge r join t_inesv_user u " + "on r.user_no = u.user_no";
         String last = " limit ?,?";
         ArrayList<Object> paramArr = new ArrayList<>();
-        if (userName != null && !"".equals(userName) && !"-1".equals(userName)) {
+        if (userCode != null && !"".equals(userCode) && !"-1".equals(userCode)) {
+        	try {
+    			userCode = new String(userCode.getBytes("iso-8859-1"), "UTF-8");
+    			 
+    		} catch (UnsupportedEncodingException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} 
+            String str = sql.contains("where") ? " and u.org_code like ? " : " where u.org_code like ? ";
+            sql += str;
+            paramArr.add("%" + userCode + "%");
+        }
+
+        if(orderNumber != null && !"".equals(orderNumber)) {
+        	String str = sql.contains("where")?" and r.recharge_order like ?":" where r.recharge_order like ?";
+        	sql += str;
+        	paramArr.add("%"+orderNumber+"%");
+        }
+        if (phone != null && !"".equals(phone) && !"-1".equals(phone)) {
             String str = sql.contains("where") ? " and r.user_no like ? or u.username like ?" : " where r.user_no like ? or u.username like ?";
             sql += str;
-            paramArr.add("%" + userName + "%");
-            paramArr.add("%" + userName + "%");
+            paramArr.add("%" + phone + "%");
+            paramArr.add("%" + phone + "%");
         }
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@realName:"+realName);
+        if (realName != null && !"".equals(realName) && !"-1".equals(realName)) {
+        	try {
+    			 
+    			realName = new String(realName.getBytes("iso-8859-1"), "UTF-8");
+    		} catch (UnsupportedEncodingException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} 
+            String str = sql.contains("where") ? " and u.real_name like ? " : " where u.real_name like ? ";
+            sql += str;
+            paramArr.add("%" + realName + "%");
+        }
+        
         if (state != null && !"".equals(state) && !"-1".equals(state)) {
             String str = sql.contains("where") ? " and r.state=?" : " where r.state=?";
             sql += str;
@@ -131,13 +195,7 @@ public class QueryRmbRechargeInfo {
             paramArr.add(Date.valueOf(startDate));
             paramArr.add(Date.valueOf(endDate));
         }
-        
-        if(orderNumber != null && !"".equals(orderNumber)) {
-        	String str = sql.contains("where")?" and r.recharge_order like ?":" where r.recharge_order like ?";
-        	sql += str;
-        	paramArr.add("%"+orderNumber+"%");
-        }
-        
+
         
         sql += " order by r.date desc";
         sql += last;

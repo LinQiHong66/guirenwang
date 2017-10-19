@@ -30,6 +30,12 @@ public class RmbRechargeDto {
     private int attr2;
     /**备用字段1*/
     private String attr3;
+    
+    /**用户编码*/
+    private String userCode;
+    
+    /**真实姓名*/
+    private String realName;
 
     public long getId() {
         return id;
@@ -118,4 +124,23 @@ public class RmbRechargeDto {
     public void setAttr3(String attr3) {
         this.attr1 = attr3;
     }
+
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+		if(this.userCode==null) {
+			this.userCode = "--";
+		}
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
 }

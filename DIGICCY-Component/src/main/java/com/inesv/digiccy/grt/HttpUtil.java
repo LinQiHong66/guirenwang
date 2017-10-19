@@ -59,8 +59,9 @@ public class HttpUtil {
 	 */
 	public static String sendPost(String url,Map<String,Object> params ){
 		HttpRequest request = HttpRequest.post(url);  
-	 
+		request.contentType("application/json");
 		request.charset("utf-8");
+	 
   		 //参数详情
 		 if(params!=null) {
 			request.body(JSON.toJSONString(params));

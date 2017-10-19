@@ -36,6 +36,7 @@ public class RmbController {
 		map.put("dayPrice", map.get("dayPrice"));
         return new ModelAndView("/rmb/recharge",map);
     }
+    
 
     @RequestMapping(value = "gotoWithdraw",method = RequestMethod.GET)
     public ModelAndView gotoWithdraw(){
@@ -44,18 +45,44 @@ public class RmbController {
 		map.put("dayPrice", map.get("dayPrice"));
         return new ModelAndView("/rmb/withdraw",map);
     }
+    
+ 
+    
 
+    /**
+     * 获取充值信息
+     * @param userCode
+     * @param orderNumber
+     * @param phone
+     * @param realName
+     * @param state
+     * @param startDate
+     * @param endDate
+     * @param curPage
+     * @param pageItem
+     * @return
+     */
     @RequestMapping(value = "getRecharge",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> getRecharge(String userName, String state, String startDate, String endDate,int curPage, int pageItem, String orderNumber){
-        Map<String,Object> map = rmbRechargeValidate.validateQueryRecord(userName, state, startDate, endDate, curPage, pageItem, orderNumber);
+    public Map<String,Object> getRecharge(String userCode, String orderNumber,String phone,String realName,String state, String startDate, String endDate,int curPage, int pageItem){
+        Map<String,Object> map = rmbRechargeValidate.validateQueryRecord(userCode, orderNumber, phone, realName, state, startDate, endDate, curPage, pageItem);
         return map;
     }
 
+    /**
+     * 获取人民币提现信息
+     * @param userName
+     * @param state
+     * @param startDate
+     * @param endDate
+     * @param curPage
+     * @param pageItem
+     * @return
+     */
     @RequestMapping(value = "getWithdraw",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> getWithdraw(String userName, String state, String startDate, String endDate, int curPage, int pageItem){
-        Map<String,Object> map = rmbWithdrawValidate.validateQueryRecord(userName, state, startDate, endDate, curPage, pageItem);
+    public Map<String,Object> getWithdraw(String userCode,String realName,String phone, String state, String startDate, String endDate, int curPage, int pageItem){
+        Map<String,Object> map = rmbWithdrawValidate.validateQueryRecord(userCode,realName,phone, state, startDate, endDate, curPage, pageItem);
         return map;
     }
 
@@ -74,13 +101,30 @@ public class RmbController {
         return map;
     }
     
+    
+     /**
+      * 导出Excel
+     * @param response
+     * @param userCode
+     * @param orderNumber
+     * @param phone
+     * @param realName
+     * @param state
+     * @param startDate
+     * @param endDate
+     * @throws SQLException
+     */
     @RequestMapping(value="getRechargeExcel")
-    public void getRechargeExcel(HttpServletResponse response, String userName, String state, String startDate, String endDate, String orderNumber) throws SQLException{
-    	rmbRechargeValidate.getExcel(response, userName, state, startDate, endDate, orderNumber);
+    public void getRechargeExcel(HttpServletResponse response,String userCode, String orderNumber,String phone,String realName,String state, String startDate, String endDate) throws SQLException{
+    	rmbRechargeValidate.getExcel(response, userCode, orderNumber, phone, realName, state, startDate, endDate);
     }
-
+ 
     @RequestMapping(value="getWithdrawExcel")
-    public void getWithdraweExcel(HttpServletResponse response, String userName, String state, String startDate, String endDate){
-    	rmbWithdrawValidate.getWithdrawExcel(response, userName, state, startDate, endDate);
+    public void getWithdraweExcel(HttpServletResponse response,String userCode, String orderNumber,String phone,String realName,String state, String startDate, String endDate){
+    	rmbWithdrawValidate.getWithdrawExcel(response, userCode, realName, phone, state, startDate, endDate);
     }
 }
+
+
+
+

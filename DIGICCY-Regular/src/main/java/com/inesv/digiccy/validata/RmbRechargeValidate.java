@@ -213,19 +213,19 @@ public class RmbRechargeValidate {
     }
 
     /* 查询人民币充值总条数 **/
-    private long getRechargeSize(String userName, String state, String startDate, String endDate, String orderNumber) throws SQLException {
-        return queryRmbRechargeInfo.getRechargeSize(userName, state, startDate, endDate, orderNumber);
+    private long getRechargeSize(String userCode, String orderNumber,String phone,String realName,String state, String startDate, String endDate) throws SQLException {
+        return queryRmbRechargeInfo.getRechargeSize(userCode, orderNumber, phone, realName, state, startDate, endDate);
     }
 
     /**
      * 校验查询充值信息
      */
-    public Map<String, Object> validateQueryRecord(String userName, String state, String startDate, String endDate, int curPage, int pageItem, String orderNumber) {
+    public Map<String, Object> validateQueryRecord(String userCode, String orderNumber,String phone,String realName,String state, String startDate, String endDate,int curPage, int pageItem) {
         Map<String, Object> map = new HashMap();
-        List<RmbRechargeDto> list = queryRmbRechargeInfo.qureyRechargeInfo(userName, state, startDate, endDate, curPage, pageItem, orderNumber);
+        List<RmbRechargeDto> list = queryRmbRechargeInfo.qureyRechargeInfo(userCode, orderNumber, phone, realName, state, startDate, endDate, curPage, pageItem);
         long size = 0;
         try {
-            size = getRechargeSize(userName, state, startDate, endDate, orderNumber);
+            size = getRechargeSize(userCode, orderNumber, phone, realName, state, startDate, endDate);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -244,30 +244,40 @@ public class RmbRechargeValidate {
 
     /** 获取表格 
      * @throws SQLException */
-    public void getExcel(HttpServletResponse response, String userName, String state, String startDate, String endDate, String orderNumber) throws SQLException {
-    	long size = queryRmbRechargeInfo.getRechargeSize(userName, state, startDate, endDate, orderNumber);
-    	List<RmbRechargeDto> dtos = queryRmbRechargeInfo.qureyRechargeInfo(userName, state, startDate, endDate, 1, Integer.parseInt(size+""), orderNumber);
-        HashMap<String, List<String>> contact = new HashMap<String, List<String>>();
-        String title1 = "用户名称";
-        String title2 = "充值方式";
-        String title3 = "充值金额";
-        String title4 = "订单编号";
-        String title5 = "日期";
-        String title6 = "状态";
+    public void getExcel(HttpServletResponse response,String userCode, String orderNumber,String phone,String realName,String state, String startDate, String endDate) throws SQLException {
+    	long size = queryRmbRechargeInfo.getRechargeSize(userCode, orderNumber, phone, realName, state, startDate, endDate);
+/*    	List<RmbRechargeDto> dtos = queryRmbRechargeInfo.qureyRechargeInfo(userName, state, startDate, endDate, 1, Integer.parseInt(size+""), orderNumber);
+*/
+    	List<RmbRechargeDto> dtos = queryRmbRechargeInfo.qureyRechargeInfo(userCode, orderNumber, phone, realName, state, startDate, endDate, 1, Integer.parseInt(size+""));
+
+    	HashMap<String, List<String>> contact = new HashMap<String, List<String>>();
+        String title1 = "用户账号";
+        String title2 = "姓名";
+        String title3 = "订单编号";
+        String title4 = "充值金额";
+        String title5 = "充值时间";
+        String title6 = "用户编号";
+        String title7 = "充值方式";
+        String title8 = "订单状态";
         List<String> value1 = new ArrayList<>();
         List<String> value2 = new ArrayList<>();
         List<String> value3 = new ArrayList<>();
         List<String> value4 = new ArrayList<>();
         List<String> value5 = new ArrayList<>();
         List<String> value6 = new ArrayList<>();
+        List<String> value7 = new ArrayList<>();
+        List<String> value8 = new ArrayList<>();
 
         for (RmbRechargeDto dto : dtos) {
             value1.add(dto.getAttr1());
-            value2.add("易付通");
-            value3.add(dto.getActual_price().toString());
-            value4.add(dto.getRecharge_order());
+            value2.add(dto.getRealName());
+            value3.add(dto.getRecharge_order());
+            value4.add(dto.getRecharge_price().toString());
             value5.add(dto.getDate().toString());
-            value6.add(dto.getState() == 1 ? "已到账" : "未到账");
+            value6.add(dto.getUserCode());
+            value7.add("易付通");
+            value8.add(dto.getState() == 1 ? "已到账" : "未到账");
+  
         }
 
         contact.put(title1, value1);
@@ -276,6 +286,8 @@ public class RmbRechargeValidate {
         contact.put(title4, value4);
         contact.put(title5, value5);
         contact.put(title6, value6);
+        contact.put(title7, value7);
+        contact.put(title8, value8);
 
         ExcelUtils.export(response, contact);
     }
