@@ -31,6 +31,7 @@ import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
+import com.inesv.digiccy.validata.PushInfoValidata;
 import com.inesv.digiccy.validata.UserVoucherValidate;
 import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
 import com.inesv.digiccy.validata.user.InesvUserValidata;
@@ -129,8 +130,7 @@ public class UserController {
 			@RequestParam String ip) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		InesvUserDto user = queryUserInfo.loadUser(username, password);
-		// 增加积分
-		ruleData.addIntegral(user.getId(), "chongzhi", 1000);
+
 		if (user == null) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "用户名或密码错误！");

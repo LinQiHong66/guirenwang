@@ -17,11 +17,8 @@ $.ajax({
 		var pageItem = $('#pageItemW');
 		if (data.code = 100) {
 			var tab = $('#withdraw_table');
-			tab.html("<thead>" + "<tr>" + "<th>用户ID</th>" + "<th>用户名称</th>"
-					+ "<th>提现银行</th>" + "<th>提现金额</th>"
-					+ "<th>手续费</th>" + "<th>实际到账</th>" + "<th>日期</th>"+"<th>状态</th>"
-					+ "</tr>" + "</thead><body align='center'>");
-			console.log(data);
+			tab.html("<thead>" + "<tr><th>用户账号</th>  <th>姓名</th>  <th>提现金额</th>  <th>手续费</th>  <th>到账金额</th>  <th>提现时间</th>  <th>用户编号</th>  <th>提现银行</th> <th>订单状态</th> </tr>" + "</thead><body align='center'>");
+						console.log(data);
 			$.each(data.data, function(a,b){
 				var sta = b.state;
 				var str1 = b.id+','+b.user_no+','+b.price;
@@ -34,34 +31,26 @@ $.ajax({
                  sta = '已到账';
               }
 				
-				var str = "<tr align='center'>" +
-						"<td align='center'>" +
-						b.attr1 +
-						"</td>" +
-						"<td align='center'>" +
-						b.attr3 +
-						"</td>" +
-						"<td>" +
-						b.attr2 +
-						"</td>" +
-						"<td align='center'>" +
-						b.price +
-						"</td>" +
-						"<td align='center'>" +
-						b.poundage +
-						"</td>" +
-						"<td align='center'>" +
-						b.actual_price +
-						"</td>" +
-						"<td align='center'>" +
-						b.date +
-						"</td>" +
-						"<td align='center'>" +
-						sta +
-						"</td>" +
-						""+
-						"</tr>";
-				
+  			var str = "<tr align='center'>" +
+			"<td align='center'>" +
+			b.attr1 +
+			"</td>" +
+			"<td align='center'>" +
+			b.realName +
+			"</td>" +
+			"<td align='center'>" +
+			b.price +
+			"</td>" +
+			"<td align='center'>" +
+			b.poundage +
+			"</td>" 
+			+"<td align='center'>" +b.actual_price +"</td>" 
+			+"<td align='center'>" + b.date + "</td>" 
+			+"<td align='center'>" + b.userCode + "</td>" 
+			+"<td align='center'>" + b.attr2 + "</td>"
+		 	+"<td align='center'>" +sta +"</td>" 
+			+"</tr>";
+
 				tab.html(tab.html()+str);
 			});
 			
@@ -109,10 +98,10 @@ $
 				if (data.code = 100) {
 					// alert('test');
 					var tab = $('#recharge_table');
-					tab.html("<thead>" + "<tr>" + "<th>用户名称</th>"
-							+ "<th>充值方式</th>" + "<th>充值金额</th>"
-							+ "<th>订单号</th>" + "<th>日期</th>" + "<th>状态</th>"
-							+ "</tr>" + "</thead><body align='center'>");
+					tab.html("<thead>" + "<tr>" + "<th>用户账号</th>"
+							+ "<th>姓名</th>" + "<th>订单编号</th>"
+							+ "<th>充值金额</th>" + "<th>充值时间</th>"
+							+ "<th>用户编号</th>  <th>充值方式</th>  <th>订单状态</th>" + "</tr>" + "</thead><body align='center'>");
 					$
 							.each(
 									data.data,
@@ -133,13 +122,22 @@ $
 										// if (b.recharge_type == 2) {
 										// tpe = '微信';
 										// }
-										tab.html(tab.html() + "<tr align='center'>" + "<td align='center'>"
-												+ b.attr1 + "</td>" + "<td align='center'>"
-												+ (tpe) + "</td>" + "<td align='center'>"
-												+ b.recharge_price + "</td>"
+										tab.html(tab.html() + "<tr align='center'>"
+												+ "<td align='center'>" + b.attr1
+												+ "</td>" 
+												+ "<td align='center'>" + b.realName
+												+ "</td>" 
 												+ "<td align='center'>" + b.recharge_order
-												+ "</td>" + "<td align='center'>" + b.date
-												+ "</td>" + "<td align='center'>" + (str)
+												+ "</td>" 
+												+ "<td align='center'>"+ b.recharge_price
+												+ "</td>"
+												+ "<td align='center'>" + b.date
+												+ "</td>"
+												+ "<td align='center'>" + b.userCode
+												+ "</td>"
+												+ "<td align='center'>" + (tpe)
+												+ "</td>" 
+												+ "<td align='center'>" + (str)
 												+ "</td>" + "</tr>");
 									});
 					tab.html(tab.html() + "</body>");
@@ -164,7 +162,9 @@ $
 			}
 		});
 function selectWithdraw(curPagev, pageItemv){
-	var userName = $('#names').val();
+	var userCode = $('#userCode').val();
+	var realName =$('#realName').val(); 
+	var phone = $('#phone').val();
 	var state = $('#state').val();
 	var startDate = $('#startDate').val();
 	var endDate = $('#endDate').val();
@@ -174,7 +174,9 @@ function selectWithdraw(curPagev, pageItemv){
 		type:'get',
 		dataType:'json',
 		data:{
-			userName:userName,
+			userCode:userCode,
+			realName:realName,
+			phone:phone,
 			state:state,
 			startDate:startDate,
 			endDate:endDate,
@@ -187,10 +189,7 @@ function selectWithdraw(curPagev, pageItemv){
 			var pageItem = $('#pageItemW');
 			if (data.code = 100) {
 				var tab = $('#withdraw_table');
-				tab.html("<thead>" + "<tr>" + "<th>用户名称</th>"
-						+ "<th>提现银行</th>" + "<th>提现金额</th>"
-						+ "<th>手续费</th>" + "<th>实际到账</th>" + "<th>日期</th>"+"<th>状态</th>"
-						+ "</tr>" + "</thead><body align='center'>");
+				tab.html("<thead>" + "<tr><th>用户账号</th>  <th>姓名</th>  <th>提现金额</th>  <th>手续费</th>  <th>到账金额</th>  <th>提现时间</th>  <th>用户编号</th>  <th>提现银行</th> <th>订单状态</th> </tr>" + "</thead><body align='center'>");
 				$.each(data.data, function(a,b){
 					var sta = b.state;
 					var str1 = b.id+','+b.user_no+','+b.price;
@@ -202,31 +201,26 @@ function selectWithdraw(curPagev, pageItemv){
 	              if (sta == 1){
 	                 sta = '已到账';
 	              }
-					
 					var str = "<tr align='center'>" +
-							"<td align='center'>" +
-							b.attr1 +
-							"</td>" +
-							"<td align='center'>" +
-							b.attr2 +
-							"</td>" +
-							"<td align='center'>" +
-							b.price +
-							"</td>" +
-							"<td align='center'>" +
-							b.poundage +
-							"</td>" +
-							"<td align='center'>" +
-							b.actual_price +
-							"</td>" +
-							"<td align='center'>" +
-							b.date +
-							"</td>" +
-							"<td align='center'>" +
-							sta +
-							"</td>" +
-							""+
-							"</tr>";
+					"<td align='center'>" +
+					b.attr1 +
+					"</td>" +
+					"<td align='center'>" +
+					b.realName +
+					"</td>" +
+					"<td align='center'>" +
+					b.price +
+					"</td>" +
+					"<td align='center'>" +
+					b.poundage +
+					"</td>" 
+					+"<td align='center'>" +b.actual_price +"</td>" 
+					+"<td align='center'>" + b.date + "</td>" 
+					+"<td align='center'>" + b.userCode + "</td>" 
+					+"<td align='center'>" + b.attr2 + "</td>"
+				 	+"<td align='center'>" +sta +"</td>" 
+					+"</tr>";
+ 
 					
 					tab.html(tab.html()+str);
 				});
@@ -252,25 +246,31 @@ function selectWithdraw(curPagev, pageItemv){
 	});
 }
 function selectRecharge(curPagev, pageItemv) {
-
-	var userName = $('#names').val();
+	var userCode = $('#userCode').val();
+	
+	var orderNumber = $('#orderNumber').val();
+	var phone = $('#phone').val();
+	var realName =$('#realName').val(); 
 	var state = $('#state').val();
 	var startDate = $('#startDate').val();
 	var endDate = $('#endDate').val();
-	var orderNumber = $('#orderNumber').val();
+	
 	$
 			.ajax({
 				url : '/rmb/getRecharge.do',
 				type : 'get',
 				dataType : 'json',
 				data : {
-					userName : userName,
+					userCode : userCode,
+					orderNumber:orderNumber,
+					phone : phone,
+					realName : realName,
 					state : state,
 					startDate : startDate,
 					endDate : endDate,
 					curPage : curPagev,
-					pageItem : pageItemv,
-					orderNumber:orderNumber
+					pageItem : pageItemv
+					
 				},
 				success : function(data) {
 					if (data.code = 100) {
@@ -279,10 +279,10 @@ function selectRecharge(curPagev, pageItemv) {
 						var pageItem = $('#pageItemR');
 						// alert('test');
 						var tab = $('#recharge_table');
-						tab.html("<thead>" + "<tr>" + "<th>用户名称</th>"
-								+ "<th>充值方式</th>" + "<th>充值金额</th>"
-								+ "<th>订单号</th>" + "<th>日期</th>"
-								+ "<th>状态</th>" + "</tr>" + "</thead><body align='center'>");
+						tab.html("<thead>" + "<tr>" + "<th>用户账号</th>"
+								+ "<th>姓名</th>" + "<th>订单编号</th>"
+								+ "<th>充值金额</th>" + "<th>充值时间</th>"
+								+ "<th>用户编号</th>  <th>充值方式</th>  <th>订单状态</th>" + "</tr>" + "</thead><body align='center'>");
 						$
 								.each(
 										data.data,
@@ -308,13 +308,20 @@ function selectRecharge(curPagev, pageItemv) {
 											// }
 											tab.html(tab.html() + "<tr align='center'>"
 													+ "<td align='center'>" + b.attr1
-													+ "</td>" + "<td align='center'>" + (tpe)
-													+ "</td>" + "<td align='center'>"
-													+ b.recharge_price
-													+ "</td>" + "<td align='center'>"
-													+ b.recharge_order
-													+ "</td>" + "<td align='center'>" + b.date
-													+ "</td>" + "<td align='center'>" + (str)
+													+ "</td>" 
+													+ "<td align='center'>" + b.realName
+													+ "</td>" 
+													+ "<td align='center'>" + b.recharge_order
+													+ "</td>" 
+													+ "<td align='center'>"+ b.recharge_price
+													+ "</td>"
+													+ "<td align='center'>" + b.date
+													+ "</td>"
+													+ "<td align='center'>" + b.userCode
+													+ "</td>"
+													+ "<td align='center'>" + (tpe)
+													+ "</td>" 
+													+ "<td align='center'>" + (str)
 													+ "</td>" + "</tr>");
 										});
 						tab.html(tab.html() + "</body>");

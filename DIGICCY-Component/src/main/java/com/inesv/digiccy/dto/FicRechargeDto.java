@@ -8,13 +8,7 @@ import java.util.Date;
  */
 public class FicRechargeDto {
 
-    @Override
-	public String toString() {
-		return "FicRechargeDto [id=" + id + ", user_no=" + user_no + ", coin_no=" + coin_no + ", address=" + address
-				+ ", actual_price=" + actual_price + ", give_price=" + give_price + ", sum_price=" + sum_price
-				+ ", state=" + state + ", date=" + date + ", tixid=" + tixid + ", attr1=" + attr1 + ", attr2=" + attr2
-				+ "]";
-	}
+ 
 
 	/**编号*/
     private Integer id;
@@ -40,8 +34,75 @@ public class FicRechargeDto {
     private String attr1;
     /**备用字段2*/
     private String attr2;
+    
+    private String userName;
+    private String realName;
+    private String userCode;
+    private String coinName;
+    private String addressFrom;
+    private String number;
+    private String realNumber;
+ 
+ 
+    
 
-    public Integer getId() {
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+
+	public String getCoinName() {
+		return coinName;
+	}
+
+	public void setCoinName(String coinName) {
+		this.coinName = coinName;
+	}
+
+	public String getAddressFrom() {
+		return addressFrom;
+	}
+
+	public void setAddressFrom(String addressFrom) {
+		this.addressFrom = addressFrom;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public String getRealNumber() {
+		return realNumber;
+	}
+
+	public void setRealNumber(String realNumber) {
+		this.realNumber = realNumber;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -105,15 +166,18 @@ public class FicRechargeDto {
         this.state = state;
     }
 
-    public Date getDate() {
-        return date;
-    }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
-    public String getTixid() {
+    
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getTixid() {
         return tixid;
     }
 

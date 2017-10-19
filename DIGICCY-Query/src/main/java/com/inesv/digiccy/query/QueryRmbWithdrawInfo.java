@@ -1,6 +1,7 @@
 package com.inesv.digiccy.query;
 
 import java.math.BigDecimal;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +42,42 @@ public class QueryRmbWithdrawInfo {
         }
         return list;
     }
-    public long getSize(String userName, String state, String startDate, String endDate) {
+    public long getSize(String userCode,String realName,String phone, String state, String startDate, String endDate) {
     	String sql = "select count(*) count from t_inesv_rmb_withdraw w "
                 + "join t_inesv_user u on w.user_no = u.user_no " + "join t_inesv_bankinfo b on b.id = w.bank";
         
         ArrayList<Object> paramArr = new ArrayList<>();
-        if (userName != null && !"".equals(userName) && !"-1".equals(userName)) {
+        if (userCode != null && !"".equals(userCode) && !"-1".equals(userCode)) {
+        	try {
+    			userCode = new String(userCode.getBytes("iso-8859-1"), "UTF-8");
+    			 
+    		} catch (UnsupportedEncodingException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} 
+            String str = sql.contains("where") ? " and u.org_code like ? " : " where u.org_code like ? ";
+            sql += str;
+            paramArr.add("%" + userCode + "%");
+        }
+
+        if (realName != null && !"".equals(realName) && !"-1".equals(realName)) {
+        	try {
+    			 
+    			realName = new String(realName.getBytes("iso-8859-1"), "UTF-8");
+    		} catch (UnsupportedEncodingException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} 
+            String str = sql.contains("where") ? " and u.real_name like ? " : " where u.real_name like ? ";
+            sql += str;
+            paramArr.add("%" + realName + "%");
+        }
+        
+        if (phone != null && !"".equals(phone) && !"-1".equals(phone)) {
             String str = sql.contains("where") ? " and u.user_no like ? or u.username like ?" : " where u.user_no like ? or u.username like ?";
             sql += str;
-            paramArr.add("%"+userName+"%");
-            paramArr.add("%"+userName+"%");
+            paramArr.add("%"+phone+"%");
+            paramArr.add("%"+phone+"%");
         }
         if (state != null && !"".equals(state) && !"-1".equals(state)) {
             String str = sql.contains("where") ? " and w.state=?" : " where w.state=?";
@@ -71,17 +98,43 @@ public class QueryRmbWithdrawInfo {
 			return 0;
 		}
     }
-    public List<RmbWithdrawDto> queryWithdrawInfo(String userName, String state, String startDate, String endDate, int curPage, int pageItem) {
+    public List<RmbWithdrawDto> queryWithdrawInfo(String userCode,String realName,String phone, String state, String startDate, String endDate, int curPage, int pageItem) {
         List<RmbWithdrawDto> list = new ArrayList<>();
-        String sql = "select w.*,u.username as attr1, IFNULL(u.real_name,'-') as attr3, " + "CONCAT(b.province,b.city,b.bank,b.branch,'(',b.`name`,'-',b.bank_num,')') as attr2 " + "from t_inesv_rmb_withdraw w "
+        String sql = "select w.*,u.username as attr1,u.org_code AS userCode,u.real_name AS realName ,IFNULL(u.real_name,'-') as attr3, " + "CONCAT(b.province,b.city,b.bank,b.branch,'(',b.`name`,'-',b.bank_num,')') as attr2 " + "from t_inesv_rmb_withdraw w "
                 + "join t_inesv_user u on w.user_no = u.user_no " + "join t_inesv_bankinfo b on b.id = w.bank";
         String last = " limit ? , ?";
         ArrayList<Object> paramArr = new ArrayList<>();
-        if (userName != null && !"".equals(userName) && !"-1".equals(userName)) {
+        if (userCode != null && !"".equals(userCode) && !"-1".equals(userCode)) {
+        	try {
+    			userCode = new String(userCode.getBytes("iso-8859-1"), "UTF-8");
+    			 
+    		} catch (UnsupportedEncodingException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} 
+            String str = sql.contains("where") ? " and u.org_code like ? " : " where u.org_code like ? ";
+            sql += str;
+            paramArr.add("%" + userCode + "%");
+        }
+
+        if (realName != null && !"".equals(realName) && !"-1".equals(realName)) {
+        	try {
+    			 
+    			realName = new String(realName.getBytes("iso-8859-1"), "UTF-8");
+    		} catch (UnsupportedEncodingException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		} 
+            String str = sql.contains("where") ? " and u.real_name like ? " : " where u.real_name like ? ";
+            sql += str;
+            paramArr.add("%" + realName + "%");
+        }
+        
+        if (phone != null && !"".equals(phone) && !"-1".equals(phone)) {
             String str = sql.contains("where") ? " and u.user_no like ? or u.username like ?" : " where u.user_no like ? or u.username like ?";
             sql += str;
-            paramArr.add("%"+userName+"%");
-            paramArr.add("%"+userName+"%");
+            paramArr.add("%"+phone+"%");
+            paramArr.add("%"+phone+"%");
         }
         if (state != null && !"".equals(state) && !"-1".equals(state)) {
             String str = sql.contains("where") ? " and w.state=?" : " where w.state=?";

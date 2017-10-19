@@ -93,13 +93,15 @@ Website: http://thevectorlab.net/
                             <%--<button class="btn btn-primary" id="btn_delete"><i class="icon-remove icon-white"></i>&nbsp;删除</button>--%>
                             <form action="/rmb/getRechargeExcel.do" method="post">
                             <div>
-                            	用戶名<input type="text" name='userName' id='names' style='width:10%'/>
-                            	订单编号<input type="text" name='orderNumber' id='orderNumber' style='width:10%'/>
-                            	状态<select style='width:20%' name='state' id='state'>
+                                                                                                               用戶编号<input type="text" name='userCode' id='userCode' style='width:5%'/>
+                                                                                                               订单编号<input type="text" name='orderNumber' id='orderNumber' style='width:5%'/>
+                            	手机号码<input type="text" name='phone' id='phone' style='width:8%'/>
+                            	真实姓名<input type="text" name='realName' id='realName' style='width:5%'/>
+                            	状态<select style='width:10%' name='state' id='state'>
                             		<option value='-1' selected>请选择</option>
                             		<option value='1'>已到账</option>
                             		<option value='0'>未到账</option>
-                            	</select>时间段<input type='date' style='width:20%' name='startDate' id='startDate' />---<input style='width:20%' type='date' name='endDate' id='endDate' />
+                            	</select>时间段<input type='date' style='width:12%' name='startDate' id='startDate' />---<input style='width:20%' type='date' name='endDate' id='endDate' />
                             	<br />
                             	<input type="button" value='查询' onclick='search()' /><input type="submit" value='导出Excel' />
                             </div>

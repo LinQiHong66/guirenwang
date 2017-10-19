@@ -107,6 +107,7 @@ Website: http://thevectorlab.net/
 												<option value="2">新闻</option>
 												<option value="3">常见问题</option>
 												<option value="4">其他</option>
+												
 											</select> <select class='input-large m-wrap' tabindex="1"
 												id="nametype" name="noticeNameType" disabled="disabled">
 												<!-- <option value="0" selected>请选择</option> -->
@@ -192,6 +193,10 @@ Website: http://thevectorlab.net/
         var text = editor.$txt.html();
         var title = $("#title").val();
         var type = $("#type").val();
+        if(type==0){
+        	alert("请选择公告类型");
+        	return;
+        }
         var nameType = $('#nametype').val();
         $.ajax({
             url:"/notice/addNotice.do",

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 //这里的事务关联到配置文件中的事务控制器（transactionManager = "transactionManager"），同时//指定自动回滚（defaultRollback = true）。这样做操作的数据才不会污染数据库！
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 //------------
+ 
 public class BaseJunit4Test {
 
 }

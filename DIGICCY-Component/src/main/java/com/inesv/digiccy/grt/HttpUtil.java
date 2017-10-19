@@ -54,13 +54,19 @@ public class HttpUtil {
 	 * 发送Post请求
 	 * @param url : 请求的连接
 	 * @param params ：  请求参数，无参时传null
+	 * @param paramsDatails : 参数详情，没有时传null 
 	 * @return
 	 */
-	public static String sendPost(String url,Map<String,Object> params){
+	public static String sendPost(String url,Map<String,Object> params ){
 		HttpRequest request = HttpRequest.post(url);  
+		request.contentType("application/json");
+		request.charset("utf-8");
+	 
+  		 //参数详情
 		 if(params!=null) {
-			 request.form(params);
-		  } 
+			request.body(JSON.toJSONString(params));
+		 }
+    	  
 		HttpResponse response = request.send();
 		String respJson = response.bodyText();
 		return respJson;
@@ -75,6 +81,7 @@ public class HttpUtil {
 	 */
 	public static String sendDelete(String url,Map<String,Object> params){
 		HttpRequest request = HttpRequest.delete(url);  
+ 
 		 if(params!=null) {
 			 request.form(params);
 		  } 

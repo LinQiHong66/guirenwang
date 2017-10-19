@@ -60,6 +60,7 @@ function updateUser() {
     var name = $("#update_name").val();
     var pass = $("#update_pass").val();
     var role = $("#update_role").val();
+     
     $.ajax({
         url:"/auth/updateUser.do",
         type: "post",

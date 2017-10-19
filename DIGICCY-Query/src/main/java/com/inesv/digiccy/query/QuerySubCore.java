@@ -145,6 +145,8 @@ public class QuerySubCore {
           Object params[] = {userNo};
           InesvUserDto uid = null;
           try {
+        	  System.out.println("userNO---------------");
+        	  System.out.println(userNo);
               uid = queryRunner.query(sql,new BeanHandler<InesvUserDto>(InesvUserDto.class),params);
 
               uid.setPassword(showPwd?uid.getPassword():(uid.getPassword()==null?"0":"1"));

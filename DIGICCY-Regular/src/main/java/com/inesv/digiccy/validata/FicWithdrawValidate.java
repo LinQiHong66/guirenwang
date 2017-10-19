@@ -23,6 +23,8 @@ import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.CoinDto;
 import com.inesv.digiccy.dto.FicRechargeDto;
 import com.inesv.digiccy.dto.FicWithdrawDto;
+import com.inesv.digiccy.dto.RmbRechargeDto;
+import com.inesv.digiccy.dto.RmbWithdrawDto;
 import com.inesv.digiccy.dto.UserBalanceDto;
 import com.inesv.digiccy.dto.UserInfoDto;
 import com.inesv.digiccy.dto.WalletAddressDto;
@@ -92,12 +94,27 @@ public class FicWithdrawValidate {
 
     /**
      * 账单信息
+     * 
      */
+  
     public Map<String, Object> validateBill(String start, String end, String date, String type, Integer userId) {
         Map<String, Object> resultmap = new HashMap();
         List<Map<Object, Object>> bills = new ArrayList<Map<Object, Object>>();
         if (type.equals("0")) // 充值
         {
+        	//人民币
+            List<RmbRechargeDto> rechsRMB = queryFicRechargeInfo.getrechargeInfoRMB(start, end, date, userId);
+            for (RmbRechargeDto ficr : rechsRMB) {
+                
+                Map<Object, Object> map = new HashMap<>();
+                map.put("date", ficr.getDate());
+                map.put("type",  "人民币充值");
+                map.put("money", ficr.getActual_price());
+                map.put("fee", "-");
+                map.put("state", ficr.getState());
+                bills.add(map);
+            }
+        	//虚拟币
             List<FicRechargeDto> rechs = queryFicRechargeInfo.getrechargeInfo(start, end, date, userId);
             for (FicRechargeDto ficr : rechs) {
                 CoinDto coin = queryCoin.queryCoinTypeByCoinNo(ficr.getCoin_no()).get(0);
@@ -109,7 +126,20 @@ public class FicWithdrawValidate {
                 map.put("state", ficr.getState());
                 bills.add(map);
             }
-        } else {
+        } else { // 提现
+        	
+        	//人民币
+            List<RmbWithdrawDto> withsRMB = queryFicRechargeInfo.getwithdrawInfoRMB(start, end, date, userId);
+            for (RmbWithdrawDto with : withsRMB) {
+                Map<Object, Object> map = new HashMap<>();
+                map.put("date", with.getDate());
+                map.put("type", "人民币提现");
+                map.put("money", with.getActual_price());
+                map.put("fee", with.getPoundage());
+                map.put("state", with.getState());
+                bills.add(map);
+            }
+        	//虚拟币
             List<FicWithdrawDto> withs = queryFicRechargeInfo.getwithdrawInfo(start, end, date, userId);
             for (FicWithdrawDto with : withs) {
                 CoinDto coin = queryCoin.queryCoinTypeByCoinNo(with.getCoin_no()).get(0);

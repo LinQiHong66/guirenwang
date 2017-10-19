@@ -35,7 +35,7 @@ public class AuthEventHandler {
                 authUserOperation.addAuthUser(event.getName(),passMd5,event.getRoleId());
                 break;
             case "updateUser":
-                authUserOperation.updateAuthUser(event.getUserId(),event.getName(),passMd5,event.getRoleId());
+                authUserOperation.updateAuthUser(event.getUserId(),event.getName(),event.getPassword(),event.getRoleId());
                 break;
             case "deleteUser":
                 authUserOperation.deleteAuthUser(event.getUserId());

@@ -149,7 +149,7 @@
 					if (data.code == 100) {
 						alert('添加成功');
 					} else {
-						alert('添加失败');
+						alert(data.desc);
 					}
 					window.location.href = "/notice/gotoNoticeType.do";
 				}

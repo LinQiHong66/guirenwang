@@ -92,7 +92,9 @@ public class OpUserController {
 	public Map<String, Object> addUser(String phone, String password, String invite_num) {
 
 		try {
-			invite_num = new String(invite_num.getBytes("ISO-8859-1"), "UTF-8");
+			if (invite_num.equals(new String(invite_num.getBytes("ISO-8859-1"), "ISO-8859-1"))) {
+				invite_num = new String(invite_num.getBytes("ISO-8859-1"), "UTF-8");
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
