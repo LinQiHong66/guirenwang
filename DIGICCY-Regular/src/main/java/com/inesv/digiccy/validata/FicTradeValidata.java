@@ -8,9 +8,12 @@ import com.inesv.digiccy.query.QueryFicRechargeInfo;
 import com.inesv.digiccy.query.QueryFinWithdrawInfo;
 import com.inesv.digiccy.util.excel.ExcelUtils;
 
+import net.sf.ehcache.search.parser.MCriteria.Simple;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -65,6 +68,10 @@ public class FicTradeValidata {
     public void getRechargeExcel(HttpServletResponse response, String userCode, String phone, String realName,String state,String coinType,String startData,String endData){
     	pageDto page =new pageDto();
     	page.setPageNumber(1);
+    	
+    	SimpleDateFormat sf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	
+    	
     	page.setPageSize(queryFicRechargeInfo.queryAllFicRechargeInfoSize(userCode, phone, realName, state, coinType, startData, endData));
     	System.out.println("PageSize:"+page.getPageSize());
     	List<FicRechargeDto> list = queryFicRechargeInfo.queryAllFicRechargeInfo(userCode, phone, realName, state, coinType, startData, endData, page);
@@ -96,7 +103,7 @@ public class FicTradeValidata {
     		value5.add(dto.getAddressFrom());
     		value6.add(dto.getNumber());
     		value7.add(dto.getRealNumber());
-    		value8.add(dto.getDate());
+    		value8.add(sf.format(dto.getDate()));
     		value9.add(dto.getState()==1?"未到账":"已到账");
     	}
 		contact.put(title1, value1);
