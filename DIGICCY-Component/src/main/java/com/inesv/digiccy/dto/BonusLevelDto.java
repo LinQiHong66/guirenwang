@@ -1,6 +1,7 @@
 package com.inesv.digiccy.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class BonusLevelDto {
 	
@@ -29,6 +30,8 @@ public class BonusLevelDto {
 	private BigDecimal sum_bonus;
 
 	private String remark;
+	
+	private Date date;
 
 	public Long getId() {
 		return id;
@@ -133,5 +136,14 @@ public class BonusLevelDto {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 
 }

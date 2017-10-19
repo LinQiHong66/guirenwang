@@ -43,10 +43,15 @@ public class BonusLevelValidata {
 		String title1 = "来源订单";
 		String title2 = "货币种类";
 		String title3 = "获取分红用户";
-		String title4 = "产生分红用户";
-		String title5 = "交易类型";
-		String title6 = "所得分红";
-		String title7 = "详情";
+		String title4 = "获取分红用户编号";
+		String title5 = "产生分红用户";
+		String title6 = "产生分红用户账号";
+		String title7 = "产生分红用户编号";
+		String title8 = "交易类型";
+		String title9 = "分红比例";
+		String title10 = "所得分红";
+		String title11 = "分红总金额";
+		String title12 = "详情";
 		List<String> col1 = new ArrayList<String>();
 		List<String> col2 = new ArrayList<String>();
 		List<String> col3 = new ArrayList<String>();
@@ -54,20 +59,30 @@ public class BonusLevelValidata {
 		List<String> col5 = new ArrayList<String>();
 		List<String> col6 = new ArrayList<String>();
 		List<String> col7 = new ArrayList<String>();
+		List<String> col8 = new ArrayList<String>();
+		List<String> col9 = new ArrayList<String>();
+		List<String> col10 = new ArrayList<String>();
+		List<String> col11 = new ArrayList<String>();
+		List<String> col12 = new ArrayList<String>();
 		for(BonusLevelDto dto : list){
 			col1.add(dto.getBonus_source().toString());
 			col2.add(dto.getBonus_coin().toString());
 			col3.add(dto.getBonus_rel().toString());
-			col4.add(dto.getBonus_user().toString());
+			col4.add(dto.getBonus_rel_code().toString());
+			col5.add(dto.getBonus_user().toString());
+			col6.add(dto.getBonus_user_name().toString());
+			col7.add(dto.getBonus_user_code().toString());
 			if(dto.getBonus_type() == 0) {
-				col5.add("买");
+				col8.add("买");
 			}else if(dto.getBonus_type() == 1) {
-				col5.add("卖");
+				col8.add("卖");
 			}else {
-				col5.add("其他");
+				col8.add("其他");
 			}
-			col6.add(dto.getBonus().toString());
-			col7.add(dto.getRemark().toString());
+			col9.add(dto.getLevel_scale().toString());
+			col10.add(dto.getBonus().toString());
+			col11.add(dto.getSum_bonus().toString());
+			col12.add(dto.getRemark().toString());
 		}
 		contact.put(title1, col1);
 		contact.put(title2, col2);
@@ -76,6 +91,11 @@ public class BonusLevelValidata {
 		contact.put(title5, col5);
 		contact.put(title6, col6);
 		contact.put(title7, col7);
+		contact.put(title8, col8);
+		contact.put(title9, col9);
+		contact.put(title10, col10);
+		contact.put(title11, col11);
+		contact.put(title12, col12);
 		
 		ExcelUtils.export(response, contact);
 	}

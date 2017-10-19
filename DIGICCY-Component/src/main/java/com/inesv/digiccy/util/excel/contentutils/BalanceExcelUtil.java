@@ -33,7 +33,7 @@ public class BalanceExcelUtil implements ExcelUtil {
 				System.out.println(arr.toString());
 				redisTemplate.opsForValue().set(key, arr.toString(), 1, TimeUnit.DAYS);
 				Boolean ok = job.getBoolean("executeOk");
-				if((ok != null) && ok) {
+				if ((ok != null) && ok) {
 					batchAddBalance.updateBatchGload(job.getInt("money"));
 				}
 			}

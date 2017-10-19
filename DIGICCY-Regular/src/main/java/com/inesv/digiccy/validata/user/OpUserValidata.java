@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,9 +36,11 @@ import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
 import com.inesv.digiccy.util.SmsUtil;
 import com.inesv.digiccy.util.StringUtil;
+import com.inesv.digiccy.validata.StaticParamValidata;
 import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureResult;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureUtil;
+import com.pagination.PaginationDto;
 
 /**
  * Created by Administrator on 2016/11/14 0014.
@@ -51,7 +55,7 @@ public class OpUserValidata {
 
 	@Autowired
 	private IntegralRuleValidata ruleData;
-	
+
 	@Autowired
 	SendMsgUtil sendMsgUtil;
 
@@ -75,6 +79,8 @@ public class OpUserValidata {
 
 	@Autowired
 	QueryMessageSet queryMessageSet;
+
+	private static Logger logger = LoggerFactory.getLogger(OpUserValidata.class);
 
 	/*
 	 * 测试
@@ -125,7 +131,7 @@ public class OpUserValidata {
 	// 更改登陆密码
 	public boolean modifyLoginPwd(String phone, String password) {
 		boolean ok = false;
-		password = new MD5().getMD5(password==null?"":password);
+		password = new MD5().getMD5(password == null ? "" : password);
 		try {
 			int size = regUserPersistence.modifyPassword(phone, password);
 			ok = size > 0;
@@ -157,16 +163,17 @@ public class OpUserValidata {
 	 * 
 	 * @return
 	 */
-	public Map<String, Object> validataGetAllUser(String username, String phone, int state, int curpage, int pageItem) {
+	public Map<String, Object> validataGetAllUser(InesvUserDto selectSome, int pageItem, int pageNum, String orderItem,
+			String orderType) {
 		Map<String, Object> map = new HashMap<>();
-		List<InesvUserDto> list = queryUser.getAllUser(username, phone, state, curpage, pageItem);
-		long size = queryUser.getSize(username, phone, state);
+		List<InesvUserDto> list = queryUser.getAllUser(selectSome, pageItem, pageNum, orderItem, orderType);
+		long size = queryUser.getSize(selectSome);
 		if (list == null) {
-			map.put("code", ResponseCode.FAIL_BILL_INFO);
-			map.put("desc", ResponseCode.FAIL_BILL_INFO_DESC);
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", ResponseCode.FAIL_DESC);
 		} else {
-			map.put("data", list);
-			map.put("count", size);
+			map.put("rows", list);
+			map.put("total", size);
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		}
@@ -305,8 +312,14 @@ public class OpUserValidata {
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 			// 增加积分
-		    ruleData.addIntegral(parentUserInfoDto.getId(),"yaoqingyonghu");
-			
+			try {
+				if (parentUserInfoDto != null) {
+					ruleData.addIntegral(parentUserInfoDto.getId(), "yaoqingyonghu");
+				}
+			} catch (Exception e) {
+				logger.debug("积分添加出错");
+				logger.debug(e.getMessage());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("code", ResponseCode.FAIL);
@@ -465,15 +478,10 @@ public class OpUserValidata {
 	 */
 	public Map<String, Object> validataUpdatePwd(String username, String password) {
 		Map<String, Object> result = new HashMap<>();
-		List<InesvUserDto> list = queryUserNamePhoneInfo.getUserNamePhoneInfo(username);
 		List<InesvUserDto> dtos = queryUserNamePhoneInfo.getUserNamePhoneInfo(username);
-		if (dtos.size() > 0) {
-			if (list.isEmpty()) {
-				result.put("code", ResponseCode.FAIL);
-				result.put("desc", ResponseCode.FAIL_DESC);
-				result.put("result", "修改失败");
-			} else {
-				InesvUserDto user = list.get(0);
+		if (dtos != null && dtos.size() > 0) {
+			try {
+				InesvUserDto user = dtos.get(0);
 				Long id = user.getId();
 				RegUserCommand command = new RegUserCommand(new Integer(id.intValue()), user.getUsername(),
 						user.getUser_no(), new MD5().getMD5(password), user.getRegion(), user.getReal_name(),
@@ -482,11 +490,17 @@ public class OpUserValidata {
 				commandGateway.sendAndWait(command);
 				result.put("code", ResponseCode.SUCCESS);
 				result.put("desc", ResponseCode.SUCCESS_DESC);
+			} catch (Exception e) {
+				result.put("code", ResponseCode.FAIL);
+				result.put("desc", ResponseCode.FAIL_DESC);
+				result.put("result", "修改密码失败");
+				logger.debug("修改密码失败");
+				logger.debug(e.getMessage());
 			}
 		} else {
-			result.put("result", "不存在该号码");
 			result.put("code", ResponseCode.FAIL);
 			result.put("desc", ResponseCode.FAIL_DESC);
+			result.put("result", "不存在该号码");
 		}
 		return result;
 	}
@@ -524,7 +538,7 @@ public class OpUserValidata {
 		redisCode.setSms(mobile, type, mCode);
 		MessageSetDto messageSetDto = queryMessageSet.getMessageSet();
 		Map<String, Object> map = new HashMap<>();
-		String  msgContent = null;
+		String msgContent = null;
 		try {
 			if (messageSetDto != null) {
 				int limitNumber = messageSetDto.getLimit_number();// 限制次数
@@ -550,8 +564,8 @@ public class OpUserValidata {
 		}
 		InesvPhoneCommand command = new InesvPhoneCommand(0, null, mobile, 1, mCode, "insert");
 		commandGateway.sendAndWait(command);
-		System.out.println("!StringUtil.isEmpty(msgContent):"+!StringUtil.isEmpty(msgContent));
-		System.out.println("inesvUserDto != null:"+inesvUserDto != null);
+		System.out.println("!StringUtil.isEmpty(msgContent):" + !StringUtil.isEmpty(msgContent));
+		System.out.println("inesvUserDto != null:" + inesvUserDto != null);
 		if (!StringUtil.isEmpty(msgContent)) {
 			// 如果验证码发送成功则将发送短信日志写到表里面
 			if (inesvUserDto != null) {

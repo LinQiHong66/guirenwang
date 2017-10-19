@@ -101,16 +101,17 @@ public class QueryHelpCenterInfo {
 	public Integer getIdsByTwoName(String name) {
 		String sql = "select * from t_help_center WHERE help_name=?";
 		try {
-			name = new String(name.getBytes("iso-8859-1"), "utf-8");
+			if (name.equals(new String(name.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				name = new String(name.getBytes("iso-8859-1"), "utf-8");
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		Object params[] = { name };
 		try {
-			
-			HelpCenterDto dto =  queryRunner.query(sql, new BeanHandler<HelpCenterDto>(HelpCenterDto.class),
-					params);
-			return Integer.parseInt(""+dto.getId());
+
+			HelpCenterDto dto = queryRunner.query(sql, new BeanHandler<HelpCenterDto>(HelpCenterDto.class), params);
+			return Integer.parseInt("" + dto.getId());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

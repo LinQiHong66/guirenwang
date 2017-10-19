@@ -60,12 +60,12 @@ public class RmbWithdrawPersistence {
             queryRunner.update(sql, Param);
             
             //手续费记录 
-            String sql2 = "INSERT INTO t_inesv_poundage(user_no,optype,type,money,date) VALUES(?,?,?,?,?)";
-            Object parmas2[] = {user_no,3,0,poundage,new Date()};
+            String sql2 = "INSERT INTO t_inesv_poundage(user_no,optype,type,money,date,attr1) VALUES(?,?,?,?,?,?)";
+            Object parmas2[] = {user_no,3,0,poundage,new Date(),0};
             queryRunner.update(sql2, parmas2);
             
             //资产--将资产从可用转到冻结
-            String sql3 = "SELECT * FROM t_inesv_user_balance WHERE user_no = ? AND coin_type = 0 for update";
+            String sql3 = "SELECT * FROM t_inesv_user_balance WHERE user_no = ? AND coin_type = 0 FOR UPDATE";
             Object parmas3[] = {user_no};
             UserBalanceDto userBalanceDto = queryRunner.query(sql3,new BeanHandler<UserBalanceDto>(UserBalanceDto.class),parmas3);
         	if(userBalanceDto.getEnable_coin().doubleValue() - price.doubleValue() < 0 
@@ -84,7 +84,7 @@ public class RmbWithdrawPersistence {
      */
     @Transactional(rollbackFor={Exception.class, RuntimeException.class})
     public void confirmToAccount(int recordId,int user,String price) throws Exception{
-            String getBalanceSql = "SELECT * FROM t_inesv_user_balance WHERE user_no = ? AND coin_type = 0";
+            String getBalanceSql = "SELECT * FROM t_inesv_user_balance WHERE user_no = ? AND coin_type = 0 FOR UPDATE";
             Object params[] = {user};
         		UserBalanceDto userBalanceDto = queryRunner.query(getBalanceSql,new BeanHandler<UserBalanceDto>(UserBalanceDto.class),params);
         	if(userBalanceDto.getUnable_coin().doubleValue() - Double.valueOf(price) < 0 

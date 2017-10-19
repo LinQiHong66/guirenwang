@@ -105,9 +105,9 @@ public class BonusOperation {
     	/*
     	 * 插入分红记录
     	 */
-    	String insertBonus = "INSERT INTO t_inesv_bonus_level(bonus_source,bonus_coin,bonus_rel,bonus_user_name,bonus_rel_code,bonus_user,bonus_user_code,level_scale,bonus_type,bonus,sum_bonus,remark) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-    		Object bonusParam[] = {entrustNo,coin_type,rel_user_no,rel_user_name,rel_code,user_no,user_code,level_scale,entrustType,level_price,sum_price,remark};
+    	String insertBonus = "INSERT INTO t_inesv_bonus_level(bonus_source,bonus_coin,bonus_rel,bonus_user_name,bonus_rel_code,bonus_user,bonus_user_code,level_scale,bonus_type,bonus,sum_bonus,remark,date) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    		Object bonusParam[] = {entrustNo,coin_type,rel_user_no,rel_user_name,rel_code,user_no,user_code,level_scale,entrustType,level_price,sum_price,remark,new Date()};
             queryRunner.update(insertBonus,bonusParam);
     	/*
     	 * 修改货币金额

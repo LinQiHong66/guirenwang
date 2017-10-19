@@ -49,8 +49,8 @@ public class FicWithdrawPersistence {
         queryRunner.update(sql2, parmas2);
 
         //添加手续费记录
-        String sql3 = "INSERT INTO t_inesv_poundage(user_no,optype,type,money,date) VALUES(?,?,?,?,?)";
-        Object parmas3[] = { user_no, 3, coin_no, poundage, new Date() };
+        String sql3 = "INSERT INTO t_inesv_poundage(user_no,optype,type,money,date,attr1) VALUES(?,?,?,?,?,?)";
+        Object parmas3[] = { user_no, 3, coin_no, poundage, new Date(), coin_no };
         queryRunner.update(sql3, parmas3);
 
         //转币

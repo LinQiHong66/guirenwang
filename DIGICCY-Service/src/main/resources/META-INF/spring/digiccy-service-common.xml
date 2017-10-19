@@ -1,233 +1,421 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:axon="http://www.axonframework.org/schema/core"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.axonframework.org/schema/core http://www.axonframework.org/schema/axon-core.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:axon="http://www.axonframework.org/schema/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.axonframework.org/schema/core http://www.axonframework.org/schema/axon-core.xsd">
 
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.UserAggregate" id="UserdisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.UserAggregate" repository="UserdisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.UserEventHandler"/>
-    
-
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.RoleAggregate" id="RoledisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.RoleAggregate" repository="RoledisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.RoleEventHandler"/>
-
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.ResourceAggregate" id="ResdisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.ResourceAggregate" repository="ResdisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.ResourceEventHandler"/>
-
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.TradeAggregate" id="TradedisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.TradeAggregate" repository="TradedisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.TradeEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.InesvUserAggregate" id="InesvUserdisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.InesvUserAggregate" repository="InesvUserdisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.InesvUserEventHandler"/>
-
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.SubRecordAggregate" id="SubRecordtorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.SubRecordAggregate" repository="SubRecordtorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.SubRecordEventHangler"/>
-    <bean class="com.inesv.digiccy.event.handler.ThawEventHandler"/>
-
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.RmbRechargeAggregate" id="RmbRechargeRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.RmbRechargeAggregate" repository="RmbRechargeRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.RmbRechargeEvnetHandler"/>
-
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.RmbWithdrawAggregate" id="RmbWirhdrawRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.RmbWithdrawAggregate" repository="RmbWirhdrawRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.RmbWithdrawEventhandler"/>
-
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.RegUserAggregate" id="RegUserdisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.RegUserAggregate" repository="RegUserdisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.RegUserEventHandler"/>
-
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.InesvBankAggregate" id="InesvBankInfoRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.InesvBankAggregate" repository="InesvBankInfoRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.InesvBankEventHandler"/>
-
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.InesvPhoneAggregate" id="InesvPhonedisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.InesvPhoneAggregate" repository="InesvPhonedisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.InesvPhoneEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.UserAggregate" id="UserdisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.UserAggregate" repository="UserdisruptorRepository"
+		command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.UserEventHandler" />
 
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.FicRechargeAggregate" id="ficRechargeRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.FicRechargeAggregate" repository="ficRechargeRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.FicRechargeEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.RoleAggregate" id="RoledisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.RoleAggregate" repository="RoledisruptorRepository"
+		command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.RoleEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.BillAggregate" id="BilldisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.BillAggregate" repository="BilldisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.BillEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.ResourceAggregate" id="ResdisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.ResourceAggregate"
+		repository="ResdisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.ResourceEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.AuthAggregate" id="AuthdisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.AuthAggregate" repository="AuthdisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.AuthEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.TradeAggregate" id="TradedisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.TradeAggregate"
+		repository="TradedisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.TradeEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.VoteAggregate" id="VotedisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.VoteAggregate" repository="VotedisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.VoteEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.DayMarketAggregate" id="DayMarketAggregatedisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.DayMarketAggregate" repository="DayMarketAggregatedisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.DayMarketEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.InesvUserAggregate" id="InesvUserdisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.InesvUserAggregate"
+		repository="InesvUserdisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.InesvUserEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CoinAggregate" id="CoindisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CoinAggregate" repository="CoindisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.CoinEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.SubRecordAggregate" id="SubRecordtorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.SubRecordAggregate"
+		repository="SubRecordtorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.SubRecordEventHangler" />
+	<bean class="com.inesv.digiccy.event.handler.ThawEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.FicWithdrawAggregate" id="ficWithdrawRepository" />
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.FicWithdrawAggregate" repository="ficWithdrawRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.FicWithdrawEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.RmbRechargeAggregate" id="RmbRechargeRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.RmbRechargeAggregate"
+		repository="RmbRechargeRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.RmbRechargeEvnetHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.TranAggregate" id = "tranRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.TranAggregate" repository="tranRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.TranEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.RmbWithdrawAggregate" id="RmbWirhdrawRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.RmbWithdrawAggregate"
+		repository="RmbWirhdrawRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.RmbWithdrawEventhandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.SubCoreAggregate" id="SubCoredisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.SubCoreAggregate" repository="SubCoredisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.SubCoreEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.RegUserAggregate" id="RegUserdisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.RegUserAggregate"
+		repository="RegUserdisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.RegUserEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.UserBalanceAggregate" id="userBalanceRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.UserBalanceAggregate" repository="userBalanceRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.UserBalanceEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.InesvBankAggregate" id="InesvBankInfoRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.InesvBankAggregate"
+		repository="InesvBankInfoRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.InesvBankEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.BonusDetailAggregate" id="BonusDetaildisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.BonusDetailAggregate" repository="BonusDetaildisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.BonusDetailEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.InesvPhoneAggregate" id="InesvPhonedisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.InesvPhoneAggregate"
+		repository="InesvPhonedisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.InesvPhoneEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.FrontUserAggregate" id="FrontUserdisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.FrontUserAggregate" repository="FrontUserdisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.UserEventHandler"/>
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.NoticeAggregate" id="NoticedisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.NoticeAggregate" repository="NoticedisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.NoticeEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.FicRechargeAggregate" id="ficRechargeRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.FicRechargeAggregate"
+		repository="ficRechargeRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.FicRechargeEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.StaticParamAggregate" id="ParamdisruptorRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.StaticParamAggregate" repository="ParamdisruptorRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.StaticParamEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.BillAggregate" id="BilldisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.BillAggregate" repository="BilldisruptorRepository"
+		command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.BillEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.LoginLogAggregate" id="LoginLogRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.LoginLogAggregate" repository="LoginLogRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.LoginLogEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.AuthAggregate" id="AuthdisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.AuthAggregate" repository="AuthdisruptorRepository"
+		command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.AuthEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.AddressAggregate" id="AddressRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.AddressAggregate" repository="AddressRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.AddressEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.VoteAggregate" id="VotedisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.VoteAggregate" repository="VotedisruptorRepository"
+		command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.VoteEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.WalletAddressAggerate" id="WalletAddressRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.WalletAddressAggerate" repository="WalletAddressRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.WalletAddressEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.DayMarketAggregate" id="DayMarketAggregatedisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.DayMarketAggregate"
+		repository="DayMarketAggregatedisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.DayMarketEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.UserInviteAggregate" id="UserInviteRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.UserInviteAggregate" repository="UserInviteRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.UserInviteEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.CoinAggregate" id="CoindisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.CoinAggregate" repository="CoindisruptorRepository"
+		command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.CoinEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.MyRecAggregate" id="MyRecRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.MyRecAggregate" repository="MyRecRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.MyRecEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.FicWithdrawAggregate" id="ficWithdrawRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.FicWithdrawAggregate"
+		repository="ficWithdrawRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.FicWithdrawEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.WalletLinkAggregate" id="WalletLinkRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.WalletLinkAggregate" repository="WalletLinkRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.WalletLinkEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.TranAggregate" id="tranRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.TranAggregate" repository="tranRepository"
+		command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.TranEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.PoundageAggregate" id="PoundageRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.PoundageAggregate" repository="PoundageRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.PoundageEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CrowdFundingAggregate" id="CrowdFundingRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CrowdFundingAggregate" repository="CrowdFundingRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.CrowdFundingEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CrowdFundingDetailsAggregate" id="CrowdFundingDetailsRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CrowdFundingDetailsAggregate" repository="CrowdFundingDetailsRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.CrowdFundingDetailsEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CommandRedAggregate" id="CommandRedRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CommandRedAggregate" repository="CommandRedRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.CommandRedEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CommandRedDetailAggregate" id="CommandRedDetailRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CommandRedDetailAggregate" repository="CommandRedDetailRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.CommandRedDetailEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.HelpCenterAggregate" id="HelpCenterRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.HelpCenterAggregate" repository="HelpCenterRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.HelpCenterEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.HomeImgAggregate" id="HomeImgRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.HomeImgAggregate" repository="HomeImgRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.HomeImgHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.UserBalanceDetailAggregate" id="UserBalanceDetailRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.UserBalanceDetailAggregate" repository="UserBalanceDetailRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.UserBalanceDetailEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CoinTranAstrictAggregate" id="CoinTranAstrictRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CoinTranAstrictAggregate" repository="CoinTranAstrictRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.CoinTranAstrictEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CoinTranTypeAggregate" id="CoinTranTypeRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CoinTranTypeAggregate" repository="CoinTranTypeRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.CoinTranTypeEventHandler"/>
-	
-<!-- 	<axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.InesvAddressAggregate" id="InesvAddressRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.InesvAddressAggregate" repository="InesvAddressRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.InesvAddressHandler"/> -->
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.CoinLevelProportionAggregate" id="CoinLevelProportionRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.CoinLevelProportionAggregate" repository="CoinLevelProportionRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.CoinLevelProportionEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.PlanAggregate" id="PlanRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.PlanAggregate" repository="PlanRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.PlanEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.UserLevelAggregate" id="UserLevelRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.UserLevelAggregate" repository="UserLevelRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.UserLevelEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.SubCoreAggregate" id="SubCoredisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.SubCoreAggregate"
+		repository="SubCoredisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.SubCoreEventHandler" />
 
-	<axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.LinkAggregate" id="LinkRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.LinkAggregate" repository="LinkRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.LinkEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.UserBalanceAggregate" id="userBalanceRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.UserBalanceAggregate"
+		repository="userBalanceRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.UserBalanceEventHandler" />
 
-	<axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.UserVoucherAggregate" id="UserVoucherRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.UserVoucherAggregate" repository="UserVoucherRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.UserVoucherHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.ContactAggregate" id="ContactRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.ContactAggregate" repository="ContactRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.ContactEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.PaymentBankAggregate" id="PaymentBankRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.PaymentBankAggregate" repository="PaymentBankRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.PaymentBankEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.VedioAggregate" id="VedioRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.VedioAggregate" repository="VedioRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.VedioEventHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.BonusDetailAggregate" id="BonusDetaildisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.BonusDetailAggregate"
+		repository="BonusDetaildisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.BonusDetailEventHandler" />
 
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.NoticeTypeAggregate" id="NoticeTypeRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.NoticeTypeAggregate" repository="NoticeTypeRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.NoticeTypeEventHandler"/>
-    
-    <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.UserOrganizationAggregate" id="UserOrganizationRepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.UserOrganizationAggregate" repository="UserOrganizationRepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.UserOrganizationEventHandler"/>
-    
-     <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.MessageSetAggregate" id="messagesetrepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.MessageSetAggregate" repository="messagesetrepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.MessageSetHandler"/>
-    
-     <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.MessageLogAggregate" id="messagelogrepository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.MessageLogAggregate" repository="messagelogrepository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.MessageLogHandler"/>
-    
-     <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.UserBasicInfoAggregate" id="userbasicinfopository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.UserBasicInfoAggregate" repository="userbasicinfopository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.UserBasicEventHandler"/>
-    
-     <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.PowerInfoAggregate" id="powerInfopository"/>
-    <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.PowerInfoAggregate" repository="powerInfopository" command-bus="disruptorCommandBus"/>
-    <bean class="com.inesv.digiccy.event.handler.PowerInfoHandler"/>
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.FrontUserAggregate" id="FrontUserdisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.FrontUserAggregate"
+		repository="FrontUserdisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.UserEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.NoticeAggregate" id="NoticedisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.NoticeAggregate"
+		repository="NoticedisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.NoticeEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.StaticParamAggregate" id="ParamdisruptorRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.StaticParamAggregate"
+		repository="ParamdisruptorRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.StaticParamEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.LoginLogAggregate" id="LoginLogRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.LoginLogAggregate"
+		repository="LoginLogRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.LoginLogEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.AddressAggregate" id="AddressRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.AddressAggregate"
+		repository="AddressRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.AddressEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.WalletAddressAggerate" id="WalletAddressRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.WalletAddressAggerate"
+		repository="WalletAddressRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.WalletAddressEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.UserInviteAggregate" id="UserInviteRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.UserInviteAggregate"
+		repository="UserInviteRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.UserInviteEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.MyRecAggregate" id="MyRecRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.MyRecAggregate"
+		repository="MyRecRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.MyRecEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.WalletLinkAggregate" id="WalletLinkRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.WalletLinkAggregate"
+		repository="WalletLinkRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.WalletLinkEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.PoundageAggregate" id="PoundageRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.PoundageAggregate"
+		repository="PoundageRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.PoundageEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.CrowdFundingAggregate" id="CrowdFundingRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.CrowdFundingAggregate"
+		repository="CrowdFundingRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.CrowdFundingEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.CrowdFundingDetailsAggregate"
+		id="CrowdFundingDetailsRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.CrowdFundingDetailsAggregate"
+		repository="CrowdFundingDetailsRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.CrowdFundingDetailsEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.CommandRedAggregate" id="CommandRedRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.CommandRedAggregate"
+		repository="CommandRedRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.CommandRedEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.CommandRedDetailAggregate"
+		id="CommandRedDetailRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.CommandRedDetailAggregate"
+		repository="CommandRedDetailRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.CommandRedDetailEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.HelpCenterAggregate" id="HelpCenterRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.HelpCenterAggregate"
+		repository="HelpCenterRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.HelpCenterEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.HomeImgAggregate" id="HomeImgRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.HomeImgAggregate"
+		repository="HomeImgRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.HomeImgHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.UserBalanceDetailAggregate"
+		id="UserBalanceDetailRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.UserBalanceDetailAggregate"
+		repository="UserBalanceDetailRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.UserBalanceDetailEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.CoinTranAstrictAggregate"
+		id="CoinTranAstrictRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.CoinTranAstrictAggregate"
+		repository="CoinTranAstrictRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.CoinTranAstrictEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.CoinTranTypeAggregate" id="CoinTranTypeRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.CoinTranTypeAggregate"
+		repository="CoinTranTypeRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.CoinTranTypeEventHandler" />
+
+	<!-- <axon:disruptor-repository command-bus="disruptorCommandBus" aggregate-type="com.inesv.digiccy.aggregate.InesvAddressAggregate" 
+		id="InesvAddressRepository"/> <axon:aggregate-command-handler aggregate-type="com.inesv.digiccy.aggregate.InesvAddressAggregate" 
+		repository="InesvAddressRepository" command-bus="disruptorCommandBus"/> <bean 
+		class="com.inesv.digiccy.event.handler.InesvAddressHandler"/> -->
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.CoinLevelProportionAggregate"
+		id="CoinLevelProportionRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.CoinLevelProportionAggregate"
+		repository="CoinLevelProportionRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.CoinLevelProportionEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.PlanAggregate" id="PlanRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.PlanAggregate" repository="PlanRepository"
+		command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.PlanEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.UserLevelAggregate" id="UserLevelRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.UserLevelAggregate"
+		repository="UserLevelRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.UserLevelEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.LinkAggregate" id="LinkRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.LinkAggregate" repository="LinkRepository"
+		command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.LinkEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.UserVoucherAggregate" id="UserVoucherRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.UserVoucherAggregate"
+		repository="UserVoucherRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.UserVoucherHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.ContactAggregate" id="ContactRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.ContactAggregate"
+		repository="ContactRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.ContactEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.PaymentBankAggregate" id="PaymentBankRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.PaymentBankAggregate"
+		repository="PaymentBankRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.PaymentBankEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.VedioAggregate" id="VedioRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.VedioAggregate"
+		repository="VedioRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.VedioEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.NoticeTypeAggregate" id="NoticeTypeRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.NoticeTypeAggregate"
+		repository="NoticeTypeRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.NoticeTypeEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.UserOrganizationAggregate"
+		id="UserOrganizationRepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.UserOrganizationAggregate"
+		repository="UserOrganizationRepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.UserOrganizationEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.MessageSetAggregate" id="messagesetrepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.MessageSetAggregate"
+		repository="messagesetrepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.MessageSetHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.MessageLogAggregate" id="messagelogrepository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.MessageLogAggregate"
+		repository="messagelogrepository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.MessageLogHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.UserBasicInfoAggregate"
+		id="userbasicinfopository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.UserBasicInfoAggregate"
+		repository="userbasicinfopository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.UserBasicEventHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.PowerInfoAggregate" id="powerInfopository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.PowerInfoAggregate"
+		repository="powerInfopository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.PowerInfoHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.SpeculativeFundAggregate"
+		id="speculativeFundpository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.SpeculativeFundAggregate"
+		repository="speculativeFundpository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.SpeculativeFundHandler" />
+
+	<axon:disruptor-repository command-bus="disruptorCommandBus"
+		aggregate-type="com.inesv.digiccy.aggregate.PushInfoAggregate" id="pushInfopository" />
+	<axon:aggregate-command-handler
+		aggregate-type="com.inesv.digiccy.aggregate.PushInfoAggregate"
+		repository="pushInfopository" command-bus="disruptorCommandBus" />
+	<bean class="com.inesv.digiccy.event.handler.PushInfoHandler" />
 </beans>

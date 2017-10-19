@@ -102,8 +102,16 @@ public class TradeController {
 			"userNo","id"}, progress = ProgressType.TESTING,requestMode=RequestModeType.POST)
 	@AutoDocMethodParam(note = "用户编号@@委托交易id", name = "userNo@@id")*/
 	@RequestMapping(value = "/trade/delEntrust", method = RequestMethod.POST)
-    public @ResponseBody Map<String, Object> delEntrust(HttpServletRequest request,@RequestParam Integer userNo,@RequestParam Long id) throws Exception{
-		return tradeValidata.validateDelEntrust(id, userNo);
+    public @ResponseBody Map<String, Object> delEntrust(HttpServletRequest request,@RequestParam Integer userNo,@RequestParam Long id,@RequestParam String sign) throws Exception{
+		/*String tradeSign = (String) redisTemplate.opsForValue().get("del_trade_" + userNo);
+		if(tradeSign == null || !tradeSign.equals(sign)) {
+			redisTemplate.opsForValue().set("del_trade_" + userNo, sign, 2, TimeUnit.MINUTES);*/
+			return tradeValidata.validateDelEntrust(id, userNo);
+		/*}else {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "抱歉，交易正在处理中，请勿重复提交！");
+			return map;
+		}*/
     }
     
     /**

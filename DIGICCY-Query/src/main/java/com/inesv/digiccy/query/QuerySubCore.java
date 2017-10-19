@@ -140,14 +140,16 @@ public class QuerySubCore {
       * @param userNo
       * @return UserInfoDto
       */
-      public InesvUserDto getInesvUserByUserNo(Integer userNo){
+      public InesvUserDto getInesvUserByUserNo(Integer userNo, boolean showPwd){
           String sql = "select * from t_inesv_user where user_no = ?";
           Object params[] = {userNo};
           InesvUserDto uid = null;
           try {
+        	  System.out.println("userNO---------------");
+        	  System.out.println(userNo);
               uid = queryRunner.query(sql,new BeanHandler<InesvUserDto>(InesvUserDto.class),params);
 
-              uid.setPassword(uid.getPassword()==null?"0":"1");
+              uid.setPassword(showPwd?uid.getPassword():(uid.getPassword()==null?"0":"1"));
              // uid.setDeal_pwd((uid.getDeal_pwd()==null||uid.getDeal_pwd().isEmpty())?"0":"1");
           } catch (SQLException e) {
               e.printStackTrace();

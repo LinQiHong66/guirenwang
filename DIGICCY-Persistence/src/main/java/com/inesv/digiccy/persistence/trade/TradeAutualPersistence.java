@@ -307,8 +307,7 @@ public class TradeAutualPersistence {
 		}else {
 			return;
 		}
-		BigDecimal sum_level_price = level_one.divide(coinLevelProportionDto.getLevel_one());
-		sum_level_price = sum_level_price.setScale(6,BigDecimal.ROUND_DOWN);//总分红金额
+		BigDecimal sum_level_price = poundatgePrice.setScale(6,BigDecimal.ROUND_DOWN);//总分红金额
 		//分红逻辑
 		InesvUserDto levelUserDto = new InesvUserDto();
 		InesvUserDto userDto = new InesvUserDto();
@@ -408,7 +407,7 @@ public class TradeAutualPersistence {
 	 * 委托实时买卖交易--数据库
 	 * @param entrustDto
 	 * @return
-	 */
+	 *//*
     public void validateTradeCoinActualBySQL(EntrustDto entrustDto) throws Exception{
       	Integer coinType = entrustDto.getEntrust_coin();	//委托货币类型
       	CoinDto coinDto = new CoinDto();
@@ -429,11 +428,11 @@ public class TradeAutualPersistence {
 		LOGGER.debug("-------交易结束--------");
     }
 	
-	/**
+	*//**
 	 * 委托交易----买卖
 	 * @param entrustDto
 	 * @return
-	 */
+	 *//*
 	public void TradeSql(String entrustType,String sqlType,EntrustDto buy_sell_EntrustDto,BigDecimal buy_poundatge,BigDecimal sell_poundatge,Long noSelectId) throws Exception{
 		List<EntrustDto> getUnSellList = null;
 		if(buy_sell_EntrustDto.getEntrust_type()==0){
@@ -482,7 +481,7 @@ public class TradeAutualPersistence {
 		}
 	}
 	
-	/**
+	*//**
 	 * 根据委托价格，货币类型，交易类型，委托状态查找委托记录
 	 * @param entrustPrice
 	 * @param entrustCoin
@@ -490,7 +489,7 @@ public class TradeAutualPersistence {
 	 * @param state
 	 * @return
 	 * @throws SQLException 
-	 */
+	 *//*
 	public List<EntrustDto> queryEntrustByEntrustPriceEntrustCoinAndEntrustTypeAndState(EntrustDto buy_sell_EntrustDto,Long noSelectId) throws Exception{
 		String sql = null;
 		List<EntrustDto> list = null;
@@ -504,7 +503,7 @@ public class TradeAutualPersistence {
 			list = queryRunner.query(sql,new BeanListHandler<EntrustDto>(EntrustDto.class),params);
 		}
 		return list;
-	}
+	}*/
 	
 	/**
 	 * 根据委托单号查询记录
