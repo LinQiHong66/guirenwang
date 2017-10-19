@@ -6,6 +6,7 @@ import com.inesv.digiccy.api.command.UserOrganizationCommand;
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.InesvUserDto;
 import com.inesv.digiccy.dto.InesvUserOrganizationDto;
+import com.inesv.digiccy.dto.ResultFunctionDto;
 import com.inesv.digiccy.dto.UserInfoDto;
 import com.inesv.digiccy.persistence.sequence.SequenceOper;
 import com.inesv.digiccy.persistence.user.UserOrganizationOperation;
@@ -96,7 +97,7 @@ public class InesvUserOrganizationValidata {
 	 * 申请后台审核通过
 	 * @return
 	 */
-	public Map<String, Object> updateOrganizationValidate(Integer id,Integer userNo,Integer org_type) {
+	public Map<String, Object> updateOrganizationValidate(Integer id,Integer userNo,Integer org_type) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 判断用户是否存在
 		InesvUserDto uid = querySubCore.getInesvUserByUserNo(userNo, false);
@@ -132,6 +133,16 @@ public class InesvUserOrganizationValidata {
 		}
 		if(uid.getOrg_type() > parentUserInfoDtos.getOrg_type()) {//用户机构等级低于上级机构等级
 			parentUserInfoDto = queryMyRecInfo.getInesvParentUserByUserNo(userNo,"dayu");//根据邀请码查询出此邀请码的用户信息
+		}
+		ResultFunctionDto functionDto = new ResultFunctionDto();
+		if(parentUserInfoDto.getOrg_type() == parentUserInfoDtos.getOrg_type()) {//用户的上级的上级和用户的上级是一样的等级
+			functionDto = queryMyRecInfo.queryByFunction(parentUserInfoDtos.getUser_no(),2);
+			parentUserInfoDto = querySubCore.getInesvUserByUserNo(functionDto.getLevel_user_no());
+		}
+		if(parentUserInfoDto.getOrg_type() != 1) {
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", "该交易商的上级没有子机构，不能升级！");
+			return map;
 		}
 		if(uid.getOrg_type() - parentUserInfoDto.getOrg_type() > 2) {
 			map.put("code", ResponseCode.FAIL);

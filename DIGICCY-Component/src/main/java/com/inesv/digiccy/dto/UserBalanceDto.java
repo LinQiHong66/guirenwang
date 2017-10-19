@@ -40,6 +40,7 @@ public class UserBalanceDto {
 	/** 总市价 */
 	private double sumCurPrice;
 	
+	private String dates;
 	
 	public long getId() {
 		return id;
@@ -125,15 +126,11 @@ public class UserBalanceDto {
 	public void setSumCurPrice(double sumCurPrice) {
 		this.sumCurPrice = sumCurPrice;
 	}
-	@Override
-	public String toString() {
-		return "UserBalanceDto [id=" + id + ", user_no=" + user_no + ", coin_type=" + coin_type + ", enable_coin="
-				+ enable_coin + ", unable_coin=" + unable_coin + ", total_price=" + total_price + ", wallet_address="
-				+ wallet_address + ", date=" + date + ", attr1=" + attr1 + ", attr2=" + attr2 + ", coinName=" + coinName
-				+ ", coinCode=" + coinCode + ", curPrice=" + curPrice + ", sumCurPrice=" + sumCurPrice + "]";
+	public String getDates() {
+		return dates;
 	}
-
- 
- 
+	public void setDates(String dates) {
+		this.dates = dates;
+	}
 
 }

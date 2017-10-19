@@ -22,6 +22,7 @@ import com.inesv.digiccy.api.command.RmbRechargeCommand;
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.InesvUserDto;
 import com.inesv.digiccy.dto.RmbRechargeDto;
+import com.inesv.digiccy.dto.RmbWithdrawDto;
 import com.inesv.digiccy.dto.UserBalanceDto;
 import com.inesv.digiccy.persistence.finance.RmbRechargePersistence;
 import com.inesv.digiccy.query.QueryRmbRechargeInfo;
@@ -333,5 +334,47 @@ public class RmbRechargeValidate {
             }
         }
     }
+    
+    /**
+	 * 首页RMB充值统计
+	 * @return
+	 */
+	public Map<String, Object> getRechargePicture() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<RmbRechargeDto> rechargeList = new ArrayList<RmbRechargeDto>();
+		//List<RmbWithdrawDto> withDrawList = new ArrayList<RmbWithdrawDto>();
+		try {
+			rechargeList = queryRmbRechargeInfo.getRmbRechargeDtoList();
+			//withDrawList = queryRmbWithdrawInfo.getRmbWithdrawDtoList();
+			map.put("data",rechargeList);
+			//map.put("data2",withDrawList);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", ResponseCode.SUCCESS_DESC);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", ResponseCode.FAIL_DESC);
+		}
+		return map;
+	}
 
+	/**
+	 * 首页RMB充值统计
+	 * @return
+	 */
+	public Map<String, Object> getWithdrawPicture() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<RmbWithdrawDto> withDrawList = new ArrayList<RmbWithdrawDto>();
+		try {
+			withDrawList = queryRmbWithdrawInfo.getRmbWithdrawDtoList();
+			map.put("data",withDrawList);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", ResponseCode.SUCCESS_DESC);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", ResponseCode.FAIL_DESC);
+		}
+		return map;
+	}
 }

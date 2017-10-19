@@ -46,26 +46,17 @@ $("#coin_table").bootstrapTable({
                 }
                 return e;
         }},
-        {title:'投票状态',field:'vote',width:100,align:'center',
+        /*{title:'投票状态',field:'vote',width:100,align:'center',
             formatter : function(value, row, index) {
                 var e;
                 var str = row.id+","+value;
-                //value等于1是投票开始状态，不能把状态值放到voteCount函数的参数里，那个参数是货币得编号，是根据编号获取投标记录 --刘科领注
-//                if(value == 1) {
-//                    e = '<button class="btn btn-info" id="btn_update" ' +
-//                        'onclick="startVote(\''+ str + '\')">' +
-//                        '<i class="icon-inbox icon-white"></i>结束</button>&nbsp;&nbsp;' +
-//                        '&nbsp;<button class="btn btn-primary" id="btn_delete" onclick="voteCount(\''+value+'\');">' +
-//                        '<i class="icon-eye-open icon-white"></i>&nbsp;结果</button> ';
-//                }else {
                     e = '<button class="btn btn-info" id="btn_update" ' +
                         'onclick="startVote(\''+ str + '\')">' +
                         '<i class="icon-inbox icon-white"></i>'+(value==1?'结束':'开始')+'</button>&nbsp;&nbsp;' +
                         '&nbsp;<button class="btn btn-primary" id="btn_delete" onclick="voteCount(\''+row.id+'\');">' +
                         '<i class="icon-eye-open icon-white"></i>结果</button>&nbsp;&nbsp; ';
-//                }
                 return e;
-            }},
+            }},*/
         {title:'货币图标',field:'icon',width:100,align:'center',
             formatter : function(value) {
              
@@ -87,9 +78,9 @@ $("#coin_table").bootstrapTable({
                     '<i class="icon-picture icon-white"></i>图标</button>&nbsp;&nbsp;'+
                     '&nbsp;&nbsp;<button class="btn btn-warning" id="btn_update" ' +
                     'onclick="openUpdateBox(\''+ str + '\')">' +
-                    '<i class="icon-pencil icon-white"></i>修改</button>&nbsp;&nbsp;' +
+                    '<i class="icon-pencil icon-white"></i>修改</button>&nbsp;&nbsp;'/* +
                     '&nbsp;&nbsp;<button class="btn btn-primary" id="btn_delete" onclick="deleteCoin(\''+row.coin_no+'\');">' +
-                    '<i class="icon-remove icon-white"></i>删除</button> &nbsp;&nbsp;';
+                    '<i class="icon-remove icon-white"></i>删除</button> &nbsp;&nbsp;';*/
                 return e; 
         }},
     ]]

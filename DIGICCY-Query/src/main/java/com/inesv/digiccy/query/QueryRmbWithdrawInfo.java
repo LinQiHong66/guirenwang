@@ -1,5 +1,6 @@
 package com.inesv.digiccy.query;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,4 +146,31 @@ public class QueryRmbWithdrawInfo {
         return list;
     }
 
+    /*
+     * 统计总提现金额
+     */
+     public BigDecimal getSumWithdraw(){
+         String sql = "SELECT IFNULL(SUM(price),0) AS SUM  FROM t_inesv_rmb_withdraw WHERE  state = 1";
+         try {
+       	  	return (BigDecimal) queryRunner.query(sql, new ColumnListHandler<>("SUM")).get(0);
+         } catch (SQLException e) {
+             	e.printStackTrace();
+             	return new BigDecimal("0");
+         }
+     }
+     
+     /*
+      * 统计近30天提现金额
+      */
+      public List<RmbWithdrawDto> getRmbWithdrawDtoList(){
+    	  List<RmbWithdrawDto> list = new ArrayList();
+          String sql = "SELECT SUM(price) AS price , DATE_FORMAT(DATE,'%Y-%m-%d') AS attr3 FROM t_inesv_rmb_withdraw WHERE DATE > DATE_SUB(NOW(),INTERVAL 30 DAY) AND state = 1 GROUP BY attr3 ";
+          try {
+        	  list =  (List<RmbWithdrawDto>)queryRunner.query(sql, new BeanListHandler(RmbWithdrawDto.class));
+          } catch (SQLException e) {
+              	e.printStackTrace();
+          }
+          return list;
+      }
+    
 }

@@ -2,6 +2,7 @@ package com.inesv.digiccy.query;
 
 import com.inesv.digiccy.dto.InesvUserDto;
 import com.inesv.digiccy.dto.MyRecDto;
+import com.inesv.digiccy.dto.ResultFunctionDto;
 import com.inesv.digiccy.dto.SubCoreDto;
 import com.inesv.digiccy.dto.ThreeGenerationOfRecommandDto;
 import com.inesv.digiccy.dto.UserInfoDto;
@@ -121,9 +122,6 @@ public class QueryMyRecInfo {
         Object parmas[]={orgParentCode};
         try {
             userInfoDto = (UserInfoDto) queryRunner.query(sql,new BeanHandler(UserInfoDto.class),parmas);
-			if (userInfoDto != null) {
-				System.out.println("--------" + userInfoDto.getPhone());
-			}
         } catch (SQLException e) {
             logger.error("据用户的机构编号获取用户信息失败",e);
         }
@@ -159,6 +157,16 @@ public class QueryMyRecInfo {
          }
          return uid;
      }
+     
+     /*
+ 	 * 函数调用
+ 	 */
+ 	public ResultFunctionDto queryByFunction(Integer user_no,Integer level_grade) throws Exception{
+ 		String sql = "SELECT get_level_orgcode(?,?) AS level_user_no";
+ 		Object params[] = {user_no , level_grade};
+ 		ResultFunctionDto resultDunctionDto = queryRunner.query(sql, new BeanHandler<ResultFunctionDto>(ResultFunctionDto.class),params);
+ 		return resultDunctionDto;
+ 	}
 	
 	
 }

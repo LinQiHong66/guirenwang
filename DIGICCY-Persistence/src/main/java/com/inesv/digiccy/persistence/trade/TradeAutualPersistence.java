@@ -175,21 +175,21 @@ public class TradeAutualPersistence {
 		List<DayMarketDto> dayMarketDtoList=queryDayMarketInfoByCoinType(buyEntrust.getEntrust_coin());
 		if(tradeNum.doubleValue()!=0){//(买的货币的数量-买的货币数量*手续费)(deal_num-poundage)((attr1的币种)attr2-poundage)
 			//3-1.生成一条新买的交易记录
-			String insertBuyDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,now(),?,?)";
+			String insertBuyDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage_scale,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,?,now(),?,?)";
 			Object buyDealParam[] = {buyEntrust.getUser_no(),buyEntrust.getEntrust_coin(),buyEntrust.getEntrust_type(),
-					buyPrice,tradeNum,tradeNum.multiply(buyPrice),tradeNum.multiply(buy_poundatge),buyEntrust.getEntrust_coin(),tradeNum};
+					buyPrice,tradeNum,tradeNum.multiply(buyPrice),buy_poundatge,tradeNum.multiply(buy_poundatge),buyEntrust.getEntrust_coin(),tradeNum};
 			queryRunner.update(insertBuyDeal,buyDealParam);
 			
 			//3-2.生成一条新的卖的交易记录
 			if(sellEntrust.getConvert_coin() == 0) {//(卖的货币数量*卖的价格-卖的货币数量*卖的价格*手续费)(tradeNum.multiply(sellPrice)-tradeNum.multiply(sellPrice).multiply(sell_poundatge))((attr1币种)attr2-poundage)
-				String insertSellDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,now(),?,?)";
+				String insertSellDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage_scale,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,?,now(),?,?)";
 				Object sellDealParam[] = {sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),sellEntrust.getEntrust_type(),
-					sellPrice,tradeNum,tradeNum.multiply(sellPrice),tradeNum.multiply(sellPrice).multiply(sell_poundatge),sellEntrust.getConvert_coin(),tradeNum.multiply(sellPrice)};
+					sellPrice,tradeNum,tradeNum.multiply(sellPrice),sell_poundatge,tradeNum.multiply(sellPrice).multiply(sell_poundatge),sellEntrust.getConvert_coin(),tradeNum.multiply(sellPrice)};
 				queryRunner.update(insertSellDeal,sellDealParam);
 			}else {//(卖的货币数量*卖的价格-卖的货币数量*卖的价格*手续费)(tradeNum.multiply(sellPrice)-tradeNum.multiply(sellPrice).multiply(sell_poundatge))((attr1币种)attr2-poundage)
-				String insertSellDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,now(),?,?)";
+				String insertSellDeal = "INSERT INTO t_inesv_deal_detail(user_no,coin_no,deal_type,deal_price,deal_num,sum_price,poundage_scale,poundage,date,attr1,attr2) VALUES(?,?,?,?,?,?,?,?,now(),?,?)";
 				Object sellDealParam[] = {sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),sellEntrust.getEntrust_type(),
-					sellPrice,tradeNum,tradeNum.multiply(sellPrice),sellPoundatgePrice,sellEntrust.getConvert_coin(),sellSumPrice};
+					sellPrice,tradeNum,tradeNum.multiply(sellPrice),sell_poundatge,sellPoundatgePrice,sellEntrust.getConvert_coin(),sellSumPrice};
 				queryRunner.update(insertSellDeal,sellDealParam);
 			}
 		}
@@ -270,7 +270,6 @@ public class TradeAutualPersistence {
 		}else {
 			userLevelDetailed(sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),tradeNum.multiply(sell_poundatge),sellPrice.multiply(sell_poundatge),sellPoundatgePrice,sellEntrust.getId(),sellEntrust.getEntrust_type(),sellEntrust.getConvert_coin());
 		}
-				
 		if(buyTradeType.equals("0")) {
 			return buyEntrust;
 		}
@@ -282,7 +281,6 @@ public class TradeAutualPersistence {
 	 */
 	public void userLevelDetailed(Integer user_no, Integer coin_no, BigDecimal tradeNum, BigDecimal entrustPrice, BigDecimal poundatgePrice, Long entrustNo, Integer entrustType, Integer levelCoinType) throws Exception{
 		//查询币种相应上级分红比例
-		//InesvUserDto userDto = queryUserInfoByUserNo(user_no);
 		CoinLevelProportionDto coinLevelProportionDto = queryByCoinNo(Long.valueOf(coin_no)); //货币分红比例
 		ContactDto contactDto = queryByContact(); //官方账号
 		if(contactDto.getAuthority_account() == null) {

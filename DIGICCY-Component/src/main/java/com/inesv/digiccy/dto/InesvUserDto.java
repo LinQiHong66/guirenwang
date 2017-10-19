@@ -53,14 +53,14 @@ public class InesvUserDto {
     private int photo_state;
     /**机构类型 0:顶级机构   1:经纪人   2:普通客户 */
     private Integer org_type;
-    /**机构编码*/
+	/**机构编码*/
     private String org_code;
     /**父机构编码*/
     private String org_parent_code;
-    /**
-     * 积分数
-     */
+    /** 积分数*/
     private String integral;
+    /**字符串时间*/
+    private String dates;
 
     public long getId() {
         return id;
@@ -237,10 +237,6 @@ public class InesvUserDto {
     public void setAlipay_state(Integer alipay_state) {
         this.alipay_state = alipay_state;
     }
-    
-    public int getOrg_type() {
-		return org_type;
-	}
 
 	public void setOrg_type(int org_type) {
 		this.org_type = org_type;
@@ -262,18 +258,6 @@ public class InesvUserDto {
 		this.org_parent_code = org_parent_code;
 	}
 
-	@Override
-	public String toString() {
-		return "InesvUserDto [id=" + id + ", username=" + username + ", user_no=" + user_no + ", password=" + password
-				+ ", region=" + region + ", real_name=" + real_name + ", mail=" + mail + ", phone=" + phone
-				+ ", phone_state=" + phone_state + ", certificate_type=" + certificate_type + ", certificate_num="
-				+ certificate_num + ", deal_pwd=" + deal_pwd + ", deal_pwdstate=" + deal_pwdstate + ", validate_pwd="
-				+ validate_pwd + ", validate_pwdstate=" + validate_pwdstate + ", alipay=" + alipay + ", alipay_state="
-				+ alipay_state + ", state=" + state + ", invite_num=" + invite_num + ", date=" + date + ", photo="
-				+ photo + ", photo_state=" + photo_state + ", org_type=" + org_type + ", org_code=" + org_code
-				+ ", org_parent_code=" + org_parent_code + "]";
-	}
-
 	public String getIntegral() {
 		return integral;
 	}
@@ -281,4 +265,21 @@ public class InesvUserDto {
 	public void setIntegral(String integral) {
 		this.integral = integral;
 	}
+
+	public void setOrg_type(Integer org_type) {
+		this.org_type = org_type;
+	}
+
+	public Integer getOrg_type() {
+		return org_type;
+	}
+
+	public String getDates() {
+		return dates;
+	}
+
+	public void setDates(String dates) {
+		this.dates = dates;
+	}
+	
 }

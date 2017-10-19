@@ -106,7 +106,7 @@ public class CrowdFundingOperation {
 	 * 修改众筹状态
 	 */
 	public void updateCrowdFundingState() throws Exception {
-		String sql = "UPDATE t_crowdfunding SET ico_state = 1 WHERE DATEDIFF(NOW(),end_date)>0 AND ico_state!=2";
+		String sql = "UPDATE t_crowdfunding SET ico_state = 1 WHERE DATEDIFF(NOW(),end_date)>0 OR ico_current >= ico_target AND ico_state!=2";
 		queryRunner.update(sql);
 	}
 	

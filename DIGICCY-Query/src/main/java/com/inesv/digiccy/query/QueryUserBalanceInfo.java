@@ -292,8 +292,39 @@ public class QueryUserBalanceInfo {
         return userBalanceInfo;
     }
 
-
-
-
+    /**
+     *货币统计
+     */
+    public UserBalanceDto queryUserBalanceCount(Integer coin){
+        UserBalanceDto userBalanceInfo = null;
+        String sql = "SELECT t1.coin_type AS coin_type, t2.coin_name AS coinName , IFNULL(SUM(t1.total_price),0) AS total_price , IFNULL(SUM(t1.unable_coin),0) AS unable_coin , IFNULL(SUM(t1.enable_coin),0) AS enable_coin "
+        		+ "FROM t_inesv_user_balance t1 , t_inesv_coin_type t2 WHERE coin_type = ? AND t1.coin_type = t2.coin_no";
+        Object parmas[] = {coin};
+        try {
+            userBalanceInfo = queryRunner.query(sql,new BeanHandler<UserBalanceDto>(UserBalanceDto.class),parmas);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userBalanceInfo;
+    }
+    
+    /**
+     *货币统计报表
+     */
+    public List<UserBalanceDto> queryUserCoinCount(Integer coin){
+    	List<UserBalanceDto> list = new ArrayList<UserBalanceDto>();
+    	for(int i = 0 ; i < 30 ; i ++ ) {
+    		
+    	}
+        String sql = "SELECT IFNULL(SUM(total_price),0) total_price,DATE_FORMAT(DATE,'%Y-%m-%d') dates "
+        		+ "FROM t_inesv_user_balance WHERE DATE > DATE_SUB(NOW(),INTERVAL 30 DAY) AND coin_type = ? GROUP BY dates";
+        Object parmas[] = {coin};
+        try {
+        	list = queryRunner.query(sql,new BeanListHandler<UserBalanceDto>(UserBalanceDto.class),parmas);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
 }
