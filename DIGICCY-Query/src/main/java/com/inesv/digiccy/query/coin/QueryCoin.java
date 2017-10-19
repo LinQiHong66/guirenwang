@@ -91,7 +91,12 @@ public class QueryCoin {
 		Object params[] = { userNo };
 		List<UserBalanceDto> userBalancelist = new ArrayList<UserBalanceDto>();
 		try {
+			System.out.println(sql);
+
+			System.out.println("userNo:------" + userNo);
 			userBalancelist = queryRunner.query(sql, new BeanListHandler<>(UserBalanceDto.class), params);
+			System.out.println("listcontent-----------");
+			System.out.println(userBalancelist.toString());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -199,14 +204,14 @@ public class QueryCoin {
 	 * 查询最新成交价
 	 * 
 	 */
-	public DealDetailDto querynewPrice( Integer coinNo) {
-		 
+	public DealDetailDto querynewPrice(Integer coinNo) {
+
 		DealDetailDto deals = null;
 		try {
-			Object params[] = {coinNo };
+			Object params[] = { coinNo };
 			String sql = "SELECT deal_price FROM t_inesv_deal_detail WHERE coin_no=? ORDER BY DATE DESC  LIMIT 1";
-			deals= queryRunner.query(sql, new BeanHandler<>(DealDetailDto.class), params);
-		    
+			deals = queryRunner.query(sql, new BeanHandler<>(DealDetailDto.class), params);
+
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -453,7 +458,7 @@ public class QueryCoin {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 查询所有货币信息
 	 * 
@@ -470,7 +475,7 @@ public class QueryCoin {
 		}
 		return coinList;
 	}
-	
+
 	/**
 	 * 查询所有货币信息
 	 * 
@@ -480,7 +485,7 @@ public class QueryCoin {
 		CoinDto dto = new CoinDto();
 		try {
 			String sql = "select buy_poundatge,sell_poundatge from t_inesv_coin_type where coin_no = ?";
-			dto = queryRunner.query(sql, new BeanHandler<>(CoinDto.class),coinNo);
+			dto = queryRunner.query(sql, new BeanHandler<>(CoinDto.class), coinNo);
 		} catch (SQLException e) {
 			logger.error("查询虚拟货币失败");
 			e.printStackTrace();

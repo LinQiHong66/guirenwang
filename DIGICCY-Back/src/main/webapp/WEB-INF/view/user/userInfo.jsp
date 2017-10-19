@@ -153,6 +153,7 @@ Website: http://thevectorlab.net/
                                             <li><a href="#tab_1_3" onclick="initTradeTab()" data-toggle="tab">交易记录</a></li>
                                             <li><a href="#tab_1_4" onclick="initAddressTab()" data-toggle="tab">收货地址</a></li>
                                              <li><a href="#tab_1_5" onclick="initICOTab()" data-toggle="tab">购酒记录</a></li>
+                                             <li><a href="#tab_1_6" onclick="initIntegralTab(10,1)" data-toggle="tab">积分获取记录</a></li>
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="tab_1_1">
@@ -169,6 +170,9 @@ Website: http://thevectorlab.net/
                                             </div>
                                               <div class="tab-pane" id="tab_1_5">
                                                 <table id="ico_table"></table>
+                                            </div>
+                                              <div class="tab-pane" id="tab_1_6">
+                                                <table id="initIntegral_table"></table>
                                             </div>
                                         </div>
                                     </div>

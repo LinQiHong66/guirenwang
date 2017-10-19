@@ -31,6 +31,7 @@ import com.inesv.digiccy.query.QueryUserBasicInfo;
 import com.inesv.digiccy.query.QueryUserInfo;
 import com.inesv.digiccy.sms.SendMsgUtil;
 import com.inesv.digiccy.util.MD5;
+import com.inesv.digiccy.validata.PushInfoValidata;
 import com.inesv.digiccy.validata.UserVoucherValidate;
 import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
 import com.inesv.digiccy.validata.user.InesvUserValidata;
@@ -140,7 +141,7 @@ public class UserController {
 			map.put("desc", "该用户未启动，请联系管理人员！");
 			return map;
 		}
-		if (ip == null || ip.equals("")) { 
+		if (ip == null || ip.equals("")) {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", "IP地址不能为空");
 			return map;

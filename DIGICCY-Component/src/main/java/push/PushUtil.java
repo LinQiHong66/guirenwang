@@ -1,19 +1,10 @@
 package push;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import push.android.AndroidBroadcast;
 import push.android.AndroidCustomizedcast;
@@ -26,13 +17,17 @@ import push.ios.IOSFilecast;
 import push.ios.IOSGroupcast;
 import push.ios.IOSUnicast;
 
+@Component
 public class PushUtil {
 	private static final String appkey = "59ae3f2ae88bad28380012d3";
 	private static final String appMasterSecret = "ahifusxwmrb0lgp40oxrr1zldrsaowp5";
 	private static final String timestamp = null;
 	private static final PushClient client = new PushClient();
 	
-	private static void sendAndroidBroadcast() throws Exception {
+	@Autowired
+	RedisTemplate<String, Object> redisTemplate;
+	
+	private void sendAndroidBroadcast() throws Exception {
 		AndroidBroadcast broadcast = new AndroidBroadcast(appkey,appMasterSecret);
 		broadcast.setTicker( "Android broadcast ticker");
 		broadcast.setTitle(  "涓枃鐨則itle");
@@ -47,7 +42,7 @@ public class PushUtil {
 		client.send(broadcast);
 	}
 	
-	private static void sendAndroidUnicast() throws Exception {
+	private void sendAndroidUnicast() throws Exception {
 		AndroidUnicast unicast = new AndroidUnicast(appkey,appMasterSecret);
 		// TODO Set your device token
 		unicast.setDeviceToken( "your device token");
@@ -64,7 +59,7 @@ public class PushUtil {
 		client.send(unicast);
 	}
 	
-	private static void sendAndroidGroupcast() throws Exception {
+	private void sendAndroidGroupcast() throws Exception {
 		AndroidGroupcast groupcast = new AndroidGroupcast(appkey,appMasterSecret);
 		/*  TODO
 		 *  Construct the filter condition:
@@ -102,7 +97,7 @@ public class PushUtil {
 		client.send(groupcast);
 	}
 	
-	private static void sendAndroidCustomizedcast() throws Exception {
+	private void sendAndroidCustomizedcast() throws Exception {
 		AndroidCustomizedcast customizedcast = new AndroidCustomizedcast(appkey,appMasterSecret);
 		// TODO Set your alias here, and use comma to split them if there are multiple alias.
 		// And if you have many alias, you can also upload a file containing these alias, then 
@@ -119,7 +114,7 @@ public class PushUtil {
 		client.send(customizedcast);
 	}
 	
-	private static void sendAndroidCustomizedcastFile() throws Exception {
+	private void sendAndroidCustomizedcastFile() throws Exception {
 		AndroidCustomizedcast customizedcast = new AndroidCustomizedcast(appkey,appMasterSecret);
 		// TODO Set your alias here, and use comma to split them if there are multiple alias.
 		// And if you have many alias, you can also upload a file containing these alias, then 
@@ -137,7 +132,7 @@ public class PushUtil {
 		client.send(customizedcast);
 	}
 	
-	private static void sendAndroidFilecast() throws Exception {
+	private void sendAndroidFilecast() throws Exception {
 		AndroidFilecast filecast = new AndroidFilecast(appkey,appMasterSecret);
 		// TODO upload your device tokens, and use '\n' to split them if there are multiple tokens 
 		String fileId = client.uploadContents(appkey,appMasterSecret,"aa"+"\n"+"bb");
@@ -150,7 +145,7 @@ public class PushUtil {
 		client.send(filecast);
 	}
 	
-	private static void sendIOSBroadcast() throws Exception {
+	private void sendIOSBroadcast() throws Exception {
 		IOSBroadcast broadcast = new IOSBroadcast(appkey,appMasterSecret);
 
 		broadcast.setAlert("testttttttttttttt");
@@ -163,7 +158,7 @@ public class PushUtil {
 		client.send(broadcast);
 	}
 	
-	private static void sendIOSUnicast() throws Exception {
+	private void sendIOSUnicast() throws Exception {
 		IOSUnicast unicast = new IOSUnicast(appkey,appMasterSecret);
 		// TODO Set your device token
 		unicast.setDeviceToken( "f70b560624b2692a31de1a3e1f577f42c1648521d666f7eb133cdddca6b70aff");
@@ -178,7 +173,7 @@ public class PushUtil {
 		client.send(unicast);
 	}
 	
-	private static void sendIOSGroupcast() throws Exception {
+	private void sendIOSGroupcast() throws Exception {
 		IOSGroupcast groupcast = new IOSGroupcast(appkey,appMasterSecret);
 		/*  TODO
 		 *  Construct the filter condition:
@@ -211,7 +206,7 @@ public class PushUtil {
 		client.send(groupcast);
 	}
 	
-	private static void sendIOSCustomizedcast() throws Exception {
+	private void sendIOSCustomizedcast() throws Exception {
 		IOSCustomizedcast customizedcast = new IOSCustomizedcast(appkey,appMasterSecret);
 		// TODO Set your alias and alias_type here, and use comma to split them if there are multiple alias.
 		// And if you have many alias, you can also upload a file containing these alias, then 
@@ -225,7 +220,7 @@ public class PushUtil {
 		client.send(customizedcast);
 	}
 	
-	private static void sendIOSFilecast() throws Exception {
+	private void sendIOSFilecast() throws Exception {
 		IOSFilecast filecast = new IOSFilecast(appkey,appMasterSecret);
 		// TODO upload your device tokens, and use '\n' to split them if there are multiple tokens 
 		String fileId = client.uploadContents(appkey,appMasterSecret,"aa"+"\n"+"bb");
@@ -237,7 +232,7 @@ public class PushUtil {
 		filecast.setTestMode();
 		client.send(filecast);
 	}
-	public static void pushMessage(float price) throws Exception {
+	public void pushMessage(float price) throws Exception {
 		
 	}
 }

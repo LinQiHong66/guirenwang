@@ -476,6 +476,92 @@ function initICOTab() {
 		}
 	});
 }
+
+// 用户积分获取记录
+function initIntegralTab(pageItem, curPage) {
+	var userno = $('#no').val();
+	$("#initIntegral_table").bootstrapTable(
+			{
+
+				// 请求方法
+				method : 'post',
+				contentType : "application/x-www-form-urlencoded",
+				// 是否显示行间隔色
+				striped : true,
+				// 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+				cache : false,
+				// 是否显示分页（*）
+				pagination : true,
+				// 是否启用排序
+				sortable : false,
+				// 排序方式
+				sortOrder : "asc",
+				// 初始化加载第一页，默认第一页
+				// 我设置了这一项，但是貌似没起作用，而且我这默认是0,- -
+				// pageNumber:1,
+				// 每页的记录行数（*）
+				pageSize : 10,
+				// 可供选择的每页的行数（*）
+				pageList : [ 3, 6, 10, 25, 50, 100 ],
+				// 这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
+				url : "/user/getUserIntegralLog.do",
+				// 默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order
+				// Else
+				// queryParamsType:'',
+				// //查询参数,每次调用是会带上这个参数，可自定义
+				queryParams : function(params) {
+					// var subcompany = $('#subcompany option:selected').val();
+					// var name = $('#name').val();
+					// return {
+					// pageNumber: params.offset+1,
+					// pageSize: params.limit,
+					// companyId:subcompany,
+					// name:name
+					// };
+					var curPageNum = params.offset / params.limit + 1;
+					var perSize = params.limit;
+
+					var param = {
+						currentPageNum : curPageNum,
+						perPageSize : perSize,
+						userId : userno
+					};
+					return param;
+				},
+				// 分页方式：client客户端分页，server服务端分页（*）
+				sidePagination : "server",
+				// 是否显示搜索
+				search : false,
+				// Enable the strict search.
+				strictSearch : true,
+				// Indicate which field is an identity field.
+				idField : "id",
+				columns : [ [// 列
+				{
+					title : '用户名称',
+					field : 'real_name',
+					width : 60,
+					align : 'center'
+				}, {
+					title : '积分获取',
+					field : 'number',
+					width : 60,
+					align : 'center'
+				}, {
+					title : '获取方式',
+					field : 'type',
+					width : 60,
+					align : 'center'
+				}, {
+					title : '日期',
+					field : 'createTime',
+					width : 60,
+					align : 'center'
+				}, ] ],
+				pagination : true
+			});
+}
+
 function openUpdateBox(str) {
 	var strArr = str.split(",");
 	$("#user_no").val(strArr[0]);

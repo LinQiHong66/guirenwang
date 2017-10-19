@@ -38,6 +38,7 @@ import com.inesv.digiccy.util.MD5;
 import com.inesv.digiccy.util.StringUtil;
 import com.integral.dto.IntegralDetailDto;
 import com.integral.dto.IntegralGradeDto;
+import com.pagination.PaginationDto;
 import com.respon.R;
 import com.respon.ResultEncoding;
 
@@ -73,31 +74,48 @@ public class QueryUserInfo implements UserDetailsService {
 	// }
 	// return user;
 	// }
-	public long getSize(String username, String phone, int state) {
-		String sql = "select count(*) as count from t_inesv_user";
+	public long getSize(InesvUserDto selectSome) {
+		String sql = "select count(ua.user_no) as count from t_inesv_user ua where 1=1";
 		List<InesvUserDto> userlist = null;
 		ArrayList<Object> params = new ArrayList<>();
 
-		if (username != null && !"".equals(username)) {
-			sql += sql.contains("where") ? " and (username like ? or user_no like ?)"
-					: " where (username like ? or user_no like ?)";
-			params.add("%" + username + "%");
-			params.add("%" + username + "%");
+		// 用户机构编号
+		if (selectSome.getOrg_code() != null && !"".equals(selectSome.getOrg_code())) {
+			sql += " and ua.org_code like ?";
+			params.add("%" + selectSome.getOrg_code() + "%");
 		}
-		if (phone != null && !"".equals(phone)) {
-			sql += sql.contains("where") ? " and " : " where ";
-			sql += " phone like ?";
-			params.add("%" + phone + "%");
+		// 手机号
+		if (selectSome.getPhone() != null && !"".equals(selectSome.getPhone())) {
+			sql += " and (ua.username like ? or ua.phone like ?)";
+			params.add("%" + selectSome.getPhone() + "%");
+			params.add("%" + selectSome.getPhone() + "%");
 		}
-		if (state != -1) {
-			sql += sql.contains("where") ? " and " : " where ";
-			sql += " state=?";
-			params.add(state);
+
+		// 姓名查询
+		if (selectSome.getUsername() != null && !"".equals(selectSome.getUsername())) {
+			sql += " and (ua.username like ? or ua.real_name like ?)";
+			params.add("%" + selectSome.getUsername() + "%");
+			params.add("%" + selectSome.getUsername() + "%");
+		}
+		// 时间区间选择
+		if (selectSome.getDate() != null && selectSome.getSpareDate() != null) {
+			sql += " and ua.date between ? and ?";
+			params.add(selectSome.getDate());
+			params.add(selectSome.getSpareDate());
+		}
+		// 用户类型选择
+		if (selectSome.getOrg_type() != null && selectSome.getOrg_type() != -1) {
+			sql += " and ua.org_type=?";
+			params.add(selectSome.getOrg_type());
+		}
+		// 状态查询
+		if (selectSome.getState() != null && selectSome.getState() != -1) {
+			sql += " and ua.state = ?";
+			params.add(selectSome.getState());
 		}
 		try {
-			return (long) queryRunner.query(sql,
-					new ColumnListHandler<>("count"),
-					params.toArray(new Object[] {})).get(0);
+			return (long) queryRunner.query(sql, new ColumnListHandler<>("count"), params.toArray(new Object[] {}))
+					.get(0);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,8 +128,7 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "SELECT * FROM t_inesv_user";
 		List<InesvUserDto> user = null;
 		try {
-			user = (List<InesvUserDto>) queryRunner.query(sql,
-					new BeanListHandler(InesvUserDto.class));
+			user = (List<InesvUserDto>) queryRunner.query(sql, new BeanListHandler(InesvUserDto.class));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -124,8 +141,7 @@ public class QueryUserInfo implements UserDetailsService {
 
 		List<AuthRoleDto> role = null;
 		try {
-			role = (List<AuthRoleDto>) queryRunner.query(sql,
-					new BeanListHandler(AuthRoleDto.class), params);
+			role = (List<AuthRoleDto>) queryRunner.query(sql, new BeanListHandler(AuthRoleDto.class), params);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -143,45 +159,39 @@ public class QueryUserInfo implements UserDetailsService {
 		List<AuthRoleDto> roles = queryUserRole(user.getId());
 		if (roles != null) {
 			for (AuthRoleDto role : roles) {
-				grantedAuthorities
-						.add(new GrantedAuthorityImpl(role.getName()));
+				grantedAuthorities.add(new GrantedAuthorityImpl(role.getName()));
 			}
 		}
 		return grantedAuthorities;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String s)
-			throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 		String sql = "select * from t_inesv_user where username = ?";
 		queryResourceURL();
 		Object params[] = { s };
 		User user = null;
 		try {
-			InesvUserDto userdto = (InesvUserDto) queryRunner.query(sql,
-					new BeanHandler(InesvUserDto.class), params);
+			InesvUserDto userdto = (InesvUserDto) queryRunner.query(sql, new BeanHandler(InesvUserDto.class), params);
 
 			// Set<GrantedAuthority> grantedAuths =
 			// getGrantedAuthorities(userdto);
 			Set<GrantedAuthority> grantedAuths = getGrantedAuthorities(userdto);
 			// 灏佽鎴恠pring security鐨剈ser
-			return new User(userdto.getUsername(), userdto.getPassword(), true,
-					true, true, true, grantedAuths);
+			return new User(userdto.getUsername(), userdto.getPassword(), true, true, true, true, grantedAuths);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return user;
 	}
 
-	public InesvUserDto loadUserByPhoneNumber(String mobile)
-			throws UsernameNotFoundException {
+	public InesvUserDto loadUserByPhoneNumber(String mobile) throws UsernameNotFoundException {
 		String sql = "select * from t_inesv_user where username = ?";
 		queryResourceURL();
 		Object params[] = { mobile };
 		InesvUserDto userdto = null;
 		try {
-			userdto = (InesvUserDto) queryRunner.query(sql, new BeanHandler(
-					InesvUserDto.class), params);
+			userdto = (InesvUserDto) queryRunner.query(sql, new BeanHandler(InesvUserDto.class), params);
 			return userdto;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -189,15 +199,13 @@ public class QueryUserInfo implements UserDetailsService {
 		return userdto;
 	}
 
-	public InesvUserDto loadUser(String name, String pass)
-			throws UsernameNotFoundException {
+	public InesvUserDto loadUser(String name, String pass) throws UsernameNotFoundException {
 		pass = new MD5().getMD5(pass);
 		String sql = "select * from t_inesv_user where username = ? and password = ?";
 		queryResourceURL();
 		Object params[] = { name, pass };
 		try {
-			InesvUserDto userdto = (InesvUserDto) queryRunner.query(sql,
-					new BeanHandler(InesvUserDto.class), params);
+			InesvUserDto userdto = (InesvUserDto) queryRunner.query(sql, new BeanHandler(InesvUserDto.class), params);
 
 			return userdto;
 		} catch (SQLException e) {
@@ -206,39 +214,101 @@ public class QueryUserInfo implements UserDetailsService {
 		return null;
 	}
 
-	public List<InesvUserDto> getAllUser(String username, String phone,
-			int state, int curpage, int pageItem) {
-		String sql = "select * from t_inesv_user";
+	/**
+	 * 
+	 * @param selectSome
+	 *            查询的字段
+	 * @param pageItem
+	 *            分页 每页多少条
+	 * @param pageNum
+	 *            分页 当前第几页
+	 * @param orderItem
+	 *            排序字段 可以有 countuser和countlogin以及用户表里的任意字段
+	 * @param orderType
+	 *            排序类型 desc和asc
+	 * @return
+	 */
+	public List<InesvUserDto> getAllUser(InesvUserDto selectSome, int pageItem, int pageNum, String orderItem,
+			String orderType) {
+		String whereSql = " where 1=1 ";
+
 		List<InesvUserDto> userlist = null;
 		ArrayList<Object> params = new ArrayList<>();
 
-		if (username != null && !"".equals(username)) {
-			sql += sql.contains("where") ? " and (username like ? or user_no like ?)"
-					: " where (username like ? or user_no like ?)";
-			params.add("%" + username + "%");
-			params.add("%" + username + "%");
+		// 用户机构编号
+		if (selectSome.getOrg_code() != null && !"".equals(selectSome.getOrg_code())) {
+			whereSql += " and ua.org_code like ?";
+			params.add("%" + selectSome.getOrg_code() + "%");
 		}
-		if (phone != null && !"".equals(phone)) {
-			sql += sql.contains("where") ? " and " : " where ";
-			sql += " phone like ?";
-			params.add("%" + phone + "%");
+		// 手机号
+		if (selectSome.getPhone() != null && !"".equals(selectSome.getPhone())) {
+			whereSql += " and (ua.username like ? or ua.phone like ?)";
+			params.add("%" + selectSome.getPhone() + "%");
+			params.add("%" + selectSome.getPhone() + "%");
 		}
-		if (state != -1) {
-			sql += sql.contains("where") ? " and " : " where ";
-			sql += " state=?";
-			params.add(state);
+
+		// 姓名查询
+		if (selectSome.getUsername() != null && !"".equals(selectSome.getUsername())) {
+			whereSql += " and (ua.username like ? or ua.real_name like ?)";
+			params.add("%" + selectSome.getUsername() + "%");
+			params.add("%" + selectSome.getUsername() + "%");
 		}
-		sql += " order by user_no desc";
-		sql += " limit ?,?";
-		params.add((curpage - 1) * pageItem);
+		// 时间区间选择
+		if (selectSome.getDate() != null && selectSome.getSpareDate() != null) {
+			whereSql += " and ua.date between ? and ?";
+			params.add(selectSome.getDate());
+			params.add(selectSome.getSpareDate());
+		}
+		// 用户类型选择
+		if (selectSome.getOrg_type() != null && selectSome.getOrg_type() != -1) {
+			whereSql += " and ua.org_type=?";
+			params.add(selectSome.getOrg_type());
+		}
+		// 状态查询
+		if (selectSome.getState() != null && selectSome.getState() != -1) {
+			whereSql += " and ua.state = ?";
+			params.add(selectSome.getState());
+		}
+		String orderBy = "";
+		// 排序字段为空则默认根据id排序
+		if (orderItem == null || "".equals(orderItem) || "null".equals(orderItem)) {
+			orderItem = "ua.user_no";
+			orderType = "desc";
+		}
+
+		// 如果排序方式为空则按asc排序
+		if (orderType == null || "".equals(orderType)) {
+			orderType = "asc";
+		}
+
+		String sql = "";
+		orderBy = " order by " + orderItem + " " + orderType;
+		if ("countuser".equals(orderItem)) {
+			// 根据用户邀请人数排序
+			sql = "select count(ub.org_code) as countuser, ua.username, ua.user_no, ua.real_name, ua.state , ua.org_code, ua.org_parent_code, ua.date, ua.integral from t_inesv_user ua LEFT JOIN (select org_code, org_parent_code from t_inesv_user) ub on ua.org_code=ub.org_parent_code ";
+			sql += whereSql + " GROUP BY ua.user_no " + orderBy + " limit ?,?";
+		} else if ("countlogin".equals(orderItem)) {
+			// 根据用户活跃度排序
+			sql = "select count(ul.user_no) as countlogin, ua.username, ua.user_no, ua.real_name, ua.state , ua.org_code, ua.org_parent_code, ua.date, ua.integral from t_inesv_user ua LEFT JOIN (select user_no from t_inesv_login_log) ul on ua.user_no=ul.user_no ";
+			sql += whereSql + " GROUP BY ua.user_no " + orderBy + " limit ?,?";
+		} else {
+			sql = "select ua.username, ua.user_no, ua.real_name, ua.state , ua.org_code, ua.org_parent_code, ua.date, ua.integral from t_inesv_user ua "
+					+ whereSql + orderBy + " LIMIT ?,?";
+		}
+
+		params.add((pageNum - 1) * pageItem);
 		params.add(pageItem);
+		System.out.println("getAllUserSql-----------------");
+
+		System.out.println(sql);
+		System.out.println(params.toString());
 		try {
-			userlist = (List<InesvUserDto>) queryRunner.query(sql,
-					new BeanListHandler(InesvUserDto.class),
+			userlist = queryRunner.query(sql, new BeanListHandler<InesvUserDto>(InesvUserDto.class),
 					params.toArray(new Object[] {}));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println("returnlist------------------");
 		return userlist;
 	}
 
@@ -252,8 +322,7 @@ public class QueryUserInfo implements UserDetailsService {
 		}
 		sql += " order by user_no desc";
 		try {
-			userlist = (List<InesvUserDto>) queryRunner.query(sql,
-					new BeanListHandler(InesvUserDto.class),
+			userlist = (List<InesvUserDto>) queryRunner.query(sql, new BeanListHandler(InesvUserDto.class),
 					params.toArray(new Object[] {}));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -269,8 +338,7 @@ public class QueryUserInfo implements UserDetailsService {
 
 		HashMap<String, Object> resource = null;
 		try {
-			resource = (HashMap<String, Object>) queryRunner.query(sql,
-					new MapHandler());
+			resource = (HashMap<String, Object>) queryRunner.query(sql, new MapHandler());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -285,8 +353,7 @@ public class QueryUserInfo implements UserDetailsService {
 
 		List<AuthRoleDto> roleList = null;
 		try {
-			roleList = (List<AuthRoleDto>) queryRunner.query(sql,
-					new BeanListHandler(AuthRoleDto.class));
+			roleList = (List<AuthRoleDto>) queryRunner.query(sql, new BeanListHandler(AuthRoleDto.class));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -301,8 +368,7 @@ public class QueryUserInfo implements UserDetailsService {
 		Object params[] = { roleid };
 		List<ResourceDto> roleList = null;
 		try {
-			roleList = (List<ResourceDto>) queryRunner.query(sql,
-					new BeanListHandler(ResourceDto.class), params);
+			roleList = (List<ResourceDto>) queryRunner.query(sql, new BeanListHandler(ResourceDto.class), params);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -315,16 +381,13 @@ public class QueryUserInfo implements UserDetailsService {
 				+ " voucher_type as cardType, voucher_imgurl1 as imgUrl1,"
 				+ " voucher_imgurl2 as imgUrl2, voucher_imgurl3 as imgUrl3,"
 				+ " voucher_state as state, userNo as userNo,"
-				+ " realName as trueName, voucher_mytype as myvoucherType"
-				+ " from t_inesv_user_voucher";
-		if (filed != null && !"".equals(filed) && value != null
-				&& !"".equals(value)) {
+				+ " realName as trueName, voucher_mytype as myvoucherType" + " from t_inesv_user_voucher";
+		if (filed != null && !"".equals(filed) && value != null && !"".equals(value)) {
 			sql += " where " + filed + "=" + value;
 		}
 		List<UserVoucherDto> vouchers = null;
 		try {
-			vouchers = queryRunner.query(sql,
-					new BeanListHandler<UserVoucherDto>(UserVoucherDto.class));
+			vouchers = queryRunner.query(sql, new BeanListHandler<UserVoucherDto>(UserVoucherDto.class));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -336,8 +399,7 @@ public class QueryUserInfo implements UserDetailsService {
 		Object param[] = { id };
 		InesvUserDto userInfo = null;
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(
-					InesvUserDto.class), param);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), param);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -349,19 +411,16 @@ public class QueryUserInfo implements UserDetailsService {
 		Object param[] = { userNo };
 		InesvUserDto userInfo = null;
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(
-					InesvUserDto.class), param);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), param);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return userInfo;
 	}
 
-	public List<InesvUserDto> getUserInfo(int userNo, String phone,
-			String idcard) {
+	public List<InesvUserDto> getUserInfo(int userNo, String phone, String idcard) {
 		Object param[] = null;
-		StringBuffer sb = new StringBuffer(
-				"select * from t_inesv_user where user_no != ?");
+		StringBuffer sb = new StringBuffer("select * from t_inesv_user where user_no != ?");
 		if (!StringUtil.isEmpty(phone)) {
 			if (!StringUtil.isEmpty(idcard)) {
 				sb.append(" and (phone=? or certificate_num=?)");
@@ -382,11 +441,8 @@ public class QueryUserInfo implements UserDetailsService {
 
 		List<InesvUserDto> userInfo = null;
 		try {
-			System.out.println("userNo:" + userNo + ",phone：" + phone
-					+ ",idcard:" + idcard + ",sql:" + sb.toString());
-			userInfo = queryRunner.query(sb.toString(),
-					new BeanListHandler<InesvUserDto>(InesvUserDto.class),
-					param);
+			System.out.println("userNo:" + userNo + ",phone：" + phone + ",idcard:" + idcard + ",sql:" + sb.toString());
+			userInfo = queryRunner.query(sb.toString(), new BeanListHandler<InesvUserDto>(InesvUserDto.class), param);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -404,8 +460,7 @@ public class QueryUserInfo implements UserDetailsService {
 		Object params[] = { userNo };
 		List<LoginLogDto> list = null;
 		try {
-			list = queryRunner.query(sql, new BeanListHandler<LoginLogDto>(
-					LoginLogDto.class), params);
+			list = queryRunner.query(sql, new BeanListHandler<LoginLogDto>(LoginLogDto.class), params);
 		} catch (SQLException e) {
 			log.error("鏌ヨ鐢ㄦ埛ip澶辫触");
 			e.printStackTrace();
@@ -419,8 +474,7 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user where user_no = ?";
 		Object parmas[] = { userNo };
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(
-					InesvUserDto.class), parmas);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -433,8 +487,7 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user_voucher where userNo = ?";
 		Object parmas[] = { userNo };
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(
-					UserVoucherDto.class), parmas);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(UserVoucherDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -447,8 +500,7 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user_address where user_no = ?";
 		Object parmas[] = { userNo };
 		try {
-			addressDto = queryRunner.query(sql, new BeanHandler<>(
-					AddressDto.class), parmas);
+			addressDto = queryRunner.query(sql, new BeanHandler<>(AddressDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -466,8 +518,7 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user where username = ?";
 		Object parmas[] = { phone };
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(
-					InesvUserDto.class), parmas);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -480,8 +531,7 @@ public class QueryUserInfo implements UserDetailsService {
 		String sql = "select * from t_inesv_user where invite_num = ?";
 		Object parmas[] = { invite_num };
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(
-					InesvUserDto.class), parmas);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), parmas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -499,8 +549,7 @@ public class QueryUserInfo implements UserDetailsService {
 
 		Object parmas[] = { userNo };
 		try {
-			List<InesvUserDto> list = queryRunner.query(sql,
-					new BeanListHandler<InesvUserDto>(InesvUserDto.class),
+			List<InesvUserDto> list = queryRunner.query(sql, new BeanListHandler<InesvUserDto>(InesvUserDto.class),
 					parmas);
 			return list;
 		} catch (SQLException e) {
@@ -524,8 +573,7 @@ public class QueryUserInfo implements UserDetailsService {
 				+ " (SELECT COUNT(username) FROM t_inesv_user WHERE org_type = 3 AND TO_DAYS(DATE) = TO_DAYS(NOW())) AS invite_num"
 				+ " FROM t_inesv_user LIMIT 1";
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(
-					InesvUserDto.class));
+			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -538,14 +586,12 @@ public class QueryUserInfo implements UserDetailsService {
 	 * @param userNo
 	 * @return list
 	 */
-	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo,
-			String startTime, String endTime) {
+	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo, String startTime, String endTime) {
 		String sql = "select * from t_inesv_message_log where user_id = ? and update_time between ? and ? order by update_time desc";
 		Object params[] = { userNo, startTime, endTime };
 		List<MessageLogDto> list = null;
 		try {
-			list = queryRunner.query(sql, new BeanListHandler<MessageLogDto>(
-					MessageLogDto.class), params);
+			list = queryRunner.query(sql, new BeanListHandler<MessageLogDto>(MessageLogDto.class), params);
 		} catch (SQLException e) {
 			log.error("查询用户短信记录失败");
 			e.printStackTrace();
@@ -560,8 +606,7 @@ public class QueryUserInfo implements UserDetailsService {
 	 * @param limitTime
 	 * @return
 	 */
-	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo,
-			int limitTime) {
+	public List<MessageLogDto> getMessageLogLimitTime(Integer userNo, int limitTime) {
 		String startTime = TimeUtil.getStartTime(limitTime);
 		String endTime = TimeUtil.getCurrentTime();
 		return getMessageLogLimitTime(userNo, startTime, endTime);
@@ -606,8 +651,7 @@ public class QueryUserInfo implements UserDetailsService {
 	 * @param number
 	 * @return
 	 */
-	public boolean addIntegral(String userId, int number, String type,
-			String typrCode) {
+	public boolean addIntegral(String userId, int number, String type, String typrCode) {
 
 		try {
 
@@ -615,8 +659,7 @@ public class QueryUserInfo implements UserDetailsService {
 				String is = userMap.get(userId);
 				try {
 					InesvUserDto inesvUserDto = this.getUserById(userId);
-					int num = number
-							+ Integer.parseInt(inesvUserDto.getIntegral());
+					int num = number + Integer.parseInt(inesvUserDto.getIntegral());
 					Object[] objects = { num, userId };
 					String sql = "update t_inesv_user set integral=? where id=?";
 					int i = queryRunner.update(sql, objects);
@@ -654,14 +697,11 @@ public class QueryUserInfo implements UserDetailsService {
 		R r = new R();
 		HashMap<String, Object> hashMap = new HashMap<>();
 		try {
-			Integer number = Integer.parseInt(getUserInfoById(userId)
-					.getIntegral());
+			Integer number = Integer.parseInt(getUserInfoById(userId).getIntegral());
 			hashMap.put("numbers", number);
 			String sql = "SELECT grade.* from t_integral_grade as grade ORDER BY (grade.conditions+0)  ASC";
 			List<IntegralGradeDto> dtos = new ArrayList<>();
-			dtos = queryRunner.query(sql,
-					new BeanListHandler<IntegralGradeDto>(
-							IntegralGradeDto.class));
+			dtos = queryRunner.query(sql, new BeanListHandler<IntegralGradeDto>(IntegralGradeDto.class));
 			for (int i = dtos.size() - 1; i >= 0; i--) {
 
 				if (dtos.get(i).getAdditional().equals("0")) {
@@ -715,8 +755,7 @@ public class QueryUserInfo implements UserDetailsService {
 		Object param[] = { id };
 		InesvUserDto userInfo = null;
 		try {
-			userInfo = queryRunner.query(sql, new BeanHandler<>(
-					InesvUserDto.class), param);
+			userInfo = queryRunner.query(sql, new BeanHandler<>(InesvUserDto.class), param);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
