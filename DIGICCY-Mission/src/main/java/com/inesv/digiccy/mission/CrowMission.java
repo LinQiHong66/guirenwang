@@ -1,7 +1,6 @@
 package com.inesv.digiccy.mission;
 
 import com.inesv.digiccy.validata.CrowdFundingValidata;
-import com.inesv.digiccy.validata.TradeValidata;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +21,11 @@ public class CrowMission implements Runnable{
      * 定时器处理众筹状态（每天凌晨2点执行）
      */
 	@Override
-	/*@Scheduled(cron="0 0 2 * * ?") */
+	@Scheduled(cron="0 0 2 * * ?") 
 	public void run() {
-		/*crowdValidata.validataEditCrowdState();
-		LOGGER.info("**********************定时器处理众筹状态**********************************:"+new Date());*/
+		LOGGER.info("**********************定时器处理众筹状态-开始**********************************:"+new Date());
+		crowdValidata.validataEditCrowdState();
+		LOGGER.info("**********************定时器处理众筹状态-结束**********************************:"+new Date());
 	}
     
 }

@@ -40,6 +40,7 @@ import com.inesv.digiccy.validata.StaticParamValidata;
 import com.inesv.digiccy.validata.integra.IntegralRuleValidata;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureResult;
 import com.inesv.digiccy.validata.util.organization.OrganizationStructureUtil;
+import com.pagination.PaginationDto;
 
 /**
  * Created by Administrator on 2016/11/14 0014.
@@ -162,16 +163,17 @@ public class OpUserValidata {
 	 * 
 	 * @return
 	 */
-	public Map<String, Object> validataGetAllUser(String username, String phone, int state, int curpage, int pageItem) {
+	public Map<String, Object> validataGetAllUser(InesvUserDto selectSome, int pageItem, int pageNum, String orderItem,
+			String orderType) {
 		Map<String, Object> map = new HashMap<>();
-		List<InesvUserDto> list = queryUser.getAllUser(username, phone, state, curpage, pageItem);
-		long size = queryUser.getSize(username, phone, state);
+		List<InesvUserDto> list = queryUser.getAllUser(selectSome, pageItem, pageNum, orderItem, orderType);
+		long size = queryUser.getSize(selectSome);
 		if (list == null) {
-			map.put("code", ResponseCode.FAIL_BILL_INFO);
-			map.put("desc", ResponseCode.FAIL_BILL_INFO_DESC);
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", ResponseCode.FAIL_DESC);
 		} else {
-			map.put("data", list);
-			map.put("count", size);
+			map.put("rows", list);
+			map.put("total", size);
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		}

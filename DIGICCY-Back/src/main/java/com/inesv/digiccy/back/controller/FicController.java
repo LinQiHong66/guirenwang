@@ -1,5 +1,6 @@
 package com.inesv.digiccy.back.controller;
 
+import com.inesv.digiccy.dto.pageDto;
 import com.inesv.digiccy.validata.FicTradeValidata;
 import com.inesv.digiccy.validata.FicWithdrawValidate;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -56,11 +58,16 @@ public class FicController {
         return "/fic/withdraw";
     }
 
+    /**
+     * @param pageNumber : 当前页码
+     * @param pageSize ： 每页记录数
+     * @return
+     */
     @RequestMapping(value = "getRecharge",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> getRecharge(String userName, String coinTypeSearch, String startData,String endData){
-    	
-        Map<String,Object> map = ficTradeValidata.queryAllFicRechargeInfo(userName, coinTypeSearch, startData, endData);
+    public Map<String,Object> getRecharge(String userCode, String phone, String realName,String state,String coinType,String startData,String endData,pageDto page){
+    	 
+        Map<String,Object> map = ficTradeValidata.queryAllFicRechargeInfo(userCode, phone, realName, state, coinType, startData, endData, page);
         return map;
     }
 
@@ -72,9 +79,9 @@ public class FicController {
     }
     
     @RequestMapping(value = "excelRecharge", method=RequestMethod.POST)
-    public void getRechargeExcel(HttpServletResponse response, String userName, String coinTypeSearch, String startData,String endData){
-    	ficTradeValidata.getRechargeExcel(response, userName, coinTypeSearch, startData, endData);
-    }
+    public void getRechargeExcel(HttpServletResponse response, String userCode, String phone, String realName,String state,String coinType,String startData,String endData){
+    	ficTradeValidata.getRechargeExcel(response, userCode, phone, realName, state, coinType, startData, endData);
+    } 
     
     @RequestMapping(value = "excelWithdraw", method=RequestMethod.POST)
     public void getWithdrawExcel(HttpServletResponse response, String userName, String coinTypeSearch, String startData,String endData){

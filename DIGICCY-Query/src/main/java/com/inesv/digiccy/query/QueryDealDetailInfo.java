@@ -520,4 +520,18 @@ public class QueryDealDetailInfo {
 		}
 		return dealDetailDtos;
 	}
+	
+	/**
+	 * 首页交易统计
+	 * */
+	public List<DealDetailDto> queryDetail(){
+		List<DealDetailDto> dealDetailDtos = new ArrayList<>();
+		String sql = "SELECT IFNULL(SUM(sum_price),0) AS sum_price , DATE_FORMAT(DATE,'%Y-%m-%d') dates FROM t_inesv_deal_detail GROUP BY dates";
+		try {
+			dealDetailDtos=queryRunner.query(sql, new BeanListHandler<DealDetailDto>(DealDetailDto.class));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dealDetailDtos;
+	}
 }

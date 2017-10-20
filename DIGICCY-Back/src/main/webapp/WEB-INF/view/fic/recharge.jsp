@@ -92,9 +92,16 @@ Website: http://thevectorlab.net/
                             
                             <form action="/fic/excelRecharge.do" method="POST">
                             	<div>
-                            	货币类型：<select name='coinTypeSearch' id="coinTypes" style="width:13%;"></select>
-                            	用户id和名称：<select style="width:13%;" name='userName' id='names'></select>
-                            	时间段：<input style="width:14%;" name="startData" id="startData" type='date' />-<input style="width:14%;" name="endData" id='endData' type='date' />
+                            	用户编号 : <input id="userCode" name="userCode" style="width:5%;"/>
+                            	手机号码 : <input id="phone" name="phone"  style="width:5%;"/>
+                            	真实姓名 : <input id="realName" name="realName"  style="width:5%;"/>
+                            	状态：<select name='state' id="state" style="width:10%;">
+                            	          <option value="-1">所有</option>
+                            	          <option value="0">未到账</option>
+                            	          <option value="1">已到账</option>
+                            	    </select>
+                            <!-- 	 货币类型：<select name='coinTypeSearch' id="coinTypes" style="width:13%;"></select> -->
+                            	时间段：<input style="width:10%;" name="startData" id="startData" type='date' />-<input style="width:10%;" name="endData" id='endData' type='date' />
                             	</div>
                             	<input type="button" onclick="getRechargedatas();" value='查询' /><input type="submit" value="导出Excel" />
                             </form>

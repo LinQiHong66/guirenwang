@@ -35,7 +35,37 @@ public class RmbWithdrawDto {
     /**备用字段3*/
     private String attr3;
 
-    public RmbWithdrawDto() {
+    /**用户编码*/
+    private String userCode;
+    
+    /**真实姓名*/
+    private String realName;
+    
+    
+    public String getUserCode() {
+    	 
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+		if(this.userCode==null) {
+			this.userCode="--";
+		}
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+		if(this.realName==null) {
+			this.realName="--";
+		}
+	}
+
+	public RmbWithdrawDto() {
 
     }
 

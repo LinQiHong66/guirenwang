@@ -6,8 +6,10 @@ import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.CoinAndWalletLinkDto;
 import com.inesv.digiccy.dto.CoinDto;
 import com.inesv.digiccy.dto.SubCoreDto;
+import com.inesv.digiccy.dto.UserBalanceDetailDto;
 import com.inesv.digiccy.dto.UserBalanceDto;
 import com.inesv.digiccy.dto.VoteInfoDto;
+import com.inesv.digiccy.query.QueryUserBalanceInfo;
 import com.inesv.digiccy.query.QueryVoteInfo;
 import com.inesv.digiccy.query.coin.QueryCoin;
 
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +36,9 @@ public class CoinValidata {
 
 	@Autowired
 	QueryVoteInfo queryVoteInfo;
+	
+	@Autowired
+	QueryUserBalanceInfo queryUserBalanceInfo;
 
 	@Autowired
 	CommandGateway commandGateway;
@@ -379,6 +385,33 @@ public class CoinValidata {
         	map.put("code", ResponseCode.FAIL);
             map.put("desc", ResponseCode.FAIL_DESC);
 		}
+		return map;
+	}
+	public Map<String, Object> getCoinCount(){
+		List<CoinDto> dtos = queryCoin.queryAllCoinByNoRMB();
+		List<UserBalanceDto> balanceList = new ArrayList<UserBalanceDto>();
+		for(int i = 0 ; i < dtos.size() ; i++) {
+			balanceList.add(queryUserBalanceInfo.queryUserBalanceCount(dtos.get(i).getCoin_no()));
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(dtos != null){
+			map.put("sumCoinPrice", balanceList);
+			map.put("coins", dtos);
+            map.put("code", ResponseCode.SUCCESS);
+            map.put("desc",ResponseCode.SUCCESS_DESC);
+		}else{
+        	map.put("code", ResponseCode.FAIL);
+            map.put("desc", ResponseCode.FAIL_DESC);
+		}
+		return map;
+	}
+	
+	public Map<String, Object> getGuirenPicture(Integer coin){
+		List<UserBalanceDto> balanceList = queryUserBalanceInfo.queryUserCoinCount(coin);
+		Map<String, Object> map = new HashMap<String, Object>();
+			map.put("data", balanceList);
+            map.put("code", ResponseCode.SUCCESS);
+            map.put("desc",ResponseCode.SUCCESS_DESC);
 		return map;
 	}
 }

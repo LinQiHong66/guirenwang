@@ -23,7 +23,7 @@ public class FicWithdrawDto {
     /**实际到账*/
     private BigDecimal actual_price;
     /**状态*/
-    private int sate;
+    private Integer sate;
     /**提现时间*/
     private Date date;
     /**备用字段1*/
@@ -87,15 +87,17 @@ public class FicWithdrawDto {
         this.actual_price = actual_price;
     }
 
-    public int getSate() {
-        return sate;
-    }
+ 
 
-    public void setSate(int sate) {
-        this.sate = sate;
-    }
+    public Integer getSate() {
+		return sate;
+	}
 
-    public Date getDate() {
+	public void setSate(Integer sate) {
+		this.sate = sate;
+	}
+
+	public Date getDate() {
         return date;
     }
 

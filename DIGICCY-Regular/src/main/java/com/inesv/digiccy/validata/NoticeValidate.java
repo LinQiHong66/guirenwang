@@ -120,6 +120,13 @@ public class NoticeValidate {
         return map;
     }
 
+    /* 获取公告列表*/
+    public List<NoticeTypeDto> queryNoticeType(){
+         
+    	List<NoticeTypeDto> noticeTypes = queryNoticeInfo.queryNoticeType();
+        return noticeTypes;
+    }
+    
     /**
      * 校验添加公告
      * @return
@@ -214,8 +221,14 @@ public class NoticeValidate {
      * 新增自定义类型
      */
     public Map<String, Object> addNameType(String name){
-    	NoticeTypeCommand command = new NoticeTypeCommand(0, name, "insert");
     	Map<String, Object> map = new HashMap<String, Object>();
+    	if(name.equals("")) {
+    		map.put("code",ResponseCode.FAIL);
+    		map.put("desc","公共类型不能为空");
+    		return map;
+    	}
+    	NoticeTypeCommand command = new NoticeTypeCommand(0, name, "insert");
+    	
     	try{
     		commandGateway.sendAndWait(command);
     		map.put("code", ResponseCode.SUCCESS);

@@ -3,6 +3,7 @@ package com.inesv.digiccy.controller;
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.redis.RedisCodeImpl;
 import com.inesv.digiccy.sms.SendMsgUtil;
+import com.inesv.digiccy.validata.user.InesvUserValidata;
 import com.inesv.digiccy.validata.user.OpUserValidata;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -37,6 +38,9 @@ public class OpUserController {
 
 	@Autowired
 	OpUserValidata regUserValidata;
+	
+	@Autowired
+	InesvUserValidata inesvUserValidata;
 
 	@Autowired
 	SendMsgUtil sendMsgUtil;
@@ -88,7 +92,9 @@ public class OpUserController {
 	public Map<String, Object> addUser(String phone, String password, String invite_num) {
 
 		try {
-			invite_num = new String(invite_num.getBytes("ISO-8859-1"), "UTF-8");
+			if (invite_num.equals(new String(invite_num.getBytes("ISO-8859-1"), "ISO-8859-1"))) {
+				invite_num = new String(invite_num.getBytes("ISO-8859-1"), "UTF-8");
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -170,6 +176,17 @@ public class OpUserController {
 	 */
 	public Map<String, Object> send(String mobile, int type) {
 		Map<String, Object> map = regUserValidata.validataSend(mobile, type);
+		return map;
+	}
+	
+	/**
+	 * 发短信
+	 */
+	@RequestMapping(value = "getUser1", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getUser1() throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map = inesvUserValidata.getUserPicture();
 		return map;
 	}
 

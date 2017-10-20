@@ -270,12 +270,10 @@ public class RmbWithdrawValidate {
 		return 0;
 	}
 
-	public Map<String, Object> validateQueryRecord(String userName, String state, String startDate, String endDate,
-			int curPage, int pageItem) {
+	public Map<String, Object> validateQueryRecord(String userCode,String realName,String phone, String state, String startDate, String endDate, int curPage, int pageItem) {
 		Map<String, Object> map = new HashMap();
-		List<RmbWithdrawDto> list = queryRmbWithdrawInfo.queryWithdrawInfo(userName, state, startDate, endDate, curPage,
-				pageItem);
-		long size = queryRmbWithdrawInfo.getSize(userName, state, startDate, endDate);
+		List<RmbWithdrawDto> list = queryRmbWithdrawInfo.queryWithdrawInfo(userCode,realName,phone, state, startDate, endDate, curPage, pageItem);
+		long size = queryRmbWithdrawInfo.getSize(userCode, realName, phone, state, startDate, endDate);
 		if (list != null) {
 			map.put("data", list);
 			map.put("code", ResponseCode.SUCCESS);
@@ -319,20 +317,21 @@ public class RmbWithdrawValidate {
 		return map;
 	}
 
-	public void getWithdrawExcel(HttpServletResponse response, String userName, String state, String startDate,
-			String endDate) {
-		long size = queryRmbWithdrawInfo.getSize(userName, state, startDate, endDate);
-		List<RmbWithdrawDto> dtos = queryRmbWithdrawInfo.queryWithdrawInfo(userName, state, startDate, endDate, 1,
-				Integer.parseInt(size + ""));
+	public void getWithdrawExcel(HttpServletResponse response,String userCode,String realName,String phone, String state, String startDate, String endDate) {
+		long size = queryRmbWithdrawInfo.getSize(userCode, realName, phone, state, startDate, endDate);
+		List<RmbWithdrawDto> dtos = queryRmbWithdrawInfo.queryWithdrawInfo(userCode, realName, phone, state, startDate, endDate, 1, Integer.parseInt(size + ""));
 		Map<String, List<String>> contact = new HashMap<String, List<String>>();
 
-		String title7 = "状态";
-		String title6 = "日期";
-		String title5 = "实际到账";
-		String title4 = "手续费";
+ 
+		String title1 = "用户账号";
+		String title2 = "姓名";
 		String title3 = "提现金额";
-		String title2 = "提现银行";
-		String title1 = "用户名称";
+		String title4 = "手续费";
+		String title5 = "到账金额";
+		String title6 = "提现时间";
+		String title7 = "用户编号";
+		String title8 = "提现银行";
+		String title9 = "订单状态"; 
 		List<String> value1 = new ArrayList<String>();
 		List<String> value2 = new ArrayList<String>();
 		List<String> value3 = new ArrayList<String>();
@@ -340,15 +339,20 @@ public class RmbWithdrawValidate {
 		List<String> value5 = new ArrayList<String>();
 		List<String> value6 = new ArrayList<String>();
 		List<String> value7 = new ArrayList<String>();
-
+		List<String> value8 = new ArrayList<String>();
+		List<String> value9 = new ArrayList<String>();
+ 		
 		for (RmbWithdrawDto dto : dtos) {
+		 
 			value1.add(dto.getAttr1());
-			value2.add(dto.getAttr2());
+			value2.add(dto.getRealName());
 			value3.add(dto.getPrice().toString());
 			value4.add(dto.getPoundage().toString());
 			value5.add(dto.getActual_price().toString());
 			value6.add(dto.getDate().toString());
-			value7.add(dto.getState() == 0 ? "未到账" : "已到账");
+			value7.add(dto.getUserCode());
+			value8.add(dto.getAttr2());
+			value9.add(dto.getState() == 0 ? "未到账" : "已到账");
 		}
 
 		contact.put(title1, value1);
@@ -358,6 +362,8 @@ public class RmbWithdrawValidate {
 		contact.put(title5, value5);
 		contact.put(title6, value6);
 		contact.put(title7, value7);
+		contact.put(title8, value8);
+		contact.put(title9, value9);
 		ExcelUtils.export(response, contact);
 	}
 }

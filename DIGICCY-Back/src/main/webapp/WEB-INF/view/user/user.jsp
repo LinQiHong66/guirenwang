@@ -31,6 +31,12 @@ Website: http://thevectorlab.net/
 <link href="/app/assets/bootstrap-table/bootstrap-table.css"
 	rel="stylesheet" />
 <link href="/app/css/tab.css" rel="stylesheet" />
+<style type="text/css">
+div div div div div {
+	font-size: medium;
+	font-family: sans-serif;
+}
+</style>
 <%--<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />--%>
 <%--<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />--%>
 <%--<link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />--%>
@@ -101,21 +107,58 @@ Website: http://thevectorlab.net/
 								<%--<button class="btn btn-inverse" id="btn_update"><i class="icon-pencil icon-white"></i>&nbsp;修改</button>--%>
 								<%--<button class="btn btn-primary" id="btn_delete"><i class="icon-remove icon-white"></i>&nbsp;删除</button>--%>
 								<div style="Margin: 10px">
-									<label>用户名称或编号</label><input style="width: 12%;" type="text" id="names"
+									<!-- <label>用户名称或编号</label><input style="width: 12%;" type="text" id="names"
 										name='username' />电话号码<input style="width: 10%" type='text'
 										id='phone' name='phone' /> 状态<select style="width: 15%"
 										id='state' name='state'>
 										<option value='-1'>请选择</option>
 										<option value='0'>冻结</option>
 										<option value='1'>正常</option>
-									</select>&nbsp;
+									</select>&nbsp; -->
+									查询条件：<br />
+
+									<!-- 用户编号模糊搜索、手机号模糊搜索、姓名模糊搜索、按用户类型选择、按注册日期选择、状态、排序 -->
+									用户编号:<input id="user_orgcode" type="text" style="width: 10%" />手机号:<input
+										id="phone" type="text" style="width: 9%" value="1310" />姓名:<input
+										type="text" id="username" style="width: 9%" />用户类型<select
+										id="user_orgtype" style="width: 9%">
+										<option value="-1">请选择</option>
+										<option value="0">机构</option>
+										<option value="1">子机构</option>
+										<option value="2">经纪人</option>
+										<option value="3">交易商</option>
+									</select> 注册日期：<input id="startdate" type="date" style="width: 9%" />-<input
+										id="enddate" type="date" style="width: 9%" />状态：<select
+										id="state" style="width: 9%"><option value="-1">请选择</option>
+										<option value="0">冻结</option>
+										<option value="1">正常</option></select> <br />
+									<button onclick='selectAllUser()'>查询</button>
+									<br />
+									<div align="center">排序条件：</div>
+									<br />
+									<div align="center">
+										活跃度&nbsp;&nbsp;<img title="countuser" name="desc"
+											id="countuser_desc" src="/app/img/up.png" style="width: 1%"><img
+											title="countuser" name="asc" id="countuser_asc"
+											src="/app/img/down.png" style="width: 1%">&nbsp;&nbsp;&nbsp;
+										积分&nbsp;&nbsp;<img title="integral" name="desc" id="integral_desc"
+											src="/app/img/up.png" style="width: 1%"><img
+											title="integral" name="asc" id="integral_asc"
+											src="/app/img/down.png" style="width: 1%">&nbsp;&nbsp;&nbsp;
+										邀请人数&nbsp;&nbsp;<img title="countuser" name="desc"
+											id="countuser_desc" src="/app/img/up.png" style="width: 1%"><img
+											title="countuser" name="asc" id="countuser_asc"
+											src="/app/img/down.png" style="width: 1%"> <input
+											id="orderType" type="hidden" value="" /><input
+											id="orderItem" value="" type="hidden" />
+									</div>
 								</div>
 								<br />
-								<button onclick="selectUser(1,10)">查询</button>
-								<table id="user_table" style='width: 100%'>
+								<!-- <button onclick="selectUser(1,10)">查询</button> -->
+								<table id="user_table">
 
 								</table>
-								<div align='center'>
+								<!-- <div align='center'>
 									当前页数：第<span id='curPage'></span>页 &nbsp;&nbsp; 一共<span
 										id='countItem'></span>条数据 &nbsp;&nbsp; 每页<select
 										id='checkItem' onchange="itemChange();">
@@ -123,7 +166,7 @@ Website: http://thevectorlab.net/
 									</select>条
 									<button onclick="nextPage();">上一页</button>
 									<button onclick="overPage();">下一页</button>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						<!-- END SAMPLE FORM PORTLET-->
@@ -140,7 +183,7 @@ Website: http://thevectorlab.net/
 	<!-- END FOOTER -->
 	<!-- BEGIN JAVASCRIPTS -->
 	<!-- Load javascripts at bottom, this will reduce page load time -->
-	<script>
+	<!-- 	<script>
 		function itemChange() {
 			var curPage = $('#curPage').html();
 			var pageItem = $('#checkItem').val();
@@ -173,7 +216,7 @@ Website: http://thevectorlab.net/
 
 			selectUser(curPage, pageItem);
 		}
-	</script>
+	</script> -->
 	<script src="/app/js/footer.js"></script>
 	<script src="/app/js/echarts.min.js"></script>
 	<script src="/app/assets/bootstrap-table/bootstrap-table.js"></script>
