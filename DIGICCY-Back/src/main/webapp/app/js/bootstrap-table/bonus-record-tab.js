@@ -22,12 +22,12 @@ $("#bonus_table").bootstrapTable({
     cache:false,
     columns:[[// 列
         {title:'用户名称',field:'attr1',width:120,align:'center'},
-        {title:'分红项目',field:'bonus_name',width:80,align:'center'},
-        {title:'分红总数',field:'bonus_sum',width:60,align:'center'},
+        {title:'分润项目',field:'bonus_name',width:80,align:'center'},
+        {title:'分润总数',field:'bonus_sum',width:60,align:'center'},
         {title:'每个奖励',field:'each_bonus',width:60,align:'center'},
         {title:'持有数量',field:'coin_num',width:60,align:'center'},
-        {title:'分红数量',field:'bonus',width:60,align:'center'},
-        {title:'分红时间',field:'date',width:60,align:'center'},
+        {title:'分润数量',field:'bonus',width:60,align:'center'},
+        {title:'分润时间',field:'date',width:60,align:'center'},
     ]],
 });
 

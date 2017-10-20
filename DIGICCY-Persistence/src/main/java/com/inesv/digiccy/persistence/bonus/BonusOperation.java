@@ -50,7 +50,7 @@ public class BonusOperation {
     }
 
     /**
-     * 分红业务
+     * 分润业务
      * @param bonusId
      * @param bonusName
      * @param coinId
@@ -59,14 +59,14 @@ public class BonusOperation {
     @Transactional(rollbackFor={Exception.class, RuntimeException.class})
     public void doBonus(String bonusName,Integer coinId,BigDecimal num) throws Exception{
         try {
-            //查询分红货币的全站持币量
+            //查询分润货币的全站持币量
             String queryCoin = "SELECT c.coin_no AS coinId,c.coin_name AS coinname,IFNULL(SUM(total_price),0)  AS total " +
                     "FROM t_inesv_user_balance b " +
                     "RIGHT JOIN t_inesv_coin_type c ON c.coin_no = b.coin_type " +
                     "WHERE c.coin_no = ? ";
             Object coinParam[] = {coinId};
             CoinCountDto coinCount = queryRunner.query(queryCoin,new BeanHandler<CoinCountDto>(CoinCountDto.class),coinParam);
-            //计算每个用户的分红比例和分红后获得的数量
+            //计算每个用户的分润比例和分红后获得的数量
             String queryUserBalance = "SELECT * FROM t_inesv_user_balance WHERE coin_type = ?";
             List<UserBalanceDto> userBalanceList = queryRunner.query(queryUserBalance,new BeanListHandler<>(UserBalanceDto.class),coinParam);
             for (UserBalanceDto ub:userBalanceList) {
@@ -94,7 +94,7 @@ public class BonusOperation {
     }
     
     /**
-     * 分红业务
+     * 分润业务
      * @param bonusId
      * @param bonusName
      * @param coinId
@@ -103,7 +103,7 @@ public class BonusOperation {
     @Transactional(rollbackFor={Exception.class, RuntimeException.class})
     public void doLevelBonus(Long entrustNo,BigDecimal level_price,BigDecimal sum_price, Integer coin_type,Integer rel_user_no, String rel_user_name, String rel_code, Integer user_no, String user_code, Integer entrustType, BigDecimal level_scale, String remark) throws Exception{
     	/*
-    	 * 插入分红记录
+    	 * 插入分润记录
     	 */
     	String insertBonus = "INSERT INTO t_inesv_bonus_level(bonus_source,bonus_coin,bonus_rel,bonus_user_name,bonus_rel_code,bonus_user,bonus_user_code,level_scale,bonus_type,bonus,sum_bonus,remark,date) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";

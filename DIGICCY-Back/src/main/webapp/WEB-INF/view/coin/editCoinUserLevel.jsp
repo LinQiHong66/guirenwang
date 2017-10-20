@@ -121,13 +121,13 @@ Website: http://thevectorlab.net/
            					     	<span style="color:red">注意：请填小数并且比例相加不能大于1</span>
           					 	</div> --%>
           					 	<div class="form-group" style="margin-top: 5px">
-                                    <label class="form-label">分红货币类型:</label>&nbsp;&nbsp;
+                                    <label class="form-label">分润货币类型:</label>&nbsp;&nbsp;
                                 	<select  class="input-large m-wrap" tabindex="1" id="level_type">
                					        <option value="0" selected="selected">买：交易数量*手续费*分润比例；卖：交易数量*兑换货币金额*手续费*分润比例</option>
              					   </select>
                               	</div>
           					  	<%-- <div class="form-group" style="margin-top: 5px">
-                                    <label class="form-label">分红货币类型:</label>&nbsp;&nbsp;
+                                    <label class="form-label">分润货币类型:</label>&nbsp;&nbsp;
                                 	<select  class="input-large m-wrap" tabindex="1" id="level_type">
 										<c:forEach items="${coins.data}" var="coins">
 											<option value="${coins.coin_no}" ${level.dto.level_type==coins.coin_no ? "selected" : ""}>${coins.coin_name}</option>
@@ -135,7 +135,7 @@ Website: http://thevectorlab.net/
 									</select>
                               	</div> --%>
           					  	<div class="form-group" style="margin-top: 5px">
-             					   <label class="form-label">分红状态:</label>&nbsp;&nbsp;
+             					   <label class="form-label">分润状态:</label>&nbsp;&nbsp;
              					   <select  class="input-large m-wrap" tabindex="1" id="state">
                                     	<c:if test="${level.dto.state==0}">
 											<option value="0" selected="selected">禁止</option>

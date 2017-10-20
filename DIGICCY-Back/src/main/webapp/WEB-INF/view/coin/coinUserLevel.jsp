@@ -70,7 +70,7 @@ Website: http://thevectorlab.net/
                         <li>
                             <a href="#">虚拟货币管理</a> <span class="divider">&nbsp;</span>
                         </li>
-                        <li><a href="#">虚拟货币分红</a><span class="divider-last">&nbsp;</span></li>
+                        <li><a href="#">虚拟货币分润</a><span class="divider-last">&nbsp;</span></li>
                     </ul>
                 </div>
             </div>
@@ -80,7 +80,7 @@ Website: http://thevectorlab.net/
                     <!-- BEGIN SAMPLE FORMPORTLET-->
                     <div class="widget">
                         <div class="widget-title">
-                            <h4><i class="icon-reorder"></i>虚拟货币分红</h4>
+                            <h4><i class="icon-reorder"></i>虚拟货币分润</h4>
                             <span class="tools">
                                         <a href="javascript:;" class="icon-chevron-down"></a>
                                         <a href="javascript:;" class="icon-remove"></a>

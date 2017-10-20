@@ -117,15 +117,15 @@ public class ResponseCode {
     //查询分红记录失败
     public static final String FAIL_BONUS_RECORD = "216";
 
-    public static final String FAIL_BONUS_RECORD_DESC = "查询分红记录失败";
+    public static final String FAIL_BONUS_RECORD_DESC = "查询分润记录失败";
     //查询分红中心失败
     public static final String FAIL_BONUS_INFO = "217";
 
-    public static final String FAIL_BONUS_INFO_DESC = "查询分红中心失败";
+    public static final String FAIL_BONUS_INFO_DESC = "查询分润中心失败";
     //查询话费充值记录失败
     public static final String FAIL_BILL_INFO = "218";
 
-    public static final String FAIL_BILL_INFO_DESC = "查询分红中心失败";
+    public static final String FAIL_BILL_INFO_DESC = "查询分润中心失败";
     //充值金额不能小于0
     public static final String FAIL_PRICE = "219";
 
@@ -289,11 +289,11 @@ public class ResponseCode {
     
     public static final String FAIL_COIN_LEVEL_PROPORTION_INFO_CODE = "416";
     
-    public static final String FAIL_COIN_LEVEL_PROPORTION_INFO_CODE_DESC = "查询币种等级分红百分比失败";
+    public static final String FAIL_COIN_LEVEL_PROPORTION_INFO_CODE_DESC = "查询币种等级分润百分比失败";
     
     public static final String FAIL_COIN_LEVEL_PROPORTION_COINNO_INFO_CODE = "417";
     
-    public static final String FAIL_COIN_LEVEL_PROPORTION_COINNO_INFO_CODE_INFO_CODE_DESC = "根据查询币种等级分红百分比失败"; 
+    public static final String FAIL_COIN_LEVEL_PROPORTION_COINNO_INFO_CODE_INFO_CODE_DESC = "根据查询币种等级分润百分比失败"; 
     
     public static final String FAIL_COIN_LEVEL_PROPORTION_INSERT_INFO_CODE = "418";
     

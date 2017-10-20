@@ -24,7 +24,7 @@ public class BonusLevelOper {
 		try {
 			queryRunner.update(sql,params);
 		} catch (SQLException e) {
-			logger.error("新增三级分销分红记录失败");
+			logger.error("新增三级分销分润记录失败");
 			e.printStackTrace();
 		}
 	}

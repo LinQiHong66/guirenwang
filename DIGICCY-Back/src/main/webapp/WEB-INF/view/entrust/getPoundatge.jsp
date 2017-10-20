@@ -58,7 +58,7 @@ Website: http://thevectorlab.net/
                             <a href="#"><i class="icon-home"></i></a><span class="divider">&nbsp;</span>
                         </li>
                         <li>
-                            <a href="#">手续费记录管理</a> <span class="divider">&nbsp;</span>
+                            <a href="#">充值提现管理</a> <span class="divider">&nbsp;</span>
                         </li>
                         <li><a href="#">手续费记录</a><span class="divider-last">&nbsp;</span></li>
                     </ul>

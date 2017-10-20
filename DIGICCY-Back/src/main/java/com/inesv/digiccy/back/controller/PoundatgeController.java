@@ -15,24 +15,26 @@ import com.inesv.digiccy.validata.PoundatgeValidata;
 @Controller
 @RequestMapping("/poundatge")
 public class PoundatgeController {
-	
+
 	@Autowired
 	PoundatgeValidata poundatgeValidata;
-	
-	@RequestMapping(value = "goto",method = RequestMethod.GET)
-	public String gotoVeiw(){
+
+	@RequestMapping(value = "goto", method = RequestMethod.GET)
+	public String gotoVeiw() {
 		return "entrust/getPoundatge";
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(value="queryAll",method = RequestMethod.GET)
-	public Map<String,Object> queryAll(){
-		return poundatgeValidata.queryAll();
+	@RequestMapping(value = "queryAll", method = RequestMethod.GET)
+	public Map<String, Object> queryAll(int curPage, int pageItem, String userOrgCode, String phone, String username,
+			String startDate, String endDate) {
+		return poundatgeValidata.queryAll(curPage, pageItem, userOrgCode, phone, username, startDate, endDate);
 	}
-	
-	//导出excel
-	@RequestMapping(value="/getExcel", method=RequestMethod.POST)
-	public void getExcel(HttpServletResponse response){
-		poundatgeValidata.getExcel(response);
+
+	// 导出excel
+	@RequestMapping(value = "/getExcel", method = RequestMethod.POST)
+	public void getExcel(HttpServletResponse response, String userOrgCode, String phone, String username,
+			String startDate, String endDate) {
+		poundatgeValidata.getExcel(response, userOrgCode, phone, username, startDate, endDate);
 	}
 }

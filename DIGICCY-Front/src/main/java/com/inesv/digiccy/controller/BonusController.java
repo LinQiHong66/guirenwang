@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * create by huguokai date:2016年11月14日17:41:14
- * 分红记录控制层
+ * 分润记录控制层
  */
 @Controller
 @RequestMapping("/bonus")
@@ -28,12 +28,12 @@ public class BonusController {
     private BonusValidata bonusValidata;
 
     /**
-     * 查询分红记录
+     * 查询分润记录
      * @param userNo
      * @return Json
      */
     /*@AutoDocMethod(author = DeveloperType.HUGUOKAI, createTime = "2016-12-2",
-            cver = VersionType.V100, name = "分红记录接口", description = "分红记录接口",
+            cver = VersionType.V100, name = "分润记录接口", description = "分红记录接口",
             model = ModelType.BONUS, dtoClazz = BaseRes.class,
             reqParams = {"userNo"},//有参才需要加的
             progress = ProgressType.FINISHED)
@@ -45,12 +45,12 @@ public class BonusController {
     }
 
     /**
-     * 查询分红中心
+     * 查询分润中心
      * @param userNo
      * @return Json
      */
     /*@AutoDocMethod(author = DeveloperType.HUGUOKAI, createTime = "2016-12-2",
-            cver = VersionType.V100, name = "分红中心接口", description = "分红中心接口",
+            cver = VersionType.V100, name = "分润中心接口", description = "分红中心接口",
             model = ModelType.BONUS, dtoClazz = BaseRes.class,
             reqParams = {"userNo"},//有参才需要加的
             progress = ProgressType.FINISHED)

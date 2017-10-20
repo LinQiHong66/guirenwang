@@ -59,7 +59,7 @@ Website: http://thevectorlab.net/
             <div class="row-fluid">
                 <div class="span12">
                     <h3 class="page-title">
-                       虚拟货币分红信息
+                       虚拟货币分润信息
                         <%--<small>simple form layouts</small>--%>
                     </h3>
                     <ul class="breadcrumb">
@@ -67,9 +67,9 @@ Website: http://thevectorlab.net/
                             <a href="#"><i class="icon-home"></i></a><span class="divider">&nbsp;</span>
                         </li>
                         <li>
-                            <a href="#">虚拟货币分红信息</a> <span class="divider">&nbsp;</span>
+                            <a href="#">虚拟货币分润信息</a> <span class="divider">&nbsp;</span>
                         </li>
-                        <li><a href="#">新增货币分红信息</a><span class="divider-last">&nbsp;</span></li>
+                        <li><a href="#">新增货币分润信息</a><span class="divider-last">&nbsp;</span></li>
                     </ul>
                 </div>
             </div>
@@ -79,7 +79,7 @@ Website: http://thevectorlab.net/
                     <!-- BEGIN SAMPLE FORMPORTLET-->
                     <div class="widget">
                         <div class="widget-title">
-                            <h4><i class="icon-reorder"></i>新增货币分红信息</h4>
+                            <h4><i class="icon-reorder"></i>新增货币分润信息</h4>
                             <span class="tools">
                                         <a href="javascript:;" class="icon-chevron-down"></a>
                                         <a href="javascript:;" class="icon-remove"></a>
@@ -122,13 +122,13 @@ Website: http://thevectorlab.net/
            					     	<span style="color:red">注意：请填小数并且五代比例相加不能大于1</span>
           					 	</div> -->
           					  	<div class="form-group" style="margin-top: 5px">
-                                    <label class="form-label">分红货币类型:</label>&nbsp;&nbsp;
+                                    <label class="form-label">分润货币类型:</label>&nbsp;&nbsp;
                                 	<select  class="input-large m-wrap" tabindex="1" id="level_type">
                					        <option value="0" selected="selected">买：交易数量*手续费*分润比例；卖：交易数量*兑换货币金额*手续费*分润比例</option>
              					   </select>
                               	</div>
                               	<%-- <div class="form-group" style="margin-top: 5px">
-                                    <label class="form-label">分红货币类型:</label>&nbsp;&nbsp;
+                                    <label class="form-label">分润货币类型:</label>&nbsp;&nbsp;
                                 	<select  class="input-large m-wrap" tabindex="1" id="level_type">
 										<c:forEach items="${coin.data}" var="coin">
 											<option value="${coin.coin_no}">${coin.coin_name}</option>
@@ -136,7 +136,7 @@ Website: http://thevectorlab.net/
 									</select>
                               	</div> --%>
           					  	<div class="form-group" style="margin-top: 5px">
-             					   <label class="form-label">分红状态:</label>&nbsp;&nbsp;
+             					   <label class="form-label">分润状态:</label>&nbsp;&nbsp;
              					   <select  class="input-large m-wrap" tabindex="1" id="state">
                					        <option value="0" selected="selected">关闭</option>
                					        <option value="1">启用</option>

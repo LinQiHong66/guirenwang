@@ -26,7 +26,7 @@ public class CoinLevelProportionOper {
 		try {
 			queryRunner.update(sql,params);
 		} catch (SQLException e) {
-			logger.error("新增货币等级分红比例失败");
+			logger.error("新增货币等级分润比例失败");
 			e.printStackTrace();
 		}
 	}
@@ -38,7 +38,7 @@ public class CoinLevelProportionOper {
 		try {
 			queryRunner.update(sql, params);
 		} catch (SQLException e) {
-			logger.error("修改货币等级分红比例失败");
+			logger.error("修改货币等级分润比例失败");
 			e.printStackTrace();
 		}
 	}
@@ -49,7 +49,7 @@ public class CoinLevelProportionOper {
 		try {
 			queryRunner.update(sql, params);
 		} catch (SQLException e) {
-			logger.error("修改货币等级分红比例失败");
+			logger.error("修改货币等级分润比例失败");
 			e.printStackTrace();
 		}
 	}

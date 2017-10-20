@@ -94,7 +94,7 @@ public class CoinLevelProportionController {
 			map = validata.insert(levelDto);
 		}else {
 			map.put("code","201");
-			map.put("desc","已有该货币的分红比例！");
+			map.put("desc","已有该货币的分润比例！");
 		}
 		return map;
 		

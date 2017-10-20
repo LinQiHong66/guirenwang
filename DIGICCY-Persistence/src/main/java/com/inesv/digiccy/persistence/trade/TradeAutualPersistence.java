@@ -262,9 +262,9 @@ public class TradeAutualPersistence {
 			Object sellPoundageParam[] = {sellEntrust.getUser_no(),sellUserDto.getUsername(),sellUserDto.getOrg_code(),sellEntrust.getEntrust_type(),sellEntrust.getEntrust_coin(),sellPoundatgePrice,sellSumPrice,new Date(),sellEntrust.getConvert_coin()};
 			queryRunner.update(insertSellPoundage,sellPoundageParam);
 		}
-		//买家分红
+		//买家分润
 		userLevelDetailed(buyEntrust.getUser_no(),buyEntrust.getEntrust_coin(),tradeNum.multiply(buy_poundatge),buyPrice.multiply(buy_poundatge),tradeNum.multiply(buy_poundatge),buyEntrust.getId(),buyEntrust.getEntrust_type(),buyEntrust.getEntrust_coin());
-		//卖家分红
+		//卖家分润
 		if(sellEntrust.getConvert_coin() == 0) {
 			userLevelDetailed(sellEntrust.getUser_no(),sellEntrust.getEntrust_coin(),tradeNum.multiply(sell_poundatge),sellPrice.multiply(sell_poundatge),sellPrice.multiply(tradeNum).multiply(sell_poundatge),sellEntrust.getId(),sellEntrust.getEntrust_type(),0);
 		}else {
@@ -277,16 +277,16 @@ public class TradeAutualPersistence {
 	}
 	
 	/*
-	 * 交易分红
+	 * 交易分润
 	 */
 	public void userLevelDetailed(Integer user_no, Integer coin_no, BigDecimal tradeNum, BigDecimal entrustPrice, BigDecimal poundatgePrice, Long entrustNo, Integer entrustType, Integer levelCoinType) throws Exception{
-		//查询币种相应上级分红比例
-		CoinLevelProportionDto coinLevelProportionDto = queryByCoinNo(Long.valueOf(coin_no)); //货币分红比例
+		//查询币种相应上级分润比例
+		CoinLevelProportionDto coinLevelProportionDto = queryByCoinNo(Long.valueOf(coin_no)); //货币分润比例
 		ContactDto contactDto = queryByContact(); //官方账号
 		if(contactDto.getAuthority_account() == null) {
 			contactDto.setAuthority_account("*");
 		}
-		//上级分红金额
+		//上级分润金额
 		BigDecimal level_one = null;
 		BigDecimal level_two = null;
 		BigDecimal level_three = null;
@@ -305,8 +305,8 @@ public class TradeAutualPersistence {
 		}else {
 			return;
 		}
-		BigDecimal sum_level_price = poundatgePrice.setScale(6,BigDecimal.ROUND_DOWN);//总分红金额
-		//分红逻辑
+		BigDecimal sum_level_price = poundatgePrice.setScale(6,BigDecimal.ROUND_DOWN);//总分润金额
+		//分润逻辑
 		InesvUserDto levelUserDto = new InesvUserDto();
 		InesvUserDto userDto = new InesvUserDto();
 		ResultFunctionDto functionDto = new ResultFunctionDto();
@@ -316,50 +316,50 @@ public class TradeAutualPersistence {
 			if(i == 0) {
 				userNo = user_no;
 			}
-			userDto = queryUserInfoByUserNo(userNo);//产生分红用户
+			userDto = queryUserInfoByUserNo(userNo);//产生分润用户
 			if(i != 2) {
-				levelUserDto = queryUserByID(userNo);//获得分红用户
+				levelUserDto = queryUserByID(userNo);//获得分润用户
 				if(levelUserDto == null || levelUserDto.getUser_no() == userNo || levelUserDto.getOrg_type() == 3) {
 					break;
 				}
 			}
-			if(i == 0) {//经纪人1分红
+			if(i == 0) {//经纪人1分润
 				if(levelUserDto.getOrg_type() == 2) {//经纪人
 					already_level_price += level_one.doubleValue();
-					bonusOperation.doLevelBonus(entrustNo, level_one, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_one(),"经纪人1-交易分红");
+					bonusOperation.doLevelBonus(entrustNo, level_one, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_one(),"经纪人1-交易分润");
 				}
 				if(levelUserDto.getOrg_type() == 1) {//子机构
 					i = 2;
 					already_level_price += level_three.doubleValue();
-					bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_three(),"子机构-交易分红");
+					bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_three(),"子机构-交易分润");
 				}
 				if(levelUserDto.getOrg_type() == 0) {//机构
 					i = 4;
 					already_level_price += level_four.doubleValue();
-					bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分红");
+					bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分润");
 				}
 				userNo = levelUserDto.getUser_no();
 				continue;
 			} 
-			if(i == 1) {//经纪人2分红
+			if(i == 1) {//经纪人2分润
 				if(levelUserDto.getOrg_type() == 2) {//经纪人
 					already_level_price += level_two.doubleValue();
-					bonusOperation.doLevelBonus(entrustNo, level_two, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_two(),"经纪人2-交易分红");
+					bonusOperation.doLevelBonus(entrustNo, level_two, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_two(),"经纪人2-交易分润");
 				}
 				if(levelUserDto.getOrg_type() == 1) {//子机构
 					i = 2;
 					already_level_price += level_three.doubleValue();
-					bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_three(),"子机构-交易分红");
+					bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_three(),"子机构-交易分润");
 				}
 				if(levelUserDto.getOrg_type() == 0) {//机构
 					i = 4;
 					already_level_price += level_three.doubleValue();
-					bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分红");
+					bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分润");
 				}
 				userNo = levelUserDto.getUser_no();
 				continue;
 			}
-			if(i == 2) {//子机构分红
+			if(i == 2) {//子机构分润
 				//函数调用
 				functionDto = queryByFunction(userNo,2);
 				if(functionDto  == null || functionDto.getLevel_user_no() == null) {
@@ -371,23 +371,23 @@ public class TradeAutualPersistence {
 				}
 				if(levelUserDto.getOrg_type() == 1) {
 					already_level_price += level_three.doubleValue();
-					bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, levelCoinType, functionDto.getLevel_user_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_three(),"子机构-交易分红");
+					bonusOperation.doLevelBonus(entrustNo, level_three, sum_level_price, levelCoinType, functionDto.getLevel_user_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_three(),"子机构-交易分润");
 				}if(levelUserDto.getOrg_type() == 0) {
 					i = 4;
 					already_level_price += level_four.doubleValue();
-					bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, functionDto.getLevel_user_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分红");
+					bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, functionDto.getLevel_user_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分润");
 				}
 				userNo = levelUserDto.getUser_no();
 				continue;
 			}
-			if(i == 3) {//机构分红
+			if(i == 3) {//机构分润
 				already_level_price += level_four.doubleValue();
-				bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分红");
+				bonusOperation.doLevelBonus(entrustNo, level_four, sum_level_price, levelCoinType, levelUserDto.getUser_no(), userDto.getUsername(), levelUserDto.getOrg_code(), userDto.getUser_no(), userDto.getOrg_code(), entrustType,coinLevelProportionDto.getLevel_four(),"机构-交易分润");
 				userNo = levelUserDto.getUser_no();
 				continue;
 			}
 		}
-			//官方账号分红
+			//官方账号分润
 			InesvUserDto authorityUserDto = queryUserInfoByPhone(contactDto.getAuthority_account());//官方账号的指定用户
 			if(authorityUserDto == null) {
 				return;
@@ -396,7 +396,7 @@ public class TradeAutualPersistence {
 					authorityUserDto.setOrg_code("");
 				}
 				authority_level = sum_level_price.subtract(new BigDecimal(already_level_price.toString()));
-				bonusOperation.doLevelBonus(entrustNo, authority_level, sum_level_price, levelCoinType, authorityUserDto.getUser_no(),"",authorityUserDto.getOrg_code(), 0, "", entrustType,new BigDecimal("0"),"官方账号-交易分红");//剩余的给官方账号
+				bonusOperation.doLevelBonus(entrustNo, authority_level, sum_level_price, levelCoinType, authorityUserDto.getUser_no(),"",authorityUserDto.getOrg_code(), 0, "", entrustType,new BigDecimal("0"),"官方账号-交易分润");//剩余的给官方账号
 			}
 	}
 	
@@ -628,7 +628,7 @@ public class TradeAutualPersistence {
 	}
 
 	/*
-	 * 根据货币ID 查询货币分红比例
+	 * 根据货币ID 查询货币分润比例
 	 */
 	public CoinLevelProportionDto queryByCoinNo(Long coin_no) throws Exception{
 		String sql = "select * from t_coin_level_proportion where coin_no = ? and state != 2";
