@@ -244,7 +244,7 @@ public class QueryRmbRechargeInfo {
       */
       public List<RmbRechargeDto> getRmbRechargeDtoList(){
     	  List<RmbRechargeDto> list = new ArrayList();
-          String sql = "SELECT SUM(recharge_price) AS recharge_price, DATE_FORMAT(DATE,'%Y-%m-%d') AS attr3 FROM t_inesv_rmb_recharge WHERE DATE > DATE_SUB(NOW(),INTERVAL 30 DAY) AND state = 1 GROUP BY attr3";
+          String sql = "SELECT SUM(recharge_price) AS recharge_price, DATE_FORMAT(DATE,'%Y-%m-%d') AS attr3 FROM t_inesv_rmb_recharge WHERE DATE > DATE_SUB(NOW(),INTERVAL 30 DAY) AND state = 1 OR state = 2 GROUP BY attr3";
           try {
         	  list =  (List<RmbRechargeDto>)queryRunner.query(sql, new BeanListHandler(RmbRechargeDto.class));
           } catch (SQLException e) {

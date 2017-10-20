@@ -100,7 +100,7 @@ Website: http://thevectorlab.net/
   						</div>
   						<fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">
   							<legend></legend>
-  						30天货币新增持币量
+  						15天货币持币量统计详情
   						<select id="coinId">
 							<c:forEach items="${coins}" var="coin">
 								<option value="${coin.coin_no}">${coin.coin_name}</option>
@@ -175,7 +175,6 @@ Website: http://thevectorlab.net/
 $("#coinId").live('change',
 		function() {
 			var coin_no = $("#coinId").val();
-			alert(coin_no);
 			$.ajax({
 				url:'/coin/getGuirenPicture.do',
 				type : 'POST',
@@ -187,17 +186,21 @@ $("#coinId").live('change',
 					
 					var arr_date = new Array();
 					var arr_num = new Array();
+					var arr_trade = new Array();
+					var arr_recharge = new Array();
 					
 					$.each(data.data,function(a,b){
 						arr_date.push(b.dates);
 						arr_num.push(b.total_price);
+						arr_trade.push(b.attr1);
+						arr_recharge.push(b.attr2);
 					});
 					
 					var myChart = echarts.init(document.getElementById('guirenPicture'));
-					var option = {
+					option = {
 							title: {
-				                text: coin_no + '新增持币量详情'
-				            },
+						        text: coin_no + '-货币统计详情图'
+						    },
 						    tooltip: {
 						        trigger: 'axis',
 						        axisPointer: {
@@ -216,7 +219,7 @@ $("#coinId").live('change',
 						        }
 						    },
 						    legend: {
-						        data:['蒸发量']
+						        data:['持币量','卖出币量','充值币量']
 						    },
 						    xAxis: [
 						        {
@@ -227,15 +230,39 @@ $("#coinId").live('change',
 						            }
 						        }
 						    ],
-						    yAxis: {
-						        type: 'value'
-						    },
+						    yAxis: [
+						        {
+						            type: 'value',
+						            name: '持币量',
+						            axisLabel: {
+						                formatter: '{value} '
+						            }
+						        },
+						        {
+						            type: 'value',
+						            name: '充值量',
+						            axisLabel: {
+						                formatter: '{value} '
+						            }
+						        }
+						    ],
 						    series: [
 						        {
-						            name:'用户新增币量',
+						            name:'持币量',
 						            type:'bar',
 						            data:arr_num
-						        }
+						        },
+						        {
+						            name:'卖出币量',
+						            type:'bar',
+						            data:arr_trade
+						        },
+						        {
+						            name:'充值币量',
+						            type:'line',
+						            yAxisIndex: 1,
+						            data:arr_recharge
+						        } 
 						    ]
 						};
 				        // 使用刚指定的配置项和数据显示图表。
@@ -247,6 +274,64 @@ $("#coinId").live('change',
 			});
 			
 });
+
+
+
+/* option = {
+		title: {
+	        text: coin_no + '-货币统计详情图'
+	    },
+	    tooltip: {
+	        trigger: 'axis',
+	        axisPointer: {
+	            type: 'cross',
+	            crossStyle: {
+	                color: '#999'
+	            }
+	        }
+	    },
+	    toolbox: {
+	        feature: {
+	            dataView: {show: true, readOnly: false},
+	            magicType: {show: true, type: ['line', 'bar']},
+	            restore: {show: true},
+	            saveAsImage: {show: true}
+	        }
+	    },
+	    legend: {
+	        data:['蒸发量','降水量','平均温度']
+	    },
+	    xAxis: [
+	        {
+	            type: 'category',
+	            data: arr_date,
+	            axisPointer: {
+	                type: 'shadow'
+	            }
+	        }
+	    ],
+	    yAxis: {
+	        type: 'value'
+	    },
+	    series: [
+	        {
+	            name:'持币量',
+	            type:'bar',
+	            data:arr_num
+	        },
+	        {
+	            name:'交易币量',
+	            type:'bar',
+	            data:arr_trade
+	        },
+	        {
+	            name:'充值币量',
+	            type:'line',
+	            yAxisIndex: 1,
+	            data:arr_recharge
+	        }
+	    ]
+	}; */
 </script>
 </body>
 <!-- END BODY -->

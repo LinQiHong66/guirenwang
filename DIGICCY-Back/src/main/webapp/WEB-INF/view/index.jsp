@@ -150,7 +150,23 @@ Website: http://thevectorlab.net/
 		            title: {
 		                text: '用户30天注册报表'
 		            },
-		            tooltip: {},
+		            tooltip: {
+				        trigger: 'axis',
+				        axisPointer: {
+				            type: 'cross',
+				            crossStyle: {
+				                color: '#999'
+				            }
+				        }
+				    },
+				    toolbox: {
+				        feature: {
+				            dataView: {show: true, readOnly: false},
+				            magicType: {show: true, type: ['line', 'bar']},
+				            restore: {show: true},
+				            saveAsImage: {show: true}
+				        }
+				    },
 		            legend: {
 		                data:['用户量']
 		            },
@@ -190,7 +206,7 @@ Website: http://thevectorlab.net/
 			var myChart = echarts.init(document.getElementById('tradePicture'));
 			var option = {
 					title: {
-		                text: '30天交易详情'
+		                text: '用户30天交易详情'
 		            },
 				    tooltip: {
 				        trigger: 'axis',
@@ -210,7 +226,7 @@ Website: http://thevectorlab.net/
 				        }
 				    },
 				    legend: {
-				        data:['蒸发量']
+				        data:['交易金额']
 				    },
 				    xAxis: [
 				        {
@@ -341,7 +357,7 @@ Website: http://thevectorlab.net/
 				    },
 				    series: [
 				        {
-				            name:'充值',
+				            name:'提现',
 				            type:'line',
 				            stack: '金额',
 				            data:arr_num

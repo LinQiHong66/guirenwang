@@ -406,7 +406,7 @@ public class CoinValidata {
 		return map;
 	}
 	
-	public Map<String, Object> getGuirenPicture(Integer coin){
+	public Map<String, Object> getGuirenPicture(Integer coin) throws Exception{
 		List<UserBalanceDto> balanceList = queryUserBalanceInfo.queryUserCoinCount(coin);
 		Map<String, Object> map = new HashMap<String, Object>();
 			map.put("data", balanceList);

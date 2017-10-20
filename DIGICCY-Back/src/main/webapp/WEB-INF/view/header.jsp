@@ -8,7 +8,7 @@
 			<div class="container-fluid">
 				<!-- BEGIN LOGO -->
 				<a class="brand" href="#">
-				    <img src="/app/img/logo.png" alt="Admin Lab" />
+				    <img src="/app/img/guirenLogo.png" alt="Admin Lab" />
 				</a>
 				<!-- END LOGO -->
 				<!-- BEGIN RESPONSIVE MENU TOGGLER -->

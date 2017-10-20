@@ -354,12 +354,9 @@ public class RmbRechargeValidate {
 	public Map<String, Object> getRechargePicture() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<RmbRechargeDto> rechargeList = new ArrayList<RmbRechargeDto>();
-		//List<RmbWithdrawDto> withDrawList = new ArrayList<RmbWithdrawDto>();
 		try {
 			rechargeList = queryRmbRechargeInfo.getRmbRechargeDtoList();
-			//withDrawList = queryRmbWithdrawInfo.getRmbWithdrawDtoList();
 			map.put("data",rechargeList);
-			//map.put("data2",withDrawList);
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		} catch (Exception e) {
@@ -371,7 +368,7 @@ public class RmbRechargeValidate {
 	}
 
 	/**
-	 * 首页RMB充值统计
+	 * 首页RMB提现统计
 	 * @return
 	 */
 	public Map<String, Object> getWithdrawPicture() {
