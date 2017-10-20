@@ -28,6 +28,17 @@ public class PoundatgeController {
 	@RequestMapping(value = "queryAll", method = RequestMethod.GET)
 	public Map<String, Object> queryAll(int curPage, int pageItem, String userOrgCode, String phone, String username,
 			String startDate, String endDate) {
+		try {
+			if (userOrgCode.equals(new String(userOrgCode.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				userOrgCode = new String(userOrgCode.getBytes("iso-8859-1"), "utf-8");
+			}
+			if (username.equals(new String(username.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				username = new String(username.getBytes("iso-8859-1"), "utf-8");
+			}
+			System.out.println(userOrgCode);
+		} catch (Exception e) {
+
+		}
 		return poundatgeValidata.queryAll(curPage, pageItem, userOrgCode, phone, username, startDate, endDate);
 	}
 

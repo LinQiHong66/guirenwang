@@ -28,8 +28,9 @@ public class PoundatgeValidata {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<PoundatgeDto> list = new ArrayList<PoundatgeDto>();
 		list = queryPoundatge.queryAll(curPage, pageItem, userOrgCode, phone, username, startDate, endDate);
-		if (list != null || list.size() > 0) {
-			map.put("data", list);
+		if (list != null) {
+			map.put("rows", list);
+			map.put("total", queryPoundatge.getSize(userOrgCode, phone, username, startDate, endDate));
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		} else {
@@ -42,7 +43,14 @@ public class PoundatgeValidata {
 	public void getExcel(HttpServletResponse response, String userOrgCode, String phone, String username,
 			String startDate, String endDate) {
 		Map<String, List<String>> contact = new HashMap<String, List<String>>();
-		List<PoundatgeDto> list = queryPoundatge.queryAll(1,100, userOrgCode, phone, username, startDate, endDate);
+		int size = 0;
+		try {
+			long lsize = queryPoundatge.getSize(userOrgCode, phone, username, startDate, endDate);
+			size = Integer.parseInt(lsize + "");
+		} catch (Exception e) {
+
+		}
+		List<PoundatgeDto> list = queryPoundatge.queryAll(1, size, userOrgCode, phone, username, startDate, endDate);
 		String title1 = "用户ID";
 		String title2 = "用户账号";
 		String title3 = "用户机构编码";

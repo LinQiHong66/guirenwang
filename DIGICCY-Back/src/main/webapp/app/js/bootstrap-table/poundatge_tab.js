@@ -39,5 +39,132 @@
 //});
 
 $("#poundatge_table").bootstrapTable({
-	
+	// 请求方法
+	method : 'get',
+	// contentType : "application/x-www-form-urlencoded",
+	// 是否显示行间隔色
+	striped : true,
+	// 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+	cache : false,
+	// 是否显示分页（*）
+	pagination : true,
+	// 是否启用排序
+	sortable : false,
+	// 排序方式
+	// sortOrder : "asc",
+	// 初始化加载第一页，默认第一页
+	// 我设置了这一项，但是貌似没起作用，而且我这默认是0,- -
+	// pageNumber:1,
+	// 每页的记录行数（*）
+	pageSize : 10,
+	// 可供选择的每页的行数（*）
+	pageList : [ 10, 25, 50, 100 ],
+	// 这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
+	url : "/poundatge/queryAll.do",
+	// 默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order
+	// Else
+	// queryParamsType:'',
+	// //查询参数,每次调用是会带上这个参数，可自定义
+	queryParams : function(params) {
+
+		var curPageNum = params.offset / params.limit + 1;
+		var perSize = params.limit;
+
+		var userOrgCode = $('#userOrgCode').val();
+		var phone = $('#phone').val();
+		var username = $('#username').val();
+		var startDate = $('#startDate').val();
+		var endDate = $('#endDate').val();
+
+		var param = {
+			curPage : curPageNum,
+			pageItem : perSize,
+			userOrgCode : userOrgCode,
+			phone : phone,
+			username : username,
+			startDate : startDate,
+			endDate : endDate
+		};
+		return param;
+	},
+	// 分页方式：client客户端分页，server服务端分页（*）
+	sidePagination : "server",
+	// 是否显示搜索
+	search : false,
+	// Enable the strict search.
+	strictSearch : true,
+	// Indicate which field is an identity field.
+	idField : "id",
+	columns : [ [// 列
+	{
+		title : '用户账号',
+		field : 'attr2',
+		width : 60,
+		align : 'center'
+	}, {
+		title : '姓名',
+		field : 'user_name',
+		width : 60,
+		align : 'center'
+	}, {
+		title : '用户编号',
+		field : 'user_code',
+		width : 60,
+		align : 'center'
+	}, {
+		title : '创建时间',
+		field : 'date',
+		width : 60,
+		align : 'center'
+	}, {
+		title : '手续费货币类型',
+		field : 'attr1',
+		width : 60,
+		align : 'center'
+	}, {
+		title : '交易货币类型',
+		field : 'attr3',
+		width : 60,
+		align : 'center'
+	}, {
+		title : '手续费',
+		field : 'money',
+		width : 60,
+		align : 'center'
+	}, {
+		title : '交易金额',
+		field : 'sum_money',
+		width : 60,
+		align : 'center'
+	}, {
+		title : '类型',
+		field : 'optype',
+		width : 60,
+		align : 'center',
+		formatter : function(value, row, index) {
+			// (0:买，1:卖，2:充值，3:提现
+			var e;
+			switch (value) {
+			case 0:
+				e = "买";
+				break;
+			case 1:
+				e = "卖"
+				break;
+			case 2:
+				e = "充值";
+				break;
+			case 3:
+				e = "提现";
+				break;
+			}
+			return e;
+		}
+	} ] ],
+	pagination : true
 });
+function selectPound() {
+	$("#poundatge_table").bootstrapTable('refreshOptions', {
+		curPage : 1
+	})
+}
