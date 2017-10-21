@@ -71,10 +71,14 @@ public class FicController {
         return map;
     }
 
+    /**
+     *获取虚拟币提现信息
+     * @return
+     */
     @RequestMapping(value = "getWithdraw",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> getWithdraw(String userName, String coinTypeSearch, String startData,String endData){
-        Map<String,Object> map = ficTradeValidata.queryAllFicWithdrawInfo(userName, coinTypeSearch, startData, endData);
+    public Map<String,Object> getWithdraw(String userCode, String phone, String realName,String state,String coinType,String startData,String endData,pageDto page){
+        Map<String,Object> map = ficTradeValidata.queryAllFicWithdrawInfo(userCode, phone, realName, state, coinType, startData, endData, page);
         return map;
     }
     
@@ -84,7 +88,7 @@ public class FicController {
     } 
     
     @RequestMapping(value = "excelWithdraw", method=RequestMethod.POST)
-    public void getWithdrawExcel(HttpServletResponse response, String userName, String coinTypeSearch, String startData,String endData){
-    	ficTradeValidata.getWithdrawExcel(response, userName, coinTypeSearch, startData, endData);
+    public void getWithdrawExcel(HttpServletResponse response,String userCode, String phone, String realName,String state,String coinType,String startData,String endData){
+    	ficTradeValidata.getWithdrawExcel(response, userCode, phone, realName, state, coinType, startData, endData);
     }
 }

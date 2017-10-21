@@ -2,6 +2,8 @@ package com.inesv.digiccy.query;
 
 import com.inesv.digiccy.dto.BuyEntrustDepthDto;
 import com.inesv.digiccy.dto.EntrustDto;
+import com.inesv.digiccy.dto.FicWithdrawDto;
+import com.inesv.digiccy.dto.pageDto;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -172,58 +175,142 @@ public class QueryEntrustInfo {
         }
         return list;
     }
-    public Long getEntrustSize(String userName, String state, String startDate, String endDate){
-    	String sql = "select count(*) as count from t_inesv_entrust ";
-        ArrayList<Object> paramArr = new ArrayList<>();
-        if(userName != null && !"-1".equals(userName) && !"".equals(userName)){
-        	sql += sql.contains("where")?" and user_no=?":" where user_no=?";
-        	paramArr.add(userName);
-        }
-        if(state != null && !"".equals(state) && !"-1".equals(state)){
-        	sql += sql.contains("where")?" and state=?":" where state=?";
-        	paramArr.add(state);
-        }
-        if(startDate != null && !"".equals(startDate) && endDate != null && !"".equals(endDate)){
-        	sql += sql.contains("where")?" and date between ? and ?":" where date between ? and ?";
-        	paramArr.add(Date.valueOf(startDate));
-        	paramArr.add(Date.valueOf(endDate));
-        }
-        try {
-			return (Long) queryRunner.query(sql, new ColumnListHandler<>("count"), paramArr.toArray(new Object[]{})).get(0);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return new Long("0");
+    
+    public Integer getEntrustSize(String userCode, String phone, String realName,String state,String startData,String endData ){
+    	   EntrustDto entrustDto = null;
+ 
+           String sql="SELECT COUNT(*) AS count FROM  t_inesv_entrust e INNER JOIN t_inesv_user u ON e.user_no = u.user_no " + 
+           		  	  " INNER JOIN t_inesv_coin_type c ON c.coin_no = e.entrust_coin";
+        
+           ArrayList<Object> paramArr = new ArrayList<>();
+           
+           if(userCode != null && !"".equals(userCode) && !"-1".equals(userCode)) {
+           	try {
+   				userCode = new String(userCode.getBytes("iso-8859-1"),"utf-8");
+   			} catch (UnsupportedEncodingException e) {
+   				// TODO Auto-generated catch block
+   				e.printStackTrace();
+   			}
+           	String str = sql.contains("where")?" and u.org_code like ?":" where u.org_code like ?";
+           	sql += str;
+           	paramArr.add("%"+userCode+"%");
+           }
+           if(phone != null && !"".equals(phone) && !"-1".equals(phone)) {
+           	String str = sql.contains("where")?" and u.username like ?":" where u.username like ?";
+           	sql += str;
+           	paramArr.add("%"+phone+"%");
+           }
+           
+           if(realName != null && !"".equals(realName) && !"-1".equals(realName)) {
+           	try {
+           		realName = new String(realName.getBytes("iso-8859-1"),"utf-8");
+   			} catch (UnsupportedEncodingException e) {
+   				// TODO Auto-generated catch block
+   				e.printStackTrace();
+   			}
+           	String str = sql.contains("where")?" and u.real_name like ?":" where u.real_name like ?";
+           	sql += str;
+           	paramArr.add("%"+realName+"%");
+           }
+           
+           
+           if(state != null && !"".equals(state) && !"-1".equals(state)) {
+           	String str = sql.contains("where")?" and e.state like ?":" where e.state like ?";
+           	sql += str;
+           	paramArr.add("%"+state+"%");
+           }
+    
+    
+           if(startData != null && !"".equals(startData) && endData != null && !"".equals(endData)){
+           	String str = sql.contains("where")?" and w.date between ? and ?":" where w.date between ? and ?";
+           	sql += str;
+           	Date sdate = Date.valueOf(startData);
+           	Date edate = Date.valueOf(endData);
+           	paramArr.add(sdate);
+           	paramArr.add(edate);
+           }
+  
+           
+           try {
+           	System.out.println("**************sql**********: "+sql);
+           	entrustDto = queryRunner.query(sql, new BeanHandler<>(EntrustDto.class),paramArr.toArray(new Object[]{}));
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+    
+           return  entrustDto.getCount();
     }
-    public List<EntrustDto> queryEntrustInfoAll(String userName, String state, String startDate, String endDate, Long pageItem, Integer pageNum){
+    public List<EntrustDto> queryEntrustInfoAll(String userCode, String phone, String realName,String state,String startData,String endData,pageDto page){
         List<EntrustDto> entrustDtoList = new ArrayList<>();
-        String sql = "select * from t_inesv_entrust ";
-        String last = " limit ?,?";
-        Long startItem = pageItem*(pageNum-1);
+ 
+        String limitstr = " limit ?,? ";
+        Integer firstRecord = page.getFirstRecord();
+        Integer pageSize = page.getPageSize();
+        String sql="SELECT e.id AS id,u.username AS userName,u.real_name AS realName,u.org_code AS userCode,c.coin_name AS coinName,e.entrust_type AS entrust_type,e.entrust_price AS entrust_price,e.entrust_num AS entrust_num," + 
+        		"e.deal_num AS deal_num,e.piundatge AS piundatge,e.date AS DATE,e.state AS state " + 
+        		"FROM  t_inesv_entrust e INNER JOIN t_inesv_user u ON e.user_no = u.user_no " + 
+        		" INNER JOIN t_inesv_coin_type c ON c.coin_no = e.entrust_coin";
+     
         ArrayList<Object> paramArr = new ArrayList<>();
-        if(userName != null && !"-1".equals(userName) && !"".equals(userName)){
-        	sql += sql.contains("where")?" and user_no=?":" where user_no=?";
-        	paramArr.add(userName);
+        
+        if(userCode != null && !"".equals(userCode) && !"-1".equals(userCode)) {
+        	try {
+				userCode = new String(userCode.getBytes("iso-8859-1"),"utf-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	String str = sql.contains("where")?" and u.org_code like ?":" where u.org_code like ?";
+        	sql += str;
+        	paramArr.add("%"+userCode+"%");
         }
-        if(state != null && !"".equals(state) && !"-1".equals(state)){
-        	sql += sql.contains("where")?" and state=?":" where state=?";
-        	paramArr.add(state);
+        if(phone != null && !"".equals(phone) && !"-1".equals(phone)) {
+        	String str = sql.contains("where")?" and u.username like ?":" where u.username like ?";
+        	sql += str;
+        	paramArr.add("%"+phone+"%");
         }
-        if(startDate != null && !"".equals(startDate) && endDate != null && !"".equals(endDate)){
-        	sql += sql.contains("where")?" and date between ? and ?":" where date between ? and ?";
-        	paramArr.add(Date.valueOf(startDate));
-        	paramArr.add(Date.valueOf(endDate));
+        
+        if(realName != null && !"".equals(realName) && !"-1".equals(realName)) {
+        	try {
+        		realName = new String(realName.getBytes("iso-8859-1"),"utf-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	String str = sql.contains("where")?" and u.real_name like ?":" where u.real_name like ?";
+        	sql += str;
+        	paramArr.add("%"+realName+"%");
         }
-        sql += last;
-        paramArr.add(startItem);
-        paramArr.add(pageItem);
+        
+        
+        if(state != null && !"".equals(state) && !"-1".equals(state)) {
+        	String str = sql.contains("where")?" and e.state like ?":" where e.state like ?";
+        	sql += str;
+        	paramArr.add("%"+state+"%");
+        }
+ 
+ 
+        if(startData != null && !"".equals(startData) && endData != null && !"".equals(endData)){
+        	String str = sql.contains("where")?" and w.date between ? and ?":" where w.date between ? and ?";
+        	sql += str;
+        	Date sdate = Date.valueOf(startData);
+        	Date edate = Date.valueOf(endData);
+        	paramArr.add(sdate);
+        	paramArr.add(edate);
+        }
+        
+        sql +=limitstr;
+        paramArr.add(firstRecord);
+        paramArr.add(pageSize);
+        
+        
         try {
-            entrustDtoList = queryRunner.query(sql,new BeanListHandler<EntrustDto>(EntrustDto.class),paramArr.toArray(new Object[]{}));
+        	System.out.println("**************sql**********: "+sql);
+        	entrustDtoList = queryRunner.query(sql, new BeanListHandler<>(EntrustDto.class),paramArr.toArray(new Object[]{}));
         } catch (SQLException e) {
             e.printStackTrace();
-            log.error("查询委托记录失败");
         }
+ 
         return  entrustDtoList;
     }
     

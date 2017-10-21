@@ -246,7 +246,7 @@ oldFileName = icon.getOriginalFilename();
 
     }
 
-    @RequestMapping(value = "getAllCoinType", method = RequestMethod.POST)
+    @RequestMapping(value = "getAllCoinType", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getAllCoinType() {
         return coinValidata.getCoinTypes();

@@ -9,6 +9,23 @@ import java.util.Date;
  */
 public class WalletAddressDto {
 
+	 private String userName;
+	
+	 private String realName;
+	
+	 private String userCode;
+	
+     private Integer size;
+     
+    /**备用字段1*/
+    private String coinName;
+	
+    /**地址*/
+    private String address;
+ 
+	
+    private String addressTag;
+	
     /**id*/
     private long id;
     /**用户编号*/
@@ -17,17 +34,14 @@ public class WalletAddressDto {
     private int coin_no;
     /**钱包标识*/
     private String idtf;
-    /**地址*/
-    private String address;
+
     /**日期*/
     private Date date;
     /**备用字段1*/
     private String atte1;
     /**备用字段2*/
     private String atte2;
-    
-    /**备用字段1*/
-    private String coinName;
+
     /**备用字段2*/
     private String coinCode;
 
@@ -111,4 +125,46 @@ public class WalletAddressDto {
     public void setAtte2(String atte2) {
         this.atte2 = atte2;
     }
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+
+	public String getAddressTag() {
+		return addressTag;
+	}
+
+	public void setAddressTag(String addressTag) {
+		this.addressTag = addressTag;
+	}
+
+	public Integer getSize() {
+		return size;
+	}
+
+	public void setSize(Integer size) {
+		this.size = size;
+	}
+    
+    
 }

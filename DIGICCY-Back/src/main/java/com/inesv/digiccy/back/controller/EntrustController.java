@@ -1,5 +1,6 @@
 package com.inesv.digiccy.back.controller;
 
+import com.inesv.digiccy.dto.pageDto;
 import com.inesv.digiccy.validata.EntrustDealValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,13 +38,9 @@ public class EntrustController {
      */
     @RequestMapping(value = "getAllEntrustRecord",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> getAllEntrustRecord(String userName, String state, String startDate, String endDate, Long pageItem, Float pageNum){
-    	String s = pageNum.toString();
-    	if(s.contains(".")){
-    		s = s.substring(0, s.indexOf("."));
-    	}
-    	Integer k = Integer.parseInt(s);
-        return entrustDealValidate.validateQueryEntrustAll(userName, state, startDate, endDate,pageItem, k);
+    public Map<String,Object> getAllEntrustRecord(String userCode, String phone, String realName,String state,String startData,String endData,pageDto page){
+    	 
+        return entrustDealValidate.validateQueryEntrustAll(userCode, phone, realName, state, startData, endData, page);
     }
     
     /*
@@ -76,8 +73,9 @@ public class EntrustController {
     /**
      * 根据条件导出excel
      */
-    @RequestMapping(value="getExcel", method=RequestMethod.POST)
-    public void getExcel(HttpServletResponse response, String userName, String state, String startDate, String endDate){
-    	entrustDealValidate.getExcel(response, userName, state, startDate, endDate);
+    @RequestMapping(value="getExcel", method=RequestMethod.GET)
+    public void getExcel(HttpServletResponse response,String userCode, String phone, String realName,String state,String startData,String endData){
+    	entrustDealValidate.getExcel(response, userCode, phone, realName, state, startData, endData);
+    	
     }
 }

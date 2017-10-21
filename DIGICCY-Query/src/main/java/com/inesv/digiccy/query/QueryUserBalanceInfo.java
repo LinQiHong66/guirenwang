@@ -1,8 +1,11 @@
 package com.inesv.digiccy.query;
 
 import com.inesv.digiccy.dto.CoinCountDto;
+import com.inesv.digiccy.dto.FicWithdrawDto;
 import com.inesv.digiccy.dto.UserBalanceDto;
 import com.inesv.digiccy.dto.UserInfoDto;
+import com.inesv.digiccy.dto.WalletAddressDto;
+import com.inesv.digiccy.dto.pageDto;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -12,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,30 +176,150 @@ public class QueryUserBalanceInfo {
 
 
     /**
-     * 根据条件查询用户的财务信息
+     * 查询所有用户的钱包地址
      * @param condition
      * @param value
      * @return
      */
-    public List<UserBalanceDto> queryUserBalanceInfoByUserNoOrCnoiType(String condition,
-                                                                       String value){
-        List<UserBalanceDto> userBalanceInfo=null;
-        String querySql = "select b.*,u.username as attr1,c.coin_name as attr2 from t_inesv_user_balance b " +
-                "join t_inesv_user u on b.user_no = u.user_no " +
-                "join t_inesv_coin_type c on c.coin_no = b.coin_type ";
+    public List<WalletAddressDto> queryAllUserWallet(String userCode, String phone, String realName,String coinType,String startData,String endData,pageDto page){
+        List<WalletAddressDto> userBalanceInfo=null;
+        String limitstr = " limit ?,? ";
+        Integer firstRecord = page.getFirstRecord();
+        Integer pageSize = page.getPageSize();
+        
+        String sql = " SELECT w.id AS id,u.username AS userName,u.real_name AS realName,u.org_code AS userCode,c.coin_name AS coinName,w.address AS address,w.date AS DATE,w.idtf AS addressTag" + 
+        		"	FROM t_inesv_wallet_address w  " + 
+        		"	JOIN t_inesv_user u ON w.user_no = u.user_no " + 
+        		"	JOIN t_inesv_coin_type c ON c.coin_no = w.coin_no where c.coin_no!=0 ";
+      
+        ArrayList<Object> paramArr = new ArrayList<>();
+        
+        if(userCode != null && !"".equals(userCode) && !"-1".equals(userCode)) {
+        	try {
+				userCode = new String(userCode.getBytes("iso-8859-1"),"utf-8");
+			} catch (UnsupportedEncodingException e) {
+				 
+				e.printStackTrace();
+			}
+        	String str = sql.contains("where")?" and u.org_code like ?":" where u.org_code like ?";
+        	sql += str;
+        	paramArr.add("%"+userCode+"%");
+        }
+        if(phone != null && !"".equals(phone) && !"-1".equals(phone)) {
+        	String str = sql.contains("where")?" and u.username like ?":" where u.username like ?";
+        	sql += str;
+        	paramArr.add("%"+phone+"%");
+        }
+        
+        if(realName != null && !"".equals(realName) && !"-1".equals(realName)) {
+        	try {
+        		realName = new String(realName.getBytes("iso-8859-1"),"utf-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	String str = sql.contains("where")?" and u.real_name like ?":" where u.real_name like ?";
+        	sql += str;
+        	paramArr.add("%"+realName+"%");
+        }
+        
+ 
+        if(coinType != null && !"".equals(coinType) && !"-1".equals(coinType)) {
+        	String str = sql.contains("where")?" and c.coin_no like ?":" where c.coin_no like ?";
+        	sql += str;
+        	paramArr.add("%"+coinType+"%");
+        }
+ 
+        if(startData != null && !"".equals(startData) && endData != null && !"".equals(endData)){
+        	String str = sql.contains("where")?" and w.date between ? and ?":" where w.date between ? and ?";
+        	sql += str;
+        	Date sdate = Date.valueOf(startData);
+        	Date edate = Date.valueOf(endData);
+        	paramArr.add(sdate);
+        	paramArr.add(edate);
+        }
+        
+        sql +=limitstr;
+        paramArr.add(firstRecord);
+        paramArr.add(pageSize);
+ 
         try {
-            if(!value.equals("") && value!=null){
-                querySql+= "where b."+condition+"=?";
-                userBalanceInfo=queryRunner.query(querySql,new BeanListHandler<>(UserBalanceDto.class),value);
-            }else{
-                userBalanceInfo=queryRunner.query(querySql,new BeanListHandler<>(UserBalanceDto.class));
-            }
+        	System.out.println("**************sql**********: "+sql);
+        	userBalanceInfo = queryRunner.query(sql, new BeanListHandler<>(WalletAddressDto.class),paramArr.toArray(new Object[]{}));
         } catch (SQLException e) {
             e.printStackTrace();
-            logger.error("根据用户编号查询用户各个币种的资产信息");
         }
-
         return userBalanceInfo;
+    }
+
+    
+    /**
+     * 查询所有用户的钱包地址--总记录
+     * @param condition
+     * @param value
+     * @return
+     */
+    public Integer queryAllUserWalletSize(String userCode, String phone, String realName,String coinType,String startData,String endData){
+        WalletAddressDto  wallet=null;
+ 
+        
+        String sql = "SELECT  COUNT(*) AS size FROM t_inesv_wallet_address w JOIN t_inesv_user u ON w.user_no = u.user_no JOIN t_inesv_coin_type c ON c.coin_no = w.coin_no where  c.coin_no!=0 ";
+      
+        ArrayList<Object> paramArr = new ArrayList<>();
+        
+        if(userCode != null && !"".equals(userCode) && !"-1".equals(userCode)) {
+        	try {
+				userCode = new String(userCode.getBytes("iso-8859-1"),"utf-8");
+			} catch (UnsupportedEncodingException e) {
+				 
+				e.printStackTrace();
+			}
+        	String str = sql.contains("where")?" and u.org_code like ?":" where u.org_code like ?";
+        	sql += str;
+        	paramArr.add("%"+userCode+"%");
+        }
+        if(phone != null && !"".equals(phone) && !"-1".equals(phone)) {
+        	String str = sql.contains("where")?" and u.username like ?":" where u.username like ?";
+        	sql += str;
+        	paramArr.add("%"+phone+"%");
+        }
+        
+        if(realName != null && !"".equals(realName) && !"-1".equals(realName)) {
+        	try {
+        		realName = new String(realName.getBytes("iso-8859-1"),"utf-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	String str = sql.contains("where")?" and u.real_name like ?":" where u.real_name like ?";
+        	sql += str;
+        	paramArr.add("%"+realName+"%");
+        }
+        
+ 
+        if(coinType != null && !"".equals(coinType) && !"-1".equals(coinType)) {
+        	String str = sql.contains("where")?" and c.coin_no like ?":" where c.coin_no like ?";
+        	sql += str;
+        	paramArr.add("%"+coinType+"%");
+        }
+ 
+        if(startData != null && !"".equals(startData) && endData != null && !"".equals(endData)){
+        	String str = sql.contains("where")?" and w.date between ? and ?":" where w.date between ? and ?";
+        	sql += str;
+        	Date sdate = Date.valueOf(startData);
+        	Date edate = Date.valueOf(endData);
+        	paramArr.add(sdate);
+        	paramArr.add(edate);
+        }
+ 
+ 
+        try {
+         
+        	wallet = queryRunner.query(sql, new BeanHandler<>(WalletAddressDto.class),paramArr.toArray(new Object[]{}));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return wallet.getSize();
     }
 
 

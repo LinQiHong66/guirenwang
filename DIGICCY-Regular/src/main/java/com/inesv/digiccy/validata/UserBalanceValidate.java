@@ -3,6 +3,8 @@ package com.inesv.digiccy.validata;
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.CoinCountDto;
 import com.inesv.digiccy.dto.UserBalanceDto;
+import com.inesv.digiccy.dto.WalletAddressDto;
+import com.inesv.digiccy.dto.pageDto;
 import com.inesv.digiccy.query.QueryUserBalanceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,17 +26,11 @@ public class UserBalanceValidate {
      * 用户资产
      * @return
      */
-    public Map<String, Object> validataQueryUserBalanceInfoByUserNoOrCoinType(String condition, String value) {
+    public Map<String, Object> queryAllUserWallet(String userCode, String phone, String realName,String coinType,String startData,String endData,pageDto page) {
         Map<String, Object> map = new HashMap<>();
-        List<UserBalanceDto> list = queryUserBalanceInfo.queryUserBalanceInfoByUserNoOrCnoiType(condition,value);
-        if (list != null) {
-            map.put("data", list);
-            map.put("code", ResponseCode.SUCCESS);
-            map.put("desc", ResponseCode.SUCCESS_DESC);
-        } else {
-            map.put("code", ResponseCode.FAIL);
-            map.put("desc", ResponseCode.FAIL_DESC);
-        }
+        List<WalletAddressDto> list = queryUserBalanceInfo.queryAllUserWallet(userCode, phone, realName, coinType, startData, endData, page);
+        map.put("total", queryUserBalanceInfo.queryAllUserWalletSize(userCode, phone, realName, coinType, startData, endData));
+        map.put("rows", list);
         return map;
     }
 

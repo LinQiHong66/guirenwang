@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.InesvUserDto;
+import com.inesv.digiccy.dto.pageDto;
 import com.inesv.digiccy.util.StringUtil;
 import com.inesv.digiccy.validata.EntrustDealValidate;
 import com.inesv.digiccy.validata.InesvAddressValidata;
@@ -308,10 +309,10 @@ public class UserController {
 		return map;
 	}
 
-	@RequestMapping(value = "getWallet", method = RequestMethod.POST)
+	@RequestMapping(value = "getWallet", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getWallet(@RequestParam String condition, @RequestParam String value) {
-		Map<String, Object> map = userBalanceValidate.validataQueryUserBalanceInfoByUserNoOrCoinType(condition, value);
+	public Map<String, Object> getWallet(String userCode, String phone, String realName,String coinType,String startData,String endData,pageDto page) {
+		Map<String, Object> map = userBalanceValidate.queryAllUserWallet(userCode, phone, realName, coinType, startData, endData, page);
 		return map;
 	}
 

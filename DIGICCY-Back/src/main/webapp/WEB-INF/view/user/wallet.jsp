@@ -93,14 +93,11 @@ Website: http://thevectorlab.net/
                             <%--<button class="btn btn-primary" id="btn_delete"><i class="icon-remove icon-white"></i>&nbsp;删除</button>--%>
                             <div class="form-group" style="margin-top: 5px">
                                 <label class="form-label">查询条件</label>&nbsp;&nbsp;
-                                <select  class="input-small m-wrap" tabindex="1" id="query" onchange="showInput()">
-                                    <option value="user_no" selected>用户</option>
-                                    <option value="coin_type">货币</option>
-                                </select>
-                                <input type="text" id="name" class="form-control">
-                                <select  class="input-large m-wrap" tabindex="1" id="coin">
-                                    <option value="0" selected>请选择</option>
-                                </select>
+                              	  用户编号 : <input id="userCode" name="userCode" style="width:5%;"/>
+                                                                 货币类型：<select name='coinTypeSearch' id="coinTypes" style="width:13%;"></select> 
+                                                                手机号码 : <input id="phone" name="phone"  style="width:5%;"/>
+                            	真实姓名 : <input id="realName" name="realName"  style="width:5%;"/>
+                            	用户注册日期：<input style="width:10%;" name="startData" id="startData" type='date' />-<input style="width:10%;" name="endData" id='endData' type='date' />
                                 <button class="btn btn-success" id="btn_add" style="margin-top: -10px" onclick="getWallet()"><i class="icon-search icon-white"></i>&nbsp;查询</button>
                             </div>
                             <table id="wallet_table">

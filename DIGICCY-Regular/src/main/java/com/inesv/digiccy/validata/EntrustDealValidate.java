@@ -1,5 +1,6 @@
 package com.inesv.digiccy.validata;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.inesv.digiccy.common.ResponseCode;
 import com.inesv.digiccy.dto.DealDetailDto;
 import com.inesv.digiccy.dto.EntrustDto;
+import com.inesv.digiccy.dto.pageDto;
 import com.inesv.digiccy.persistence.reg.RegUserPersistence;
 import com.inesv.digiccy.query.QueryEntrustDealInfo;
 import com.inesv.digiccy.query.QueryEntrustInfo;
@@ -136,21 +138,12 @@ public class EntrustDealValidate {
 		return map;
 	}
 
-	public Map<String, Object> validateQueryEntrustAll(String userName, String state, String startDate, String endDate,
-			Long pageItem, Integer pageNum) {
+	public Map<String, Object> validateQueryEntrustAll(String userCode, String phone, String realName,String state,String startData,String endData,pageDto page) {
 		Map<String, Object> map = new HashMap<>();
-		List<EntrustDto> list = queryEntrustInfo.queryEntrustInfoAll(userName, state, startDate, endDate, pageItem,
-				pageNum);
-		Long count = queryEntrustInfo.getEntrustSize(userName, state, startDate, endDate);
-		if (list == null) {
-			map.put("code", ResponseCode.FAIL);
-			map.put("desc", ResponseCode.FAIL_DESC);
-		} else {
-			map.put("data", list);
-			map.put("count", count);
-			map.put("code", ResponseCode.SUCCESS);
-			map.put("desc", ResponseCode.SUCCESS_DESC);
-		}
+		List<EntrustDto> list = queryEntrustInfo.queryEntrustInfoAll(userCode, phone, realName, state, startData, endData, page);
+		Integer count = queryEntrustInfo.getEntrustSize(userCode, phone, realName, state, startData, endData);
+        map.put("total", count);
+        map.put("rows", list);
 		return map;
 	}
 
@@ -198,20 +191,24 @@ public class EntrustDealValidate {
 		return map;
 	}
 
-	public void getExcel(HttpServletResponse response, String userName, String state, String startDate,
-			String endDate) {
-		long size = queryEntrustInfo.getEntrustSize(userName, state, startDate, endDate);
-		List<EntrustDto> list = queryEntrustInfo.queryEntrustInfoAll(userName, state, startDate, endDate, size, 1);
+	public void getExcel(HttpServletResponse response,String userCode, String phone, String realName,String state,String startData,String endData ) {
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		pageDto page=new pageDto();
+	  	page.setPageNumber(1);
+		page.setPageSize(queryEntrustInfo.getEntrustSize(userCode, phone, realName, state, startData, endData));
+	 	List<EntrustDto> list = queryEntrustInfo.queryEntrustInfoAll(userCode, phone, realName, state, startData, endData, page);
 		Map<String, List<String>> contact = new HashMap<String, List<String>>();
-		String title1 = "用户编号";
-		String title2 = "委托币种";
-		String title3 = "委托类型";
-		String title4 = "委托价格";
-		String title5 = "委托数量(个)";
-		String title6 = "成交数量(个)";
-		String title7 = "手续费";
-		String title8 = "状态";
-		String title9 = "委托时间";
+		String title1 = "用户账号";
+		String title2 = "姓名";
+		String title3 = "用户编号";
+		String title4 = "委托币种";
+		String title5 = "委托类型";
+		String title6 = "委托价格";
+		String title7 = "委托数量（个）";
+		String title8 = "成交数量（个）";
+		String title9 = "手续费";
+		String title10 = "委托时间";
+		String title11 = "委托状态";
 		List<String> value1 = new ArrayList<String>();
 		List<String> value2 = new ArrayList<String>();
 		List<String> value3 = new ArrayList<String>();
@@ -221,17 +218,34 @@ public class EntrustDealValidate {
 		List<String> value7 = new ArrayList<String>();
 		List<String> value8 = new ArrayList<String>();
 		List<String> value9 = new ArrayList<String>();
+		List<String> value10 = new ArrayList<String>();
+		List<String> value11 = new ArrayList<String>();
 		for (EntrustDto dto : list) {
-			value1.add(dto.getUser_no().toString());
-			value2.add(dto.getEntrust_coin().toString());
-			value3.add(dto.getEntrust_type().toString());
-			value4.add(dto.getEntrust_price().toString());
-			value5.add(dto.getEntrust_num().toString());
-			value6.add(dto.getDeal_num().toString());
-			value7.add(dto.getPiundatge().toString());
-			value8.add(dto.getState().toString());
-			value9.add(dto.getDate().toString());
+			value1.add(dto.getUserName());
+			value2.add(dto.getRealName());
+			value3.add(dto.getUserCode());
+			value4.add(dto.getCoinName());
+			value5.add(dto.getEntrust_type()==0?"买":"卖");
+			value6.add(dto.getEntrust_price().toString());
+			value7.add(dto.getEntrust_num().toString());
+			value8.add(dto.getDeal_num().toString());
+			value9.add(dto.getPiundatge().toString());
+            value10.add(sf.format(dto.getDate()));
+            String statestr="";
+            switch (dto.getState()) {
+			case 0:
+				statestr = "委托中";
+				break;
+			case 1:
+				statestr = "已完成";
+			 default:
+				statestr = "已撤销";
+				break;
+			}
+            value11.add(statestr);
 		}
+		contact.put(title11, value11);
+		contact.put(title10, value10);
 		contact.put(title9, value9);
 		contact.put(title8, value8);
 		contact.put(title7, value7);

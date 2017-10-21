@@ -4,6 +4,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class EntrustDto {
+	private String  userName;
+	private String  realName;
+	private String  userCode;
+	private String  coinName;
+	private Integer count;
+	
 	private Long id;
 	/** 用户编号 */
 	private Integer user_no;
@@ -37,6 +43,48 @@ public class EntrustDto {
 	private String attr2;
 
 	public EntrustDto() {
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+ 
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+
+	public String getCoinName() {
+		return coinName;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public void setCoinName(String coinName) {
+		this.coinName = coinName;
 	}
 
 	public EntrustDto(Long id, Integer user_no, Integer entrust_coin, Integer convert_coin, BigDecimal convert_price,

@@ -30,8 +30,77 @@ public class FicWithdrawDto {
     private String attr1;
     /**备用字段2*/
     private String attr2;
+    
+    
+    
+    private String userName;
+    private String realName;
+    private String userCode;
+    private String coinName;
+    private String addressFrom;
+    private String number;
+    private String realNumber;
+ 
+    
+    
 
-    public Integer getId() {
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+
+	public String getCoinName() {
+		return coinName;
+	}
+
+	public void setCoinName(String coinName) {
+		this.coinName = coinName;
+	}
+
+	public String getAddressFrom() {
+		return addressFrom;
+	}
+
+	public void setAddressFrom(String addressFrom) {
+		this.addressFrom = addressFrom;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public String getRealNumber() {
+		return realNumber;
+	}
+
+	public void setRealNumber(String realNumber) {
+		this.realNumber = realNumber;
+	}
+
+	public Integer getId() {
         return id;
     }
 
