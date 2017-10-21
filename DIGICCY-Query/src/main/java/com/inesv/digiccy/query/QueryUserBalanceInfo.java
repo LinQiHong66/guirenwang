@@ -417,8 +417,41 @@ public class QueryUserBalanceInfo {
         return userBalanceInfo;
     }
 
-
-
-
+    /**
+     *货币统计
+     */
+    public UserBalanceDto queryUserBalanceCount(Integer coin){
+        UserBalanceDto userBalanceInfo = null;
+        String sql = "SELECT t1.coin_type AS coin_type, t2.coin_name AS coinName , IFNULL(SUM(t1.total_price),0) AS total_price , IFNULL(SUM(t1.unable_coin),0) AS unable_coin , IFNULL(SUM(t1.enable_coin),0) AS enable_coin "
+        		+ "FROM t_inesv_user_balance t1 , t_inesv_coin_type t2 WHERE coin_type = ? AND t1.coin_type = t2.coin_no";
+        Object parmas[] = {coin};
+        try {
+            userBalanceInfo = queryRunner.query(sql,new BeanHandler<UserBalanceDto>(UserBalanceDto.class),parmas);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userBalanceInfo;
+    }
+    
+    /**
+     *货币统计报表
+     * @throws Exception 
+     */
+    public List<UserBalanceDto> queryUserCoinCount(Integer coin) throws Exception{
+    	List<UserBalanceDto> list = new ArrayList<UserBalanceDto>();
+    	UserBalanceDto dto = new UserBalanceDto();
+    	String sql = null;
+    	for(int i = 15 ; i >= 0 ; i -- ) {
+    		sql = "SELECT * FROM (" + 
+    					"(SELECT IFNULL(SUM(t1.total_price),0) AS total_price FROM t_inesv_user_balance t1 WHERE t1.coin_type = ? AND DATE_FORMAT(t1.date, '%y-%m-%d') <= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL " + i + " DAY), '%y-%m-%d')) AS a," + 
+    					"(SELECT IFNULL(SUM(t2.deal_num),0) AS attr1 FROM t_inesv_deal_detail t2 WHERE t2.coin_no = ? AND deal_type = 1 AND DATE_FORMAT(t2.date, '%y-%m-%d') <= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL " + i + " DAY), '%y-%m-%d')) AS b," + 
+    					"(SELECT IFNULL(SUM(t3.actual_price),0) AS attr2 ,DATE_FORMAT(DATE_SUB(NOW(), INTERVAL " + i + " DAY),'%y-%m-%d') AS dates FROM t_inesv_fic_recharge t3  WHERE t3.coin_no = ? AND DATE_FORMAT(t3.date, '%y-%m-%d') <= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL " + i + " DAY), '%y-%m-%d')) AS c" + 
+    				")";
+    		Object parmas[] = {coin,coin,coin};
+    		dto = queryRunner.query(sql,new BeanHandler<UserBalanceDto>(UserBalanceDto.class),parmas);
+    		list.add(dto);
+    	}
+        return list;
+    }
 
 }

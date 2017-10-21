@@ -21,9 +21,9 @@ $("#bonus_table").bootstrapTable({
     idField:'id',
     cache:false,
     columns:[[// 列
-        {title:'分红名称',field:'bonus_name',width:120,align:'center'},
-        {title:'分红货币',field:'attr1',width:80,align:'center'},
-        {title:'分红总量',field:'num',width:60,align:'center'},
+        {title:'分润名称',field:'bonus_name',width:120,align:'center'},
+        {title:'分润货币',field:'attr1',width:80,align:'center'},
+        {title:'分润总量',field:'num',width:60,align:'center'},
         {title:'日期',field:'date',width:60,align:'center'},
         {title:'操作',field:'id',width:120,align:'center',
             formatter : function(value, row, index) {
@@ -36,7 +36,7 @@ $("#bonus_table").bootstrapTable({
                     '&nbsp;&nbsp;<button class="btn btn-primary" id="btn_delete" onclick="deleteBonus(\''+value+'\');">' +
                     '<i class="icon-remove icon-white"></i>&nbsp;删除</button> '+
                     '&nbsp;&nbsp;<button class="btn btn-info" id="btn_share" onclick="doBonus(\''+bonus+'\');">' +
-                    '<i class="icon-money icon-white"></i>&nbsp;开始分红</button>';
+                    '<i class="icon-money icon-white"></i>&nbsp;开始分润</button>';
                 return e;
             }},
     ]],

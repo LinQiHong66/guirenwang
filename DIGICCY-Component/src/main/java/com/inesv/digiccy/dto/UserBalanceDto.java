@@ -34,8 +34,11 @@ public class UserBalanceDto {
 	private double curPrice;
 	/** 总市价 */
 	private double sumCurPrice;
-	
+ 
 	private String userName;
+ 
+	private String dates;
+ 
 	
 	private String realName;
 	
@@ -142,9 +145,15 @@ public class UserBalanceDto {
 	public void setSumCurPrice(double sumCurPrice) {
 		this.sumCurPrice = sumCurPrice;
 	}
+ 
+ 
 
 	public String getUserName() {
 		return userName;
+	}
+
+	public String getDates() {
+		return dates;
 	}
 
 	public void setUserName(String userName) {
@@ -182,12 +191,11 @@ public class UserBalanceDto {
 	public void setWallet_address(String wallet_address) {
 		this.wallet_address = wallet_address;
 	}
-	
-	
-	
 
+	public void setDates(String dates) {
+		this.dates = dates;
+	}
 	
- 
  
 
 }

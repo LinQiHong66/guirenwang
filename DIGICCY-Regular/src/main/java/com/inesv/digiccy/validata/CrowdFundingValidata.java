@@ -47,11 +47,10 @@ public class CrowdFundingValidata {
 
 	@Autowired
 	private KdniaoTrackQueryAPI kdnApi;
-	
+
 	@Autowired
-	private  CrowdFundingDetailsOperation co;
-	
-	
+	private CrowdFundingDetailsOperation co;
+
 	/**
 	 * 增加众筹项目
 	 * 
@@ -125,6 +124,23 @@ public class CrowdFundingValidata {
 			map.put("desc", ResponseCode.SUCCESS_DESC);
 		} catch (Exception e) {
 			e.printStackTrace();
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", ResponseCode.FAIL_DESC);
+		}
+		return map;
+	}
+
+	public Map<String, Object> getAllCrowdFunding() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<CrowdFundingDto> crowdFundingList = queryCrowdFundingInfo.queryAllCrowdFunding("0",
+				"" + queryCrowdFundingInfo.getCrowdFundingSize());
+		Long crowdFundingSize = queryCrowdFundingInfo.getCrowdFundingSize();
+		if (crowdFundingList != null) {
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", ResponseCode.SUCCESS_DESC);
+			map.put("total", crowdFundingSize);
+			map.put("data", crowdFundingList);
+		} else {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);
 		}
@@ -223,14 +239,18 @@ public class CrowdFundingValidata {
 	 * 
 	 * @return
 	 */
-	public Map<String, Object> validataAllCrowdFundingDetailBack() {
+	public Map<String, Object> validataAllCrowdFundingDetailBack(int curPage, int pageItem, String userOrgCode,
+			String phone, String userName, String startDate, String endDate, String icoId) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<CrowdFundingDetailsDto> crowdFundingList = queryCrowdFundingInfo.queryAllCrowdFundingDetailBack();
+		List<CrowdFundingDetailsDto> crowdFundingList = queryCrowdFundingInfo.queryAllCrowdFundingDetailBack(curPage,
+				pageItem, userOrgCode, phone, userName, startDate, endDate, icoId);
 		if (crowdFundingList != null) {
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
-			map.put("total", crowdFundingList.size());
-			map.put("data", crowdFundingList);
+			map.put("total", queryCrowdFundingInfo.getSize(userOrgCode, phone, userName, startDate, endDate, icoId));
+			map.put("rows", crowdFundingList);
+			// queryCrowdFundingInfo.queryAllCrowdFunding("0",
+			// ""+queryCrowdFundingInfo.getCrowdFundingSize()
 		} else {
 			map.put("code", ResponseCode.FAIL);
 			map.put("desc", ResponseCode.FAIL_DESC);
@@ -354,8 +374,9 @@ public class CrowdFundingValidata {
 	 * 导出excel
 	 */
 	public void getDetailExcel(HttpServletResponse response) {
-		ArrayList<CrowdFundingDetailsDto> details = (ArrayList<CrowdFundingDetailsDto>) queryCrowdFundingInfo
-				.queryAllCrowdFundingDetailBack();
+		ArrayList<CrowdFundingDetailsDto> details = new ArrayList();
+		// (ArrayList<CrowdFundingDetailsDto>) queryCrowdFundingInfo
+		// .queryAllCrowdFundingDetailBack();
 		Map<String, List<String>> contact = new HashMap<String, List<String>>();
 		String title1 = "用户ID";
 		String title2 = "众筹ID";
@@ -385,99 +406,101 @@ public class CrowdFundingValidata {
 		contact.put(title6, value6);
 		ExcelUtils.export(response, contact);
 	}
-	
-	
+
 	/**
 	 * 更新物流信息
+	 * 
 	 * @return
 	 */
-	public String updateLogistics(String ids){
-		
-		if(ids==null || ids.equals("")){
+	public String updateLogistics(String ids) {
+
+		if (ids == null || ids.equals("")) {
 			return "数据不能为空";
 		}
-		
+
 		try {
-				 String[] strArray = ids.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
-				 List list = Arrays.asList(strArray);
-				 List<CrowdFundingDetailsDto> crows=new ArrayList<>();
-				 crows=queryCrowdFundingInfo.query_wl(list);
-				 if(crows.size()<=0){
-					 return "查找的数据不存在";
-				 }
-				 
-				 for(int i=crows.size()-1;i>=0;i--){
-					 
-					 if(crows.get(i).getLogistics_code()==null || crows.get(i).getLogistics_code().equals("")
-							 || crows.get(i).getLogistics_number()==null || crows.get(i).getLogistics_number().equals("") ){
-						 return "当前id为"+crows.get(i).getId()+"存在物流数据异常，更新物流失败";
-					 }
-					 
-					String	result =kdnApi.getOrderTracesByJson(crows.get(i).getLogistics_code(), crows.get(i).getLogistics_number());
-					this.update_status(crows.get(i).getId().toString(), analysis_status(result));
-				 }
-				 
+			String[] strArray = ids.split(","); // 拆分字符为"," ,然后把结果交给数组strArray
+			List list = Arrays.asList(strArray);
+			List<CrowdFundingDetailsDto> crows = new ArrayList<>();
+			crows = queryCrowdFundingInfo.query_wl(list);
+			if (crows.size() <= 0) {
+				return "查找的数据不存在";
+			}
+
+			for (int i = crows.size() - 1; i >= 0; i--) {
+
+				if (crows.get(i).getLogistics_code() == null || crows.get(i).getLogistics_code().equals("")
+						|| crows.get(i).getLogistics_number() == null
+						|| crows.get(i).getLogistics_number().equals("")) {
+					return "当前id为" + crows.get(i).getId() + "存在物流数据异常，更新物流失败";
+				}
+
+				String result = kdnApi.getOrderTracesByJson(crows.get(i).getLogistics_code(),
+						crows.get(i).getLogistics_number());
+				this.update_status(crows.get(i).getId().toString(), analysis_status(result));
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		 
-		 return "操作成功";
+		}
+
+		return "操作成功";
 	}
-	
+
 	/**
 	 * 解析返回的物流信息
+	 * 
 	 * @return
 	 */
-	public String analysis_status(String result){
+	public String analysis_status(String result) {
 		try {
-			JSONObject object=JSONObject.parseObject(result);
-			JSONArray array=(JSONArray) object.get("Traces");
-			if(array.size()<=0){
+			JSONObject object = JSONObject.parseObject(result);
+			JSONArray array = (JSONArray) object.get("Traces");
+			if (array.size() <= 0) {
 				return "物流信息为空";
 			}
-			JSONObject obje=(JSONObject) array.get(array.size()-1);
-			String status=obje.getString("AcceptTime")+":"+obje.getString("AcceptStation");
+			JSONObject obje = (JSONObject) array.get(array.size() - 1);
+			String status = obje.getString("AcceptTime") + ":" + obje.getString("AcceptStation");
 			return status;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		return  null;
+
+		return null;
 	}
-	
+
 	/**
 	 * 更新物流状态
+	 * 
 	 * @param id
 	 * @param status
 	 * @return
 	 */
-	public Boolean update_status(String id,String status){
-		
+	public Boolean update_status(String id, String status) {
+
 		try {
 			return co.update_wl(id, status);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
-		
+
 	}
-	
-	
+
 	/**
 	 * 添加物流单号
+	 * 
 	 * @return
 	 */
-	public String update_number(String id , String number , String name,String code){
-		
+	public String update_number(String id, String number, String name, String code) {
+
 		try {
-			if(id==null || "".equals(id) || number==null || "".equals(number) || name==null || "".equals(name)){
+			if (id == null || "".equals(id) || number == null || "".equals(number) || name == null || "".equals(name)) {
 				return "参数错误";
 			}
-			if( co.update_number(id, number,name,code)){
+			if (co.update_number(id, number, name, code)) {
 				return "添加成功";
-			}else{
+			} else {
 				return "添加失败";
 			}
 

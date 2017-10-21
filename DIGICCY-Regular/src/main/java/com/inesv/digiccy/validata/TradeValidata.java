@@ -29,6 +29,7 @@ import com.inesv.digiccy.dto.DayMarketDto;
 import com.inesv.digiccy.dto.DealDetailDto;
 import com.inesv.digiccy.dto.EntrustDto;
 import com.inesv.digiccy.dto.InesvDayMarket;
+import com.inesv.digiccy.dto.InesvUserDto;
 import com.inesv.digiccy.dto.StaticParamsDto;
 import com.inesv.digiccy.dto.SubCoreDto;
 import com.inesv.digiccy.dto.UserBalanceDto;
@@ -620,7 +621,6 @@ public class TradeValidata {
 			try {
 				log.debug("============" + userNo + "的委托交易开始=============");
 				commandGateway.sendAndWait(command);
-		    	//tradePersistence.insertEntrust(entrustDto);//插入委托记录，修改用户资产
 				validateAutualTrade(userNo);//进入交易
 				map.put("code",ResponseCode.SUCCESS);
 		        map.put("desc","交易委托成功。");
@@ -902,6 +902,26 @@ public class TradeValidata {
 			map.put("StaticParams", StaticParam);
 			return map;
 		}
+	}
+	
+	/**
+	 * 首页交易统计
+	 * @return
+	 */
+	public Map<String, Object> getTradePicture() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<DealDetailDto> dealList = new ArrayList<DealDetailDto>();
+		try {
+			dealList = queryDealDetailInfo.queryDetail();
+			map.put("data",dealList);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", ResponseCode.SUCCESS_DESC);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", ResponseCode.FAIL_DESC);
+		}
+		return map;
 	}
 
 }

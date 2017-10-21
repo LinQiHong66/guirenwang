@@ -1,5 +1,6 @@
 package com.inesv.digiccy.validata.user;
 
+import com.alibaba.fastjson.JSON;
 import com.inesv.digiccy.api.command.CreateInesvUserCommand;
 import com.inesv.digiccy.api.command.RegUserCommand;
 import com.inesv.digiccy.api.command.UserCommand;
@@ -10,6 +11,8 @@ import com.inesv.digiccy.dto.UserVoucherDto;
 import com.inesv.digiccy.persistence.sequence.SequenceOper;
 import com.inesv.digiccy.query.QueryMyRecInfo;
 import com.inesv.digiccy.query.QueryProvinceAbbreviation;
+import com.inesv.digiccy.query.QueryRmbRechargeInfo;
+import com.inesv.digiccy.query.QueryRmbWithdrawInfo;
 import com.inesv.digiccy.query.QuerySubCore;
 import com.inesv.digiccy.query.QueryUserVoucher;
 import com.inesv.digiccy.util.MD5;
@@ -27,7 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,12 +56,57 @@ public class InesvUserValidata {
 	
 	@Autowired
     QueryMyRecInfo queryMyRecInfo;
+	
+	@Autowired
+	QueryRmbRechargeInfo queryRmbRechargeInfo;
+	
+	@Autowired
+	QueryRmbWithdrawInfo queryRmbWithdrawInfo;
     
     @Autowired
     SequenceOper sequenceOper;
     
     @Autowired
     QueryProvinceAbbreviation queryProvinceAbbreviation;
+    
+    /**
+	 * 首页统计
+	 * @return
+	 */
+	public Map<String, Object> homeCount() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Long sumUser = querySubCore.getSumUser();
+		Long dayUser = querySubCore.getSumUser();
+		BigDecimal sumRecharge = queryRmbRechargeInfo.getSumRecharge();
+		BigDecimal sumWithdraw = queryRmbWithdrawInfo.getSumWithdraw();
+		BigDecimal sumTrade = queryRmbRechargeInfo.getSumTrade();
+		map.put("sumUser", sumUser);
+		map.put("dayUser", dayUser);
+		map.put("sumRecharge", sumRecharge);
+		map.put("sumWithdraw", sumWithdraw);
+		map.put("sumTrade", sumTrade);
+		return map;
+	}
+	
+	/**
+	 * 首页用户统计
+	 * @return
+	 */
+	public Map<String, Object> getUserPicture() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<InesvUserDto> uidList = new ArrayList<InesvUserDto>();
+		try {
+			uidList = querySubCore.getUserPicture();
+			map.put("data",uidList);
+			map.put("code", ResponseCode.SUCCESS);
+			map.put("desc", ResponseCode.SUCCESS_DESC);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("code", ResponseCode.FAIL);
+			map.put("desc", ResponseCode.FAIL_DESC);
+		}
+		return map;
+	}
 
 	/**
 	 * 判斷交易密碼

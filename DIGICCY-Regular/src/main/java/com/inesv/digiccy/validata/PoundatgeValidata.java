@@ -17,31 +17,40 @@ import com.inesv.digiccy.query.QueryBonusLevel;
 import com.inesv.digiccy.query.QueryPoundatge;
 import com.inesv.digiccy.util.excel.ExcelUtils;
 
-
 @Component
 public class PoundatgeValidata {
 
-	@Autowired 
+	@Autowired
 	QueryPoundatge queryPoundatge;
-	
-	public Map<String,Object> queryAll(){
-		Map<String,Object> map = new HashMap<String, Object>();
+
+	public Map<String, Object> queryAll(int curPage, int pageItem, String userOrgCode, String phone, String username,
+			String startDate, String endDate) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		List<PoundatgeDto> list = new ArrayList<PoundatgeDto>();
-		list = queryPoundatge.queryAll();
-		if(list != null || list.size()>0){
-			map.put("data", list);
+		list = queryPoundatge.queryAll(curPage, pageItem, userOrgCode, phone, username, startDate, endDate);
+		if (list != null) {
+			map.put("rows", list);
+			map.put("total", queryPoundatge.getSize(userOrgCode, phone, username, startDate, endDate));
 			map.put("code", ResponseCode.SUCCESS);
 			map.put("desc", ResponseCode.SUCCESS_DESC);
-		}else{
+		} else {
 			map.put("code", ResponseCode.FAIL);
 			map.put("code", ResponseCode.FAIL_DESC);
 		}
 		return map;
 	}
-	
-	public void getExcel(HttpServletResponse response){
+
+	public void getExcel(HttpServletResponse response, String userOrgCode, String phone, String username,
+			String startDate, String endDate) {
 		Map<String, List<String>> contact = new HashMap<String, List<String>>();
-		List<PoundatgeDto> list =  queryPoundatge.queryAll();
+		int size = 0;
+		try {
+			long lsize = queryPoundatge.getSize(userOrgCode, phone, username, startDate, endDate);
+			size = Integer.parseInt(lsize + "");
+		} catch (Exception e) {
+
+		}
+		List<PoundatgeDto> list = queryPoundatge.queryAll(1, size, userOrgCode, phone, username, startDate, endDate);
 		String title1 = "用户ID";
 		String title2 = "用户账号";
 		String title3 = "用户机构编码";
@@ -60,17 +69,17 @@ public class PoundatgeValidata {
 		List<String> col7 = new ArrayList<String>();
 		List<String> col8 = new ArrayList<String>();
 		List<String> col9 = new ArrayList<String>();
-		for(PoundatgeDto dto : list){
+		for (PoundatgeDto dto : list) {
 			col1.add(dto.getUser_no().toString());
 			col2.add(dto.getUser_name().toString());
 			col3.add(dto.getUser_code().toString());
-			if(dto.getOptype() == 0) {
+			if (dto.getOptype() == 0) {
 				col4.add("买");
-			}else if(dto.getOptype() == 1) {
+			} else if (dto.getOptype() == 1) {
 				col4.add("卖");
-			}else if(dto.getOptype() == 2) {
+			} else if (dto.getOptype() == 2) {
 				col4.add("充值");
-			}else if(dto.getOptype() == 3) {
+			} else if (dto.getOptype() == 3) {
 				col4.add("提现");
 			}
 			col5.add(dto.getType().toString());
@@ -88,7 +97,7 @@ public class PoundatgeValidata {
 		contact.put(title7, col7);
 		contact.put(title8, col8);
 		contact.put(title9, col9);
-		
+
 		ExcelUtils.export(response, contact);
 	}
 }

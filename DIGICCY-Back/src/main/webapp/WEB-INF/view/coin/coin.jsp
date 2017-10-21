@@ -87,7 +87,8 @@ Website: http://thevectorlab.net/
                             </span>
                         </div>
                         <div class="widget-body">
-                            <button class="btn btn-success" id="btn_add"><i class="icon-plus icon-white"></i>&nbsp;新增</button>
+                            <!-- <button class="btn btn-success" id="btn_add"><i class="icon-plus icon-white"></i>&nbsp;新增</button> -->
+                            <a href="/coin/coinCount.do"><button class="btn btn-success"><i class="icon-plus icon-white"></i>&nbsp;货币统计报表</button></a>
                             <%--<button class="btn btn-inverse" id="btn_update"><i class="icon-pencil icon-white"></i>&nbsp;修改</button>--%>
                             <%--<button class="btn btn-primary" id="btn_delete"><i class="icon-remove icon-white"></i>&nbsp;删除</button>--%>
                             <table id="coin_table">
@@ -255,7 +256,7 @@ Website: http://thevectorlab.net/
         </form>
     </div>
     <!-- 投票结果 -->
-    <div class="boxK" id="box_vote">
+   <!--  <div class="boxK" id="box_vote">
         <div class="closeK clearfix"><i class="icon-remove icon-white" id="close_vote"></i></div>
         <h4>投票结果</h4><br/><br/>
         <div id="count" style="width:80%;margin:0 auto">
@@ -274,7 +275,7 @@ Website: http://thevectorlab.net/
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="boxK" id="box_icon">
         <div class="closeK clearfix"><i class="icon-remove icon-white" id="close_icon"></i></div>
         <h4>货币图标</h4><br/><br/>

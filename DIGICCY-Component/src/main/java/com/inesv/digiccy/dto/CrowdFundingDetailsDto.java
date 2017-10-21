@@ -4,35 +4,37 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 众筹项目详情Dto
- * Created by JimJim on 2016/11/17 0017.
+ * 众筹项目详情Dto Created by JimJim on 2016/11/17 0017.
  */
 public class CrowdFundingDetailsDto {
 
-    private Long id;
-    /** 用户编号 */
-    private Integer user_id;
-    /** 众筹项目编号 */
-    private String ico_id;
-    /** 参与数量 */
-    private Integer ico_user_number;
-    /** 参与总金额 */
-    private BigDecimal ico_user_sumprice;
+	private Long id;
+	/** 用户编号 */
+	private Integer user_id;
+	/** 众筹项目编号 */
+	private String ico_id;
+	/** 参与数量 */
+	private Integer ico_user_number;
+	/** 参与总金额 */
+	private BigDecimal ico_user_sumprice;
 
-    private Date date;
+	private Date date;
 
-    private String attr1;
+	private String attr1;
 
-    private String attr2;
-    
-    /** 快递公司名称 */
-    private String logistics_company;
-    /** 单号 */
-    private String logistics_number;
-    /** 当前状态 */
-    private String logistics_status;
-    /** 当前快递公司编号 */
-    private String logistics_code;
+	private String attr2;
+	private String attr3;
+	private String attr4;
+	private String attr5;
+
+	/** 快递公司名称 */
+	private String logistics_company;
+	/** 单号 */
+	private String logistics_number;
+	/** 当前状态 */
+	private String logistics_status;
+	/** 当前快递公司编号 */
+	private String logistics_code;
 
 	public Long getId() {
 		return id;
@@ -98,6 +100,14 @@ public class CrowdFundingDetailsDto {
 		this.attr2 = attr2;
 	}
 
+	public String getAttr5() {
+		return attr5;
+	}
+
+	public void setAttr5(String attr5) {
+		this.attr5 = attr5;
+	}
+
 	public String getLogistics_company() {
 		return logistics_company;
 	}
@@ -130,6 +140,22 @@ public class CrowdFundingDetailsDto {
 		this.logistics_code = logistics_code;
 	}
 
+	public String getAttr3() {
+		return attr3;
+	}
+
+	public void setAttr4(String attr4) {
+		this.attr4 = attr4;
+	}
+
+	public String getAttr4() {
+		return attr4;
+	}
+
+	public void setAttr3(String attr3) {
+		this.attr3 = attr3;
+	}
+
 	@Override
 	public String toString() {
 		return "CrowdFundingDetailsDto [id=" + id + ", user_id=" + user_id + ", ico_id=" + ico_id + ", ico_user_number="
@@ -138,5 +164,5 @@ public class CrowdFundingDetailsDto {
 				+ logistics_number + ", logistics_status=" + logistics_status + ", logistics_code=" + logistics_code
 				+ "]";
 	}
-    
+
 }

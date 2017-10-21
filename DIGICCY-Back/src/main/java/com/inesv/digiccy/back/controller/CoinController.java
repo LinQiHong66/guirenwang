@@ -37,7 +37,7 @@ public class CoinController {
     private static Logger logger = LoggerFactory.getLogger(CoinController.class);
 
     @Autowired
-    CoinValidata          coinValidata;
+    CoinValidata coinValidata;
 
 
     @RequestMapping(value = "gotoCoin", method = RequestMethod.GET)
@@ -251,4 +251,18 @@ oldFileName = icon.getOriginalFilename();
     public Map<String, Object> getAllCoinType() {
         return coinValidata.getCoinTypes();
     }
+    
+    @RequestMapping(value = "coinCount",method = RequestMethod.GET)
+    public ModelAndView coinCount(){
+    	Map<String,Object> resultMap = coinValidata.getCoinCount();
+        return new ModelAndView("/coin/coinCount",resultMap);
+    }
+    
+    @RequestMapping(value = "getGuirenPicture", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getGuirenPicture(Integer coin_no) throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map = coinValidata.getGuirenPicture(coin_no);
+		return map;
+	}
 }

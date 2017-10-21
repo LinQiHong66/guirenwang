@@ -32,26 +32,40 @@ public class QuerySpeculativeFunds {
 	 * @throws SQLException
 	 */
 	public List<SpeculativeFundsDto> getAllSpeculativeFunds() {
-		List<InesvUserDto> users = null;
+		// String querySql = "select * from t_inesv_speculativefunds ; ";
+		List<SpeculativeFundsDto> users = new ArrayList<>();
+		try {
+			String querySql = "select * from t_inesv_speculativefunds ";
+			users = queryRunner.query(querySql, new BeanListHandler<SpeculativeFundsDto>(SpeculativeFundsDto.class));
+			// sers = queryRunner.query(querySql, new
+			// BeanListHandler<>(SpeculativeFundsDto.class));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			logger.error("获取所有资金异常账户失敗！");
+		}
+		return users;
+	}
+
+	public void checkAllSpeculativeFunds() {
 		List<SpeculativeFundsDto> speculativeFundsDtos = new ArrayList<>();
+		List<InesvUserDto> users = null;
 		String querySql = "SELECT * FROM t_inesv_user where user_no=2162";
-		String insertSql = "INSERT INTO t_inesv_speculativefunds (inProperty,outProperty,totalProperty) values(?,?,?);";
+		String insertSql = "INSERT INTO t_inesv_speculativefunds (inProperty,outProperty,totalProperty,user_no) values(?,?,?,?);";
 		try {
 			users = queryRunner.query(querySql, new BeanListHandler<InesvUserDto>(InesvUserDto.class));
 			for (InesvUserDto inesvUserDto : users) {
 				double in = getPropertyById(inesvUserDto.getUser_no(), 0);
 				double out = getPropertyById(inesvUserDto.getUser_no(), 1);
 				SpeculativeFundsDto speculativeFundsDto = new SpeculativeFundsDto(inesvUserDto.getUser_no(), in, out,
-						in - out);
+						in - out, inesvUserDto.getUser_no());
 				speculativeFundsDtos.add(speculativeFundsDto);
-				Object[] params = { in, out, in - out };
+				Object[] params = { in, out, in - out, inesvUserDto.getUser_no() };
 				queryRunner.update(insertSql, params);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("获取所有资金异常账户！");
 		}
-		return speculativeFundsDtos;
 	}
 
 	/**
@@ -81,15 +95,12 @@ public class QuerySpeculativeFunds {
 	}
 
 	public SpeculativeFundsDto getSpeculativeFundsById(int id) {
-		String querySql = "SELECT * FROM t_inesv_user where user_no=?";
+		String querySql = "SELECT * FROM t_inesv_speculativefunds where id=?";
 		SpeculativeFundsDto speculativeFundsDto = null;
-		InesvUserDto inesvUserDto = null;
 		Object param[] = { id };
 		try {
-			inesvUserDto = queryRunner.query(querySql, new BeanHandler<InesvUserDto>(InesvUserDto.class), param);
-			double in = getPropertyById(inesvUserDto.getUser_no(), 0);
-			double out = getPropertyById(inesvUserDto.getUser_no(), 1);
-			speculativeFundsDto = new SpeculativeFundsDto(inesvUserDto.getUser_no(), in, out, in - out);
+			speculativeFundsDto = queryRunner.query(querySql,
+					new BeanHandler<SpeculativeFundsDto>(SpeculativeFundsDto.class), param);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("获取" + id + "用户资金异常账户！");

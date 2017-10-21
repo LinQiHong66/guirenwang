@@ -4,34 +4,39 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class BonusLevelDto {
-	
+
 	private Long id;
-	
+
 	private Long bonus_source;
-	
+
 	private Long bonus_coin;
-	
+
 	private Long bonus_user;
-	
+
 	private String bonus_user_name;
-	
+
 	private String bonus_user_code;
-	
+
 	private Long bonus_rel;
-	
+
 	private String bonus_rel_code;
-	
+
 	private BigDecimal level_scale;
-	
+
 	private int bonus_type;
-	
+
 	private BigDecimal bonus;
-	
+
 	private BigDecimal sum_bonus;
 
 	private String remark;
-	
+
 	private Date date;
+	/** 备用字段 */
+	private String attr1;
+	private String attr2;
+	private String attr3;
+	private String attr4;
 
 	public Long getId() {
 		return id;
@@ -145,5 +150,36 @@ public class BonusLevelDto {
 		this.date = date;
 	}
 
+	public String getAttr1() {
+		return attr1;
+	}
+
+	public void setAttr1(String attr1) {
+		this.attr1 = attr1;
+	}
+
+	public String getAttr2() {
+		return attr2;
+	}
+
+	public void setAttr2(String attr2) {
+		this.attr2 = attr2;
+	}
+
+	public String getAttr3() {
+		return attr3;
+	}
+
+	public void setAttr3(String attr3) {
+		this.attr3 = attr3;
+	}
+
+	public String getAttr4() {
+		return attr4;
+	}
+
+	public void setAttr4(String attr4) {
+		this.attr4 = attr4;
+	}
 
 }

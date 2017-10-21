@@ -1,5 +1,6 @@
 package com.inesv.digiccy.query;
 
+import java.math.BigDecimal;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -224,5 +225,48 @@ public class QueryRmbRechargeInfo {
         }
         return list;
     }
+    
+    /*
+     * 统计总充值金额
+     */
+     public BigDecimal getSumRecharge(){
+         String sql = "SELECT IFNULL(SUM(recharge_price),0) AS SUM  FROM t_inesv_rmb_recharge WHERE  state = 1 ";
+         try {
+       	  		return (BigDecimal) queryRunner.query(sql, new ColumnListHandler<>("SUM")).get(0);
+         } catch (SQLException e) {
+             	e.printStackTrace();
+             	return new BigDecimal("0");
+         }
+     }
+     
+     /*
+      * 统计近30天充值金额
+      */
+      public List<RmbRechargeDto> getRmbRechargeDtoList(){
+    	  List<RmbRechargeDto> list = new ArrayList();
+          String sql = "SELECT SUM(recharge_price) AS recharge_price, DATE_FORMAT(DATE,'%Y-%m-%d') AS attr3 FROM t_inesv_rmb_recharge WHERE DATE > DATE_SUB(NOW(),INTERVAL 30 DAY) AND state = 1 OR state = 2 GROUP BY attr3";
+          try {
+        	  list =  (List<RmbRechargeDto>)queryRunner.query(sql, new BeanListHandler(RmbRechargeDto.class));
+          } catch (SQLException e) {
+              	e.printStackTrace();
+          }
+          return list;
+      }
+     
+     /*
+      * 统计充值+交易的总金额
+      */
+      public BigDecimal getSumTrade(){
+          String sql = "SELECT SUM(SUMs) AS sumTrade FROM ( " + 
+          		"SELECT IFNULL(SUM(t1.recharge_price),0) AS SUMs  FROM t_inesv_rmb_recharge AS t1 WHERE  state = 1 " + 
+          		"UNION ALL " + 
+          		"SELECT IFNULL(SUM(t2.sum_price),0) AS SUMs FROM t_inesv_deal_detail AS t2 WHERE deal_type = 0) AS sumss";
+          try {
+        	  	return (BigDecimal) queryRunner.query(sql, new ColumnListHandler<>("sumTrade")).get(0);
+          } catch (SQLException e) {
+              	e.printStackTrace();
+  				return new BigDecimal("0");
+          }
+      }
 
 }

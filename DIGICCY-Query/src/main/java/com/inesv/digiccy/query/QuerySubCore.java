@@ -172,6 +172,19 @@ public class QuerySubCore {
           }
           return uid;
       }
+      
+      public UserInfoDto getInesvUserByUserNo(Integer userNo){
+          String sql = "select * from t_inesv_user where user_no = ?";
+          Object params[] = {userNo};
+          UserInfoDto uid = null;
+          try {
+              uid = queryRunner.query(sql,new BeanHandler<UserInfoDto>(UserInfoDto.class),params);
+          } catch (SQLException e) {
+              e.printStackTrace();
+              logger.error("查询用户信息失败");
+          }
+          return uid;
+      }
       /**
        * create by huguokai date:2016年11月9日10:45:26
        * 根据用户编号查找所有用户的信息
@@ -359,5 +372,47 @@ public class QuerySubCore {
          }
          return uid;
      }
+     
+     /*
+      * 统计总用户
+      */
+      public Long getSumUser(){
+          String sql = "SELECT IFNULL(COUNT(username),0) AS COUNT  FROM t_inesv_user ";
+          try {
+        	  	return (Long) queryRunner.query(sql, new ColumnListHandler<>("count")).get(0);
+          } catch (SQLException e) {
+              	e.printStackTrace();
+              	logger.error("查询用户信息失败");
+  				return Long.parseLong("0");
+          }
+      }
+      
+      /*
+       * 统计今日用户
+       */
+       public Long getDayUser(){
+           String sql = "SELECT IFNULL(COUNT(username),0) AS COUNT  FROM t_inesv_user WHERE  TO_DAYS(DATE) = TO_DAYS(NOW()) ";
+           try {
+         	  	return (Long) queryRunner.query(sql, new ColumnListHandler<>("count")).get(0);
+           } catch (SQLException e) {
+               	e.printStackTrace();
+               	logger.error("查询用户信息失败");
+   				return Long.parseLong("0");
+           }
+       }
+       
+       /*
+        * 统计今日用户
+        */
+        public List<InesvUserDto> getUserPicture(){
+            String sql = "SELECT COUNT(username) AS id,DATE_FORMAT(DATE,'%Y-%m-%d') AS dates FROM t_inesv_user WHERE DATE > DATE_SUB(NOW(),INTERVAL 30 DAY) GROUP BY dates";
+            List<InesvUserDto> userDto = new ArrayList<InesvUserDto>();
+            try {
+            	userDto =  (List<InesvUserDto>)queryRunner.query(sql,new BeanListHandler<InesvUserDto>(InesvUserDto.class));
+            } catch (SQLException e) {
+                	e.printStackTrace();
+            }
+            return userDto;
+        }
      
 }

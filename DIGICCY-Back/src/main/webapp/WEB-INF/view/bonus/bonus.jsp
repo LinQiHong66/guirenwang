@@ -58,7 +58,7 @@ Website: http://thevectorlab.net/
             <div class="row-fluid">
                 <div class="span12">
                     <h3 class="page-title">
-                        分红管理
+                        分润管理
                         <%--<small>simple form layouts</small>--%>
                     </h3>
                     <ul class="breadcrumb">
@@ -66,9 +66,9 @@ Website: http://thevectorlab.net/
                             <a href="#"><i class="icon-home"></i></a><span class="divider">&nbsp;</span>
                         </li>
                         <li>
-                            <a href="#">分红管理</a> <span class="divider">&nbsp;</span>
+                            <a href="#">分润管理</a> <span class="divider">&nbsp;</span>
                         </li>
-                        <li><a href="#">分红管理</a><span class="divider-last">&nbsp;</span></li>
+                        <li><a href="#">分润管理</a><span class="divider-last">&nbsp;</span></li>
                     </ul>
                 </div>
             </div>
@@ -78,7 +78,7 @@ Website: http://thevectorlab.net/
                     <!-- BEGIN SAMPLE FORMPORTLET-->
                     <div class="widget">
                         <div class="widget-title">
-                            <h4><i class="icon-reorder"></i>分红管理</h4>
+                            <h4><i class="icon-reorder"></i>分润管理</h4>
                             <span class="tools">
                                         <a href="javascript:;" class="icon-chevron-down"></a>
                                         <a href="javascript:;" class="icon-remove"></a>
@@ -103,19 +103,19 @@ Website: http://thevectorlab.net/
     <!-- 新增角色 -->
     <div class="boxK" id="box_add">
         <div class="closeK clearfix"><i class="icon-remove icon-white" id="close_add"></i></div>
-        <h4>新增分红</h4><br/><br/>
+        <h4>新增分润</h4><br/><br/>
         <form class="form-inline">
             <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">分红名称:</label>&nbsp;&nbsp;
+                <label class="form-label">分润名称:</label>&nbsp;&nbsp;
                 <input type="text"  id="name" class="form-control" style="border-radius: 5px">
             </div>
             <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">分红币种:</label>&nbsp;&nbsp;
+                <label class="form-label">分润币种:</label>&nbsp;&nbsp;
                 <select  class="input-large m-wrap" tabindex="1" id="coin">
                 </select>
             </div>
             <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">分红总额:</label>&nbsp;&nbsp;
+                <label class="form-label">分润总额:</label>&nbsp;&nbsp;
                 <input type="text"  id="num" class="form-control" style="border-radius: 5px">
             </div>
             <div class="form-group" style="margin-top: 5px">
@@ -127,20 +127,20 @@ Website: http://thevectorlab.net/
     <!-- 新增角色 -->
     <div class="boxK" id="box_update">
         <div class="closeK clearfix"><i class="icon-remove icon-white" id="close_add"></i></div>
-        <h4>修改分红</h4><br/><br/>
+        <h4>修改分润</h4><br/><br/>
         <form class="form-inline">
             <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">分红名称:</label>&nbsp;&nbsp;
+                <label class="form-label">分润名称:</label>&nbsp;&nbsp;
                 <input type="hidden"  id="up_id" class="form-control" style="border-radius: 5px">
                 <input type="text"  id="up_name" class="form-control" style="border-radius: 5px">
             </div>
             <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">分红币种:</label>&nbsp;&nbsp;
+                <label class="form-label">分润币种:</label>&nbsp;&nbsp;
                 <select  class="input-large m-wrap" tabindex="1" id="up_coin">
                 </select>
             </div>
             <div class="form-group" style="margin-top: 5px">
-                <label class="form-label">分红总额:</label>&nbsp;&nbsp;
+                <label class="form-label">分润总额:</label>&nbsp;&nbsp;
                 <input type="text"  id="up_num" class="form-control" style="border-radius: 5px">
             </div>
             <div class="form-group" style="margin-top: 5px">
@@ -162,43 +162,7 @@ Website: http://thevectorlab.net/
 <script src="/app/assets/bootstrap-table/bootstrap-table.js"></script>
 <script src="/app/assets/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 <script src="/app/js/bootstrap-table/bonus-update-tab.js"></script>
-<%--<script src="js/jquery-1.8.3.min.js"></script>--%>
-<%--<script src="assets/jquery-slimscroll/jquery-ui-1.9.2.custom.min.js"></script>--%>
-<%--<script src="assets/jquery-slimscroll/jquery.slimscroll.min.js"></script>--%>
-<%--<script src="assets/fullcalendar/fullcalendar/fullcalendar.min.js"></script>--%>
-<%--<script src="assets/bootstrap/js/bootstrap.min.js"></script>--%>
-<%--<script src="js/jquery.blockui.js"></script>--%>
-<%--<script src="js/jquery.cookie.js"></script>--%>
-<%--<!-- ie8 fixes -->--%>
-<%--<!--[if lt IE 9]>--%>
-<%--<script src="js/excanvas.js"></script>--%>
-<%--<script src="js/respond.js"></script>--%>
-<%--<![endif]-->--%>
-<%--<script src="assets/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>--%>
-<%--<script src="assets/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>--%>
-<%--<script src="assets/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>--%>
-<%--<script src="assets/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>--%>
-<%--<script src="assets/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>--%>
-<%--<script src="assets/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>--%>
-<%--<script src="assets/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>--%>
-<%--<script src="assets/jquery-knob/js/jquery.knob.js"></script>--%>
-<%--<script src="assets/flot/jquery.flot.js"></script>--%>
-<%--<script src="assets/flot/jquery.flot.resize.js"></script>--%>
 
-<%--<script src="assets/flot/jquery.flot.pie.js"></script>--%>
-<%--<script src="assets/flot/jquery.flot.stack.js"></script>--%>
-<%--<script src="assets/flot/jquery.flot.crosshair.js"></script>--%>
-
-<%--<script src="js/jquery.peity.min.js"></script>--%>
-<%--<script type="text/javascript" src="assets/uniform/jquery.uniform.min.js"></script>--%>
-<%--<script src="js/scripts.js"></script>--%>
-<%--<script>--%>
-    <%--jQuery(document).ready(function() {--%>
-        <%--// initiate layout and plugins--%>
-        <%--App.setMainPage(true);--%>
-        <%--App.init();--%>
-    <%--});--%>
-<%--</script>--%>
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

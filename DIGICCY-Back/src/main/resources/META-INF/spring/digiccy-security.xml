@@ -49,21 +49,17 @@
 			filters="none" />
 		<security:intercept-url pattern="/notice/**"
 			filters="none" />
-			
-			
-			
-			
-			
-			
-			<!-- 暂时通行 -->
-			
-			<security:intercept-url pattern="/Integral/**"
-	filters="none" />
-			<security:intercept-url pattern="/user/**"
-	filters="none" />
-			
-			
-			
+
+
+
+
+
+
+
+		<security:intercept-url pattern="/user/**"
+			filters="none" />
+
+
 		<security:custom-filter ref="adminFilter"
 			before="FILTER_SECURITY_INTERCEPTOR" />
 		<security:form-login login-page="/login.jsp"

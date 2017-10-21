@@ -13,19 +13,19 @@ public class BonusRecordDto implements Serializable{
     private long id;
     /* 用户编号 */
     private Integer user_no;
-    /* 分红币种 */
+    /* 分润币种 */
     private Integer bonus_type;
-    /* 分红名称 */
+    /* 分润名称 */
     private String bonus_name;
     /* 奖励币种 */
     private Integer reward_type;
-    /* 分红总额 */
+    /* 分润总额 */
     private BigDecimal bonus_sum;
-    /* 每个分红 */
+    /* 每个分润 */
     private BigDecimal each_bonus;
     /* 我的持币 */
     private BigDecimal coin_num;
-    /* 我的分红 */
+    /* 我的分润 */
     private BigDecimal bonus;
     /* 时间 */
     private Date date;

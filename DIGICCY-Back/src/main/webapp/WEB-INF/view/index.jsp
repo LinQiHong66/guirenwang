@@ -26,6 +26,8 @@ Website: http://thevectorlab.net/
     <meta content="" name="description" />
     <meta content="" name="author" />
     <script src="/app/js/header.js"></script>
+    <script src="/app/assets/echarts/echarts.min.js"></script>
+    <link href="/app/assets/layui/css/layui.css" rel="stylesheet" />
     <%--<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />--%>
     <%--<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />--%>
     <%--<link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />--%>
@@ -55,9 +57,34 @@ Website: http://thevectorlab.net/
         <div class="container-fluid">
 
         </div>
+        <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">
+  		<legend>贵人交易平台首页</legend>
+  		<div>
+    		<button class="layui-btn">当前总用户量：${sumUser}</button>
+    		<button class="layui-btn layui-btn-normal">平台累计充值人民币总额：${sumRecharge}</button>
+   			<button class="layui-btn layui-btn-warm">平台累计提现人民币总额：${sumWithdraw}</button>
+   			<button class="layui-btn layui-btn-danger">平台累计交易总额：${sumTrade}</button>
+  		</div>
+		</fieldset>
+		
+		<div>
+          	<span id="userPicture" style="width: 600px;height:300px; float:left"></span>
+          
+          	<span id="tradePicture" style="width: 600px;height:300px;float:left"></span>
+        </div>
+        
+        <div>
+          	<span id="rmbRechargePicture" style="width: 600px;height:300px; float:left"></span>
+          
+          	<span id="rmbWithdrawPicture" style="width: 600px;height:300px;float:left"></span>
+        </div>
+        
+        
         <!-- END PAGE CONTAINER-->
     </div>
     <!-- END PAGE -->
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    
 </div>
 <!-- END CONTAINER -->
 <!-- BEGIN FOOTER -->
@@ -104,6 +131,247 @@ Website: http://thevectorlab.net/
     <%--});--%>
 <%--</script>--%>
 <!-- END JAVASCRIPTS -->
+<script type="text/javascript">
+	$.ajax({
+		url:'/auth/getUserPicture.do',
+		type : 'POST',
+		dateType : 'JSON',
+		date : {
+		},
+		success : function (data){
+			var arr_date = new Array();
+			var arr_num = new Array();
+			$.each(data.data,function(a,b){
+				arr_date.push(b.dates);
+				arr_num.push(b.id);
+			});
+			var myChart = echarts.init(document.getElementById('userPicture'));
+			var option = {
+		            title: {
+		                text: '用户30天注册报表'
+		            },
+		            tooltip: {
+				        trigger: 'axis',
+				        axisPointer: {
+				            type: 'cross',
+				            crossStyle: {
+				                color: '#999'
+				            }
+				        }
+				    },
+				    toolbox: {
+				        feature: {
+				            dataView: {show: true, readOnly: false},
+				            magicType: {show: true, type: ['line', 'bar']},
+				            restore: {show: true},
+				            saveAsImage: {show: true}
+				        }
+				    },
+		            legend: {
+		                data:['用户量']
+		            },
+		            xAxis: {
+		                data: arr_date
+		            },
+		            yAxis: {},
+		            series: [{
+		                name: '用户量',
+		                type: 'bar',
+		                data: arr_num
+		            }]
+		        };
+		        // 使用刚指定的配置项和数据显示图表。
+		        myChart.setOption(option);
+		},
+		error :function (data){
+			
+		}
+	});
+</script>
+<script type="text/javascript">
+	$.ajax({
+		url:'/auth/getTradePicture.do',
+		type : 'POST',
+		dateType : 'JSON',
+		date : {
+		},
+		success : function (data){
+			
+			var arr_date = new Array();
+			var arr_num = new Array();
+			$.each(data.data,function(a,b){
+				arr_date.push(b.dates);
+				arr_num.push(b.sum_price);
+			});
+			var myChart = echarts.init(document.getElementById('tradePicture'));
+			var option = {
+					title: {
+		                text: '用户30天交易详情'
+		            },
+				    tooltip: {
+				        trigger: 'axis',
+				        axisPointer: {
+				            type: 'cross',
+				            crossStyle: {
+				                color: '#999'
+				            }
+				        }
+				    },
+				    toolbox: {
+				        feature: {
+				            dataView: {show: true, readOnly: false},
+				            magicType: {show: true, type: ['line', 'bar']},
+				            restore: {show: true},
+				            saveAsImage: {show: true}
+				        }
+				    },
+				    legend: {
+				        data:['交易金额']
+				    },
+				    xAxis: [
+				        {
+				            type: 'category',
+				            data: arr_date,
+				            axisPointer: {
+				                type: 'shadow'
+				            }
+				        }
+				    ],
+				    yAxis: {
+				        type: 'value'
+				    },
+				    series: [
+				        {
+				            name:'交易金额',
+				            type:'bar',
+				            data:arr_num
+				        }
+				    ]
+				};
+		        // 使用刚指定的配置项和数据显示图表。
+		        myChart.setOption(option);
+		},
+		error :function (data){
+			
+		}
+	});
+</script>
+<script type="text/javascript">
+	$.ajax({
+		url:'/auth/getRmbRechargePicture.do',
+		type : 'POST',
+		dateType : 'JSON',
+		date : {
+		},
+		success : function (data){
+			var arr_date = new Array();
+			var arr_num = new Array();
+			$.each(data.data,function(a,b){
+				arr_date.push(b.attr3);
+				arr_num.push(b.recharge_price);
+			});
+			var myChart = echarts.init(document.getElementById('rmbRechargePicture'));
+			var option =  {
+				    title: {
+				        text: 'RMB充值'
+				    },
+				    tooltip: {
+				        trigger: 'axis'
+				    },
+				    grid: {
+				        left: '3%',
+				        right: '4%',
+				        bottom: '3%',
+				        containLabel: true
+				    },
+				    toolbox: {
+				        feature: {
+				            saveAsImage: {}
+				        }
+				    },
+				    xAxis: {
+				        type: 'category',
+				        boundaryGap: false,
+				        data: arr_date
+				    },
+				    yAxis: {
+				        type: 'value'
+				    },
+				    series: [
+				        {
+				            name:'充值',
+				            type:'line',
+				            stack: '金额',
+				            data:arr_num
+				        }
+				    ]
+				};
+		        // 使用刚指定的配置项和数据显示图表。
+		        myChart.setOption(option);
+		},
+		error :function (data){
+			
+		}
+	});
+</script>
+<script type="text/javascript">
+	$.ajax({
+		url:'/auth/getRmbWithdrawPicture.do',
+		type : 'POST',
+		dateType : 'JSON',
+		date : {
+		},
+		success : function (data){
+			var arr_date = new Array();
+			var arr_num = new Array();
+			$.each(data.data,function(a,b){
+				arr_date.push(b.attr3);
+				arr_num.push(b.price);
+			});
+			var myChart = echarts.init(document.getElementById('rmbWithdrawPicture'));
+			var option =  {
+				    title: {
+				        text: 'RMB提现'
+				    },
+				    tooltip: {
+				        trigger: 'axis'
+				    },
+				    grid: {
+				        left: '3%',
+				        right: '4%',
+				        bottom: '3%',
+				        containLabel: true
+				    },
+				    toolbox: {
+				        feature: {
+				            saveAsImage: {}
+				        }
+				    },
+				    xAxis: {
+				        type: 'category',
+				        boundaryGap: false,
+				        data: arr_date
+				    },
+				    yAxis: {
+				        type: 'value'
+				    },
+				    series: [
+				        {
+				            name:'提现',
+				            type:'line',
+				            stack: '金额',
+				            data:arr_num
+				        }
+				    ]
+				};
+		        // 使用刚指定的配置项和数据显示图表。
+		        myChart.setOption(option);
+		},
+		error :function (data){
+			
+		}
+	});
+</script>
 </body>
 <!-- END BODY -->
 </html>

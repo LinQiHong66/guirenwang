@@ -119,7 +119,7 @@ div div div div div {
 
 									<!-- 用户编号模糊搜索、手机号模糊搜索、姓名模糊搜索、按用户类型选择、按注册日期选择、状态、排序 -->
 									用户编号:<input id="user_orgcode" type="text" style="width: 10%" />手机号:<input
-										id="phone" type="text" style="width: 9%" value="1310" />姓名:<input
+										id="phone" type="text" style="width: 9%" value="" />姓名:<input
 										type="text" id="username" style="width: 9%" />用户类型<select
 										id="user_orgtype" style="width: 9%">
 										<option value="-1">请选择</option>

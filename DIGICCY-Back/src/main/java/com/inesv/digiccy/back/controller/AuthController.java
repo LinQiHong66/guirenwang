@@ -10,6 +10,10 @@ import com.inesv.digiccy.dto.auth.TreeItemDto;
 import com.inesv.digiccy.dto.auth.UserDto;
 import com.inesv.digiccy.query.auth.QueryResources;
 import com.inesv.digiccy.query.auth.QueryRoles;
+import com.inesv.digiccy.validata.RmbRechargeValidate;
+import com.inesv.digiccy.validata.TradeValidata;
+import com.inesv.digiccy.validata.user.InesvUserValidata;
+
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,14 +40,55 @@ public class AuthController {
     @Autowired
     QueryResources queryResources;
 
-
     @Autowired
     CommandGateway commandGateway;
+    
+    @Autowired
+    InesvUserValidata inesvUserValidata;
+    
+    @Autowired
+    RmbRechargeValidate rmbRechargeValidate;
+    
+    @Autowired
+    TradeValidata tradeValidata;
 
     @RequestMapping(value = "login",method = RequestMethod.GET)
-    public String login(){
-        return "index";
+    public ModelAndView login(){
+    	Map<String,Object> resultMap = inesvUserValidata.homeCount();
+        return new ModelAndView("index",resultMap);
     }
+    
+	@RequestMapping(value = "getUserPicture", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getUserPicture() throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map = inesvUserValidata.getUserPicture();
+		return map;
+	}
+	
+	@RequestMapping(value = "getTradePicture", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getTradePicture() throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map = tradeValidata.getTradePicture();
+		return map;
+	}
+	
+	@RequestMapping(value = "getRmbRechargePicture", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getRmbRechargePicture() throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map = rmbRechargeValidate.getRechargePicture();
+		return map;
+	}
+	
+	@RequestMapping(value = "getRmbWithdrawPicture", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getRmbWithdrawPicture() throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map = rmbRechargeValidate.getWithdrawPicture();
+		return map;
+	}
 
     @RequestMapping(value = "gotoRole",method = RequestMethod.GET)
     public String gotoRole(){

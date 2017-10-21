@@ -302,10 +302,42 @@ public class UserController {
 		return map;
 	}
 
+	/**
+	 * 
+	 * @param userOrgCode
+	 * @param bankName
+	 * @param bankUserName
+	 * @param phone
+	 * @param userName
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
 	@RequestMapping(value = "getBankInfo", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getBankInfo() {
-		Map<String, Object> map = bankInfoValidata.getAllBankInfo();
+	public Map<String, Object> getBankInfo(int curPage, int pageItem, String userOrgCode, String bankName,
+			String bankUserName, String phone, String userName, String startDate, String endDate) {
+		try {
+			if (userOrgCode.equals(new String(userOrgCode.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				userOrgCode = new String(userOrgCode.getBytes("iso-8859-1"), "utf-8");
+			}
+			if (phone.equals(new String(phone.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				phone = new String(phone.getBytes("iso-8859-1"), "utf-8");
+			}
+			if (bankName.equals(new String(bankName.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				bankName = new String(bankName.getBytes("iso-8859-1"), "utf-8");
+			}
+			if (userName.equals(new String(userName.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				userName = new String(userName.getBytes("iso-8859-1"), "utf-8");
+			}
+			if (bankUserName.equals(new String(bankUserName.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				bankUserName = new String(bankUserName.getBytes("iso-8859-1"), "utf-8");
+			}
+		} catch (Exception e) {
+
+		}
+		Map<String, Object> map = bankInfoValidata.getAllBankInfo(curPage, pageItem, userOrgCode, bankName,
+				bankUserName, phone, userName, startDate, endDate);
 		return map;
 	}
 

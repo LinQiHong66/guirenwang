@@ -1,7 +1,9 @@
 package com.inesv.digiccy.query;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -112,19 +114,115 @@ public class QueryCrowdFundingInfo {
 		return crowdfundingList;
 	}
 
+	public long getSize(String userOrgCode, String phone, String userName, String startDate, String endDate,
+			String icoId) {
+		long size = 0;
+
+		String userWhere = "";
+		String crowWhere = "";
+		ArrayList<Object> paramArr = new ArrayList<>();
+
+		if (userOrgCode != null && !"".equals(userOrgCode)) {
+			userWhere += " and org_code like ?";
+			paramArr.add("%" + userOrgCode + "%");
+		}
+		if (phone != null && !"".equals(phone)) {
+			userWhere += " and phone like ?";
+			paramArr.add("%" + phone + "%");
+		}
+		if (userName != null && !"".equals(userName)) {
+			userWhere += " and (username like ? or phone like ?)";
+			paramArr.add("%" + userName + "%");
+			paramArr.add("%" + userName + "%");
+		}
+		if (icoId != null && !"".equals(icoId)) {
+			crowWhere += " and ico_id like ?";
+			paramArr.add("%" + icoId + "%");
+		}
+		if (startDate != null && endDate != null && !"".equals(startDate) && !"".equals(endDate)) {
+			try {
+				SimpleDateFormat forMat = new SimpleDateFormat("yyyy-MM-dd");
+				Date startD = forMat.parse(startDate);
+				Date endD = forMat.parse(endDate);
+				crowWhere += " and date between ? and ?";
+				paramArr.add(startD);
+				paramArr.add(endD);
+			} catch (Exception e) {
+
+			}
+		}
+
+		String sql = "select count(*) as count from t_crowdfunding_details where user_id in (select user_no from t_inesv_user where 1=1 "
+				+ userWhere + ") " + crowWhere + " order by date desc";
+		try {
+			size = queryRunner.query(sql, new ColumnListHandler<Long>("count"), paramArr.toArray(new Object[] {}))
+					.get(0);
+		} catch (Exception e) {
+
+		}
+		return size;
+	}
+
 	/**
 	 * 查询所有用户众筹项目信息
 	 * 
 	 * @return
 	 */
-	public List<CrowdFundingDetailsDto> queryAllCrowdFundingDetailBack() {
+	public List<CrowdFundingDetailsDto> queryAllCrowdFundingDetailBack(int curPage, int pageItem, String userOrgCode,
+			String phone, String userName, String startDate, String endDate, String icoId) {
 		List<CrowdFundingDetailsDto> crowdfundingList = new ArrayList<>();
-		String sql = "SELECT a.id AS id,b.username AS attr1, a.logistics_company,a.logistics_number,a.logistics_status,c.ico_name AS ico_id,a.ico_user_number AS ico_user_number,ROUND(a.ico_user_number/333) AS attr2,a.ico_user_sumprice AS ico_user_sumprice,a.date AS date "
-				+ " FROM t_crowdfunding_details a,t_inesv_user b,t_crowdfunding c "
-				+ " WHERE a.user_id = b.user_no AND a.ico_id = c.ico_no ORDER BY a.date DESC";
+		String userWhere = "";
+		String crowWhere = "";
+		ArrayList<Object> paramArr = new ArrayList<>();
+
+		if (userOrgCode != null && !"".equals(userOrgCode)) {
+			userWhere += " and org_code like ?";
+			paramArr.add("%" + userOrgCode + "%");
+		}
+		if (phone != null && !"".equals(phone)) {
+			userWhere += " and phone like ?";
+			paramArr.add("%" + phone + "%");
+		}
+		if (userName != null && !"".equals(userName)) {
+			userWhere += " and (username like ? or phone like ?)";
+			paramArr.add("%" + userName + "%");
+			paramArr.add("%" + userName + "%");
+		}
+		if (icoId != null && !"".equals(icoId)) {
+			crowWhere += " and ico_id like ?";
+			paramArr.add("%" + icoId + "%");
+		}
+		if (startDate != null && endDate != null && !"".equals(startDate) && !"".equals(endDate)) {
+			try {
+				SimpleDateFormat forMat = new SimpleDateFormat("yyyy-MM-dd");
+				Date startD = forMat.parse(startDate);
+				Date endD = forMat.parse(endDate);
+				crowWhere += " and date between ? and ?";
+				paramArr.add(startD);
+				paramArr.add(endD);
+			} catch (Exception e) {
+
+			}
+		}
+
+		String sql = "select * from t_crowdfunding_details where user_id in (select user_no from t_inesv_user where 1=1 "
+				+ userWhere + ") " + crowWhere + " order by date desc limit ?,?";
+		paramArr.add((curPage - 1) * pageItem);
+		paramArr.add(pageItem);
+		sql = "select b.username as attr1,b.real_name as attr2, b.org_code as attr3, c.ico_name as attr4,a.ico_user_number as attr5,ROUND(a.ico_user_number/333) AS ico_user_number, a.ico_user_sumprice as ico_user_sumprice, a.date from ("
+				+ sql
+				+ ") a LEFT JOIN t_inesv_user b on a.user_id=b.user_no LEFT JOIN t_crowdfunding c on a.ico_id=c.ico_no";
+		// String sql = "SELECT a.id AS id,b.username AS attr1,
+		// a.logistics_company,a.logistics_number,a.logistics_status,c.ico_name AS
+		// ico_id,a.ico_user_number AS ico_user_number,ROUND(a.ico_user_number/333) AS
+		// attr2,a.ico_user_sumprice AS ico_user_sumprice,a.date AS date "
+		// + " FROM t_crowdfunding_details a,t_inesv_user b,t_crowdfunding c "
+		// + " WHERE a.user_id = b.user_no AND a.ico_id = c.ico_no ORDER BY a.date
+		// DESC";
 		// String sql = "SELECT * FROM t_crowdfunding_details";
 		try {
-			crowdfundingList = queryRunner.query(sql, new BeanListHandler<>(CrowdFundingDetailsDto.class));
+			crowdfundingList = queryRunner.query(sql, new BeanListHandler<>(CrowdFundingDetailsDto.class),
+					paramArr.toArray(new Object[] {}));
 		} catch (SQLException e) {
 			logger.error("查询众筹项目失败");
 			e.printStackTrace();
@@ -266,36 +364,35 @@ public class QueryCrowdFundingInfo {
 		}
 		return crowdfunding;
 	}
-	
-	
-	   /**
-     * 查询所有需要更新物流信息的
-     * @return
-     */
-    public List<CrowdFundingDetailsDto> query_wl(List<String> list) {
-        List<CrowdFundingDetailsDto> crowdfundingList = new ArrayList<>();
-//        Map<String, Object> map = new HashMap<>();
-        
-        String sql = "select * from t_crowdfunding_details as tc where tc.id in (";
-        for(int i=list.size()-1;i>=0;i--){
-        	if(i==list.size()-1){
-        		sql+=list.get(i);
-        	}else{
-        		sql+=","+list.get(i);
-        	}
-        }
-        sql+=")";
 
-        
-//        Object params[] = { list.get(0),list.get(1) };
-        
-        try {
-            crowdfundingList = queryRunner.query(sql, new BeanListHandler<>(CrowdFundingDetailsDto.class));
-        } catch (SQLException e) {
-            logger.error("查询众筹项目失败");
-            e.printStackTrace();
-        }
-        return crowdfundingList;
-    }
+	/**
+	 * 查询所有需要更新物流信息的
+	 * 
+	 * @return
+	 */
+	public List<CrowdFundingDetailsDto> query_wl(List<String> list) {
+		List<CrowdFundingDetailsDto> crowdfundingList = new ArrayList<>();
+		// Map<String, Object> map = new HashMap<>();
+
+		String sql = "select * from t_crowdfunding_details as tc where tc.id in (";
+		for (int i = list.size() - 1; i >= 0; i--) {
+			if (i == list.size() - 1) {
+				sql += list.get(i);
+			} else {
+				sql += "," + list.get(i);
+			}
+		}
+		sql += ")";
+
+		// Object params[] = { list.get(0),list.get(1) };
+
+		try {
+			crowdfundingList = queryRunner.query(sql, new BeanListHandler<>(CrowdFundingDetailsDto.class));
+		} catch (SQLException e) {
+			logger.error("查询众筹项目失败");
+			e.printStackTrace();
+		}
+		return crowdfundingList;
+	}
 
 }

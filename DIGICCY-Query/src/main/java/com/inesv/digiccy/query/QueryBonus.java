@@ -26,7 +26,7 @@ public class QueryBonus {
 
     /**
      * create by huguokai date:2016年11月14日17:40:23
-     * 根据用户编号查询用户分红信息
+     * 根据用户编号查询用户分润信息
      * @param userNo
      * @return
      */
@@ -38,7 +38,7 @@ public class QueryBonus {
             list = queryRunner.query(sql,new BeanListHandler<BonusRecordDto>(BonusRecordDto.class),params);
         } catch (SQLException e) {
             e.printStackTrace();
-            logger.error("查询分红记录失败");
+            logger.error("查询分润记录失败");
         }
         return list;
     }
@@ -51,7 +51,7 @@ public class QueryBonus {
             list = queryRunner.query(sql,new BeanListHandler<BonusRecordDto>(BonusRecordDto.class));
         } catch (SQLException e) {
             e.printStackTrace();
-            logger.error("查询分红记录失败");
+            logger.error("查询分润记录失败");
         }
         return list;
     }
@@ -59,7 +59,7 @@ public class QueryBonus {
 
     /**
      * create by huguokai date:2016年11月16日10:11:26
-     * 根据用户编号查询分红中心
+     * 根据用户编号查询分润中心
      * @param userNo
      * @return list
      */
@@ -71,14 +71,14 @@ public class QueryBonus {
             list = queryRunner.query(sql,new BeanListHandler<BounsInfoDto>(BounsInfoDto.class),params);
         } catch (SQLException e) {
             e.printStackTrace();
-            logger.error("查询分红中心失败");
+            logger.error("查询分润中心失败");
         }
         return list;
     }
 
     /**
      * create by huguokai date:2016年11月14日17:40:23
-     * 查询所有分红项目
+     * 查询所有分润项目
      * @return
      */
     public List<BonusDetailDto> getBonusDetail(){
@@ -89,7 +89,7 @@ public class QueryBonus {
             list = queryRunner.query(sql,new BeanListHandler<BonusDetailDto>(BonusDetailDto.class));
         } catch (SQLException e) {
             e.printStackTrace();
-            logger.error("查询分红记录失败");
+            logger.error("查询分润记录失败");
         }
         return list;
     }

@@ -4,28 +4,29 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class PoundatgeDto {
-	
+
 	private Long id;
-	
+
 	private Integer user_no;
-	
+
 	private String user_name;
-	
+
 	private String user_code;
-	
+
 	private Integer optype;
-	
+
 	private Integer type;
-	
+
 	private BigDecimal money;
-	
+
 	private BigDecimal sum_money;
-	
+
 	private Date date;
-	
+
 	private String attr1;
-	
+
 	private String attr2;
+	private String attr3;
 
 	public Long getId() {
 		return id;
@@ -114,5 +115,12 @@ public class PoundatgeDto {
 	public void setAttr2(String attr2) {
 		this.attr2 = attr2;
 	}
-	
+
+	public String getAttr3() {
+		return attr3;
+	}
+
+	public void setAttr3(String attr3) {
+		this.attr3 = attr3;
+	}
 }
