@@ -37,14 +37,39 @@ public class CrowdFundingDetailController {
 	}
 
 	/**
+	 * 
+	 */
+	@RequestMapping("getAllCrowd")
+	@ResponseBody
+	public Map<String, Object> getAllCrowdFunding() {
+		return crowdFundingValidata.getAllCrowdFunding();
+	}
+
+	/**
 	 * 得到所有众筹项目的信息
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "getAllCrowdFundingDetail", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getAllCrowdFundingDetail() {
-		Map<String, Object> map = crowdFundingValidata.validataAllCrowdFundingDetailBack();
+	public Map<String, Object> getAllCrowdFundingDetail(int curPage, int pageItem, String userOrgCode, String phone,
+			String userName, String startDate, String endDate, String icoId) {
+		try {
+			if (userOrgCode.equals(new String(userOrgCode.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				userOrgCode = new String(userOrgCode.getBytes("iso-8859-1"), "utf-8");
+			}
+			if (userName.equals(new String(userName.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				userName = new String(userName.getBytes("iso-8859-1"), "utf-8");
+			}
+			if (icoId.equals(new String(icoId.getBytes("iso-8859-1"), "iso-8859-1"))) {
+				icoId = new String(icoId.getBytes("iso-8859-1"), "utf-8");
+			}
+
+		} catch (Exception e) {
+
+		}
+		Map<String, Object> map = crowdFundingValidata.validataAllCrowdFundingDetailBack(curPage, pageItem, userOrgCode,
+				phone, userName, startDate, endDate, icoId);
 		return map;
 	}
 
@@ -60,33 +85,34 @@ public class CrowdFundingDetailController {
 		return map;
 	}
 
-	
 	/**
-     * 更新指定id的物流信息
-     * @param ids
-     * @return
-     */
-    @RequestMapping(value = "updateLogistics" ,method = RequestMethod.POST)
-    @ResponseBody
-    public String updateLogistics(String ids){
-    	String result=crowdFundingValidata.updateLogistics(ids);
-    	return result;
-    }
-    
-    /**
-     * 增加一个快递单号
-     * @param company
-     * @param number
-     * @param code
-     * @return
-     */
-    @RequestMapping(value = "addLogistics" ,method = RequestMethod.POST)
-    @ResponseBody
-    public String addLogistics(String company,String number,String id,String code){
-    	String result=crowdFundingValidata.update_number(id,number,company,code);
-    	return result;
-    }
-	
+	 * 更新指定id的物流信息
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	@RequestMapping(value = "updateLogistics", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateLogistics(String ids) {
+		String result = crowdFundingValidata.updateLogistics(ids);
+		return result;
+	}
+
+	/**
+	 * 增加一个快递单号
+	 * 
+	 * @param company
+	 * @param number
+	 * @param code
+	 * @return
+	 */
+	@RequestMapping(value = "addLogistics", method = RequestMethod.POST)
+	@ResponseBody
+	public String addLogistics(String company, String number, String id, String code) {
+		String result = crowdFundingValidata.update_number(id, number, company, code);
+		return result;
+	}
+
 	/**
 	 * 得到所有众筹项目的信息
 	 * 
@@ -134,10 +160,7 @@ public class CrowdFundingDetailController {
 		Map<String, Object> map = crowdFundingValidata.validataAllCrowdFundingDetailBack_Jigou_user(orgCode);
 		return map;
 	}
-	
-	
-	
-	
+
 	/*
 	 * 导出excel
 	 */

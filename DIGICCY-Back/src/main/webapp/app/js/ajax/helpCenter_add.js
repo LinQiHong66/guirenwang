@@ -43,7 +43,6 @@ $("#addHelpCenter").click(
 						alert("服务器无响应");
 						return false;
 					}
-					
 		});
 			
 });

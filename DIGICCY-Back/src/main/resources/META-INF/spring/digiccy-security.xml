@@ -55,15 +55,8 @@
 
 
 
-		<!-- 暂时通行 -->
 
-		<security:intercept-url pattern="/Integral/**"
-			filters="none" />
 		<security:intercept-url pattern="/user/**"
-			filters="none" />
-		<security:intercept-url pattern="/bonuslevel/**"
-			filters="none" />
-		<security:intercept-url pattern="/poundatge/**"
 			filters="none" />
 
 
